@@ -126,8 +126,16 @@ body{font-family:var(--sans);font-size:15px;color:var(--ink);
 #priceBar .fill{height:100%;border-radius:4px;transition:width .15s,background .15s;}
 #priceBar .marker{position:absolute;top:-4px;width:2px;height:16px;background:#fff;border-radius:1px;}
 
-@media(max-width:768px){.layout{grid-template-columns:1fr}.sidebar{display:none}
-  .sliderGroup{grid-template-columns:1fr}.resultBox{grid-template-columns:1fr}.grid4{grid-template-columns:1fr 1fr}}
+/* ── Mobile: horizontal tab bar replaces sidebar ── */
+.mobileNav{display:none}
+@media(max-width:768px){
+  .layout{grid-template-columns:1fr}
+  .sidebar{display:none}
+  .mobileNav{display:flex;gap:4px;overflow-x:auto;padding:8px 0;margin-bottom:12px;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+  .mobileNav::-webkit-scrollbar{display:none}
+  .mobileNav .navItem{flex-shrink:0;white-space:nowrap;font-size:11px;padding:6px 10px}
+  .sliderGroup{grid-template-columns:1fr}.resultBox{grid-template-columns:1fr}.grid4{grid-template-columns:1fr 1fr}
+}
 </style>
 </head>
 <body>
@@ -147,6 +155,14 @@ body{font-family:var(--sans);font-size:15px;color:var(--ink);
 </div>
 
 <div class="layout">
+  <!-- Mobile nav (visible only on small screens) -->
+  <nav class="mobileNav">
+    <button class="navItem active" data-section="s1">📊 同業</button>
+    <button class="navItem" data-section="s2">💰 DCF</button>
+    <button class="navItem" data-section="s3">🎯 情境</button>
+    <button class="navItem" data-section="s4">📋 結論</button>
+    <button class="navItem" data-section="s5" style="color:var(--purple)">🎚️ 計算器</button>
+  </nav>
   <nav class="sidebar">
     <div class="navTitle">📋 報告章節</div>
     <button class="navItem active" data-section="s1">📊 同業比較</button>
@@ -273,13 +289,19 @@ body{font-family:var(--sans);font-size:15px;color:var(--ink);
 
 <!-- ═══════════ JS: Sidebar Nav + Interactive DCF ═══════════ -->
 <script>
-// ── Sidebar navigation ──
+// ── Sidebar + Mobile navigation (synced) ──
 document.querySelectorAll('.navItem').forEach(btn => {
   btn.addEventListener('click', () => {
+    const section = btn.dataset.section;
+    // Deactivate all nav items in all navs
     document.querySelectorAll('.navItem').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
+    // Activate all buttons that target this section (syncs sidebar + mobile nav)
+    document.querySelectorAll(`.navItem[data-section="${section}"]`).forEach(b => b.classList.add('active'));
+    // Show only the target section
     document.querySelectorAll('section').forEach(s => s.style.display = 'none');
-    document.getElementById(btn.dataset.section).style.display = 'block';
+    document.getElementById(section).style.display = 'block';
+    // On mobile, scroll the active tab into view
+    btn.scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'});
   });
 });
 document.addEventListener('keydown', e => {
