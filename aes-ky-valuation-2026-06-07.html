@@ -131,7 +131,7 @@ body{font-family:var(--sans);font-size:15px;color:var(--ink);
 @media(max-width:768px){
   .layout{grid-template-columns:1fr}
   .sidebar{display:none}
-  .mobileNav{display:flex;gap:4px;overflow-x:auto;padding:8px 0;margin-bottom:12px;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+  .mobileNav{display:flex;gap:4px;overflow-x:auto;padding:8px 14px;margin:0;position:sticky;top:0;z-index:15;background:rgba(10,14,20,.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);-webkit-overflow-scrolling:touch;scrollbar-width:none}
   .mobileNav::-webkit-scrollbar{display:none}
   .mobileNav .navItem{flex-shrink:0;white-space:nowrap;font-size:11px;padding:6px 10px}
   .sliderGroup{grid-template-columns:1fr}.resultBox{grid-template-columns:1fr}.grid4{grid-template-columns:1fr 1fr}
@@ -154,15 +154,16 @@ body{font-family:var(--sans);font-size:15px;color:var(--ink);
   </div>
 </div>
 
+<!-- Mobile nav (visible only on small screens, sits between topbar and content) -->
+<nav class="mobileNav">
+  <button class="navItem active" data-section="s1">📊 同業比較</button>
+  <button class="navItem" data-section="s2">💰 DCF 估值</button>
+  <button class="navItem" data-section="s3">🎯 情境分析</button>
+  <button class="navItem" data-section="s4">📋 估值結論</button>
+  <button class="navItem" data-section="s5" style="color:var(--purple)">🎚️ 互動計算器</button>
+</nav>
+
 <div class="layout">
-  <!-- Mobile nav (visible only on small screens) -->
-  <nav class="mobileNav">
-    <button class="navItem active" data-section="s1">📊 同業</button>
-    <button class="navItem" data-section="s2">💰 DCF</button>
-    <button class="navItem" data-section="s3">🎯 情境</button>
-    <button class="navItem" data-section="s4">📋 結論</button>
-    <button class="navItem" data-section="s5" style="color:var(--purple)">🎚️ 計算器</button>
-  </nav>
   <nav class="sidebar">
     <div class="navTitle">📋 報告章節</div>
     <button class="navItem active" data-section="s1">📊 同業比較</button>
