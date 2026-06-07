@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>台達電 2308.TW — 成長動能 | Step 4</title>
+<style>
+:root{
+  --bg:#0a0e14; --surface:#131820; --card:#181f2a;
+  --border:#252d3a; --ink:#e2e8f0; --muted:#7c8aa0; --dim:#4a5568;
+  --accent:#60a5fa; --accent2:#3b82f6;
+  --gold:#f59e0b; --green:#34d399; --red:#f87171;
+  --orange:#fb923c; --purple:#a78bfa;
+  --radius:14px; --radius2:18px;
+  --sans:"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,-apple-system,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.7}
+.topbar{background:var(--surface);border-bottom:1px solid var(--border);padding:14px 24px;display:flex;align-items:center;gap:16px;position:sticky;top:0;z-index:100}
+.topbar .logo{font-size:18px;font-weight:700;color:var(--accent)}
+.topbar .badge{font-size:11px;background:var(--card);color:var(--muted);padding:4px 10px;border-radius:20px;border:1px solid var(--border)}
+.layout{display:flex;min-height:calc(100vh - 57px)}
+.sidebar{width:240px;background:var(--surface);border-right:1px solid var(--border);padding:20px 0;position:sticky;top:57px;height:calc(100vh - 57px);overflow-y:auto;flex-shrink:0}
+.sidebar .navTitle{font-size:10px;text-transform:uppercase;letter-spacing:1.5px;color:var(--dim);padding:8px 20px 16px}
+.navItem{display:block;width:100%;padding:10px 20px;font-size:13px;color:var(--muted);background:none;border:none;text-align:left;cursor:pointer;font-family:var(--sans);transition:all .15s;border-left:3px solid transparent}
+.navItem:hover{color:var(--ink);background:var(--card);border-left-color:var(--dim)}
+.navItem.active{color:var(--accent);background:rgba(96,165,250,.08);border-left-color:var(--accent);font-weight:600}
+.content{flex:1;padding:32px;max-width:1100px}
+section{display:none}
+section.active{display:block}
+section h2{font-size:22px;margin-bottom:8px;color:var(--ink)}
+section h3{font-size:16px;margin:24px 0 12px;color:var(--accent)}
+.sectionDesc{color:var(--muted);font-size:14px;margin-bottom:20px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px 24px;margin-bottom:16px}
+.cardTitle{font-size:15px;font-weight:600;margin-bottom:12px;color:var(--ink)}
+.tbl{width:100%;border-collapse:collapse;margin:12px 0}
+.tbl th{text-align:left;color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.5px;padding:8px 12px;border-bottom:1px solid var(--border)}
+.tbl td{padding:10px 12px;border-bottom:1px solid var(--border);font-size:13px}
+.tbl tr:hover td{background:var(--surface)}
+.up{color:var(--green)} .down{color:var(--red)} .warn{color:var(--orange)}
+.metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin:16px 0}
+.metric{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px;text-align:center}
+.metric .val{font-size:22px;font-weight:700;color:var(--ink)}
+.metric .lbl{font-size:11px;color:var(--muted);margin-top:4px}
+.callout{border-left:3px solid;border-radius:0 var(--radius) var(--radius) 0;padding:14px 18px;margin:16px 0;background:var(--surface);font-size:13px}
+.callout.red{border-color:var(--red)}.callout.gold{border-color:var(--gold)}.callout.green{border-color:var(--green)}.callout.purple{border-color:var(--purple)}
+.pillRow{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0}
+.pill{font-size:11px;padding:4px 10px;border-radius:20px;font-weight:600}
+.pill.g{background:rgba(52,211,153,.15);color:var(--green)}.pill.r{background:rgba(248,113,113,.15);color:var(--red)}
+.pill.b{background:rgba(96,165,250,.15);color:var(--accent)}.pill.o{background:rgba(251,146,60,.15);color:var(--orange)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.verdict{background:linear-gradient(135deg,var(--card),var(--surface));border:1px solid var(--accent);border-radius:var(--radius2);padding:24px 28px;margin:20px 0}
+.verdict .vTitle{font-size:18px;font-weight:700;color:var(--accent);margin-bottom:8px}
+.quote{font-style:italic;color:var(--muted);border-left:2px solid var(--border);padding:8px 16px;margin:8px 0;font-size:13px}
+.barChart{margin:16px 0}
+.barRow{display:flex;align-items:center;gap:10px;margin:6px 0;font-size:12px}
+.barRow .label{width:80px;text-align:right;color:var(--muted);flex-shrink:0}
+.barRow .barWrap{flex:1;background:var(--border);border-radius:4px;overflow:hidden;height:22px}
+.barRow .barFill{height:100%;border-radius:4px;display:flex;align-items:center;padding-left:8px;color:#fff;font-weight:600;font-size:11px}
+.mobileNav{display:none}
+@media(max-width:768px){
+  .sidebar{display:none}
+  .mobileNav{display:flex;gap:4px;overflow-x:auto;padding:8px 0;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+  .mobileNav::-webkit-scrollbar{display:none}
+  .mobileNav .navItem{flex-shrink:0;white-space:nowrap;font-size:11px;padding:6px 10px;border-radius:20px;border:1px solid var(--border)}
+  .mobileNav .navItem.active{background:rgba(96,165,250,.15);border-color:var(--accent)}
+  .content{padding:16px}
+  .grid2{grid-template-columns:1fr}
+  .metrics{grid-template-columns:repeat(2,1fr)}
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <span class="logo">⚡ DELTA 2308</span>
+  <span class="badge">Step 4 / 11</span>
+  <span class="spacer" style="flex:1"></span>
+  <span class="tag">成長動能 · 2026-06-07</span>
+</div>
+
+<div class="layout">
+
+<nav class="sidebar">
+  <div class="navTitle">Step 4 目錄</div>
+  <button class="navItem active" data-section="s1">📊 營收拆解</button>
+  <button class="navItem" data-section="s2">📈 增量利潤率</button>
+  <button class="navItem" data-section="s3">⚙️ 營運槓桿</button>
+  <button class="navItem" data-section="s4">🔬 單位經濟學</button>
+  <button class="navItem" data-section="s5">🔄 成長品質</button>
+  <button class="navItem" data-section="s6">💡 領先指標</button>
+  <button class="navItem" data-section="s7">🎯 成長結論</button>
+</nav>
+
+<nav class="mobileNav">
+  <button class="navItem active" data-section="s1">📊 營收</button>
+  <button class="navItem" data-section="s2">📈 利潤率</button>
+  <button class="navItem" data-section="s3">⚙️ 槓桿</button>
+  <button class="navItem" data-section="s4">🔬 單位</button>
+  <button class="navItem" data-section="s5">🔄 品質</button>
+  <button class="navItem" data-section="s6">💡 指標</button>
+  <button class="navItem" data-section="s7">🎯 結論</button>
+</nav>
+
+<main class="content">
+
+<!-- SECTION 1: REVENUE DECOMPOSITION -->
+<section id="s1" class="active">
+<h2>📊 營收拆解</h2>
+<p class="sectionDesc">Step 1: Revenue Decomposition — 把 NT$5,549 億拆開來看</p>
+
+<div class="metrics">
+  <div class="metric"><div class="val up">NT$5,549億</div><div class="lbl">2025 全年營收</div></div>
+  <div class="metric"><div class="val up">+32%</div><div class="lbl">YoY 成長</div></div>
+  <div class="metric"><div class="val up">NT$1,594億</div><div class="lbl">2026Q1 營收</div></div>
+  <div class="metric"><div class="val up">+34.5%</div><div class="lbl">Q1 YoY</div></div>
+</div>
+
+<div class="card">
+  <div class="cardTitle">營收組合（2026Q1 法說會揭露）</div>
+  <div class="barChart">
+    <div class="barRow"><span class="label">AI Power</span><div class="barWrap"><div class="barFill" style="width:30%;background:var(--accent)">30%</div></div></div>
+    <div class="barRow"><span class="label">Cooling</span><div class="barWrap"><div class="barFill" style="width:9%;background:var(--green)">9%</div></div></div>
+    <div class="barRow"><span class="label">Component</span><div class="barWrap"><div class="barFill" style="width:1.5%;background:var(--gold)">~1%</div></div></div>
+    <div class="barRow"><span class="label">其他</span><div class="barWrap"><div class="barFill" style="width:59.5%;background:var(--dim)">~60%</div></div></div>
+  </div>
+  <p style="font-size:11px;color:var(--dim);margin-top:8px">Source: 鄭平，2026-04-30 法說會 —「Power 去年約 23%，今年約 30%；Cooling 約 9%；Component 約 1% 多」</p>
+</div>
+
+<div class="card">
+  <div class="cardTitle">事業群營收與獲利動態</div>
+  <table class="tbl">
+    <tr><th>事業群</th><th>2026Q1 表現</th><th>YoY 趨勢</th><th>獲利貢獻</th><th>動能評級</th></tr>
+    <tr>
+      <td class="up">Power Electronics</td>
+      <td>主要成長動力（AI 伺服器電源）</td>
+      <td class="up">AI Power 23%→30%</td>
+      <td class="up">約 2/3 營業淨利</td>
+      <td class="up">🔥 核心引擎</td>
+    </tr>
+    <tr>
+      <td class="up">Infrastructure</td>
+      <td>次要成長動力（液冷 + Data Center）</td>
+      <td class="up">Cooling $4,000萬→$16億</td>
+      <td class="up">約 1/3 營業淨利</td>
+      <td class="up">🔥 第二引擎</td>
+    </tr>
+    <tr>
+      <td class="warn">Automation</td>
+      <td>全年正成長，但增速低於 AI</td>
+      <td class="warn">→ 穩定</td>
+      <td>少量</td>
+      <td>🟡 穩健</td>
+    </tr>
+    <tr>
+      <td class="down">Mobility (EV)</td>
+      <td>2026Q1 略微虧損</td>
+      <td class="down">2025 全年虧損 ~NT$12 億</td>
+      <td class="down">拖累</td>
+      <td>🔴 拖油瓶</td>
+    </tr>
+  </table>
+  <p style="font-size:11px;color:var(--dim);margin-top:8px">Source: 黃宏彬 EVP + 王建源 IR，2026Q1/2025Q4 法說會</p>
+</div>
+
+<div class="callout green">
+  <strong>📊 營收拆解關鍵洞察：</strong>AI 相關營收（Power 30% + Cooling 9% + Component ~1%）= <strong>~40%</strong> 來自 AI 資料中心，且快速成長（Power 從 23%→30% 僅用半年）。剩下 60% 為傳統電源、工業自動化、EV、樓宇控制等。這意味著台達的營收結構正在經歷 <strong>「AI 化」的快速轉型</strong>。
+</div>
+</section>
+
+<!-- SECTION 2: INCREMENTAL MARGIN -->
+<section id="s2">
+<h2>📈 增量利潤率追蹤</h2>
+<p class="sectionDesc">Step 2: Incremental Margin = Δ Operating Profit / Δ Revenue</p>
+
+<div class="metrics">
+  <div class="metric"><div class="val up">35.0%</div><div class="lbl">2026Q1 增量利潤率 (YoY)</div></div>
+  <div class="metric"><div class="val up">26.9%</div><div class="lbl">FY2025 增量利潤率</div></div>
+  <div class="metric"><div class="val up">17.8%</div><div class="lbl">2026Q1 OP 利益率</div></div>
+  <div class="metric"><div class="val up">15.1%</div><div class="lbl">FY2025 OP 利益率</div></div>
+</div>
+
+<div class="card">
+  <div class="cardTitle">增量利潤率計算</div>
+  <table class="tbl">
+    <tr><th>期間</th><th>營收成長</th><th>OP 成長</th><th>增量利潤率</th><th>品質判斷</th></tr>
+    <tr>
+      <td>2026Q1 vs 2025Q1</td>
+      <td class="up">+34.5% (Δ~409億)</td>
+      <td class="up">+102% (Δ~143億)</td>
+      <td class="up"><strong>35.0%</strong></td>
+      <td class="up">🟢 正常營運槓桿</td>
+    </tr>
+    <tr>
+      <td>FY2025 vs FY2024</td>
+      <td class="up">+32% (Δ~1,345億)</td>
+      <td class="up">+76% (Δ~362億)</td>
+      <td class="up"><strong>26.9%</strong></td>
+      <td class="warn">🟡 略低（EV 虧損拖累）</td>
+    </tr>
+    <tr>
+      <td>2025Q4 vs 2024Q4</td>
+      <td class="up">+42%</td>
+      <td class="up">+147%</td>
+      <td class="up"><strong>~40%</strong></td>
+      <td class="up">🟢 極強</td>
+    </tr>
+  </table>
+  <p style="font-size:11px;color:var(--dim);margin-top:8px">增量利潤率 = ΔOP ÷ ΔRev。2025Q1 OP 推算為 ~141 億（OPM ~11.9%）；FY2024 OP 推算為 ~476 億。Source: 法說會逐字稿 + 推算</p>
+</div>
+
+<div class="callout gold">
+  <strong>📈 增量利潤率診斷：</strong>35% 的增量利潤率落在 <strong>「正常營運槓桿」</strong>區間（30-50%）。這代表每增加 NT$100 營收，約 NT$35 掉到營業利益。不是極端值（沒有 >50% 的爆發力，也沒有 <30% 的隱憂），反映了台達在規模擴張過程中成本控制得當，但受到 EV 虧損和全球擴張費用上升的抑制。
+</div>
+</section>
+
+<!-- SECTION 3: OPERATING LEVERAGE -->
+<section id="s3">
+<h2>⚙️ 成本結構與營運槓桿</h2>
+<p class="sectionDesc">Step 5: Cost Structure & Operating Leverage — 管理會計 MA_Ch2 框架</p>
+
+<div class="metrics">
+  <div class="metric"><div class="val up">3.1x</div><div class="lbl">營運槓桿度 DOL</div></div>
+  <div class="metric"><div class="val up">55.8%</div><div class="lbl">邊際貢獻率 (估)</div></div>
+  <div class="metric"><div class="val up">31.9%</div><div class="lbl">安全邊際 MoS</div></div>
+  <div class="metric"><div class="val">NT$1,086億</div><div class="lbl">損益兩平營收/季</div></div>
+</div>
+
+<div class="card">
+  <div class="cardTitle">成本結構推估（2026Q1 基準）</div>
+  <table class="tbl">
+    <tr><th>成本類型</th><th>佔營收比例</th><th>性質</th></tr>
+    <tr><td class="warn">變動成本（直接材料+變動製造）</td><td class="warn">~40%</td><td>隨產量變動</td></tr>
+    <tr><td>固定製造費用（折舊+廠房）</td><td>~22.5%</td><td>不隨產量變動</td></tr>
+    <tr><td>變動 OPEX（部分銷售+運費）</td><td>~4.2%</td><td>隨營收變動</td></tr>
+    <tr><td class="warn">固定 OPEX（R&D+管理+主要薪資）</td><td class="warn">~15%</td><td>不隨營收變動</td></tr>
+    <tr><td class="up">營業利益</td><td class="up">17.8%</td><td>—</td></tr>
+  </table>
+  <p style="font-size:11px;color:var(--dim);margin-top:8px">* 台達電未單獨揭露成本結構，以上為基於製造業典型結構 + 法說會數據的推估</p>
+</div>
+
+<div class="grid2">
+  <div class="card">
+    <div class="cardTitle">營運槓桿度 (DOL)</div>
+    <p style="font-size:24px;font-weight:700;color:var(--accent);text-align:center;margin:16px 0">3.1x</p>
+    <p style="font-size:13px;color:var(--muted)">營收每變動 ±1%，營業利益變動 ±3.1%</p>
+    <div class="pillRow"><span class="pill o">高營運槓桿</span><span class="pill b">製造業典型</span></div>
+    <p style="font-size:12px;color:var(--dim);margin-top:12px">DOL = 邊際貢獻 ÷ 營業利益<br>= (55.8% × 1,594) ÷ 284 ≈ 3.1<br>高於 3 = 景氣上行放大獲利，下行放大虧損</p>
+  </div>
+  <div class="card">
+    <div class="cardTitle">安全邊際 (Margin of Safety)</div>
+    <p style="font-size:24px;font-weight:700;color:var(--green);text-align:center;margin:16px 0">31.9%</p>
+    <p style="font-size:13px;color:var(--muted)">營收可下滑 32% 才達損益兩平</p>
+    <div class="pillRow"><span class="pill g">正常範圍</span><span class="pill b">20-40%</span></div>
+    <p style="font-size:12px;color:var(--dim);margin-top:12px">損益兩平營收 ≈ NT$1,086 億/季<br>當前營收 NT$1,594 億<br>緩衝空間約 NT$508 億</p>
+  </div>
+</div>
+
+<div class="callout gold">
+  <strong>⚙️ DOL 3.1x 的策略意涵：</strong>台達電是全球 55 座工廠的重資產公司，高固定成本帶來高營運槓桿。在 AI 需求爆發的上升週期，這是 <strong>巨大的利多</strong>（營收 +30% → 獲利 +90%+）。但如果 Hyperscaler CAPEX 降溫，DOL 會反向放大傷害。這是目前市場對台達最被低估的風險 — <strong>DOL 是雙面刃</strong>。
+</div>
+</section>
+
+<!-- SECTION 4: UNIT ECONOMICS -->
+<section id="s4">
+<h2>🔬 單位經濟學</h2>
+<p class="sectionDesc">Step 4: Unit Economics — 用「每瓦特」的視角看台達</p>
+
+<div class="card">
+  <div class="cardTitle">台達電的特殊性：產品線太廣，難以定義單一「單位」</div>
+  <p style="font-size:13px;color:var(--muted);margin-bottom:16px">台達電不是 SaaS（有訂戶），不是零售（有門市），不是消費品（有銷量）。它是一個<strong>多產品、多市場的 B2B 電力電子製造商</strong>。最合理的方式是從兩個角度分析：AI 伺服器電源的單位經濟，以及整體事業群的效率指標。</p>
+  
+  <h3 style="color:var(--accent);font-size:14px;margin:16px 0 8px">視角一：AI 伺服器電源 — 「每台 AI 伺服器的錢」</h3>
+  <table class="tbl">
+    <tr><th>指標</th><th>推估值</th><th>邏輯</th></tr>
+    <tr><td>AI Power 營收（Q1 年化）</td><td class="up">~NT$1,913 億</td><td>1,594 × 4 × 30%</td></tr>
+    <tr><td>Hyperscaler 2026 CAPEX</td><td class="up">~US$6,700 億</td><td>2025: US$4,100億 +60%</td></tr>
+    <tr><td>台達 AI Power 市佔</td><td class="up">極高（「客戶端市佔率都很高」— 鄭平）</td><td>估計 40-60%</td></tr>
+    <tr><td>AI Power 毛利率</td><td class="up">「高於平均」→ 推估 40-45%</td><td>新產品、高門檻</td></tr>
+  </table>
+
+  <h3 style="color:var(--accent);font-size:14px;margin:16px 0 8px">視角二：事業群效率對比</h3>
+  <table class="tbl">
+    <tr><th>事業群</th><th>營收佔比</th><th>獲利貢獻</th><th>隱含利潤率</th><th>效率評級</th></tr>
+    <tr><td class="up">Power Electronics</td><td>~50%</td><td class="up">~67%</td><td class="up">高於平均</td><td class="up">🟢 印鈔機</td></tr>
+    <tr><td class="up">Infrastructure</td><td>~20%</td><td class="up">~33%</td><td class="up">高於平均</td><td class="up">🟢 成長之星</td></tr>
+    <tr><td class="warn">Automation</td><td>~15%</td><td>少量</td><td class="warn">接近平均</td><td class="warn">🟡 金牛</td></tr>
+    <tr><td class="down">Mobility (EV)</td><td>~15%</td><td class="down">虧損</td><td class="down">負值</td><td class="down">🔴 燒錢</td></tr>
+  </table>
+  <p style="font-size:11px;color:var(--dim);margin-top:8px">Source: 黃宏彬 EVP —「約三分之二營業淨利來自 Power Electronics，三分之一來自 Infrastructure」。營收佔比為推估。</p>
+</div>
+</section>
+
+<!-- SECTION 5: GROWTH QUALITY -->
+<section id="s5">
+<h2>🔄 成長品質評估</h2>
+<p class="sectionDesc">區分哪些是長期結構性成長 vs. 週期性反彈</p>
+
+<div class="card">
+  <div class="cardTitle">成長驅動力分類</div>
+  <table class="tbl">
+    <tr><th>成長來源</th><th>類型</th><th>持久性</th><th>證據</th></tr>
+    <tr>
+      <td class="up">AI 伺服器電源</td>
+      <td class="up"><strong>長期結構性 (Secular)</strong></td>
+      <td class="up">5-10 年</td>
+      <td>Hyperscaler CAPEX +60% YoY；AI 滲透率仍在早期</td>
+    </tr>
+    <tr>
+      <td class="up">液冷系統</td>
+      <td class="up"><strong>長期結構性</strong></td>
+      <td class="up">5-10 年</td>
+      <td>GPU 功耗持續上升（每代 +30-50%），氣冷物理極限</td>
+    </tr>
+    <tr>
+      <td class="up">800V / ±400V DC</td>
+      <td class="up"><strong>長期結構性</strong></td>
+      <td class="up">3-7 年</td>
+      <td>NVIDIA Kyber Rack 標準化；全行業轉向高壓 DC</td>
+    </tr>
+    <tr>
+      <td class="warn">工業自動化</td>
+      <td class="warn">半週期性</td>
+      <td class="warn">隨 PMI</td>
+      <td>2025 全年正成長但增速低於 AI</td>
+    </tr>
+    <tr>
+      <td class="down">EV Mobility</td>
+      <td class="down">週期性逆風</td>
+      <td class="down">不確定</td>
+      <td>「短期難見明顯成長」；客戶車型延遲/取消</td>
+    </tr>
+    <tr>
+      <td class="up">資料中心 CAPEX</td>
+      <td class="up"><strong>長期結構性</strong></td>
+      <td class="up">10+ 年</td>
+      <td>「AI Data Center 已達 critical mass」— 海英俊</td>
+    </tr>
+  </table>
+</div>
+
+<div class="card">
+  <div class="cardTitle">營收品質檢查</div>
+  <table class="tbl">
+    <tr><th>品質維度</th><th>台達電評估</th></tr>
+    <tr><td class="up">經常性 vs. 一次性</td><td class="up">🟢 多為專案型但客戶合約長期（>3 年），具備準經常性</td></tr>
+    <tr><td class="up">有機 vs. 併購</td><td class="up">🟢 絕大多數有機成長（AI 電源從零做到 30% 營收）</td></tr>
+    <tr><td class="up">量 vs. 價</td><td class="up">🟢 主要來自出貨量成長（Hyperscaler CAPEX 驅動），非漲價</td></tr>
+    <tr><td class="up">客戶集中度</td><td class="warn">🟡 四大 CSP 主導，但分散到四家而非一家</td></tr>
+    <tr><td>關稅影響</td><td class="up">🟢 關稅由客戶負擔（FOB），影響低</td></tr>
+  </table>
+</div>
+
+<div class="callout green">
+  <strong>🔄 成長品質結論：</strong>台達電的營收成長中，<strong>~40% 來自長期結構性驅動力</strong>（AI 電源 + 冷卻），其餘 ~60% 中部分是週期性（工業自動化隨 PMI）但亦有穩定基礎。EV 是唯一的結構性逆風。整體成長品質屬於 <strong>「優質的結構性成長 + 可控的週期性拖累」</strong>。
+</div>
+</section>
+
+<!-- SECTION 6: LEADING INDICATORS -->
+<section id="s6">
+<h2>💡 領先指標與替代數據</h2>
+<p class="sectionDesc">Step 7: High Correlation & Alternative Metrics</p>
+
+<div class="card">
+  <div class="cardTitle">台達電的領先指標體系</div>
+  <table class="tbl">
+    <tr><th>領先指標</th><th>相關性</th><th>資料頻率</th><th>當前訊號</th></tr>
+    <tr>
+      <td class="up">Hyperscaler CAPEX 預算</td>
+      <td class="up">⭐⭐⭐⭐⭐</td>
+      <td>每季（財報發布）</td>
+      <td class="up">🟢 2026E +60%</td>
+    </tr>
+    <tr>
+      <td class="up">NVIDIA GPU 出貨量</td>
+      <td class="up">⭐⭐⭐⭐</td>
+      <td>每季（財報）</td>
+      <td class="up">🟢 Blackwell ramp</td>
+    </tr>
+    <tr>
+      <td class="up">台達電月營收（TWSE）</td>
+      <td class="up">⭐⭐⭐⭐⭐</td>
+      <td>每月 10 日前</td>
+      <td class="up">🟢 2026 Q1 月營收持續高檔</td>
+    </tr>
+    <tr>
+      <td>PMI（工業自動化）</td>
+      <td>⭐⭐⭐</td>
+      <td>每月</td>
+      <td class="warn">🟡 全球 PMI 好壞參半</td>
+    </tr>
+    <tr>
+      <td class="warn">油價（原物料成本）</td>
+      <td class="warn">⭐⭐⭐</td>
+      <td>每日</td>
+      <td class="warn">🟡 US$70-100 波動</td>
+    </tr>
+    <tr>
+      <td>資料中心 PUE 法規</td>
+      <td>⭐⭐⭐</td>
+      <td>不定期</td>
+      <td class="up">🟢 全球趨嚴（歐盟/美國）</td>
+    </tr>
+  </table>
+</div>
+
+<div class="card">
+  <div class="cardTitle">R&D 效率追蹤</div>
+  <table class="tbl">
+    <tr><th>指標</th><th>2024</th><th>2025</th><th>趨勢</th></tr>
+    <tr><td>R&D 佔營收比</td><td>~9%</td><td class="up">8-9%（營收基數變大）</td><td class="up">🟢 比率維持但效益放大</td></tr>
+    <tr><td>R&D 絕對金額</td><td>~NT$380 億</td><td class="up">~NT$470 億 (+24%)</td><td class="up">🟢 成長低於營收</td></tr>
+    <tr><td>R&D 產出率</td><td>—</td><td class="up">營收 +32% ÷ R&D +24% = <strong>1.33x</strong></td><td class="up">🟢 效率提升中</td></tr>
+    <tr><td>研發費用 YoY</td><td>—</td><td>+17%（低於營收 +32%）</td><td class="up">🟢 規模效應</td></tr>
+  </table>
+  <p style="font-size:11px;color:var(--dim);margin-top:8px">Source: 2026Q1 法說會 —「研發費用年增 17%」；FY2025 法說會 —「R&D 8-9% of revenue」</p>
+</div>
+
+<div class="callout purple">
+  <strong>💡 最佳領先指標：台達電月營收 (TWSE MOPS) + Hyperscaler CAPEX 指引。</strong>兩者都是公開且高頻的數據。當四大 CSP 的 CAPEX 指引上修時，台達電的 AI 營收會落後 1-2 季反映。目前 CAPEX 指引仍在上修軌道，短期無下行訊號。
+</div>
+</section>
+
+<!-- SECTION 7: VERDICT -->
+<section id="s7">
+<h2>🎯 成長動能觀點式結論</h2>
+
+<div class="metrics">
+  <div class="metric"><div class="val up">A−</div><div class="lbl">成長品質</div></div>
+  <div class="metric"><div class="val up">5-10年</div><div class="lbl">成長耐久度</div></div>
+  <div class="metric"><div class="val up">AI Power</div><div class="lbl">最關鍵驅動力</div></div>
+  <div class="metric"><div class="val warn">產能</div><div class="lbl">成長瓶頸</div></div>
+</div>
+
+<div class="verdict">
+  <div class="vTitle">📋 成長動能總評</div>
+  <p style="font-size:16px;line-height:1.8">
+    台達電正處於 AI 驅動的 <strong>結構性成長超級週期</strong>。核心成長引擎（AI 電源 30% + 冷卻 9%）佔營收近 40% 且仍在加速，增量利潤率 35% 顯示營運槓桿健康，R&D 效率在規模化過程中持續改善（1.33x 產出率）。<br><br>
+    <strong>最大的利多：</strong>AI 伺服器每代功耗持續攀升（Blackwell → Rubin → 未來），台達的「每台伺服器採購金額」自然成長。這是 <strong>內建的有機成長</strong>，不需要搶市佔。<br><br>
+    <strong>最大的風險：</strong>DOL 3.1x 是把雙面刃。若 Hyperscaler CAPEX 因任何原因降溫（AI 投資回報不如預期、利率上升、監管），台達的高固定成本結構會將營收下滑放大為獲利重創。EV Mobility 的持續虧損也是隱性的成長阻力。
+  </p>
+</div>
+
+<div class="card">
+  <div class="cardTitle">成長動能的「如果」情境</div>
+  <table class="tbl">
+    <tr><th>情境</th><th>條件</th><th>營收 YoY</th><th>OPM</th></tr>
+    <tr><td class="up">🟢 牛市</td><td>Hyperscaler CAPEX +60% 兌現；800V DC 提前出貨</td><td class="up">+35%</td><td class="up">18-19%</td></tr>
+    <tr><td class="up">🟡 基準</td><td>CAPEX 如期；毛利率維持高水準</td><td class="up">+30%</td><td>17-18%</td></tr>
+    <tr><td class="down">🔴 熊市</td><td>CAPEX 砍半；原物料大漲；AI 投資回報遭質疑</td><td class="down">+10-15%</td><td class="down">14-15%</td></tr>
+  </table>
+</div>
+
+<div class="callout gold" style="margin-top:24px">
+  <strong>📌 下一步：Step 5 — 競爭分析 (Competitive Positioning)</strong><br>
+  Porter 五力 + FSA 價值鏈映射 + 策略群組 — 台達電 vs. 奇鋐/雙鴻/光寶科/Murata 的全面比較。
+</div>
+</section>
+
+</main>
+</div>
+
+<script>
+document.querySelectorAll('.navItem').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const section = btn.dataset.section;
+    document.querySelectorAll('.navItem').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll(`.navItem[data-section="${section}"]`).forEach(b => b.classList.add('active'));
+    document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
+    document.getElementById(section).classList.add('active');
+    if (window.innerWidth <= 768) {
+      btn.scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'});
+    }
+  });
+});
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
+    e.preventDefault();
+    const sections = Array.from(document.querySelectorAll('section'));
+    const current = sections.findIndex(s => s.classList.contains('active'));
+    const next = e.key === 'ArrowDown' ? Math.min(current + 1, sections.length - 1) : Math.max(current - 1, 0);
+    sections[current].classList.remove('active');
+    sections[next].classList.add('active');
+    document.querySelectorAll('.navItem').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll(`.navItem[data-section="${sections[next].id}"]`).forEach(b => b.classList.add('active'));
+  }
+});
+</script>
+</body>
+</html>
