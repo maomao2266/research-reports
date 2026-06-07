@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>台達電 2308.TW — 公司指引 | Step 2</title>
+<style>
+:root{
+  --bg:#0a0e14; --surface:#131820; --card:#181f2a;
+  --border:#252d3a; --ink:#e2e8f0; --muted:#7c8aa0; --dim:#4a5568;
+  --accent:#60a5fa; --accent2:#3b82f6;
+  --gold:#f59e0b; --green:#34d399; --red:#f87171;
+  --orange:#fb923c; --purple:#a78bfa;
+  --radius:14px; --radius2:18px;
+  --sans:"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,-apple-system,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.7}
+.topbar{background:var(--surface);border-bottom:1px solid var(--border);padding:14px 24px;display:flex;align-items:center;gap:16px;position:sticky;top:0;z-index:100}
+.topbar .logo{font-size:18px;font-weight:700;color:var(--accent)}
+.topbar .badge{font-size:11px;background:var(--card);color:var(--muted);padding:4px 10px;border-radius:20px;border:1px solid var(--border)}
+.layout{display:flex;min-height:calc(100vh - 57px)}
+.sidebar{width:240px;background:var(--surface);border-right:1px solid var(--border);padding:20px 0;position:sticky;top:57px;height:calc(100vh - 57px);overflow-y:auto;flex-shrink:0}
+.sidebar .navTitle{font-size:10px;text-transform:uppercase;letter-spacing:1.5px;color:var(--dim);padding:8px 20px 16px}
+.navItem{display:block;width:100%;padding:10px 20px;font-size:13px;color:var(--muted);background:none;border:none;text-align:left;cursor:pointer;font-family:var(--sans);transition:all .15s;border-left:3px solid transparent}
+.navItem:hover{color:var(--ink);background:var(--card);border-left-color:var(--dim)}
+.navItem.active{color:var(--accent);background:rgba(96,165,250,.08);border-left-color:var(--accent);font-weight:600}
+.content{flex:1;padding:32px;max-width:1100px}
+section{display:none}
+section.active{display:block}
+section h2{font-size:22px;margin-bottom:8px;color:var(--ink)}
+section h3{font-size:16px;margin:24px 0 12px;color:var(--accent)}
+.sectionDesc{color:var(--muted);font-size:14px;margin-bottom:20px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px 24px;margin-bottom:16px}
+.cardTitle{font-size:15px;font-weight:600;margin-bottom:12px;color:var(--ink)}
+.tbl{width:100%;border-collapse:collapse;margin:12px 0}
+.tbl th{text-align:left;color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.5px;padding:8px 12px;border-bottom:1px solid var(--border)}
+.tbl td{padding:10px 12px;border-bottom:1px solid var(--border);font-size:13px}
+.tbl tr:hover td{background:var(--surface)}
+.up{color:var(--green)} .down{color:var(--red)} .warn{color:var(--orange)} .accent{color:var(--accent)}
+.metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin:16px 0}
+.metric{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px;text-align:center}
+.metric .val{font-size:24px;font-weight:700;color:var(--ink)}
+.metric .val.up{color:var(--green)}
+.metric .lbl{font-size:11px;color:var(--muted);margin-top:4px}
+.callout{border-left:3px solid;border-radius:0 var(--radius) var(--radius) 0;padding:14px 18px;margin:16px 0;background:var(--surface);font-size:13px}
+.callout.red{border-color:var(--red)}.callout.gold{border-color:var(--gold)}.callout.green{border-color:var(--green)}.callout.purple{border-color:var(--purple)}
+.pillRow{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0}
+.pill{font-size:11px;padding:4px 10px;border-radius:20px;font-weight:600}
+.pill.g{background:rgba(52,211,153,.15);color:var(--green)}.pill.r{background:rgba(248,113,113,.15);color:var(--red)}
+.pill.b{background:rgba(96,165,250,.15);color:var(--accent)}.pill.o{background:rgba(251,146,60,.15);color:var(--orange)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.verdict{background:linear-gradient(135deg,var(--card),var(--surface));border:1px solid var(--accent);border-radius:var(--radius2);padding:24px 28px;margin:20px 0}
+.verdict .vTitle{font-size:18px;font-weight:700;color:var(--accent);margin-bottom:8px}
+.verdict p{color:var(--ink);font-size:14px}
+.quote{font-style:italic;color:var(--muted);border-left:2px solid var(--border);padding:8px 16px;margin:8px 0;font-size:13px}
+.quote strong{color:var(--ink)}
+.chartRow{display:flex;align-items:center;gap:12px;margin:6px 0}
+.chartBar{height:20px;border-radius:4px;min-width:4px}
+.mobileNav{display:none}
+@media(max-width:768px){
+  .sidebar{display:none}
+  .mobileNav{display:flex;gap:4px;overflow-x:auto;padding:8px 0;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+  .mobileNav::-webkit-scrollbar{display:none}
+  .mobileNav .navItem{flex-shrink:0;white-space:nowrap;font-size:11px;padding:6px 10px;border-radius:20px;border:1px solid var(--border)}
+  .mobileNav .navItem.active{background:rgba(96,165,250,.15);border-color:var(--accent)}
+  .content{padding:16px}
+  .grid2,.grid3{grid-template-columns:1fr}
+  .metrics{grid-template-columns:repeat(2,1fr)}
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <span class="logo">⚡ DELTA 2308</span>
+  <span class="badge">Step 2 / 11</span>
+  <span class="spacer" style="flex:1"></span>
+  <span class="tag">公司指引分析 · 2026-06-07</span>
+</div>
+
+<div class="layout">
+
+<nav class="sidebar">
+  <div class="navTitle">Step 2 目錄</div>
+  <button class="navItem active" data-section="s1">📊 最新指引快照</button>
+  <button class="navItem" data-section="s2">📈 歷史趨勢</button>
+  <button class="navItem" data-section="s3">🎯 管理層強調的指標</button>
+  <button class="navItem" data-section="s4">✅ 指引可信度</button>
+  <button class="navItem" data-section="s5">📋 指引 vs 市場共識</button>
+  <button class="navItem" data-section="s6">🔮 前瞻展望</button>
+  <button class="navItem" data-section="s7">🎯 觀點式結論</button>
+</nav>
+
+<nav class="mobileNav">
+  <button class="navItem active" data-section="s1">📊 快照</button>
+  <button class="navItem" data-section="s2">📈 趨勢</button>
+  <button class="navItem" data-section="s3">🎯 指標</button>
+  <button class="navItem" data-section="s4">✅ 可信度</button>
+  <button class="navItem" data-section="s5">📋 共識</button>
+  <button class="navItem" data-section="s6">🔮 展望</button>
+  <button class="navItem" data-section="s7">🎯 結論</button>
+</nav>
+
+<main class="content">
+
+<!-- SECTION 1: CURRENT GUIDANCE SNAPSHOT -->
+<section id="s1" class="active">
+<h2>📊 最新指引快照（2026Q1 法說會：2026-04-30）</h2>
+<p class="sectionDesc">資料來源：2026Q1 法說會逐字稿（AlphaMemo.ai 製作）</p>
+
+<div class="metrics">
+  <div class="metric"><div class="val up">NT$1,594億</div><div class="lbl">2026Q1 營收</div></div>
+  <div class="metric"><div class="val up">+34.5%</div><div class="lbl">YoY 營收成長</div></div>
+  <div class="metric"><div class="val up">37.5%</div><div class="lbl">毛利率（含 0.7%一次性）</div></div>
+  <div class="metric"><div class="val up">17.8%</div><div class="lbl">營業利益率（歷史新高）</div></div>
+  <div class="metric"><div class="val up">NT$205.5億</div><div class="lbl">稅後淨利</div></div>
+  <div class="metric"><div class="val up">NT$7.91</div><div class="lbl">EPS（歷史新高）</div></div>
+</div>
+
+<div class="card">
+  <div class="cardTitle">管理層口頭指引（無正式數字目標）</div>
+  <table class="tbl">
+    <tr><th>指標</th><th>管理層說法</th><th>來源</th></tr>
+    <tr><td>營收成長</td><td>「今年看起來不會差太多」（暗示 ~30%+ YoY）</td><td>鄭平，2026-04-30</td></tr>
+    <tr><td class="up">毛利率</td><td class="up">「AI 產品佔比提高，毛利率應優於去年，但大幅提升不易，預期維持高水準」</td><td>劉亮甫，2026-04-30</td></tr>
+    <tr><td>AI 營收佔比</td><td>Power 從去年 23% → 今年 ~30%（Q1）；Cooling ~9%</td><td>鄭平，2026-04-30</td></tr>
+    <tr><td>資本支出</td><td>2026 年「較 2025 年成長 8-10%」（~NT$500 億）</td><td>王光照 CFO，2026-04-30</td></tr>
+    <tr><td class="warn">OPEX</td><td class="warn">「未來幾季費用將緩步上升」，但若營收達標，費用率可下降</td><td>王光照 CFO，2026-04-30</td></tr>
+    <tr><td>EV Mobility</td><td>2026Q1 略虧，短期難見明顯成長</td><td>黃宏彬 EVP，2026-04-30</td></tr>
+    <tr><td>800V DC</td><td>2027 年開始大量出貨；±400V DC 今年先出部分</td><td>鄭平 + 劉亮甫，2026-04-30</td></tr>
+    <tr><td>燃料電池 SOFC</td><td>今年樣品送測 → 2027 試產線 → 2028 觀音廠量產</td><td>鄭平，2026-04-30</td></tr>
+  </table>
+</div>
+
+<div class="callout gold">
+  <strong>⚠️ 台達電是「從不給正式數字指引」的公司。</strong>台灣科技業常有此慣例，管理層只提供方向性評論（「樂觀」、「維持高水準」），不提供具體營收/EPS 數字區間。這使得指引分析更依賴<strong>語氣變化、產品組合趨勢、以及與歷史結果的比對</strong>。
+</div>
+</section>
+
+<!-- SECTION 2: HISTORICAL TRENDS -->
+<section id="s2">
+<h2>📈 歷史趨勢：逐季數據追蹤</h2>
+<p class="sectionDesc">三份法說會資料（2025Q3 → 2025Q4 → 2026Q1）揭示的軌跡</p>
+
+<div class="card">
+  <div class="cardTitle">營收與獲利趨勢</div>
+  <table class="tbl">
+    <tr><th>指標</th><th class="up">2025Q3</th><th class="up">2025Q4</th><th class="up">2026Q1</th><th>趨勢</th></tr>
+    <tr><td>營收 (NT$億)</td><td>1,503</td><td>1,616</td><td>1,594</td><td class="up">↗ YoY +34%</td></tr>
+    <tr><td>QoQ</td><td class="up">+21%</td><td class="up">+8%</td><td class="warn">−1%（季節性）</td><td></td></tr>
+    <tr><td>毛利率</td><td>34.9%</td><td>34.6%</td><td class="up">37.5%*</td><td class="up">↗</td></tr>
+    <tr><td>營業利益率</td><td class="up">16.5%</td><td>16.3%</td><td class="up">17.8%</td><td class="up">↗ 歷史新高</td></tr>
+    <tr><td>稅後淨利 (NT$億)</td><td>186</td><td>173</td><td class="up">205.5</td><td class="up">↗</td></tr>
+    <tr><td>EPS (NT$)</td><td>7.16</td><td>6.67</td><td class="up">7.91</td><td class="up">↗ 歷史新高</td></tr>
+    <tr><td>AI Power 佔比</td><td>~23%</td><td>~23%</td><td class="up">~30%</td><td class="up">↗</td></tr>
+    <tr><td>Cooling 佔比</td><td>~11%</td><td>~9%</td><td>~9%</td><td>→</td></tr>
+  </table>
+  <p style="font-size:11px;color:var(--dim);margin-top:4px">* 2026Q1 毛利率含 EV 客戶取消訂單賠償款約 0.7%（一次性）。來源：2025Q3~2026Q1 法說會逐字稿</p>
+</div>
+
+<div class="card">
+  <div class="cardTitle">營收逐季走勢（視覺化）</div>
+  <div style="margin:8px 0;font-size:12px;color:var(--muted)">
+    <div class="chartRow"><span style="width:50px">2025Q3</span><div class="chartBar" style="width:88%;background:var(--accent)"></div><span>1,503億</span></div>
+    <div class="chartRow"><span style="width:50px">2025Q4</span><div class="chartBar" style="width:95%;background:var(--accent)"></div><span>1,616億</span></div>
+    <div class="chartRow"><span style="width:50px">2026Q1</span><div class="chartBar" style="width:93%;background:var(--accent)"></div><span>1,594億</span></div>
+  </div>
+  <div style="margin:16px 0 8px;font-size:12px;color:var(--muted)">
+    <div class="chartRow"><span style="width:50px">2025Q3</span><div class="chartBar" style="width:85%;background:var(--green)"></div><span>OPM 16.5%</span></div>
+    <div class="chartRow"><span style="width:50px">2025Q4</span><div class="chartBar" style="width:84%;background:var(--green)"></div><span>OPM 16.3%</span></div>
+    <div class="chartRow"><span style="width:50px">2026Q1</span><div class="chartBar" style="width:92%;background:var(--green)"></div><span>OPM 17.8%</span></div>
+  </div>
+</div>
+
+<div class="grid2">
+  <div class="card">
+    <div class="cardTitle">全年回顧：2025 全年</div>
+    <table class="tbl">
+      <tr><td>營收</td><td class="up">NT$5,549億 (+32% YoY)</td></tr>
+      <tr><td>毛利率</td><td class="up">歷史新高</td></tr>
+      <tr><td>OP 利益率</td><td class="up">15.1%（首度 >15%）</td></tr>
+      <tr><td>稅後淨利</td><td class="up">NT$601億 (+71% YoY)</td></tr>
+      <tr><td>EPS</td><td class="up">NT$23.14</td></tr>
+      <tr><td>現金股利</td><td>NT$11.6（配發率 ~50%）</td></tr>
+      <tr><td>EV Mobility</td><td class="down">虧損 ~NT$12億</td></tr>
+    </table>
+  </div>
+  <div class="card">
+    <div class="cardTitle">2026 全年推算（基於管理層語氣）
+
+</div>
+    <table class="tbl">
+      <tr><td>隱含營收</td><td class="up">~NT$7,200億（~30% YoY）</td></tr>
+      <tr><td>隱含毛利率</td><td>35-37%（扣除一次性後）</td></tr>
+      <tr><td>隱含 OP 利益率</td><td>16-18%</td></tr>
+      <tr><td>隱含 EPS</td><td class="up">~NT$35-38</td></tr>
+      <tr><td>資本支出</td><td>~NT$500-510億</td></tr>
+      <tr><td>AI Power 佔比目標</td><td class="up">~30%（已提前達成）</td></tr>
+    </table>
+    <p style="font-size:11px;color:var(--dim);margin-top:4px">⚠️ 管理層未給正式指引，以上為基於語氣+趨勢的估算</p>
+  </div>
+</div>
+</section>
+
+<!-- SECTION 3: KEY METRICS MANAGEMENT EMPHASIZES -->
+<section id="s3">
+<h2>🎯 管理層最強調的指標</h2>
+<p class="sectionDesc">從三份法說會的逐字稿中，分析管理層反覆提及的核心指標</p>
+
+<div class="card">
+  <table class="tbl">
+    <tr><th>關鍵指標</th><th>定義</th><th>為何強調</th><th>當前值</th><th>趨勢</th></tr>
+    <tr><td class="up">Hyperscaler CAPEX 成長</td><td>四大 CSP 的資本支出</td><td>直接驅動台達 AI 營收</td><td class="up">+60% YoY (2026E)</td><td class="up">↑↑</td></tr>
+    <tr><td class="up">AI Power 營收佔比</td><td>AI 伺服器電源佔總營收</td><td>毛利率最高的業務</td><td class="up">30%（Q1）</td><td class="up">↑ 23→30%</td></tr>
+    <tr><td>Cooling 營收佔比</td><td>液冷/氣冷系統</td><td>新成長引擎，基期低成長快</td><td>9%</td><td>→ 出貨從 $4,000萬 → $16億</td></tr>
+    <tr><td class="up">毛利率</td><td>合併毛利率</td><td>AI 產品組合優化的直接證據</td><td class="up">37.5%（含一次性）</td><td class="up">↑</td></tr>
+    <tr><td class="up">營業利益率</td><td>OP Margin</td><td>規模經濟效益的量化證明</td><td class="up">17.8%（歷史新高）</td><td class="up">↑</td></tr>
+    <tr><td class="warn">產能利用率</td><td>各廠區稼動率</td><td>需求持續性訊號</td><td class="warn">接近飽和</td><td>→ 持續擴廠</td></tr>
+    <tr><td class="down">存貨週轉天數</td><td>庫存管理效率</td><td>供應鏈健康度</td><td>~10%（可控）</td><td>→</td></tr>
+  </table>
+</div>
+
+<div class="callout purple">
+  <strong>🔍 關鍵洞察：</strong>管理層花最多時間討論的不是營收或 EPS，而是 <strong>Hyperscaler CAPEX</strong>（外部驅動力）和 <strong>AI 產品佔比</strong>（內部轉型進度）。這暗示管理層認為：只要這兩個指標往上，獲利自然會跟上。這與「不給指引但給你驅動力框架」的管理風格一致。
+</div>
+
+<div class="card">
+  <div class="cardTitle">管理層的「非 GAAP 指標」：AI 營收拆分</div>
+  <div class="quote">「我們目前沒有特別拆分這些數字，因為這類產品是否屬於 AI 範疇，我們長期以來並不確定。客戶如何使用，我們也不完全清楚。」— 劉亮甫，2026-04-30</div>
+  <p style="font-size:13px;color:var(--muted)">這是一個值得注意的透明性問題：台達電拒絕拆分 AI 營收，表面理由合理（客戶用途不透明），但也意味著外部分析師難以獨立驗證 AI 業務的真實規模與獲利能力。</p>
+</div>
+</section>
+
+<!-- SECTION 4: GUIDANCE CREDIBILITY -->
+<section id="s4">
+<h2>✅ 指引可信度分析</h2>
+<p class="sectionDesc">評估管理層「說的話 vs. 做出來的結果」</p>
+
+<div class="card">
+  <div class="cardTitle">歷史說法 vs. 實際結果追蹤</div>
+  <table class="tbl">
+    <tr><th>時間</th><th>管理層當時說法</th><th>實際結果</th><th>判決</th></tr>
+    <tr>
+      <td>2025Q3<br>(10/30)</td>
+      <td>「Q4 與 2025 年展望樂觀」<br>「AI 電源明年佔比約 20%」</td>
+      <td>Q4 營收 1,616 億 (+42% YoY)<br>Q1 電源佔比已達 30%（超標）</td>
+      <td class="up">✅ 偏保守</td>
+    </tr>
+    <tr>
+      <td>2025Q3<br>(10/30)</td>
+      <td>「燃料電池量產預計 2025 年底」</td>
+      <td>延至 2027 試產，2028 量產</td>
+      <td class="down">❌ 延遲兩年</td>
+    </tr>
+    <tr>
+      <td>2025Q4<br>(2/26)</td>
+      <td>「Mobility 短期難見明顯成長」<br>「EV 去年虧損 ~12 億」</td>
+      <td>2026Q1 Mobility 仍虧損 ✓</td>
+      <td class="up">✅ 誠實</td>
+    </tr>
+    <tr>
+      <td>2025Q4<br>(2/26)</td>
+      <td>「季節性影響減弱」<br>「第一季因工作天數少，出貨較低」</td>
+      <td>2026Q1 營收 −1% QoQ ✓</td>
+      <td class="up">✅ 準確</td>
+    </tr>
+    <tr>
+      <td>2026Q1<br>(4/30)</td>
+      <td>「毛利率預期維持高水準」<br>「但大幅提升不易」</td>
+      <td>TBD（等待 Q2驗證）</td>
+      <td class="warn">⏳ 待觀察</td>
+    </tr>
+    <tr>
+      <td>2026Q1<br>(4/30)</td>
+      <td>「資本支出較去年成長 8-10%」</td>
+      <td>TBD（明確數字，易驗證）</td>
+      <td class="warn">⏳ 待觀察</td>
+    </tr>
+  </table>
+</div>
+
+<div class="callout green">
+  <strong>綜合判斷：管理層偏向「誠實保守型」。</strong>他們傾向於低報正面訊息（如 AI 佔比從預估 20% 實際達 30%），但在困難領域（EV 虧損、燃料電池延遲）也相當坦誠。這是台達電 55 年老牌企業的文化特質。
+</div>
+
+<div class="card">
+  <div class="cardTitle">指引行為模式分類</div>
+  <table class="tbl">
+    <tr><th>模式</th><th>定義</th><th>台達符合？</th></tr>
+    <tr><td class="up">保守低報 (Sandbagger)</td><td>經常性超過自己指引</td><td class="up">✅ 部分符合 — AI 佔比/營收常超標</td></tr>
+    <tr><td class="up">誠實指引 (Honest Guide)</td><td>正常 ±2% 範圍內</td><td class="up">✅ 關於困難業務（EV 虧損）坦誠</td></tr>
+    <tr><td>過度承諾 (Over-promiser)</td><td>經常性未達標</td><td>❌ 不符合</td></tr>
+    <tr><td>波動型 (Volatile)</td><td>時好時壞</td><td>❌ 不符合</td></tr>
+    <tr><td class="warn">不給指引 (Never Guides)</td><td>從不提供量化數字</td><td class="warn">⚠️ 符合 — 台灣公司慣例</td></tr>
+  </table>
+</div>
+
+<div class="card">
+  <div class="cardTitle">指引品質維度</div>
+  <table class="tbl">
+    <tr><th>維度</th><th>評估</th></tr>
+    <tr><td>具體性</td><td class="warn">🟡 低 — 多用「樂觀」「高水準」等模糊詞，只有 CAPEX 給具體數字</td></tr>
+    <tr><td>區間寬度</td><td class="down">🔴 N/A — 幾乎不給數字區間</td></tr>
+    <tr><td>細分程度</td><td class="up">🟢 中等 — 有談產品組合（Power/Cooling 佔比），但拒絕拆分 AI</td></tr>
+    <tr><td>假設透明度</td><td class="up">🟢 高 — 清楚說明依賴 Hyperscaler CAPEX 的邏輯</td></tr>
+    <tr><td>一致性</td><td class="up">🟢 高 — 三份法說會的用詞與框架一致</td></tr>
+    <tr><td>語氣</td><td class="up">🟢 「誠實中性」— 好壞都講，不誇大</td></tr>
+  </table>
+</div>
+
+<div class="card">
+  <div class="cardTitle">🚨 指引語言紅旗檢測</div>
+  <table class="tbl">
+    <tr><th>可疑用語</th><th>台達電用過嗎？</th><th>什麼時候</th></tr>
+    <tr><td>「Cautiously optimistic」</td><td class="up">❌ 沒有</td><td>—</td></tr>
+    <tr><td>「Visibility is limited」</td><td class="up">❌ 沒有</td><td>—</td></tr>
+    <tr><td>「One-time items」（每季都說）</td><td class="warn">⚠️ 有 — 但坦承</td><td>2026Q1：EV 賠償 0.7%（明確量化）</td></tr>
+    <tr><td>「Macro headwinds」</td><td class="warn">⚠️ 有提到</td><td>油價、中東地緣政治、缺料 — 但並非用於下修指引</td></tr>
+    <tr><td>「Long-term trajectory 不變」</td><td class="up">❌ 沒有作為擋箭牌</td><td>—</td></tr>
+  </table>
+  <p style="font-size:12px;color:var(--muted);margin-top:8px">整體而言，台達管理層的語言相當乾淨，沒有明顯的「話術式」指引操縱。</p>
+</div>
+</section>
+
+<!-- SECTION 5: GUIDANCE VS CONSENSUS -->
+<section id="s5">
+<h2>📋 管理層語氣 vs. 市場背景</h2>
+<p class="sectionDesc">雖然沒有正式數字指引，但可從語氣與市場共識背景做比對</p>
+
+<div class="grid2">
+  <div class="card">
+    <div class="cardTitle">管理層語氣</div>
+    <table class="tbl">
+      <tr><td>AI 前景</td><td class="up">🟢「趨勢非常好」</td></tr>
+      <tr><td>毛利率</td><td class="up">🟢「維持高水準」</td></tr>
+      <tr><td>EV Mobility</td><td class="down">🔴「短期難見成長」</td></tr>
+      <tr><td>產能</td><td class="warn">🟡「吃緊但能應付」</td></tr>
+      <tr><td>原物料</td><td class="warn">🟡「上漲壓力，但尚未轉嫁」</td></tr>
+    </table>
+  </div>
+  <div class="card">
+    <div class="cardTitle">市場背景（外部資料）</div>
+    <table class="tbl">
+      <tr><td>外資目標價</td><td class="up">🟢 NT$3,000（+30% upside）</td></tr>
+      <tr><td>Hyperscaler CAPEX</td><td class="up">🟢 2026E +60% YoY</td></tr>
+      <tr><td>AI 散熱競爭</td><td class="warn">🟡 奇鋐/雙鴻同步擴產</td></tr>
+      <tr><td>COMPUTEX 題材</td><td class="up">🟢 黃仁勳來台，AI 基礎設施焦點</td></tr>
+      <tr><td>大盤環境</td><td class="warn">🟡 台股回調中（失守 46,000）</td></tr>
+    </table>
+  </div>
+</div>
+
+<div class="callout gold">
+  <strong>📌 管理層 vs 市場的「預期差」：</strong>管理層語氣明顯比市場保守。市場看到 AI 熱潮、黃仁勳來台、COMPUTEX 題材 → 目標價喊 3,000。管理層則強調「毛利率難再大幅提升」「EV 還在虧」「產能需要時間」。<strong>這個溫差本身就是一個值得關注的信號</strong> — 管理層可能在試圖控制市場預期。
+</div>
+</section>
+
+<!-- SECTION 6: FORWARD OUTLOOK -->
+<section id="s6">
+<h2>🔮 前瞻展望：未來 2-3 年的關鍵里程碑</h2>
+<p class="sectionDesc">從三份法說會拼出管理層的長期路線圖</p>
+
+<div class="card">
+  <div class="cardTitle">台達電未來 3 年路線圖</div>
+  <table class="tbl">
+    <tr><th>時間線</th><th>事件</th><th>營收影響</th><th>風險</th></tr>
+    <tr>
+      <td class="up">2026H2</td>
+      <td>±400V DC 開始出貨；AI Power 佔比持續提升</td>
+      <td class="up">中等</td>
+      <td>技術人員短缺</td>
+    </tr>
+    <tr>
+      <td class="up">2027</td>
+      <td>800V DC 大量出貨；燃料電池試產線量產</td>
+      <td class="up">高</td>
+      <td>客戶導入時程可能延遲</td>
+    </tr>
+    <tr>
+      <td class="up">2028</td>
+      <td>燃料電池觀音廠大規模量產；模組化數據中心成熟</td>
+      <td class="up">高</td>
+      <td>技術路線（SOFC vs BE）競爭</td>
+    </tr>
+    <tr>
+      <td class="warn">2026-28</td>
+      <td>全球產能擴張（泰國+3~4 廠、美國、印度、墨西哥）</td>
+      <td class="warn">間接</td>
+      <td>現金流壓力；需求若不如預期</td>
+    </tr>
+  </table>
+</div>
+
+<div class="card">
+  <div class="cardTitle">前瞻指引語氣變化（QoQ 比對）</div>
+  <table class="tbl">
+    <tr><th>主題</th><th>2025Q3 語氣</th><th>2026Q1 語氣</th><th>轉變</th></tr>
+    <tr><td>AI 需求</td><td>「需求暢旺」</td><td>「趨勢非常好，CAPEX +60%」</td><td class="up">↑ 更明確</td></tr>
+    <tr><td>毛利率展望</td><td>「34.9% 仍屬高檔」</td><td>「維持高水準但難再大幅提升」</td><td class="warn">→ 從樂觀轉中性</td></tr>
+    <tr><td>EV Mobility</td><td>「小幅虧損」</td><td>「短期難見明顯成長」</td><td class="down">↓ 更坦承困境</td></tr>
+    <tr><td>產能</td><td>「持續追趕」</td><td>「接近飽和，大規模擴建」</td><td class="up">↑ 更積極</td></tr>
+    <tr><td>原物料</td><td>未特別提及</td><td>「油價上升，缺料不明朗」</td><td class="warn">→ 新增風險提示</td></tr>
+  </table>
+</div>
+
+<div class="callout purple">
+  <strong>🔮 最重要的前瞻訊號：</strong>管理層在最新法說會新增了兩個之前很少提及的主題：(1) <strong>原物料成本壓力</strong>（油價 + 記憶體漲價）和 (2) <strong>毛利率見頂</strong>（「大幅提升不易」）。這暗示 <strong>2026Q1 可能是近期獲利率的峰值</strong>，後續季度可能面臨 margin 正常化。
+</div>
+</section>
+
+<!-- SECTION 7: VERDICT -->
+<section id="s7">
+<h2>🎯 觀點式結論</h2>
+
+<div class="grid3">
+  <div class="card" style="border-left:3px solid var(--green);text-align:center">
+    <div style="font-size:32px;margin-bottom:4px">B+</div>
+    <div style="font-size:13px;color:var(--muted)">指引可信度</div>
+  </div>
+  <div class="card" style="border-left:3px solid var(--accent);text-align:center">
+    <div style="font-size:32px;margin-bottom:4px">保守</div>
+    <div style="font-size:13px;color:var(--muted)">指引偏誤方向</div>
+  </div>
+  <div class="card" style="border-left:3px solid var(--gold);text-align:center">
+    <div style="font-size:32px;margin-bottom:4px">Inline+</div>
+    <div style="font-size:13px;color:var(--muted)">預期超標幅度</div>
+  </div>
+</div>
+
+<div class="verdict">
+  <div class="vTitle">📋 指引可信度評估</div>
+  <p style="font-size:16px;line-height:1.8">
+    台達電管理層屬於<strong>「誠實保守型」</strong>— 不給正式數字指引（台灣慣例），但方向性評論相當可靠，歷史追蹤顯示多數判斷準確。關鍵特徵：(1) AI 相關預估通常偏保守（實際超標），(2) 困難業務（EV 虧損）坦誠不諱，(3) 燃料電池等長週期項目有延遲傾向，(4) 討論語氣中性專業，沒有明顯話術操縱。
+  </p>
+</div>
+
+<div class="grid2">
+  <div class="card" style="border-left:3px solid var(--green)">
+    <div class="cardTitle">🟢 可信之處</div>
+    <ul style="font-size:13px;color:var(--muted);padding-left:18px">
+      <li>AI 營收佔比從估 20% → 實際 30%（保守低報）</li>
+      <li>EV 持續虧損的警告完全兌現</li>
+      <li>季節性預測準確（Q1 工作天數少）</li>
+      <li>CAPEX 給具體數字（8-10%）可驗證</li>
+      <li>好壞消息都說，不粉飾太平</li>
+    </ul>
+  </div>
+  <div class="card" style="border-left:3px solid var(--red)">
+    <div class="cardTitle">🔴 需警惕之處</div>
+    <ul style="font-size:13px;color:var(--muted);padding-left:18px">
+      <li>不給正式數字指引，外部驗證難</li>
+      <li>拒絕拆分 AI 營收（透明度問題）</li>
+      <li>燃料電池從 2025 → 2028（延遲三年）</li>
+      <li>2026Q1 含一次性賠償 0.7%（非經常性）</li>
+      <li>毛利率「見頂」暗示需謹慎看待後續</li>
+    </ul>
+  </div>
+</div>
+
+<div class="card">
+  <div class="cardTitle">📌 對投資人的關鍵訊號</div>
+  <table class="tbl">
+    <tr><th>#</th><th>訊號</th><th>意涵</th></tr>
+    <tr><td class="up">1</td><td>AI Power 從估 20% 實際達 30%</td><td class="up">管理層低估自有成長動能</td></tr>
+    <tr><td class="down">2</td><td>「毛利率要再大幅提升已不易」</td><td class="down">2026Q1 可能是獲利高原期，後續 margin 正常化</td></tr>
+    <tr><td class="warn">3</td><td>Hyperscaler CAPEX +60%</td><td class="warn">外部驅動力強勁，但台達能否持續吃下份額？</td></tr>
+    <tr><td class="down">4</td><td>EV Mobility 持續虧損</td><td class="down">短期拖油瓶，但長期是必要布局</td></tr>
+    <tr><td class="warn">5</td><td>大規模全球擴廠（泰、美、印、墨）</td><td class="warn">需求若降溫，固定成本將成大問題</td></tr>
+  </table>
+</div>
+
+<div class="callout gold" style="margin-top:24px">
+  <strong>📌 下一步：Step 3 — 公司策略 (Company Strategy)</strong><br>
+  分析 CEO 鄭平的策略願景：AI + 燃料電池 + 模組化數據中心的三線並進，以及「解決方案化」轉型的成敗關鍵。
+</div>
+</section>
+
+</main>
+</div>
+
+<script>
+document.querySelectorAll('.navItem').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const section = btn.dataset.section;
+    document.querySelectorAll('.navItem').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll(`.navItem[data-section="${section}"]`).forEach(b => b.classList.add('active'));
+    document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
+    document.getElementById(section).classList.add('active');
+    if (window.innerWidth <= 768) {
+      btn.scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'});
+    }
+  });
+});
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
+    e.preventDefault();
+    const sections = Array.from(document.querySelectorAll('section'));
+    const current = sections.findIndex(s => s.classList.contains('active'));
+    const next = e.key === 'ArrowDown' ? Math.min(current + 1, sections.length - 1) : Math.max(current - 1, 0);
+    sections[current].classList.remove('active');
+    sections[next].classList.add('active');
+    document.querySelectorAll('.navItem').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll(`.navItem[data-section="${sections[next].id}"]`).forEach(b => b.classList.add('active'));
+  }
+});
+</script>
+
+</body>
+</html>
