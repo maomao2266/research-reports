@@ -66,7 +66,6 @@ section h3{font-size:16px;margin:24px 0 12px;color:var(--accent)}
 @media(max-width:768px){
   .sidebar{display:none}
   .mobileNav{display:flex;gap:4px;overflow-x:auto;padding:8px 0;-webkit-overflow-scrolling:touch;scrollbar-width:none}
-  .mobileNav::-webkit-scrollbar{display:none}
   .mobileNav .navItem{flex-shrink:0;white-space:nowrap;font-size:11px;padding:6px 10px;border-radius:20px;border:1px solid var(--border)}
   .content{padding:16px}
   .grid2{grid-template-columns:1fr}
@@ -77,80 +76,114 @@ section h3{font-size:16px;margin:24px 0 12px;color:var(--accent)}
 </head>
 <body>
 
-<div class="topbar"><span class="logo">⚡ DELTA 2308</span><span class="badge">Step 10 / 11</span><span class="spacer" style="flex:1"></span><span class="tag">估值 · DCF + Comps + 互動計算機</span></div>
+<div class="topbar"><span class="logo">⚡ DELTA 2308</span><span class="badge">Step 10 / 11</span><span class="spacer" style="flex:1"></span><span class="tag">估值 · MoneyDJ 實數驅動</span></div>
 <div class="layout">
 
 <nav class="sidebar">
   <div class="navTitle">Step 10 目錄</div>
-  <button class="navItem active" data-section="s1">💰 DCF 模型</button>
-  <button class="navItem" data-section="s2">🎚️ 互動計算機</button>
-  <button class="navItem" data-section="s3">🏷️ Trading Comps</button>
-  <button class="navItem" data-section="s4">🔍 市場隱含</button>
-  <button class="navItem" data-section="s5">⚖️ 估值綜合</button>
+  <button class="navItem active" data-section="s1">📊 歷史財務</button>
+  <button class="navItem" data-section="s2">💰 DCF 模型</button>
+  <button class="navItem" data-section="s3">🎚️ 互動計算機</button>
+  <button class="navItem" data-section="s4">🏷️ Trading Comps</button>
+  <button class="navItem" data-section="s5">🔍 市場隱含</button>
+  <button class="navItem" data-section="s6">⚖️ 估值綜合</button>
 </nav>
 <nav class="mobileNav">
-  <button class="navItem active" data-section="s1">💰 DCF</button>
-  <button class="navItem" data-section="s2">🎚️ 計算機</button>
-  <button class="navItem" data-section="s3">🏷️ Comps</button>
-  <button class="navItem" data-section="s4">🔍 隱含</button>
-  <button class="navItem" data-section="s5">⚖️ 綜合</button>
+  <button class="navItem active" data-section="s1">📊 財務</button>
+  <button class="navItem" data-section="s2">💰 DCF</button>
+  <button class="navItem" data-section="s3">🎚️ 計算機</button>
+  <button class="navItem" data-section="s4">🏷️ Comps</button>
+  <button class="navItem" data-section="s5">🔍 隱含</button>
+  <button class="navItem" data-section="s6">⚖️ 綜合</button>
 </nav>
 
 <main class="content">
 
-<!-- S1: DCF -->
+<!-- S1: HISTORICAL -->
 <section id="s1" class="active">
-<h2>💰 Unlevered DCF 估值</h2>
-<p class="sectionDesc">WSP DCF 方法 · 5 年預測 + 終值 · 保守基準假設</p>
+<h2>📊 歷史財務（MoneyDJ 實數）</h2>
+<p class="sectionDesc">資料來源：concords.moneydj.com — 損益年表(zcqa) + 資產負債年表(zcpb) + 經營績效(zcd)</p>
+
+<div class="card">
+  <div class="cardTitle">8 年營收與獲利（單位：NT$百萬）</div>
+  <table class="tbl">
+    <tr><th></th><th>2025</th><th>2024</th><th>2023</th><th>2022</th><th>2021</th><th>2020</th><th>2019</th><th>2018</th></tr>
+    <tr><td>營收</td><td class="up">554,885</td><td>421,148</td><td>401,227</td><td>384,443</td><td>314,671</td><td>282,605</td><td>268,131</td><td>237,018</td></tr>
+    <tr><td>YoY</td><td class="up">31.8%</td><td>5.0%</td><td>4.4%</td><td>22.2%</td><td>11.3%</td><td>5.4%</td><td>13.1%</td><td>—</td></tr>
+    <tr><td>毛利</td><td>190,157</td><td>136,580</td><td>117,213</td><td>110,773</td><td>90,209</td><td>87,212</td><td>74,496</td><td>63,554</td></tr>
+    <tr><td>GM</td><td class="up">34.3%</td><td>32.4%</td><td>29.2%</td><td>28.8%</td><td>28.7%</td><td>30.9%</td><td>27.8%</td><td>26.8%</td></tr>
+    <tr><td>OP</td><td class="up">83,932</td><td>47,652</td><td>40,950</td><td>41,439</td><td>31,365</td><td>31,426</td><td>19,409</td><td>18,167</td></tr>
+    <tr><td>OPM</td><td class="up">15.1%</td><td>11.3%</td><td>10.2%</td><td>10.8%</td><td>10.0%</td><td>11.1%</td><td>7.2%</td><td>7.7%</td></tr>
+    <tr><td>R&D</td><td>48,743</td><td>41,575</td><td>36,048</td><td>31,770</td><td>27,202</td><td>25,480</td><td>23,888</td><td>19,258</td></tr>
+    <tr><td>R&D%</td><td>8.8%</td><td>9.9%</td><td>9.0%</td><td>8.3%</td><td>8.6%</td><td>9.0%</td><td>8.9%</td><td>8.1%</td></tr>
+  </table>
+</div>
+
+<div class="card">
+  <div class="cardTitle">2025 資產負債表關鍵數字（NT$百萬）</div>
+  <table class="tbl">
+    <tr><td>總資產</td><td>639,619</td><td>現金</td><td class="up">151,172</td></tr>
+    <tr><td>總負債</td><td>314,230</td><td>金融負債</td><td>37,925</td></tr>
+    <tr><td>股東權益</td><td class="up">325,389</td><td class="up"><strong>淨現金</strong></td><td class="up"><strong>+113,247</strong></td></tr>
+    <tr><td>加權股數</td><td>2,597,543 千股</td><td>每股淨值</td><td>NT$115.32</td></tr>
+  </table>
+  <p style="font-size:11px;color:var(--dim);margin-top:8px">Source: MoneyDJ zcqa, zcpb, zcd. 台達電是淨現金公司！金融負債僅 NT$379 億（短期借款+公司債），現金 NT$1,512 億。</p>
+</div>
+</section>
+
+<!-- S2: DCF -->
+<section id="s2">
+<h2>💰 DCF 估值（MoneyDJ 實數驅動）</h2>
 
 <div class="card">
   <div class="cardTitle">核心假設</div>
   <table class="tbl">
-    <tr><th>參數</th><th>基準值</th><th>理由</th></tr>
-    <tr><td>WACC</td><td>8.5%</td><td>CAPM：Rf 3% + β 1.1 × ERP 5%</td></tr>
-    <tr><td>終端成長率 g</td><td>3.0%</td><td>≤ 長期 GDP 成長</td></tr>
-    <tr><td>5 年營收 CAGR</td><td>~17%</td><td>30→20→15→12→10% 階梯放緩</td></tr>
-    <tr><td>OPM 路徑</td><td>17.0→15.0%</td><td>從目前高點逐步正常化</td></tr>
+    <tr><th>參數</th><th>值</th><th>來源</th></tr>
+    <tr><td>基準營收</td><td>NT$5,549 億 (FY2025)</td><td>MoneyDJ zcqa 實數</td></tr>
+    <tr><td>5 年 CAGR</td><td>~17%（30→20→15→12→10%）</td><td>AI 成長 + 歷史軌跡</td></tr>
+    <tr><td>OPM 路徑</td><td>17→16.5→16→15.5→15%</td><td>目前 17.8% 正常化</td></tr>
+    <tr><td>WACC</td><td>8.5%</td><td>CAPM: Rf 3% + β 1.69 × ERP 3.25%</td></tr>
+    <tr><td>終端 g</td><td>3.0%</td><td>≤ GDP</td></tr>
     <tr><td>稅率</td><td>23%</td><td>管理層指引</td></tr>
-    <tr><td>稀釋股數</td><td>25.97 億股</td><td>FY2025 淨利 601 億 ÷ EPS 23.14</td></tr>
-    <tr><td>D&amp;A / Capex / ΔNWC</td><td>4% / 7% / 2% 營收</td><td>基於歷史平均</td></tr>
+    <tr><td>D&A / Capex / ΔNWC</td><td>4% / 7% / 2% 營收</td><td>歷史平均</td></tr>
+    <tr><td>加權股數</td><td>2,597,543 千股 (25.98 億股)</td><td>MoneyDJ zcd 實數</td></tr>
+    <tr><td class="up">淨負債</td><td class="up"><strong>−NT$1,132 億（淨現金！）</strong></td><td>金融負債 379 − 現金 1,512</td></tr>
   </table>
 </div>
 
 <div class="card">
-  <div class="cardTitle">5 年自由現金流（單位：NT$億）</div>
+  <div class="cardTitle">5 年 FCF 預測（NT$百萬）</div>
   <table class="tbl">
     <tr><th></th><th>2026E</th><th>2027E</th><th>2028E</th><th>2029E</th><th>2030E</th></tr>
-    <tr><td>營收</td><td>7,214</td><td>8,656</td><td>9,955</td><td>11,149</td><td>12,264</td></tr>
+    <tr><td>營收</td><td>721,351</td><td>865,621</td><td>995,464</td><td>1,114,919</td><td>1,226,411</td></tr>
     <tr><td>YoY</td><td class="up">30%</td><td class="up">20%</td><td>15%</td><td>12%</td><td>10%</td></tr>
     <tr><td>OPM</td><td>17.0%</td><td>16.5%</td><td>16.0%</td><td>15.5%</td><td>15.0%</td></tr>
-    <tr><td>EBIT</td><td>1,226</td><td>1,428</td><td>1,593</td><td>1,728</td><td>1,840</td></tr>
-    <tr><td>NOPAT</td><td>944</td><td>1,100</td><td>1,226</td><td>1,331</td><td>1,416</td></tr>
-    <tr style="background:rgba(96,165,250,.08)"><td class="up"><strong>UFCF</strong></td><td class="up"><strong>584</strong></td><td class="up"><strong>667</strong></td><td class="up"><strong>729</strong></td><td class="up"><strong>773</strong></td><td class="up"><strong>803</strong></td></tr>
-    <tr><td>PV @8.5%</td><td>538</td><td>567</td><td>571</td><td>558</td><td>534</td></tr>
+    <tr><td>EBIT</td><td>122,630</td><td>142,828</td><td>159,274</td><td>172,813</td><td>183,962</td></tr>
+    <tr><td style="background:rgba(96,165,250,.08)" class="up"><strong>UFCF</strong></td><td style="background:rgba(96,165,250,.08)" class="up"><strong>58,386</strong></td><td style="background:rgba(96,165,250,.08)" class="up"><strong>66,736</strong></td><td style="background:rgba(96,165,250,.08)" class="up"><strong>72,919</strong></td><td style="background:rgba(96,165,250,.08)" class="up"><strong>77,311</strong></td><td style="background:rgba(96,165,250,.08)" class="up"><strong>80,284</strong></td></tr>
+    <tr><td>PV @8.5%</td><td>53,812</td><td>56,678</td><td>57,078</td><td>55,760</td><td>53,358</td></tr>
   </table>
 </div>
 
 <div class="card">
-  <div class="cardTitle">終值與股權價值橋接</div>
+  <div class="cardTitle">終值與股權價值（NT$百萬）</div>
   <table class="tbl">
-    <tr><td>5 年 UFCF 現值</td><td>NT$2,768 億</td></tr>
-    <tr><td>終值 = 803 × 1.03 ÷ (8.5% − 3.0%)</td><td>NT$15,044 億</td></tr>
-    <tr><td>終值現值</td><td>NT$10,005 億</td></tr>
-    <tr style="background:rgba(96,165,250,.08)"><td><strong>企業價值 EV</strong></td><td><strong>NT$12,772 億</strong></td></tr>
-    <tr><td>− 淨負債</td><td>NT$500 億</td></tr>
-    <tr style="background:rgba(96,165,250,.05)"><td><strong>股權價值</strong></td><td><strong>NT$12,272 億</strong></td></tr>
-    <tr><td>÷ 25.97 億股</td><td></td></tr>
-    <tr style="background:rgba(52,211,153,.15)"><td style="font-size:18px;font-weight:700">每股內含價值</td><td class="up" style="font-size:18px;font-weight:700"><strong>NT$473</strong></td></tr>
+    <tr><td>5 年 UFCF 現值</td><td>276,686</td></tr>
+    <tr><td>終值 = 80,284 × 1.03 ÷ 5.5%</td><td>1,503,501</td></tr>
+    <tr><td>終值現值</td><td>999,210</td></tr>
+    <tr style="background:rgba(96,165,250,.08)"><td><strong>企業價值 EV</strong></td><td><strong>1,275,896</strong></td></tr>
+    <tr><td>+ 淨現金</td><td class="up">+113,247</td></tr>
+    <tr style="background:rgba(52,211,153,.08)"><td class="up"><strong>股權價值</strong></td><td class="up"><strong>1,389,143</strong></td></tr>
+    <tr><td>÷ 2,597.5M 股</td><td></td></tr>
+    <tr style="background:rgba(52,211,153,.15)"><td style="font-size:18px;font-weight:700">每股內含價值</td><td class="up" style="font-size:18px;font-weight:700"><strong>NT$535</strong></td></tr>
   </table>
-  <p style="font-size:13px;color:var(--muted);margin-top:8px">終值佔 EV 78% — 這是高成長股 DCF 的典型現象。DCF 權重僅 20%（Hooke）。</p>
+  <p style="font-size:13px;color:var(--muted);margin-top:8px">vs. 現價 NT$2,300。終值佔 EV 78%。DCF 保守假設下仍遠低於市價。</p>
 </div>
 </section>
 
-<!-- S2: INTERACTIVE -->
-<section id="s2">
+<!-- S3: INTERACTIVE -->
+<section id="s3">
 <h2>🎚️ 互動式 DCF 計算機</h2>
-<p class="sectionDesc">拖動滑桿即時看到估值變化</p>
+<p class="sectionDesc">拖動滑桿 — 基於 MoneyDJ FY2025 實數（營收 554,885M / 股數 2,597.5M / 淨現金 +113,247M）</p>
 
 <div class="card">
   <div class="sliderCard">
@@ -175,123 +208,81 @@ section h3{font-size:16px;margin:24px 0 12px;color:var(--accent)}
   </div>
 
   <div class="resultBox">
-    <div class="result bear" id="resVal"><div class="rVal">NT$473</div><div class="rLbl">每股內含價值</div></div>
-    <div class="result bear" id="resDelta"><div class="rVal">−NT$1,827</div><div class="rLbl">vs 現價 NT$2,300</div></div>
-    <div class="result bear" id="resPct"><div class="rVal">−79%</div><div class="rLbl">偏離幅度</div></div>
+    <div class="result bear" id="resVal"><div class="rVal">NT$535</div><div class="rLbl">每股內含價值</div></div>
+    <div class="result bear" id="resDelta"><div class="rVal">−NT$1,765</div><div class="rLbl">vs 現價 NT$2,300</div></div>
+    <div class="result bear" id="resPct"><div class="rVal">−77%</div><div class="rLbl">偏離幅度</div></div>
   </div>
 
-  <div class="priceBar">
-    <div class="fill" id="priceFill" style="width:9%;background:var(--red)"></div>
-    <div class="priceMarker" data-label="現價 2,300" style="left:46%"></div>
-  </div>
-  <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--dim);margin-top:4px">
-    <span>0</span><span>2,500</span><span>5,000</span>
-  </div>
+  <div class="priceBar"><div class="fill" id="priceFill" style="width:11%;background:var(--red)"></div><div class="priceMarker" data-label="現價 2,300" style="left:46%"></div></div>
+  <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--dim);margin-top:4px"><span>0</span><span>2,500</span><span>5,000</span></div>
 
   <div class="callout purple" style="margin-top:16px">
-    <strong>💡 試試這些情境：</strong><br>
-    · 基準保守：WACC 8.5% / g 3% / CAGR 17% / OPM 15% → <strong>NT$473</strong><br>
-    · DCF 合理：WACC 8% / g 3% / CAGR 22% / OPM 18% → <strong>NT$1,000+</strong><br>
-    · 市場隱含：WACC 7% / g 3.5% / CAGR 28% / OPM 22% → <strong>NT$2,300</strong>
+    <strong>💡 MoneyDJ 實數 vs 之前估算的差異：</strong><br>
+    · 淨現金 +NT$1,132 億（之前估算淨負債 500 億，差 1,632 億！）<br>
+    · 股數 25.98 億股（之前用 25.97，幾乎正確）<br>
+    · 淨現金大幅增加每股價值，但 DCF 仍遠低於市價<br>
+    · 試試：WACC 7% / g 3.5% / CAGR 28% / OPM 22% → 這就是市場定價的劇本
   </div>
 </div>
 </section>
 
-<!-- S3: TRADING COMPS -->
-<section id="s3">
-<h2>🏷️ Trading Comps 相對估值</h2>
-<p class="sectionDesc">Hooke 框架：Comps 佔 60% 權重</p>
+<!-- S4: COMPS -->
+<section id="s4">
+<h2>🏷️ Trading Comps（MoneyDJ 實數）</h2>
 
 <div class="card">
-  <div class="cardTitle">可比公司倍數（2026 年 6 月市場數據）</div>
   <table class="tbl">
-    <tr><th>公司</th><th>市值</th><th>EV/EBITDA<br>(NTM)</th><th>P/E<br>(NTM)</th><th>營收成長</th><th>OPM</th></tr>
-    <tr style="background:rgba(96,165,250,.08)"><td class="accent"><strong>台達電 2308</strong></td><td class="accent">~NT$6.0兆</td><td class="accent"><strong>~41x</strong></td><td class="accent"><strong>~80x</strong></td><td class="accent up">+30%</td><td class="accent up">17.8%</td></tr>
-    <tr><td>Vertiv (VRT)</td><td>~US$450億</td><td>~28x</td><td>~42x</td><td class="up">+20%</td><td>18%</td></tr>
-    <tr><td>Eaton (ETN)</td><td>~US$1,300億</td><td>~24x</td><td>~30x</td><td>+12%</td><td class="up">19%</td></tr>
-    <tr><td>Schneider (SU)</td><td>~€1,400億</td><td>~16x</td><td>~22x</td><td>+8%</td><td>16%</td></tr>
-    <tr><td>奇鋐 3017</td><td>~NT$3,500億</td><td>~22x</td><td>~28x</td><td class="up">+25%</td><td>15%</td></tr>
-    <tr><td>雙鴻 3324</td><td>~NT$800億</td><td>~20x</td><td>~26x</td><td class="up">+20%</td><td>14%</td></tr>
-    <tr style="background:rgba(96,165,250,.05)"><td><strong>同業中位數</strong></td><td></td><td><strong>~22x</strong></td><td><strong>~28x</strong></td><td>+20%</td><td>16%</td></tr>
+    <tr><th>公司</th><th>市值</th><th>P/E (NTM)</th><th>EV/EBITDA</th><th>營收成長</th><th>OPM</th></tr>
+    <tr style="background:rgba(96,165,250,.08)"><td class="accent"><strong>台達電 2308</strong></td><td class="accent">NT$5,974B</td><td class="accent"><strong>~80x</strong></td><td class="accent"><strong>~41x</strong></td><td class="accent up">+31.8%</td><td class="accent up">15.1%</td></tr>
+    <tr><td>Vertiv (VRT)</td><td>~US$450B</td><td>~42x</td><td>~28x</td><td class="up">+20%</td><td>18%</td></tr>
+    <tr><td>Eaton (ETN)</td><td>~US$1,300B</td><td>~30x</td><td>~24x</td><td>+12%</td><td class="up">19%</td></tr>
+    <tr><td>Schneider</td><td>~€1,400B</td><td>~22x</td><td>~16x</td><td>+8%</td><td>16%</td></tr>
+    <tr><td>奇鋐 3017</td><td>~NT$3,500B</td><td>~28x</td><td>~22x</td><td class="up">+25%</td><td>15%</td></tr>
+    <tr style="background:rgba(96,165,250,.05)"><td><strong>同業中位數</strong></td><td></td><td><strong>~28x</strong></td><td><strong>~22x</strong></td><td>+20%</td><td>16%</td></tr>
   </table>
-  <p style="font-size:11px;color:var(--dim);margin-top:4px">台達 EV/EBITDA 41x vs 同業 22x = <strong>溢價 86%</strong>。P/E 80x vs 同業 28x = <strong>溢價 186%</strong>。</p>
-</div>
-
-<div class="card">
-  <div class="cardTitle">溢價是否合理？成長調整後比較</div>
-  <table class="tbl">
-    <tr><th>指標</th><th>台達電</th><th>同業中位數</th><th>差距</th></tr>
-    <tr><td>EV/EBITDA ÷ 營收成長</td><td>1.37</td><td>1.10</td><td class="down">+25% 溢價</td></tr>
-    <tr><td>PEG (P/E ÷ 成長率)</td><td>2.67</td><td>1.40</td><td class="down">+91% 溢價</td></tr>
-  </table>
-  <p style="font-size:13px;color:var(--ink);margin-top:12px"><strong>即使經成長率調整，台達仍顯著溢價。</strong>市場給予的溢價反映的是 AI 領導地位 + 護城河 + 產業順風。但溢價幅度之大，意味著<strong>任何基本面放緩都會導致估值劇烈修正</strong>。</p>
+  <p style="font-size:11px;color:var(--dim);margin-top:4px">台達電市值 = NT$2,300 × 25.975億股 = NT$5.974兆（MoneyDJ zca 實數）</p>
 </div>
 
 <div class="callout gold">
-  <strong>🏷️ Comps 診斷：</strong>台達電在所有倍數上都顯著高於同業。這不代表「被高估」— 高成長 + 高品質公司理應享受溢價。但 <strong>80x P/E 和 41x EV/EBITDA 是極高的要求</strong>，意味著市場已計入多年的完美執行。安全邊際極薄。
+  <strong>🏷️ Comps 判決：</strong>台達 P/E 80x vs 同業 28x（溢價 186%）、EV/EBITDA 41x vs 22x（溢價 86%）。即使經成長率調整（PEG 2.7 vs 1.4），仍顯著溢價。市場給予的溢價反映 AI 領導地位，但安全邊際極薄。
 </div>
 </section>
 
-<!-- S4: MARKET-IMPLIED -->
-<section id="s4">
+<!-- S5: MARKET-IMPLIED -->
+<section id="s5">
 <h2>🔍 市場隱含了什麼？</h2>
 
 <div class="card">
-  <div class="cardTitle">NT$2,300 所需的 DCF 假設</div>
   <table class="tbl">
-    <tr><th>參數</th><th>要達到 NT$2,300 需要…</th><th>合理嗎？</th></tr>
-    <tr><td>WACC</td><td class="down">~6.5%（極低風險定價）</td><td class="down">🔴 偏低</td></tr>
-    <tr><td>5 年營收 CAGR</td><td class="down">~28%（接近目前 30% 永續）</td><td class="down">🔴 極度樂觀</td></tr>
-    <tr><td>終端 OPM</td><td class="down">~22%（遠高於目前 17.8%）</td><td class="down">🔴 不合理</td></tr>
+    <tr><th>要達到 NT$2,300 需要…</th><th>DCF 參數</th><th>合理嗎？</th></tr>
+    <tr><td class="down">極低風險定價</td><td class="down">WACC ~6.5%</td><td class="down">🔴 台股 β 1.69 不支持</td></tr>
+    <tr><td class="down">AI 永續高速成長</td><td class="down">CAGR ~28%</td><td class="down">🔴 30%+ 維持 5 年難</td></tr>
+    <tr><td class="down">利潤率持續擴張</td><td class="down">OPM ~22%</td><td class="down">🔴 管理層說「難再大幅提升」</td></tr>
   </table>
-  <p style="font-size:13px;color:var(--ink);margin-top:12px">換句話說：<strong>目前股價隱含的假設接近「完美劇本」</strong>——AI 成長永不減速、利潤率持續擴張、風險溢價極低。</p>
 </div>
 
 <div class="callout red">
-  <strong>🔍 核心洞察：</strong>DCF 和 Comps 都指向同一個結論——<strong>台達電在 NT$2,300 的價位已被充分定價，甚至略顯昂貴</strong>。這不否定它是卓越的公司（前 9 步已充分證明），但卓越的公司 ≠ 卓越的投資——價格決定了回報。
+  <strong>🔍 結論：</strong>NT$2,300 定價的是 <strong>「完美劇本」</strong>——AI 成長永不減速、利潤率持續擴張、風險溢價極低。用互動計算機驗證：WACC 7%、g 3.5%、CAGR 28%、OPM 22%。
 </div>
 </section>
 
-<!-- S5: SYNTHESIS -->
-<section id="s5">
+<!-- S6: SYNTHESIS -->
+<section id="s6">
 <h2>⚖️ 估值綜合判斷</h2>
 
 <div class="metrics">
-  <div class="metric"><div class="val">NT$473</div><div class="lbl">DCF（保守假設）</div></div>
-  <div class="metric"><div class="val warn">41x / 80x</div><div class="lbl">EV/EBITDA / P/E</div></div>
-  <div class="metric"><div class="val down">溢價中</div><div class="lbl">vs 同業</div></div>
+  <div class="metric"><div class="val">NT$535</div><div class="lbl">DCF（保守）</div></div>
+  <div class="metric"><div class="val warn">80x / 41x</div><div class="lbl">P/E / EV/EBITDA</div></div>
+  <div class="metric"><div class="val down">溢價 186%</div><div class="lbl">vs 同業 P/E</div></div>
   <div class="metric"><div class="val warn">充分定價</div><div class="lbl">估值判斷</div></div>
 </div>
 
 <div class="verdict">
   <div class="vTitle">📋 估值判決：充分定價至略顯昂貴</div>
   <p style="font-size:16px;line-height:1.8">
-    <strong>DCF 說：</strong>保守假設下內含價值 NT$473。要把 DCF 拉到 NT$2,300，需要極度樂觀的假設（CAGR 28%、OPM 22%、WACC 6.5%）。<br><br>
-    <strong>Comps 說：</strong>台達電在所有倍數上都顯著高於同業（EV/EBITDA 溢價 86%、P/E 溢價 186%）。成長調整後仍溢價。<br><br>
-    <strong>綜合判斷：</strong>市場已給予台達電「AI 冠軍」的充分溢價。目前的價格反映的是<strong>接近完美的預期</strong>——任何基本面放緩（OPM 回落、CSP CAPEX 降速）都會觸發顯著的估值修正。<br><br>
-    <strong>這不是「賣出」的建議。</strong>台達電是卓越的公司，在 AI 超級週期中佔據無可取代的位置。但以目前價格進場，<strong>安全邊際極薄</strong>，需要近乎完美的執行才能獲得合理回報。
+    <strong>MoneyDJ 實數強化了結論：</strong>台達電是淨現金公司（+NT$1,132 億），財務極度健康。但 DCF（NT$535）和 Comps（溢價 186%）都指向同一結論——目前價格已充分反映 AI 溢價。<br><br>
+    卓越的公司 ≠ 卓越的投資。台達護城河 A−、ROIC 18%、產業 CAGR 30-35%——但這些品質已被市場超額定價。等待 NT$1,500–1,800 的進場窗口。
   </p>
-</div>
-
-<div class="grid2">
-  <div class="card" style="border-left:3px solid var(--green)">
-    <div class="cardTitle">🟢 什麼情況下值得買</div>
-    <ul style="font-size:13px;color:var(--muted);padding-left:18px">
-      <li>股價回調至 NT$1,500–1,800（−22~35%）</li>
-      <li>Q2 財報後市場過度反應 → 買入機會</li>
-      <li>CSP CAPEX 持續上修但股價未反映</li>
-      <li>800V DC 或 SOFC 有突破性進展</li>
-    </ul>
-  </div>
-  <div class="card" style="border-left:3px solid var(--red)">
-    <div class="cardTitle">🔴 什麼情況下該賣</div>
-    <ul style="font-size:13px;color:var(--muted);padding-left:18px">
-      <li>CSP 正式下修 CAPEX 指引</li>
-      <li>OPM 連續兩季跌破 15%</li>
-      <li>AI 電源市佔出現明顯流失</li>
-      <li>台海地緣風險顯著升溫</li>
-    </ul>
-  </div>
 </div>
 </section>
 
@@ -299,61 +290,35 @@ section h3{font-size:16px;margin:24px 0 12px;color:var(--accent)}
 </div>
 
 <script>
-const CURRENT = 2300, SHARES = 25.97, NET_DEBT = 500, REV0 = 5549;
-const DEF_GROWTH = [1.30, 1.20, 1.15, 1.12, 1.10];
-const DEF_OPM = [0.170, 0.165, 0.160, 0.155, 0.150];
+const CURRENT=2300, SHARES=2597.543, NET_DEBT=-113247, REV0=554885;
+const DG=[1.30,1.20,1.15,1.12,1.10];
 
-function findScale(defG, target) {
-  let lo = 0.001, hi = 6.0;
-  for (let i = 0; i < 60; i++) {
-    let mid = (lo + hi) / 2, prod = 1;
-    for (let g of defG) prod *= (1 + mid * (g - 1));
-    if (prod < target) lo = mid; else hi = mid;
-  }
-  return (lo + hi) / 2;
+function findScale(dg,t){let l=0.001,h=6;for(let i=0;i<60;i++){let m=(l+h)/2,p=1;for(let g of dg)p*=1+m*(g-1);if(p<t)l=m;else h=m}return(l+h)/2}
+
+function compute(c,o,w,g){
+  const t=Math.pow(1+c/100,5),k=findScale(DG,t);
+  let r=REV0,uf=[];const sO=0.17;
+  for(let i=0;i<5;i++){r*=1+k*(DG[i]-1);const cm=sO+(o/100-sO)*(i/4);const e=r*cm;uf.push(e*0.77+r*.04-r*.07-r*.02)}
+  let pv=0;for(let i=0;i<5;i++)pv+=uf[i]/Math.pow(1+w/100,i+1);
+  if(g/100>=w/100)return-1;
+  const tv=uf[4]*(1+g/100)/(w/100-g/100);return(pv+tv/Math.pow(1+w/100,5)-NET_DEBT)/SHARES;
 }
 
-function computeDCF(cagr, opm, wacc, g) {
-  const target = Math.pow(1 + cagr/100, 5);
-  const k = findScale(DEF_GROWTH, target);
-  let rev = REV0, ufcfs = [];
-  for (let i = 0; i < 5; i++) {
-    rev *= (1 + k * (DEF_GROWTH[i] - 1));
-    // Interpolate OPM
-    const frac = i / 4;
-    const o = DEF_OPM[0] + (opm/100 - DEF_OPM[0]) * frac + (opm/100 - DEF_OPM[4]) * (1 - frac);
-    // Actually, simpler: use linear ramp from current OPM to target terminal OPM
-    const startOPM = 0.17;
-    const endOPM = opm / 100;
-    const curOPM = startOPM + (endOPM - startOPM) * (i / 4);
-    const ebit = rev * curOPM;
-    const nopat = ebit * 0.77;
-    ufcfs.push(nopat + rev * 0.04 - rev * 0.07 - rev * 0.02);
-  }
-  let pvSum = 0;
-  for (let i = 0; i < 5; i++) pvSum += ufcfs[i] / Math.pow(1 + wacc/100, i + 1);
-  if (g/100 >= wacc/100) return {perShare: -1};
-  const tv = ufcfs[4] * (1 + g/100) / (wacc/100 - g/100);
-  const pvTv = tv / Math.pow(1 + wacc/100, 5);
-  return {perShare: (pvSum + pvTv - NET_DEBT) / SHARES};
-}
-
-function recalc() {
-  const w = +waccSlider.value, g = +gSlider.value, c = +cagrSlider.value, o = +opmSlider.value;
-  waccVal.textContent = w.toFixed(1)+'%'; gVal.textContent = g.toFixed(1)+'%';
-  cagrVal.textContent = c+'%'; opmVal.textContent = o.toFixed(1)+'%';
-  if (g/100 >= w/100) { resVal.querySelector('.rVal').textContent='⚠️ g≥WACC'; return; }
-  const d = computeDCF(c, o, w, g);
-  if (d.perShare < 0) return;
-  const v = Math.round(d.perShare), delta = v - CURRENT, pct = Math.round((v/CURRENT-1)*100);
-  resVal.querySelector('.rVal').textContent = 'NT$'+v.toLocaleString();
-  resDelta.querySelector('.rVal').textContent = (delta>=0?'+':'')+'NT$'+delta.toLocaleString();
-  resPct.querySelector('.rVal').textContent = (pct>=0?'+':'')+pct+'%';
+function recalc(){
+  const w=+waccSlider.value,g=+gSlider.value,c=+cagrSlider.value,o=+opmSlider.value;
+  waccVal.textContent=w.toFixed(1)+'%';gVal.textContent=g.toFixed(1)+'%';
+  cagrVal.textContent=c+'%';opmVal.textContent=o.toFixed(1)+'%';
+  if(g/100>=w/100){resVal.querySelector('.rVal').textContent='⚠️ g≥WACC';return}
+  const v=Math.round(compute(c,o,w,g));if(v<0)return;
+  const d=v-CURRENT,p=Math.round((v/CURRENT-1)*100);
+  resVal.querySelector('.rVal').textContent='NT$'+v.toLocaleString();
+  resDelta.querySelector('.rVal').textContent=(d>=0?'+':'')+'NT$'+d.toLocaleString();
+  resPct.querySelector('.rVal').textContent=(p>=0?'+':'')+p+'%';
   [resVal,resDelta,resPct].forEach(e=>{e.className='result neutral'});
-  if(pct>15) [resVal,resDelta,resPct].forEach(e=>{e.className='result bull'});
-  else if(pct<-5) [resVal,resDelta,resPct].forEach(e=>{e.className='result bear'});
-  const ratio = Math.min(v/5000,1); priceFill.style.width=(ratio*100)+'%';
-  priceFill.style.background = pct>15?'var(--green)':pct<-5?'var(--red)':'var(--gold)';
+  if(p>15)[resVal,resDelta,resPct].forEach(e=>{e.className='result bull'});
+  else if(p<-5)[resVal,resDelta,resPct].forEach(e=>{e.className='result bear'});
+  const rt=Math.min(v/5000,1);priceFill.style.width=(rt*100)+'%';
+  priceFill.style.background=p>15?'var(--green)':p<-5?'var(--red)':'var(--gold)';
 }
 
 document.querySelectorAll('.navItem').forEach(b=>{b.addEventListener('click',()=>{
