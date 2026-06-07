@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>表達能力升級展示 | Maobolin Research</title>
+<!-- ═══════════ Design System + Charts.css + Sparkline ═══════════ -->
+<style>
+/* ── Core Design System ── */
+:root{
+  --bg:#0a0e14; --surface:#131820; --card:#181f2a;
+  --border:#252d3a; --ink:#e2e8f0; --muted:#7c8aa0; --dim:#4a5568;
+  --accent:#60a5fa; --accent2:#3b82f6;
+  --gold:#f59e0b; --green:#34d399; --red:#f87171;
+  --orange:#fb923c; --purple:#a78bfa;
+  --radius:14px; --radius2:18px;
+  --sans:"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--sans);font-size:15px;color:var(--ink);
+  background:var(--bg);padding:2rem;max-width:1100px;margin:0 auto;}
+h1{color:var(--accent);margin-bottom:.25rem}
+h2{color:var(--ink);margin:2rem 0 1rem;padding-bottom:.5rem;border-bottom:1px solid var(--border)}
+.sub{color:var(--muted);margin-bottom:2rem}
+.card{border:1px solid var(--border);border-radius:var(--radius);background:var(--card);padding:16px;margin-bottom:14px}
+.cardTitle{font-weight:900;color:var(--ink);margin:0 0 10px;font-size:15px}
+.callout{border-left:4px solid var(--accent);padding:10px 14px;background:rgba(59,130,246,.06);border-radius:10px;margin:10px 0;line-height:1.6}
+.callout.green{border-color:var(--green);background:rgba(52,211,153,.05)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.footer{margin-top:2rem;padding-top:1rem;border-top:1px solid var(--border);text-align:center;color:var(--dim);font-size:11px}
+.up{color:var(--green);font-weight:700}.down{color:var(--red);font-weight:700}
+
+/* ── Charts.css Dark Theme Overrides ── */
+.charts-css {
+  --color-1: var(--accent);
+  --color-2: var(--green);
+  --color-3: var(--gold);
+  --color-4: var(--purple);
+  --color-5: var(--orange);
+  --color-6: var(--red);
+  --color-7: #38bdf8;
+  --color-8: #f472b6;
+  --color-9: #a3e635;
+  --color-10: #fb923c;
+  --chart-bg-color: transparent;
+}
+.charts-css caption { color: var(--muted); font-size:13px; }
+.charts-css th { color: var(--muted); }
+.charts-css tbody td { --color: var(--color-1); }
+.charts-css tbody td:nth-child(2) { --color: var(--color-2); }
+.charts-css tbody td:nth-child(3) { --color: var(--color-3); }
+.charts-css tbody td:nth-child(4) { --color: var(--color-4); }
+.charts-css:not(.show-labels) tbody td .data { display:none; }
+.charts-css.column tbody td { border-radius:4px 4px 0 0; }
+
+/* ── Sparkline ── */
+.spark-cell { display:flex; align-items:center; gap:6px; }
+.spark-cell svg { flex-shrink:0; }
+
+/* ── Table ── */
+.tbl{width:100%;border-collapse:collapse;font-size:13px;margin:8px 0}
+.tbl th{text-align:left;padding:8px 10px;border-bottom:2px solid var(--border);color:var(--muted);font-weight:700;font-size:11px;text-transform:uppercase}
+.tbl td{padding:8px 10px;border-bottom:1px solid var(--border)}
+.tbl tr:hover td{background:rgba(96,165,250,.04)}
+@media(max-width:768px){.grid2{grid-template-columns:1fr}}
+</style>
+
+<!-- ═══════ CHARTS.CSS INLINE (58KB min) ═══════ -->
+<style>
+/* Charts.css core — truncated for demo; full version at /tmp/charts.css */
+.charts-css{display:block;position:relative;width:100%}
+.charts-css.column{display:grid}
+.charts-css.column tbody{display:grid;grid-auto-columns:1fr;grid-auto-flow:column;align-items:end;gap:0}
+.charts-css.column tbody tr{display:grid;grid-auto-columns:1fr;grid-auto-flow:column}
+.charts-css.column tbody td{display:block;width:100%;height:calc(var(--size,1)*1%);position:relative;margin-inline:0;background:var(--color,var(--color-1));transition:height .3s}
+.charts-css.column.show-labels tbody td{overflow:visible}
+.charts-css.column.show-labels tbody td .data{position:absolute;top:-20px;left:50%;transform:translateX(-50%);font-size:11px;font-weight:700;color:var(--ink);white-space:nowrap}
+.charts-css caption{text-align:center;margin-bottom:8px}
+.charts-css.column.reverse tbody{align-items:start}
+/* Bar chart (horizontal) */
+.charts-css.bar tbody tr{display:grid;grid-template-columns:auto 1fr;align-items:center;gap:8px;margin-bottom:6px}
+.charts-css.bar td{width:calc(var(--size,1)*1%);height:22px;background:var(--color,var(--color-1));border-radius:4px;transition:width .3s}
+</style>
+</head>
+<body>
+
+<h1>🎨 表達能力升級展示</h1>
+<p class="sub">Charts.css · Sparkline · Concept Diagrams · 全部內嵌於單一 HTML</p>
+
+<!-- ═══════ 1. CHARTS.CSS 長條圖 ═══════ -->
+<h2>📊 Charts.css — 純 CSS 資料視覺化</h2>
+
+<div class="card">
+  <h3 class="cardTitle">量化因子月度報酬（長條圖）</h3>
+  <table class="charts-css column show-labels" style="height:200px">
+    <caption>2026 年 5 月 · 台灣市場因子報酬</caption>
+    <tbody>
+      <tr><td style="--size:72">+7.2%</td></tr>
+      <tr><td style="--size:45;--color:var(--color-2)">+4.5%</td></tr>
+      <tr><td style="--size:31;--color:var(--color-3)">+3.1%</td></tr>
+      <tr><td style="--size:18;--color:var(--color-5)">+1.8%</td></tr>
+      <tr><td style="--size:8;--color:var(--color-4)">+0.8%</td></tr>
+      <tr><td style="--size:-15;--color:var(--color-6)">−1.5%</td></tr>
+    </tbody>
+  </table>
+  <div style="display:flex;justify-content:space-around;font-size:11px;color:var(--muted);margin-top:8px">
+    <span>Momentum</span><span>Quality</span><span>Value</span><span>Size</span><span>Low Vol</span><span>Growth</span>
+  </div>
+</div>
+
+<div class="grid2">
+  <div class="card">
+    <h3 class="cardTitle">產業報酬比較（水平長條）</h3>
+    <table class="charts-css bar" style="padding:8px 0">
+      <tbody>
+        <tr><th style="font-size:11px;color:var(--muted);min-width:50px">半導體</th><td style="--size:85"></td><td style="font-size:12px" class="up">+8.5%</td></tr>
+        <tr><th style="font-size:11px;color:var(--muted)">金融</th><td style="--size:42;--color:var(--color-2)"></td><td style="font-size:12px" class="up">+4.2%</td></tr>
+        <tr><th style="font-size:11px;color:var(--muted)">電子零組件</th><td style="--size:28;--color:var(--color-5)"></td><td style="font-size:12px" class="up">+2.8%</td></tr>
+        <tr><th style="font-size:11px;color:var(--muted)">航運</th><td style="--size:12;--color:var(--color-3)"></td><td style="font-size:12px" class="up">+1.2%</td></tr>
+        <tr><th style="font-size:11px;color:var(--muted)">鋼鐵</th><td style="--size:-8;--color:var(--color-6)"></td><td style="font-size:12px" class="down">−0.8%</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <h3 class="cardTitle">市值分布（堆疊長條想像）</h3>
+    <table class="charts-css column show-labels" style="height:150px">
+      <caption>台股因子覆蓋率</caption>
+      <tbody>
+        <tr><td style="--size:92">92%</td></tr>
+        <tr><td style="--size:78;--color:var(--color-2)">78%</td></tr>
+        <tr><td style="--size:65;--color:var(--color-3)">65%</td></tr>
+      </tbody>
+    </table>
+    <div style="display:flex;justify-content:space-around;font-size:11px;color:var(--muted);margin-top:4px">
+      <span>上市 TWSE</span><span>上櫃 TPEx</span><span>興櫃 Emerging</span>
+    </div>
+  </div>
+</div>
+
+<div class="callout green">
+  <strong>💡 Charts.css 核心優勢：</strong>0 JS、純 CSS class + <code>--size</code> 變數控制資料。58KB min / 5.9KB gzip，可完整內嵌。column（直條）、bar（橫條）、line（折線）、area（面積）四種類型。
+</div>
+
+<!-- ═══════ 2. SPARKLINE ═══════ -->
+<h2>📈 Sparkline — 表格內嵌迷你走勢</h2>
+
+<div class="card">
+  <h3 class="cardTitle">台股監控清單（含 30 日走勢）</h3>
+  <table class="tbl">
+    <tr><th>代號</th><th>名稱</th><th>股價</th><th>30日走勢</th><th>變動</th><th>成交量</th></tr>
+    <tr>
+      <td><strong>2330</strong></td><td>台積電</td><td>$1,085</td>
+      <td><div class="spark-cell"><svg id="sp1" width="80" height="20"></svg></div></td>
+      <td class="up">+12.4%</td><td>45,200</td>
+    </tr>
+    <tr>
+      <td><strong>2317</strong></td><td>鴻海</td><td>$198</td>
+      <td><div class="spark-cell"><svg id="sp2" width="80" height="20"></svg></div></td>
+      <td class="down">−3.2%</td><td>78,900</td>
+    </tr>
+    <tr>
+      <td><strong>2454</strong></td><td>聯發科</td><td>$1,420</td>
+      <td><div class="spark-cell"><svg id="sp3" width="80" height="20"></svg></div></td>
+      <td class="up">+18.7%</td><td>12,300</td>
+    </tr>
+    <tr>
+      <td><strong>6781</strong></td><td>AES-KY</td><td>$1,135</td>
+      <td><div class="spark-cell"><svg id="sp4" width="80" height="20"></svg></div></td>
+      <td class="down">−0.4%</td><td>3,800</td>
+    </tr>
+  </table>
+</div>
+
+<div class="callout green">
+  <strong>💡 Sparkline 用途：</strong>Yahoo Finance 同款迷你走勢。3.7KB min，零依賴。任何表格欄位都可以嵌入 — 因子 IC 走勢、營收趨勢、波動率變化。
+</div>
+
+<!-- ═══════ 3. CONCEPT DIAGRAMS ═══════ -->
+<h2>🗺️ Concept Diagrams — SVG 架構圖（現已安裝）</h2>
+
+<div class="card">
+  <h3 class="cardTitle">量化管線架構圖（concept-diagrams 可生成）</h3>
+  <svg viewBox="0 0 700 200" style="width:100%;max-width:700px">
+    <defs>
+      <marker id="arrow" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#60a5fa"/></marker>
+    </defs>
+    <!-- Boxes -->
+    <rect x="10" y="70" width="120" height="60" rx="10" fill="#181f2a" stroke="#252d3a"/>
+    <text x="70" y="95" text-anchor="middle" fill="#60a5fa" font-size="12" font-weight="700">FinMind API</text>
+    <text x="70" y="115" text-anchor="middle" fill="#7c8aa0" font-size="10">Daily OHLCV</text>
+
+    <rect x="180" y="70" width="120" height="60" rx="10" fill="#181f2a" stroke="#252d3a"/>
+    <text x="240" y="95" text-anchor="middle" fill="#34d399" font-size="12" font-weight="700">Factor Engine</text>
+    <text x="240" y="115" text-anchor="middle" fill="#7c8aa0" font-size="10">IC · Quantile</text>
+
+    <rect x="350" y="70" width="120" height="60" rx="10" fill="#181f2a" stroke="#252d3a"/>
+    <text x="410" y="95" text-anchor="middle" fill="#f59e0b" font-size="12" font-weight="700">Backtester</text>
+    <text x="410" y="115" text-anchor="middle" fill="#7c8aa0" font-size="10">Sharpe · MaxDD</text>
+
+    <rect x="520" y="70" width="120" height="60" rx="10" fill="#181f2a" stroke="#252d3a"/>
+    <text x="580" y="95" text-anchor="middle" fill="#a78bfa" font-size="12" font-weight="700">Pages Report</text>
+    <text x="580" y="115" text-anchor="middle" fill="#7c8aa0" font-size="10">HTML Dashboard</text>
+
+    <!-- Arrows -->
+    <line x1="130" y1="100" x2="175" y2="100" stroke="#60a5fa" stroke-width="2" marker-end="url(#arrow)"/>
+    <line x1="300" y1="100" x2="345" y2="100" stroke="#34d399" stroke-width="2" marker-end="url(#arrow)"/>
+    <line x1="470" y1="100" x2="515" y2="100" stroke="#f59e0b" stroke-width="2" marker-end="url(#arrow)"/>
+
+    <!-- Labels -->
+    <text x="150" y="85" text-anchor="middle" fill="#4a5568" font-size="9">資料擷取</text>
+    <text x="325" y="85" text-anchor="middle" fill="#4a5568" font-size="9">因子計算</text>
+    <text x="495" y="85" text-anchor="middle" fill="#4a5568" font-size="9">回測</text>
+  </svg>
+</div>
+
+<div class="callout">
+  <strong>🗺️ Concept Diagrams：</strong>已安裝官方 skill（creative/concept-diagrams）。支援 UML 循序圖、流程圖、架構圖、基礎設施圖。上面的管線圖就是手繪 SVG 示範 — skill 載入後可以自動生成更複雜的架構圖。
+</div>
+
+<div class="footer">
+  Maobolin Research · 表達能力升級展示 · 2026-06-07
+</div>
+
+<!-- ═══════ SPARKLINE JS (inline, 3.7KB min logic) ═══════ -->
+<script>
+// Minimal sparkline — generates SVG polyline from data array
+function sparkline(svgId, data, color) {
+  const svg = document.getElementById(svgId);
+  if (!svg || !data.length) return;
+  const w = svg.getAttribute('width') || 80;
+  const h = svg.getAttribute('height') || 20;
+  const pad = 2;
+  const min = Math.min(...data), max = Math.max(...data);
+  const range = max - min || 1;
+  const points = data.map((v,i) => {
+    const x = pad + (i/(data.length-1))*(w-2*pad);
+    const y = h - pad - ((v-min)/range)*(h-2*pad);
+    return `${x},${y}`;
+  });
+  svg.innerHTML = `<polyline points="${points.join(' ')}" fill="none" stroke="${color||'#60a5fa'}" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>`;
+}
+// Demo data
+sparkline('sp1', [1050,1062,1058,1070,1082,1075,1085,1090,1078,1085,1092,1100,1095,1105,1110,1115,1108,1120,1115,1125,1130,1120,1110,1115,1105,1110,1100,1095,1088,1085], '#34d399');
+sparkline('sp2', [205,203,200,198,195,197,199,196,194,192,195,198,200,202,199,197,195,198,200,203,201,199,196,194,197,199,200,198,196,198], '#f87171');
+sparkline('sp3', [1280,1300,1320,1350,1380,1360,1390,1410,1400,1420,1430,1410,1400,1420,1435,1440,1420,1410,1430,1440,1450,1430,1420,1410,1400,1415,1425,1420,1415,1420], '#34d399');
+sparkline('sp4', [1180,1160,1140,1150,1130,1120,1140,1135,1125,1110,1125,1130,1140,1135,1120,1135,1145,1140,1130,1125,1135,1140,1130,1125,1135,1140,1130,1125,1130,1135], '#f59e0b');
+</script>
+</body>
+</html>
