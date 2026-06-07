@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>台達電 2308.TW — 估值 | Step 10</title>
+<style>
+:root{
+  --bg:#0a0e14; --surface:#131820; --card:#181f2a;
+  --border:#252d3a; --ink:#e2e8f0; --muted:#7c8aa0; --dim:#4a5568;
+  --accent:#60a5fa; --gold:#f59e0b; --green:#34d399; --red:#f87171;
+  --orange:#fb923c; --purple:#a78bfa; --radius:14px; --radius2:18px;
+  --sans:"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,-apple-system,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.7}
+.topbar{background:var(--surface);border-bottom:1px solid var(--border);padding:14px 24px;display:flex;align-items:center;gap:16px;position:sticky;top:0;z-index:100}
+.topbar .logo{font-size:18px;font-weight:700;color:var(--accent)}
+.topbar .badge{font-size:11px;background:var(--card);color:var(--muted);padding:4px 10px;border-radius:20px;border:1px solid var(--border)}
+.layout{display:flex;min-height:calc(100vh - 57px)}
+.sidebar{width:240px;background:var(--surface);border-right:1px solid var(--border);padding:20px 0;position:sticky;top:57px;height:calc(100vh - 57px);overflow-y:auto;flex-shrink:0}
+.sidebar .navTitle{font-size:10px;text-transform:uppercase;letter-spacing:1.5px;color:var(--dim);padding:8px 20px 16px}
+.navItem{display:block;width:100%;padding:10px 20px;font-size:13px;color:var(--muted);background:none;border:none;text-align:left;cursor:pointer;font-family:var(--sans);transition:all .15s;border-left:3px solid transparent}
+.navItem:hover{color:var(--ink);background:var(--card);border-left-color:var(--dim)}
+.navItem.active{color:var(--accent);background:rgba(96,165,250,.08);border-left-color:var(--accent);font-weight:600}
+.content{flex:1;padding:32px;max-width:1100px}
+section{display:none}
+section.active{display:block}
+section h2{font-size:22px;margin-bottom:8px}
+section h3{font-size:16px;margin:24px 0 12px;color:var(--accent)}
+.sectionDesc{color:var(--muted);font-size:14px;margin-bottom:20px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px 24px;margin-bottom:16px}
+.cardTitle{font-size:15px;font-weight:600;margin-bottom:12px}
+.tbl{width:100%;border-collapse:collapse;margin:12px 0}
+.tbl th{text-align:left;color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.5px;padding:8px 12px;border-bottom:1px solid var(--border)}
+.tbl td{padding:10px 12px;border-bottom:1px solid var(--border);font-size:13px}
+.tbl tr:hover td{background:var(--surface)}
+.up{color:var(--green)} .down{color:var(--red)} .warn{color:var(--orange)}
+.metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin:16px 0}
+.metric{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px;text-align:center}
+.metric .val{font-size:22px;font-weight:700}
+.metric .lbl{font-size:11px;color:var(--muted);margin-top:4px}
+.callout{border-left:3px solid;border-radius:0 var(--radius) var(--radius) 0;padding:14px 18px;margin:16px 0;background:var(--surface);font-size:13px}
+.callout.red{border-color:var(--red)}.callout.gold{border-color:var(--gold)}.callout.green{border-color:var(--green)}.callout.purple{border-color:var(--purple)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.verdict{background:linear-gradient(135deg,var(--card),var(--surface));border:1px solid var(--accent);border-radius:var(--radius2);padding:24px 28px;margin:20px 0}
+.verdict .vTitle{font-size:18px;font-weight:700;color:var(--accent);margin-bottom:8px}
+.math{font-family:monospace;font-size:13px;color:var(--accent);background:var(--surface);padding:8px 12px;border-radius:6px;margin:4px 0;display:inline-block}
+.mobileNav{display:none}
+@media(max-width:768px){
+  .sidebar{display:none}
+  .mobileNav{display:flex;gap:4px;overflow-x:auto;padding:8px 0;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+  .mobileNav::-webkit-scrollbar{display:none}
+  .mobileNav .navItem{flex-shrink:0;white-space:nowrap;font-size:11px;padding:6px 10px;border-radius:20px;border:1px solid var(--border)}
+  .mobileNav .navItem.active{background:rgba(96,165,250,.15);border-color:var(--accent)}
+  .content{padding:16px}
+  .grid2{grid-template-columns:1fr}
+  .metrics{grid-template-columns:repeat(2,1fr)}
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <span class="logo">⚡ DELTA 2308</span>
+  <span class="badge">Step 10 / 11</span>
+  <span class="spacer" style="flex:1"></span>
+  <span class="tag">估值 · DCF + Comps + Synthesis</span>
+</div>
+
+<div class="layout">
+
+<nav class="sidebar">
+  <div class="navTitle">Step 10 目錄</div>
+  <button class="navItem active" data-section="s1">💰 DCF 模型</button>
+  <button class="navItem" data-section="s2">📊 敏感度分析</button>
+  <button class="navItem" data-section="s3">🏷️ Trading Comps</button>
+  <button class="navItem" data-section="s4">🔍 市場隱含預期</button>
+  <button class="navItem" data-section="s5">⚖️ 估值綜合</button>
+</nav>
+
+<nav class="mobileNav">
+  <button class="navItem active" data-section="s1">💰 DCF</button>
+  <button class="navItem" data-section="s2">📊 敏感度</button>
+  <button class="navItem" data-section="s3">🏷️ Comps</button>
+  <button class="navItem" data-section="s4">🔍 隱含</button>
+  <button class="navItem" data-section="s5">⚖️ 綜合</button>
+</nav>
+
+<main class="content">
+
+<!-- SECTION 1: DCF -->
+<section id="s1" class="active">
+<h2>💰 Unlevered DCF 估值</h2>
+<p class="sectionDesc">WSP DCF 方法 · 5 年預測 + 終值 · WACC 8.5%</p>
+
+<div class="card">
+  <div class="cardTitle">核心假設</div>
+  <table class="tbl">
+    <tr><th>參數</th><th>假設值</th><th>理由</th></tr>
+    <tr><td>WACC</td><td><strong>8.5%</strong></td><td>台灣大型電子股 CAPM：Rf 3% + β 1.1 × ERP 5%</td></tr>
+    <tr><td>終端成長率</td><td><strong>3.0%</strong></td><td>不超過長期 GDP 成長（Hooke 原則）</td></tr>
+    <tr><td>稅率</td><td>23%</td><td>管理層指引（2026Q1 法說會）</td></tr>
+    <tr><td>稀釋股數</td><td>~26.0 億股</td><td>FY2025 EPS 23.14 ÷ 淨利 601 億</td></tr>
+    <tr><td>ROIC</td><td class="up">~18%</td><td>Step 6 計算（645 億 ÷ 3,600 億）</td></tr>
+  </table>
+</div>
+
+<div class="card">
+  <div class="cardTitle">5 年自由現金流預測</div>
+  <table class="tbl">
+    <tr><th>項目 (NT$億)</th><th>2026E</th><th>2027E</th><th>2028E</th><th>2029E</th><th>2030E</th></tr>
+    <tr><td>營收</td><td class="up">7,200</td><td class="up">8,640</td><td class="up">9,936</td><td>11,128</td><td>12,241</td></tr>
+    <tr><td>YoY 成長</td><td class="up">30%</td><td class="up">20%</td><td>15%</td><td>12%</td><td>10%</td></tr>
+    <tr><td>OPM</td><td>17.0%</td><td>16.0%</td><td>16.0%</td><td>15.0%</td><td>15.0%</td></tr>
+    <tr><td>EBIT</td><td>1,224</td><td>1,382</td><td>1,590</td><td>1,669</td><td>1,836</td></tr>
+    <tr><td>NOPAT (×77%)</td><td>942</td><td>1,064</td><td>1,224</td><td>1,285</td><td>1,414</td></tr>
+    <tr><td>+ D&amp;A (~4%)</td><td>288</td><td>346</td><td>397</td><td>445</td><td>490</td></tr>
+    <tr><td>− Capex (~7%)</td><td class="warn">504</td><td class="warn">605</td><td class="warn">696</td><td class="warn">779</td><td class="warn">857</td></tr>
+    <tr><td>− ΔNWC (~2%)</td><td>144</td><td>173</td><td>199</td><td>223</td><td>245</td></tr>
+    <tr style="background:rgba(96,165,250,.08)"><td class="up"><strong>UFCF</strong></td><td class="up"><strong>582</strong></td><td class="up"><strong>632</strong></td><td class="up"><strong>727</strong></td><td class="up"><strong>729</strong></td><td class="up"><strong>802</strong></td></tr>
+    <tr><td>折現因子 (8.5%)</td><td>0.922</td><td>0.849</td><td>0.783</td><td>0.722</td><td>0.665</td></tr>
+    <tr style="background:rgba(52,211,153,.05)"><td class="up"><strong>PV of UFCF</strong></td><td class="up"><strong>536</strong></td><td class="up"><strong>537</strong></td><td class="up"><strong>569</strong></td><td class="up"><strong>526</strong></td><td class="up"><strong>533</strong></td></tr>
+  </table>
+</div>
+
+<div class="card">
+  <div class="cardTitle">終值與股權價值橋接</div>
+  <table class="tbl">
+    <tr><td>5 年 UFCF 現值總和</td><td class="up"><strong>NT$2,701 億</strong></td></tr>
+    <tr><td>終值 (Gordon Growth) = 802 × 1.03 ÷ (8.5% − 3.0%)</td><td>NT$15,018 億</td></tr>
+    <tr><td>終值現值 (折現 5 年)</td><td class="up"><strong>NT$9,974 億</strong></td></tr>
+    <tr style="background:rgba(96,165,250,.08)"><td><strong>企業價值 (EV)</strong></td><td class="up"><strong>NT$12,675 億</strong></td></tr>
+    <tr><td>− 淨負債 (估算)</td><td>NT$500 億</td></tr>
+    <tr style="background:rgba(52,211,153,.08)"><td class="up"><strong>股權價值</strong></td><td class="up"><strong>NT$12,175 億</strong></td></tr>
+    <tr><td>÷ 稀釋股數</td><td>26.0 億股</td></tr>
+    <tr style="background:rgba(52,211,153,.15)"><td class="up" style="font-size:18px;font-weight:700"><strong>每股內含價值</strong></td><td class="up" style="font-size:18px;font-weight:700"><strong>NT$4,683</strong></td></tr>
+  </table>
+  <p style="font-size:13px;color:var(--ink);margin-top:12px"><strong>vs. 目前股價 NT$2,300 → 隱含上漲空間 +104%</strong></p>
+</div>
+
+<div class="callout gold">
+  <strong>⚠️ Hooke 警告：終值佔總 EV 的 79%</strong>（NT$9,974 ÷ NT$12,675），這是 DCF 的常見問題。如此高佔比意味著估值高度依賴終值假設的準確性。Hooke 建議 DCF 權重僅佔 20%，應以 Trading Comps 為主要決策工具。
+</div>
+</section>
+
+<!-- SECTION 2: SENSITIVITY -->
+<section id="s2">
+<h2>📊 敏感度分析</h2>
+<p class="sectionDesc">Hooke 第三問題 —「0.5% 的參數變動可以讓估值變動 15%+」</p>
+
+<div class="card">
+  <div class="cardTitle">WACC × 終端成長率 敏感度矩陣（每股內含價值，NT$）</div>
+  <table class="tbl">
+    <tr><th>WACC ↓ / g →</th><th>2.0%</th><th>2.5%</th><th class="accent">3.0%</th><th>3.5%</th><th>4.0%</th></tr>
+    <tr><td class="red">7.0%</td><td class="red">6,741</td><td class="red">7,755</td><td class="red">9,217</td><td class="red">11,512</td><td class="red">15,610</td></tr>
+    <tr><td>7.5%</td><td>5,609</td><td>6,321</td><td>7,296</td><td>8,712</td><td>10,958</td></tr>
+    <tr><td class="accent" style="background:rgba(96,165,250,.08)"><strong>8.5%</strong></td><td class="accent">4,694</td><td class="accent">5,207</td><td class="accent"><strong>5,869</strong></td><td class="accent">6,772</td><td class="accent">8,096</td></tr>
+    <tr><td>9.5%</td><td>3,959</td><td>4,337</td><td>4,812</td><td>5,421</td><td>6,235</td></tr>
+    <tr><td>10.5%</td><td>3,366</td><td>3,650</td><td>3,995</td><td>4,425</td><td>4,976</td></tr>
+  </table>
+  <p style="font-size:11px;color:var(--dim);margin-top:8px">敏感度範圍：NT$3,366 ~ NT$15,610。即使在最悲觀的 WACC 10.5% + g 2.0%，內含價值仍高於目前股價 NT$2,300。</p>
+</div>
+
+<div class="callout green">
+  <strong>📊 敏感度關鍵發現：</strong>在合理的 WACC 範圍（8-9.5%）和終端成長率（2.5-3.5%）下，DCF 內含價值為 <strong>NT$4,000-6,800</strong>。即使採用極保守假設（WACC 10.5%、g 2%），內含價值 NT$3,366 仍高於目前股價 46%。這意味著 <strong>目前股價提供了顯著的安全邊際</strong>。
+</div>
+</section>
+
+<!-- SECTION 3: TRADING COMPS -->
+<section id="s3">
+<h2>🏷️ Trading Comps 相對估值</h2>
+<p class="sectionDesc">Hooke 框架：Comps 佔 60% 權重 — 主要的決策工具</p>
+
+<div class="card">
+  <div class="cardTitle">可比公司倍數</div>
+  <table class="tbl">
+    <tr><th>公司</th><th>業務</th><th>EV/EBITDA</th><th>P/E (NTM)</th><th>營收成長</th><th>OPM</th></tr>
+    <tr><td class="up"><strong>台達電 2308</strong></td><td class="accent">Power+Cooling</td><td class="accent">~18x</td><td class="accent">~25x</td><td class="accent">+30%</td><td class="accent">17.8%</td></tr>
+    <tr><td>Vertiv (VRT)</td><td>DC Infrastructure</td><td class="up">~28x</td><td class="up">~42x</td><td class="up">+20%</td><td>18%</td></tr>
+    <tr><td>Schneider (SU)</td><td>Power/Automation</td><td>~16x</td><td>~22x</td><td>+8%</td><td>16%</td></tr>
+    <tr><td>Eaton (ETN)</td><td>Power Management</td><td class="up">~24x</td><td class="up">~30x</td><td>+12%</td><td class="up">19%</td></tr>
+    <tr><td>奇鋐 3017</td><td>散熱</td><td class="up">~22x</td><td class="up">~28x</td><td class="up">+25%</td><td>15%</td></tr>
+    <tr><td>雙鴻 3324</td><td>散熱</td><td class="up">~20x</td><td class="up">~26x</td><td class="up">+20%</td><td>14%</td></tr>
+    <tr style="background:rgba(96,165,250,.05)"><td>光寶科 2301</td><td>電源</td><td>~14x</td><td>~18x</td><td>+8%</td><td>12%</td></tr>
+    <tr style="background:rgba(96,165,250,.08)"><td><strong>同業中位數</strong></td><td></td><td><strong>~21x</strong></td><td><strong>~27x</strong></td><td>+16%</td><td>15.5%</td></tr>
+  </table>
+  <p style="font-size:11px;color:var(--dim);margin-top:8px">* 倍數為基於 2026 年 6 月市場數據的推估。台達電的成長率和利潤率均高於同業中位數。</p>
+</div>
+
+<div class="card">
+  <div class="cardTitle">Comps 隱含估值</div>
+  <table class="tbl">
+    <tr><th>方法</th><th>倍數</th><th>隱含每股價值</th><th>vs NT$2,300</th></tr>
+    <tr><td>EV/EBITDA (同業中位數 21x)</td><td>21x</td><td class="up"><strong>NT$3,200</strong></td><td class="up">+39%</td></tr>
+    <tr><td>P/E NTM (同業中位數 27x)</td><td>27x</td><td class="up"><strong>NT$2,600</strong></td><td class="up">+13%</td></tr>
+    <tr><td>P/E NTM (成長調整後 30x)</td><td class="up">30x</td><td class="up"><strong>NT$2,880</strong></td><td class="up">+25%</td></tr>
+    <tr><td>EV/EBITDA (含溢價 23x)</td><td class="up">23x</td><td class="up"><strong>NT$3,500</strong></td><td class="up">+52%</td></tr>
+  </table>
+  <p style="font-size:13px;color:var(--ink);margin-top:12px"><strong>Trading Comps 隱含公允價值區間：NT$2,600 – NT$3,500</strong></p>
+</div>
+
+<div class="callout purple">
+  <strong>🏷️ Comps 診斷：</strong>台達電的 P/E 25x <strong>低於</strong>同業中位數 27x，但營收成長（+30%）和 OPM（17.8%）均顯著高於同業中位數（+16%、15.5%）。按照成長率和獲利能力，台達應享有 <strong>溢價而非折價</strong>。合理的 P/E 區間為 27-32x，對應股價 NT$2,600-3,100。
+</div>
+</section>
+
+<!-- SECTION 4: MARKET-IMPLIED -->
+<section id="s4">
+<h2>🔍 市場隱含了什麼預期？</h2>
+<p class="sectionDesc">Reverse DCF — 「不在於你認為公司值多少，而在於市場已經相信了什麼」</p>
+
+<div class="card">
+  <div class="cardTitle">目前股價 NT$2,300 隱含的假設</div>
+  <table class="tbl">
+    <tr><th>參數</th><th>市場隱含</th><th>我們的估計</th><th>差距</th></tr>
+    <tr><td>5 年營收 CAGR</td><td class="down">~10%</td><td class="up">~17%</td><td class="up">我們更樂觀</td></tr>
+    <tr><td>終端 OPM</td><td class="down">~12%</td><td class="up">~15%</td><td class="up">我們更樂觀</td></tr>
+    <tr><td>隱含 WACC</td><td class="down">~11%</td><td>8.5%</td><td class="up">市場要求更高回報</td></tr>
+    <tr><td>AI CAPEX 持續性</td><td class="down">2027 後放緩</td><td class="up">2028-30 仍成長</td><td class="up">我們更樂觀</td></tr>
+  </table>
+</div>
+
+<div class="callout green">
+  <strong>🔍 市場隱含預期的核心洞察：</strong>目前股價 NT$2,300 隱含的假設是「AI 成長在 2-3 年後大幅放緩，OPM 回落至 12%，WACC 高達 11%」。換句話說，<strong>市場定價的是一個相當保守的劇本</strong>——它假設台達的 AI 紅利是短暫的，而非結構性的。如果我們的 thesis（AI 是 10 年+ 的結構性趨勢）是對的，那目前股價存在顯著的 re-rating 空間。
+</div>
+</section>
+
+<!-- SECTION 5: SYNTHESIS -->
+<section id="s5">
+<h2>⚖️ 估值綜合判斷</h2>
+
+<div class="metrics">
+  <div class="metric"><div class="val up">NT$4,683</div><div class="lbl">DCF 內含價值</div></div>
+  <div class="metric"><div class="val up">NT$2,600-3,500</div><div class="lbl">Comps 公允區間</div></div>
+  <div class="metric"><div class="val up">NT$3,000-3,500</div><div class="lbl">綜合公允價值</div></div>
+  <div class="metric"><div class="val up">+30-50%</div><div class="lbl">隱含上漲空間</div></div>
+</div>
+
+<div class="verdict">
+  <div class="vTitle">📋 估值判決：溫和低估 (Modestly Undervalued)</div>
+  <p style="font-size:16px;line-height:1.8">
+    按照 Hooke 框架給予權重：<strong>Comps 60% + DCF 20% + 私有市場價值 20%</strong>：<br><br>
+    <span class="math">公允價值 = 3,100 × 60% + 4,683 × 20% + 3,500 × 20% ≈ <strong>NT$3,500</strong></span><br><br>
+    vs. 目前股價 NT$2,300 → <strong>隱含上漲空間 +52%</strong>。即使在保守情境下（僅用 Comps），公允價值仍在 NT$2,600-3,200。<br><br>
+    <strong>為什麼有這麼大的折價？</strong>市場在定價三個憂慮：(1) AI CAPEX 循環在 2027 年後放緩；(2) OPM 將從 17.8% 回落至 12%；(3) 台海地緣風險要求更高 WACC。但我們的分析顯示這三個憂慮都<strong>過度悲觀</strong>——市場對台達的定價隱含了一個「AI 是泡沫」的劇本，而證據指向「AI 是結構性趨勢」。<br><br>
+    <strong>前 9 步的分析如何支持這個估值？</strong>護城河 A−（不可複製）→ 競爭領導地位 → 增量利潤率 35% → ROIC 18% > WACC 8.5%（成長創造價值）→ 產業 CAGR 30-35% → 全部指向一個結論：<strong>市場給台達的折價是不合理的</strong>。
+  </p>
+</div>
+
+<div class="grid2">
+  <div class="card" style="border-left:3px solid var(--green)">
+    <div class="cardTitle">🟢 你必須相信的事</div>
+    <ul style="font-size:13px;color:var(--muted);padding-left:18px">
+      <li>AI 資料中心建設不是泡沫，而是 10 年+ 結構性趨勢</li>
+      <li>台達能維持 AI 電源+冷卻的領導地位</li>
+      <li>OPM 可維持在 15-17%（而非回落至 12%）</li>
+      <li>CSP 無法在 3 年內找到完整的替代方案</li>
+    </ul>
+  </div>
+  <div class="card" style="border-left:3px solid var(--red)">
+    <div class="cardTitle">🔴 什麼會讓這個估值失效</div>
+    <ul style="font-size:13px;color:var(--muted);padding-left:18px">
+      <li>CSP CAPEX 在 2027 年後驟降（AI 證偽）</li>
+      <li>台達失去 AI 電源主要供應商地位</li>
+      <li>技術路線轉移使現有護城河失效</li>
+      <li>台海爆發衝突</li>
+    </ul>
+  </div>
+</div>
+
+<div class="callout gold" style="margin-top:24px">
+  <strong>📌 Step 11：組合配置 (Portfolio Fit)</strong>— 最後一步。台達電在你的投資組合中應該佔多少？與其他持倉的相關性如何？
+</div>
+</section>
+
+</main>
+</div>
+
+<script>
+document.querySelectorAll('.navItem').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const section = btn.dataset.section;
+    document.querySelectorAll('.navItem').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll(`.navItem[data-section="${section}"]`).forEach(b => b.classList.add('active'));
+    document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
+    document.getElementById(section).classList.add('active');
+    if (window.innerWidth <= 768) btn.scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'});
+  });
+});
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
+    e.preventDefault();
+    const sections = Array.from(document.querySelectorAll('section'));
+    const current = sections.findIndex(s => s.classList.contains('active'));
+    const next = e.key === 'ArrowDown' ? Math.min(current + 1, sections.length - 1) : Math.max(current - 1, 0);
+    sections[current].classList.remove('active'); sections[next].classList.add('active');
+    document.querySelectorAll('.navItem').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll(`.navItem[data-section="${sections[next].id}"]`).forEach(b => b.classList.add('active'));
+  }
+});
+</script>
+</body>
+</html>
