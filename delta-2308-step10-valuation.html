@@ -46,6 +46,24 @@ section h3{font-size:16px;margin:24px 0 12px;color:var(--accent)}
 .verdict{background:linear-gradient(135deg,var(--card),var(--surface));border:1px solid var(--accent);border-radius:var(--radius2);padding:24px 28px;margin:20px 0}
 .verdict .vTitle{font-size:18px;font-weight:700;color:var(--accent);margin-bottom:8px}
 .math{font-family:monospace;font-size:13px;color:var(--accent);background:var(--surface);padding:8px 12px;border-radius:6px;margin:4px 0;display:inline-block}
+/* Slider styles */
+.sliderCard{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px;margin-bottom:12px}
+.sliderCard label{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;font-size:14px;font-weight:600}
+.sliderCard label span{font-size:20px;color:var(--accent)}
+.sliderCard input[type=range]{width:100%;-webkit-appearance:none;height:8px;border-radius:4px;background:var(--border);outline:none}
+.sliderCard input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;height:22px;border-radius:50%;background:var(--accent);cursor:pointer}
+.sliderLabels{display:flex;justify-content:space-between;font-size:11px;color:var(--dim);margin-top:4px}
+.resultBox{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:16px 0}
+.result{background:var(--card);border-radius:var(--radius);padding:16px;text-align:center;border:1px solid var(--border);transition:all .3s}
+.result .rVal{font-size:24px;font-weight:700}
+.result .rLbl{font-size:11px;color:var(--muted);margin-top:4px}
+.result.bull{border-color:var(--green);background:rgba(52,211,153,.08)}.result.bull .rVal{color:var(--green)}
+.result.neutral{border-color:var(--gold)}.result.neutral .rVal{color:var(--gold)}
+.result.bear{border-color:var(--red);background:rgba(248,113,113,.08)}.result.bear .rVal{color:var(--red)}
+.priceBar{height:8px;background:var(--border);border-radius:4px;margin-top:12px;position:relative}
+.priceBar .fill{height:100%;border-radius:4px;transition:width .3s,background .3s}
+.priceMarker{position:absolute;top:-6px;width:2px;height:20px;background:var(--ink);border-radius:1px}
+.priceMarker::after{content:attr(data-label);position:absolute;top:-20px;left:50%;transform:translateX(-50%);font-size:10px;white-space:nowrap;color:var(--muted)}
 .mobileNav{display:none}
 @media(max-width:768px){
   .sidebar{display:none}
@@ -56,6 +74,7 @@ section h3{font-size:16px;margin:24px 0 12px;color:var(--accent)}
   .content{padding:16px}
   .grid2{grid-template-columns:1fr}
   .metrics{grid-template-columns:repeat(2,1fr)}
+  .resultBox{grid-template-columns:repeat(3,1fr)}
 }
 </style>
 </head>
@@ -65,7 +84,7 @@ section h3{font-size:16px;margin:24px 0 12px;color:var(--accent)}
   <span class="logo">⚡ DELTA 2308</span>
   <span class="badge">Step 10 / 11</span>
   <span class="spacer" style="flex:1"></span>
-  <span class="tag">估值 · DCF + Comps + Synthesis</span>
+  <span class="tag">估值 · DCF + Comps + 互動計算機</span>
 </div>
 
 <div class="layout">
@@ -73,18 +92,20 @@ section h3{font-size:16px;margin:24px 0 12px;color:var(--accent)}
 <nav class="sidebar">
   <div class="navTitle">Step 10 目錄</div>
   <button class="navItem active" data-section="s1">💰 DCF 模型</button>
-  <button class="navItem" data-section="s2">📊 敏感度分析</button>
-  <button class="navItem" data-section="s3">🏷️ Trading Comps</button>
-  <button class="navItem" data-section="s4">🔍 市場隱含預期</button>
-  <button class="navItem" data-section="s5">⚖️ 估值綜合</button>
+  <button class="navItem" data-section="s2">🎚️ 互動計算機</button>
+  <button class="navItem" data-section="s3">📊 敏感度分析</button>
+  <button class="navItem" data-section="s4">🏷️ Trading Comps</button>
+  <button class="navItem" data-section="s5">🔍 市場隱含預期</button>
+  <button class="navItem" data-section="s6">⚖️ 估值綜合</button>
 </nav>
 
 <nav class="mobileNav">
   <button class="navItem active" data-section="s1">💰 DCF</button>
-  <button class="navItem" data-section="s2">📊 敏感度</button>
-  <button class="navItem" data-section="s3">🏷️ Comps</button>
-  <button class="navItem" data-section="s4">🔍 隱含</button>
-  <button class="navItem" data-section="s5">⚖️ 綜合</button>
+  <button class="navItem" data-section="s2">🎚️ 計算機</button>
+  <button class="navItem" data-section="s3">📊 敏感度</button>
+  <button class="navItem" data-section="s4">🏷️ Comps</button>
+  <button class="navItem" data-section="s5">🔍 隱含</button>
+  <button class="navItem" data-section="s6">⚖️ 綜合</button>
 </nav>
 
 <main class="content">
@@ -92,7 +113,7 @@ section h3{font-size:16px;margin:24px 0 12px;color:var(--accent)}
 <!-- SECTION 1: DCF -->
 <section id="s1" class="active">
 <h2>💰 Unlevered DCF 估值</h2>
-<p class="sectionDesc">WSP DCF 方法 · 5 年預測 + 終值 · WACC 8.5%</p>
+<p class="sectionDesc">WSP DCF 方法 · 5 年預測 + 終值 · 基準假設 WACC 8.5%</p>
 
 <div class="card">
   <div class="cardTitle">核心假設</div>
@@ -102,7 +123,6 @@ section h3{font-size:16px;margin:24px 0 12px;color:var(--accent)}
     <tr><td>終端成長率</td><td><strong>3.0%</strong></td><td>不超過長期 GDP 成長（Hooke 原則）</td></tr>
     <tr><td>稅率</td><td>23%</td><td>管理層指引（2026Q1 法說會）</td></tr>
     <tr><td>稀釋股數</td><td>~26.0 億股</td><td>FY2025 EPS 23.14 ÷ 淨利 601 億</td></tr>
-    <tr><td>ROIC</td><td class="up">~18%</td><td>Step 6 計算（645 億 ÷ 3,600 億）</td></tr>
   </table>
 </div>
 
@@ -112,165 +132,159 @@ section h3{font-size:16px;margin:24px 0 12px;color:var(--accent)}
     <tr><th>項目 (NT$億)</th><th>2026E</th><th>2027E</th><th>2028E</th><th>2029E</th><th>2030E</th></tr>
     <tr><td>營收</td><td class="up">7,200</td><td class="up">8,640</td><td class="up">9,936</td><td>11,128</td><td>12,241</td></tr>
     <tr><td>YoY 成長</td><td class="up">30%</td><td class="up">20%</td><td>15%</td><td>12%</td><td>10%</td></tr>
-    <tr><td>OPM</td><td>17.0%</td><td>16.0%</td><td>16.0%</td><td>15.0%</td><td>15.0%</td></tr>
     <tr><td>EBIT</td><td>1,224</td><td>1,382</td><td>1,590</td><td>1,669</td><td>1,836</td></tr>
-    <tr><td>NOPAT (×77%)</td><td>942</td><td>1,064</td><td>1,224</td><td>1,285</td><td>1,414</td></tr>
-    <tr><td>+ D&amp;A (~4%)</td><td>288</td><td>346</td><td>397</td><td>445</td><td>490</td></tr>
-    <tr><td>− Capex (~7%)</td><td class="warn">504</td><td class="warn">605</td><td class="warn">696</td><td class="warn">779</td><td class="warn">857</td></tr>
-    <tr><td>− ΔNWC (~2%)</td><td>144</td><td>173</td><td>199</td><td>223</td><td>245</td></tr>
-    <tr style="background:rgba(96,165,250,.08)"><td class="up"><strong>UFCF</strong></td><td class="up"><strong>582</strong></td><td class="up"><strong>632</strong></td><td class="up"><strong>727</strong></td><td class="up"><strong>729</strong></td><td class="up"><strong>802</strong></td></tr>
-    <tr><td>折現因子 (8.5%)</td><td>0.922</td><td>0.849</td><td>0.783</td><td>0.722</td><td>0.665</td></tr>
-    <tr style="background:rgba(52,211,153,.05)"><td class="up"><strong>PV of UFCF</strong></td><td class="up"><strong>536</strong></td><td class="up"><strong>537</strong></td><td class="up"><strong>569</strong></td><td class="up"><strong>526</strong></td><td class="up"><strong>533</strong></td></tr>
+    <tr><td>NOPAT</td><td>942</td><td>1,064</td><td>1,224</td><td>1,285</td><td>1,414</td></tr>
+    <tr><td style="background:rgba(96,165,250,.08)" class="up"><strong>UFCF</strong></td><td style="background:rgba(96,165,250,.08)" class="up"><strong>582</strong></td><td style="background:rgba(96,165,250,.08)" class="up"><strong>632</strong></td><td style="background:rgba(96,165,250,.08)" class="up"><strong>727</strong></td><td style="background:rgba(96,165,250,.08)" class="up"><strong>729</strong></td><td style="background:rgba(96,165,250,.08)" class="up"><strong>802</strong></td></tr>
   </table>
 </div>
 
 <div class="card">
-  <div class="cardTitle">終值與股權價值橋接</div>
+  <div class="cardTitle">終值與股權價值（基準假設）</div>
   <table class="tbl">
-    <tr><td>5 年 UFCF 現值總和</td><td class="up"><strong>NT$2,701 億</strong></td></tr>
-    <tr><td>終值 (Gordon Growth) = 802 × 1.03 ÷ (8.5% − 3.0%)</td><td>NT$15,018 億</td></tr>
-    <tr><td>終值現值 (折現 5 年)</td><td class="up"><strong>NT$9,974 億</strong></td></tr>
-    <tr style="background:rgba(96,165,250,.08)"><td><strong>企業價值 (EV)</strong></td><td class="up"><strong>NT$12,675 億</strong></td></tr>
-    <tr><td>− 淨負債 (估算)</td><td>NT$500 億</td></tr>
-    <tr style="background:rgba(52,211,153,.08)"><td class="up"><strong>股權價值</strong></td><td class="up"><strong>NT$12,175 億</strong></td></tr>
-    <tr><td>÷ 稀釋股數</td><td>26.0 億股</td></tr>
+    <tr><td>5 年 UFCF 現值</td><td class="up">NT$2,701 億</td></tr>
+    <tr><td>終值現值</td><td class="up">NT$9,974 億</td></tr>
+    <tr style="background:rgba(96,165,250,.08)"><td><strong>企業價值</strong></td><td class="up"><strong>NT$12,675 億</strong></td></tr>
     <tr style="background:rgba(52,211,153,.15)"><td class="up" style="font-size:18px;font-weight:700"><strong>每股內含價值</strong></td><td class="up" style="font-size:18px;font-weight:700"><strong>NT$4,683</strong></td></tr>
   </table>
   <p style="font-size:13px;color:var(--ink);margin-top:12px"><strong>vs. 目前股價 NT$2,300 → 隱含上漲空間 +104%</strong></p>
 </div>
 
 <div class="callout gold">
-  <strong>⚠️ Hooke 警告：終值佔總 EV 的 79%</strong>（NT$9,974 ÷ NT$12,675），這是 DCF 的常見問題。如此高佔比意味著估值高度依賴終值假設的準確性。Hooke 建議 DCF 權重僅佔 20%，應以 Trading Comps 為主要決策工具。
+  <strong>⚠️ Hooke 警告：終值佔總 EV 的 79%。</strong>往下滑到 <strong>「🎚️ 互動計算機」</strong>自己調整參數看結果！
 </div>
 </section>
 
-<!-- SECTION 2: SENSITIVITY -->
+<!-- SECTION 2: INTERACTIVE CALCULATOR -->
 <section id="s2">
-<h2>📊 敏感度分析</h2>
-<p class="sectionDesc">Hooke 第三問題 —「0.5% 的參數變動可以讓估值變動 15%+」</p>
+<h2>🎚️ 互動式 DCF 計算機</h2>
+<p class="sectionDesc">拖動滑桿即時看到估值變化 — 讓你自己測試不同假設的影響</p>
 
 <div class="card">
-  <div class="cardTitle">WACC × 終端成長率 敏感度矩陣（每股內含價值，NT$）</div>
+  <div class="cardTitle">🔧 調整你的假設</div>
+
+  <div class="sliderCard">
+    <label>WACC（加權平均資金成本）<span id="waccVal">8.5%</span></label>
+    <input type="range" id="waccSlider" min="6.0" max="12.0" step="0.1" value="8.5" oninput="recalc()">
+    <div class="sliderLabels"><span>6.0%</span><span>8.5%</span><span>12.0%</span></div>
+  </div>
+
+  <div class="sliderCard">
+    <label>終端成長率 g <span id="gVal">3.0%</span></label>
+    <input type="range" id="gSlider" min="1.0" max="5.0" step="0.1" value="3.0" oninput="recalc()">
+    <div class="sliderLabels"><span>1.0%</span><span>3.0%</span><span>5.0%</span></div>
+  </div>
+
+  <div class="sliderCard">
+    <label>5 年營收 CAGR <span id="cagrVal">17%</span></label>
+    <input type="range" id="cagrSlider" min="8" max="25" step="1" value="17" oninput="recalc()">
+    <div class="sliderLabels"><span>8%</span><span>17%</span><span>25%</span></div>
+  </div>
+
+  <div class="sliderCard">
+    <label>終端 OPM <span id="opmVal">15%</span></label>
+    <input type="range" id="opmSlider" min="10" max="20" step="0.5" value="15" oninput="recalc()">
+    <div class="sliderLabels"><span>10%</span><span>15%</span><span>20%</span></div>
+  </div>
+
+  <div class="resultBox">
+    <div class="result bull" id="resVal"><div class="rVal">NT$4,683</div><div class="rLbl">每股內含價值</div></div>
+    <div class="result neutral" id="resDelta"><div class="rVal">+NT$2,383</div><div class="rLbl">vs 目前股價 NT$2,300</div></div>
+    <div class="result bull" id="resPct"><div class="rVal">+104%</div><div class="rLbl">隱含上漲空間</div></div>
+  </div>
+
+  <div class="priceBar" style="position:relative;margin-top:8px">
+    <div class="fill" id="priceFill" style="width:100%;background:var(--green)"></div>
+    <div class="priceMarker" data-label="現價 NT$2,300" style="left:49%"></div>
+  </div>
+  <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--dim);margin-top:4px">
+    <span>NT$0</span><span>NT$5,000</span><span>NT$10,000+</span>
+  </div>
+</div>
+</section>
+
+<!-- SECTION 3: SENSITIVITY -->
+<section id="s3">
+<h2>📊 敏感度矩陣</h2>
+<p class="sectionDesc">WACC × 終端成長率 — 基準假設用 <strong>粗體</strong></p>
+
+<div class="card">
   <table class="tbl">
     <tr><th>WACC ↓ / g →</th><th>2.0%</th><th>2.5%</th><th class="accent">3.0%</th><th>3.5%</th><th>4.0%</th></tr>
-    <tr><td class="red">7.0%</td><td class="red">6,741</td><td class="red">7,755</td><td class="red">9,217</td><td class="red">11,512</td><td class="red">15,610</td></tr>
+    <tr><td>7.0%</td><td>6,741</td><td>7,755</td><td>9,217</td><td>11,512</td><td>15,610</td></tr>
     <tr><td>7.5%</td><td>5,609</td><td>6,321</td><td>7,296</td><td>8,712</td><td>10,958</td></tr>
-    <tr><td class="accent" style="background:rgba(96,165,250,.08)"><strong>8.5%</strong></td><td class="accent">4,694</td><td class="accent">5,207</td><td class="accent"><strong>5,869</strong></td><td class="accent">6,772</td><td class="accent">8,096</td></tr>
+    <tr style="background:rgba(96,165,250,.08)"><td class="accent"><strong>8.5%</strong></td><td>4,694</td><td>5,207</td><td class="accent"><strong>5,869</strong></td><td>6,772</td><td>8,096</td></tr>
     <tr><td>9.5%</td><td>3,959</td><td>4,337</td><td>4,812</td><td>5,421</td><td>6,235</td></tr>
     <tr><td>10.5%</td><td>3,366</td><td>3,650</td><td>3,995</td><td>4,425</td><td>4,976</td></tr>
   </table>
-  <p style="font-size:11px;color:var(--dim);margin-top:8px">敏感度範圍：NT$3,366 ~ NT$15,610。即使在最悲觀的 WACC 10.5% + g 2.0%，內含價值仍高於目前股價 NT$2,300。</p>
-</div>
-
-<div class="callout green">
-  <strong>📊 敏感度關鍵發現：</strong>在合理的 WACC 範圍（8-9.5%）和終端成長率（2.5-3.5%）下，DCF 內含價值為 <strong>NT$4,000-6,800</strong>。即使採用極保守假設（WACC 10.5%、g 2%），內含價值 NT$3,366 仍高於目前股價 46%。這意味著 <strong>目前股價提供了顯著的安全邊際</strong>。
+  <p style="font-size:11px;color:var(--dim);margin-top:8px">即使在最悲觀的 WACC 10.5% + g 2.0%，內含價值 NT$3,366 仍高於目前股價 NT$2,300（+46%）。</p>
 </div>
 </section>
 
-<!-- SECTION 3: TRADING COMPS -->
-<section id="s3">
-<h2>🏷️ Trading Comps 相對估值</h2>
-<p class="sectionDesc">Hooke 框架：Comps 佔 60% 權重 — 主要的決策工具</p>
-
-<div class="card">
-  <div class="cardTitle">可比公司倍數</div>
-  <table class="tbl">
-    <tr><th>公司</th><th>業務</th><th>EV/EBITDA</th><th>P/E (NTM)</th><th>營收成長</th><th>OPM</th></tr>
-    <tr><td class="up"><strong>台達電 2308</strong></td><td class="accent">Power+Cooling</td><td class="accent">~18x</td><td class="accent">~25x</td><td class="accent">+30%</td><td class="accent">17.8%</td></tr>
-    <tr><td>Vertiv (VRT)</td><td>DC Infrastructure</td><td class="up">~28x</td><td class="up">~42x</td><td class="up">+20%</td><td>18%</td></tr>
-    <tr><td>Schneider (SU)</td><td>Power/Automation</td><td>~16x</td><td>~22x</td><td>+8%</td><td>16%</td></tr>
-    <tr><td>Eaton (ETN)</td><td>Power Management</td><td class="up">~24x</td><td class="up">~30x</td><td>+12%</td><td class="up">19%</td></tr>
-    <tr><td>奇鋐 3017</td><td>散熱</td><td class="up">~22x</td><td class="up">~28x</td><td class="up">+25%</td><td>15%</td></tr>
-    <tr><td>雙鴻 3324</td><td>散熱</td><td class="up">~20x</td><td class="up">~26x</td><td class="up">+20%</td><td>14%</td></tr>
-    <tr style="background:rgba(96,165,250,.05)"><td>光寶科 2301</td><td>電源</td><td>~14x</td><td>~18x</td><td>+8%</td><td>12%</td></tr>
-    <tr style="background:rgba(96,165,250,.08)"><td><strong>同業中位數</strong></td><td></td><td><strong>~21x</strong></td><td><strong>~27x</strong></td><td>+16%</td><td>15.5%</td></tr>
-  </table>
-  <p style="font-size:11px;color:var(--dim);margin-top:8px">* 倍數為基於 2026 年 6 月市場數據的推估。台達電的成長率和利潤率均高於同業中位數。</p>
-</div>
-
-<div class="card">
-  <div class="cardTitle">Comps 隱含估值</div>
-  <table class="tbl">
-    <tr><th>方法</th><th>倍數</th><th>隱含每股價值</th><th>vs NT$2,300</th></tr>
-    <tr><td>EV/EBITDA (同業中位數 21x)</td><td>21x</td><td class="up"><strong>NT$3,200</strong></td><td class="up">+39%</td></tr>
-    <tr><td>P/E NTM (同業中位數 27x)</td><td>27x</td><td class="up"><strong>NT$2,600</strong></td><td class="up">+13%</td></tr>
-    <tr><td>P/E NTM (成長調整後 30x)</td><td class="up">30x</td><td class="up"><strong>NT$2,880</strong></td><td class="up">+25%</td></tr>
-    <tr><td>EV/EBITDA (含溢價 23x)</td><td class="up">23x</td><td class="up"><strong>NT$3,500</strong></td><td class="up">+52%</td></tr>
-  </table>
-  <p style="font-size:13px;color:var(--ink);margin-top:12px"><strong>Trading Comps 隱含公允價值區間：NT$2,600 – NT$3,500</strong></p>
-</div>
-
-<div class="callout purple">
-  <strong>🏷️ Comps 診斷：</strong>台達電的 P/E 25x <strong>低於</strong>同業中位數 27x，但營收成長（+30%）和 OPM（17.8%）均顯著高於同業中位數（+16%、15.5%）。按照成長率和獲利能力，台達應享有 <strong>溢價而非折價</strong>。合理的 P/E 區間為 27-32x，對應股價 NT$2,600-3,100。
-</div>
-</section>
-
-<!-- SECTION 4: MARKET-IMPLIED -->
+<!-- SECTION 4: TRADING COMPS -->
 <section id="s4">
-<h2>🔍 市場隱含了什麼預期？</h2>
-<p class="sectionDesc">Reverse DCF — 「不在於你認為公司值多少，而在於市場已經相信了什麼」</p>
+<h2>🏷️ Trading Comps 相對估值</h2>
 
 <div class="card">
-  <div class="cardTitle">目前股價 NT$2,300 隱含的假設</div>
+  <table class="tbl">
+    <tr><th>公司</th><th>業務</th><th>EV/EBITDA</th><th>P/E (NTM)</th><th>營收成長</th></tr>
+    <tr><td class="up"><strong>台達電 2308</strong></td><td>Power+Cooling</td><td>~18x</td><td>~25x</td><td class="up">+30%</td></tr>
+    <tr><td>Vertiv (VRT)</td><td>DC Infrastructure</td><td class="up">~28x</td><td class="up">~42x</td><td class="up">+20%</td></tr>
+    <tr><td>Schneider</td><td>Power/Automation</td><td>~16x</td><td>~22x</td><td>+8%</td></tr>
+    <tr><td>Eaton (ETN)</td><td>Power Management</td><td class="up">~24x</td><td class="up">~30x</td><td>+12%</td></tr>
+    <tr><td>奇鋐 3017</td><td>散熱</td><td class="up">~22x</td><td class="up">~28x</td><td class="up">+25%</td></tr>
+    <tr style="background:rgba(96,165,250,.08)"><td><strong>同業中位數</strong></td><td></td><td><strong>~21x</strong></td><td><strong>~27x</strong></td><td>+16%</td></tr>
+  </table>
+</div>
+
+<div class="card">
+  <table class="tbl">
+    <tr><th>方法</th><th>隱含價值</th><th>vs NT$2,300</th></tr>
+    <tr><td>EV/EBITDA 21x</td><td class="up">NT$3,200</td><td class="up">+39%</td></tr>
+    <tr><td>P/E 27x</td><td class="up">NT$2,600</td><td class="up">+13%</td></tr>
+    <tr><td>P/E 30x（成長調整後）</td><td class="up">NT$2,880</td><td class="up">+25%</td></tr>
+    <tr><td>EV/EBITDA 23x（含溢價）</td><td class="up">NT$3,500</td><td class="up">+52%</td></tr>
+  </table>
+  <p style="font-size:13px;color:var(--ink);margin-top:12px"><strong>Comps 公允區間：NT$2,600 – NT$3,500</strong></p>
+</div>
+</section>
+
+<!-- SECTION 5: MARKET-IMPLIED -->
+<section id="s5">
+<h2>🔍 市場隱含了什麼預期？</h2>
+
+<div class="card">
   <table class="tbl">
     <tr><th>參數</th><th>市場隱含</th><th>我們的估計</th><th>差距</th></tr>
     <tr><td>5 年營收 CAGR</td><td class="down">~10%</td><td class="up">~17%</td><td class="up">我們更樂觀</td></tr>
     <tr><td>終端 OPM</td><td class="down">~12%</td><td class="up">~15%</td><td class="up">我們更樂觀</td></tr>
     <tr><td>隱含 WACC</td><td class="down">~11%</td><td>8.5%</td><td class="up">市場要求更高回報</td></tr>
-    <tr><td>AI CAPEX 持續性</td><td class="down">2027 後放緩</td><td class="up">2028-30 仍成長</td><td class="up">我們更樂觀</td></tr>
   </table>
 </div>
 
 <div class="callout green">
-  <strong>🔍 市場隱含預期的核心洞察：</strong>目前股價 NT$2,300 隱含的假設是「AI 成長在 2-3 年後大幅放緩，OPM 回落至 12%，WACC 高達 11%」。換句話說，<strong>市場定價的是一個相當保守的劇本</strong>——它假設台達的 AI 紅利是短暫的，而非結構性的。如果我們的 thesis（AI 是 10 年+ 的結構性趨勢）是對的，那目前股價存在顯著的 re-rating 空間。
+  <strong>🔍 核心洞察：</strong>NT$2,300 隱含的假設是「AI 紅利在 2-3 年後消退」。如果 AI 是 10 年+ 結構性趨勢，這個折價不合理。用上面的互動計算機把 CAGR 調到 12%、OPM 調到 12%、WACC 調到 11%——那才是市場目前定價的劇本。
 </div>
 </section>
 
-<!-- SECTION 5: SYNTHESIS -->
-<section id="s5">
+<!-- SECTION 6: SYNTHESIS -->
+<section id="s6">
 <h2>⚖️ 估值綜合判斷</h2>
 
 <div class="metrics">
   <div class="metric"><div class="val up">NT$4,683</div><div class="lbl">DCF 內含價值</div></div>
   <div class="metric"><div class="val up">NT$2,600-3,500</div><div class="lbl">Comps 公允區間</div></div>
-  <div class="metric"><div class="val up">NT$3,000-3,500</div><div class="lbl">綜合公允價值</div></div>
-  <div class="metric"><div class="val up">+30-50%</div><div class="lbl">隱含上漲空間</div></div>
+  <div class="metric"><div class="val up">~NT$3,500</div><div class="lbl">綜合公允價值</div></div>
+  <div class="metric"><div class="val up">+52%</div><div class="lbl">隱含上漲空間</div></div>
 </div>
 
 <div class="verdict">
   <div class="vTitle">📋 估值判決：溫和低估 (Modestly Undervalued)</div>
   <p style="font-size:16px;line-height:1.8">
-    按照 Hooke 框架給予權重：<strong>Comps 60% + DCF 20% + 私有市場價值 20%</strong>：<br><br>
-    <span class="math">公允價值 = 3,100 × 60% + 4,683 × 20% + 3,500 × 20% ≈ <strong>NT$3,500</strong></span><br><br>
-    vs. 目前股價 NT$2,300 → <strong>隱含上漲空間 +52%</strong>。即使在保守情境下（僅用 Comps），公允價值仍在 NT$2,600-3,200。<br><br>
-    <strong>為什麼有這麼大的折價？</strong>市場在定價三個憂慮：(1) AI CAPEX 循環在 2027 年後放緩；(2) OPM 將從 17.8% 回落至 12%；(3) 台海地緣風險要求更高 WACC。但我們的分析顯示這三個憂慮都<strong>過度悲觀</strong>——市場對台達的定價隱含了一個「AI 是泡沫」的劇本，而證據指向「AI 是結構性趨勢」。<br><br>
-    <strong>前 9 步的分析如何支持這個估值？</strong>護城河 A−（不可複製）→ 競爭領導地位 → 增量利潤率 35% → ROIC 18% > WACC 8.5%（成長創造價值）→ 產業 CAGR 30-35% → 全部指向一個結論：<strong>市場給台達的折價是不合理的</strong>。
+    Hooke 框架加權：<strong>Comps 60% + DCF 20% + 私有市場 20%</strong><br>
+    <span class="math">公允價值 ≈ <strong>NT$3,500</strong> vs 現價 NT$2,300 → +52%</span><br><br>
+    市場在定價一個 AI 泡沫劇本，但 11 步證據指向結構性趨勢。前 9 步的護城河、競爭、成長分析全都支撐這個估值。<br><br>
+    <strong>試試互動計算機：</strong>把 WACC 調到 11%、CAGR 調到 10%、OPM 調到 12%——那就是市場定價的劇本。你同意嗎？
   </p>
-</div>
-
-<div class="grid2">
-  <div class="card" style="border-left:3px solid var(--green)">
-    <div class="cardTitle">🟢 你必須相信的事</div>
-    <ul style="font-size:13px;color:var(--muted);padding-left:18px">
-      <li>AI 資料中心建設不是泡沫，而是 10 年+ 結構性趨勢</li>
-      <li>台達能維持 AI 電源+冷卻的領導地位</li>
-      <li>OPM 可維持在 15-17%（而非回落至 12%）</li>
-      <li>CSP 無法在 3 年內找到完整的替代方案</li>
-    </ul>
-  </div>
-  <div class="card" style="border-left:3px solid var(--red)">
-    <div class="cardTitle">🔴 什麼會讓這個估值失效</div>
-    <ul style="font-size:13px;color:var(--muted);padding-left:18px">
-      <li>CSP CAPEX 在 2027 年後驟降（AI 證偽）</li>
-      <li>台達失去 AI 電源主要供應商地位</li>
-      <li>技術路線轉移使現有護城河失效</li>
-      <li>台海爆發衝突</li>
-    </ul>
-  </div>
-</div>
-
-<div class="callout gold" style="margin-top:24px">
-  <strong>📌 Step 11：組合配置 (Portfolio Fit)</strong>— 最後一步。台達電在你的投資組合中應該佔多少？與其他持倉的相關性如何？
 </div>
 </section>
 
@@ -278,6 +292,106 @@ section h3{font-size:16px;margin:24px 0 12px;color:var(--accent)}
 </div>
 
 <script>
+const CURRENT_PRICE = 2300;
+const SHARES = 26.0; // 億股
+const NET_DEBT = 500; // 億
+
+// Pre-compute UFCF for different CAGR and OPM scenarios
+// Base year revenue: 5549B (FY2025), growing at CAGR
+function computeDCF(cagr, opm, wacc, g) {
+  const rev0 = 5549;
+  // Generate 5 years of revenue
+  let revs = [];
+  let cagrs = [0.30, 0.20, 0.15, 0.12, 0.10]; // default taper
+  // Scale cagrs to match target average
+  let totalGrowth = Math.pow(1 + cagr/100, 5);
+  let taperFactors = [1.0, 0.85, 0.70, 0.55, 0.40];
+  // Actually, let's use simpler approach: fixed taper from base 30%
+  let years = [1.30, 1.20, 1.15, 1.12, 1.10]; // default growth multipliers
+  let target5yr = Math.pow(1 + cagr/100, 5);
+  let default5yr = 1.30 * 1.20 * 1.15 * 1.12 * 1.10;
+  let scale = target5yr / default5yr;
+  years = years.map(y => 1 + (y - 1) * scale);
+  
+  let rev = rev0;
+  let ufcfs = [];
+  for (let i = 0; i < 5; i++) {
+    rev *= years[i];
+    let ebit = rev * (opm/100);
+    let nopat = ebit * 0.77;
+    let da = rev * 0.04;
+    let capex = rev * 0.07;
+    let nwc = rev * 0.02;
+    let ufcf = nopat + da - capex - nwc;
+    ufcfs.push(ufcf);
+  }
+  
+  // PV of cash flows
+  let pvSum = 0;
+  for (let i = 0; i < 5; i++) {
+    pvSum += ufcfs[i] / Math.pow(1 + wacc/100, i + 1);
+  }
+  
+  // Terminal value
+  let tv = ufcfs[4] * (1 + g/100) / (wacc/100 - g/100);
+  let pvTv = tv / Math.pow(1 + wacc/100, 5);
+  
+  let ev = pvSum + pvTv;
+  let equity = ev - NET_DEBT;
+  let perShare = equity / SHARES;
+  
+  return {perShare, ev, pvSum, pvTv};
+}
+
+function recalc() {
+  let wacc = parseFloat(document.getElementById('waccSlider').value);
+  let g = parseFloat(document.getElementById('gSlider').value);
+  let cagr = parseInt(document.getElementById('cagrSlider').value);
+  let opm = parseFloat(document.getElementById('opmSlider').value);
+  
+  document.getElementById('waccVal').textContent = wacc.toFixed(1) + '%';
+  document.getElementById('gVal').textContent = g.toFixed(1) + '%';
+  document.getElementById('cagrVal').textContent = cagr + '%';
+  document.getElementById('opmVal').textContent = opm.toFixed(1) + '%';
+  
+  if (g/100 >= wacc/100) {
+    document.getElementById('resVal').querySelector('.rVal').textContent = '⚠️ g ≥ WACC';
+    document.getElementById('resDelta').querySelector('.rVal').textContent = '—';
+    document.getElementById('resPct').querySelector('.rVal').textContent = '—';
+    return;
+  }
+  
+  let dcf = computeDCF(cagr, opm, wacc, g);
+  let val = Math.round(dcf.perShare);
+  let delta = val - CURRENT_PRICE;
+  let pct = Math.round((val / CURRENT_PRICE - 1) * 100);
+  
+  let valEl = document.getElementById('resVal');
+  let deltaEl = document.getElementById('resDelta');
+  let pctEl = document.getElementById('resPct');
+  
+  valEl.querySelector('.rVal').textContent = 'NT$' + val.toLocaleString();
+  deltaEl.querySelector('.rVal').textContent = (delta >= 0 ? '+' : '') + 'NT$' + delta.toLocaleString();
+  pctEl.querySelector('.rVal').textContent = (pct >= 0 ? '+' : '') + pct + '%';
+  
+  // Color coding
+  [valEl, deltaEl, pctEl].forEach(el => { el.className = 'result neutral'; });
+  if (pct > 15) {
+    [valEl, deltaEl, pctEl].forEach(el => { el.className = 'result bull'; });
+  } else if (pct < -5) {
+    [valEl, deltaEl, pctEl].forEach(el => { el.className = 'result bear'; });
+  }
+  
+  // Price bar
+  let fill = document.getElementById('priceFill');
+  let ratio = Math.min(val / 5000, 1.2);
+  fill.style.width = (ratio * 100) + '%';
+  if (pct > 15) fill.style.background = 'var(--green)';
+  else if (pct < -5) fill.style.background = 'var(--red)';
+  else fill.style.background = 'var(--gold)';
+}
+
+// Nav
 document.querySelectorAll('.navItem').forEach(btn => {
   btn.addEventListener('click', () => {
     const section = btn.dataset.section;
