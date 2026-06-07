@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Maobolin Research Reports</title>
+<style>
+  :root {
+    --bg: #0d1117; --card: #161b22; --border: #30363d;
+    --text: #c9d1d9; --muted: #8b949e; --accent: #58a6ff;
+    --green: #3fb950;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:var(--bg); color:var(--text); font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif; padding:2rem; max-width:800px; margin:0 auto; min-height:100vh; }
+  h1 { color:var(--accent); font-size:1.8rem; margin-bottom:.5rem; }
+  .subtitle { color:var(--muted); margin-bottom:2rem; }
+  .report-card { background:var(--card); border:1px solid var(--border); border-radius:8px; padding:1.25rem; margin:1rem 0; transition:border-color .2s; }
+  .report-card:hover { border-color:var(--accent); }
+  .report-card a { color:var(--accent); text-decoration:none; font-size:1.1rem; font-weight:600; }
+  .report-card a:hover { text-decoration:underline; }
+  .report-date { color:var(--muted); font-size:.85rem; }
+  .report-desc { color:var(--text); margin-top:.5rem; font-size:.9rem; }
+  .badge { display:inline-block; padding:2px 8px; border-radius:12px; font-size:.75rem; font-weight:600; background:rgba(63,185,80,0.15); color:var(--green); }
+  footer { margin-top:3rem; padding-top:1rem; border-top:1px solid var(--border); color:var(--muted); font-size:.8rem; text-align:center; }
+</style>
+</head>
+<body>
+<h1>📊 Maobolin Research Reports</h1>
+<p class="subtitle">由 Hermes Agent 自動生成的研究報告 · 台股基本面 + 量化分析</p>
+
+<div class="report-card">
+  <a href="demo-report-2026-06-07.html">🔋 AES-KY (6781) 估值摘要</a>
+  <div class="report-date">2026-06-07</div>
+  <div class="report-desc">同業比較 · DCF 敏感性分析 · 情境分析 · 估值結論</div>
+  <span class="badge">equity research</span>
+</div>
+
+<p style="color:var(--muted); margin-top:2rem;">更多報告即將上線⋯⋯</p>
+
+<footer>
+  Powered by <strong>Maobolin</strong> (Hermes Agent) · Nous Research · Hosted on GitHub Pages
+</footer>
+</body>
+</html>
