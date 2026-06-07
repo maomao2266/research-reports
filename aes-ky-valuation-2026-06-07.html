@@ -5,27 +5,22 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>AES-KY (6781) 深度估值分析 | Maobolin Research</title>
 <style>
-/* ═══════════════ NTU Dark Palette ═══════════════ */
+/* ═══════════ NTU Dark Palette ═══════════ */
 :root{
   --bg:#0a0e14; --surface:#131820; --card:#181f2a;
   --border:#252d3a; --borderHover:#3a4558;
   --ink:#e2e8f0; --muted:#7c8aa0; --dim:#4a5568;
   --accent:#60a5fa; --accent2:#3b82f6;
-  --gold:#f59e0b;  --green:#34d399; --red:#f87171;
+  --gold:#f59e0b; --green:#34d399; --red:#f87171;
   --orange:#fb923c; --purple:#a78bfa;
   --radius:14px; --radius2:18px;
   --sans:"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,-apple-system,sans-serif;
-  --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
-  /* segment colors */
-  --s1:#60a5fa; --s2:#34d399; --s3:#f59e0b; --s4:#a78bfa;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:var(--sans);font-size:15px;color:var(--ink);
   background:radial-gradient(1000px 500px at 10% 0%,rgba(59,130,246,.06),transparent 55%),
              radial-gradient(800px 400px at 90% 5%,rgba(245,158,11,.05),transparent 55%),
              var(--bg);min-height:100vh;}
-
-/* ── Topbar ── */
 .topbar{display:flex;align-items:center;justify-content:space-between;
   padding:12px 18px;border-bottom:1px solid var(--border);position:sticky;top:0;
   background:rgba(10,14,20,.92);backdrop-filter:blur(12px);z-index:20;}
@@ -42,10 +37,7 @@ body{font-family:var(--sans);font-size:15px;color:var(--ink);
 .btn:hover{border-color:var(--accent2);box-shadow:0 4px 12px rgba(59,130,246,.15);color:var(--accent);}
 .btn:active{transform:translateY(1px)}
 .btn.accent{border-color:rgba(96,165,250,.3);background:rgba(59,130,246,.12);color:var(--accent);}
-
-/* ── Layout ── */
-.layout{display:grid;grid-template-columns:260px 1fr;gap:14px;padding:14px;
-  max-width:1400px;margin:0 auto;}
+.layout{display:grid;grid-template-columns:260px 1fr;gap:14px;padding:14px;max-width:1400px;margin:0 auto;}
 .sidebar{position:sticky;top:80px;align-self:start;
   border:1px solid var(--border);border-radius:var(--radius2);
   background:rgba(19,24,32,.85);backdrop-filter:blur(8px);
@@ -58,27 +50,19 @@ body{font-family:var(--sans);font-size:15px;color:var(--ink);
   transition:.12s;margin-bottom:2px;line-height:1.35;font-family:var(--sans);}
 .navItem:hover{background:rgba(96,165,250,.06);color:var(--ink);}
 .navItem.active{background:rgba(96,165,250,.10);border-color:rgba(96,165,250,.18);color:var(--accent);}
-
 .content{border:1px solid var(--border);border-radius:var(--radius2);
   background:rgba(19,24,32,.78);backdrop-filter:blur(8px);
   padding:22px;min-height:calc(100vh - 140px);}
-
-/* ── Section head ── */
-.secHead{display:flex;align-items:flex-start;justify-content:space-between;
-  gap:12px;margin-bottom:18px;}
+.secHead{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:18px;}
 .h1{font-size:25px;font-weight:900;color:var(--ink);margin:0;line-height:1.18;}
 .sub{margin:4px 0 0;color:var(--muted);line-height:1.5;font-size:14px;}
 .tag{display:inline-flex;align-items:center;gap:6px;
   border:1px solid rgba(96,165,250,.2);background:rgba(59,130,246,.08);
   color:var(--accent);padding:6px 12px;border-radius:999px;
   font-weight:800;white-space:nowrap;font-size:12px;}
-
-/* ── Card ── */
 .card{border:1px solid var(--border);border-radius:var(--radius);
   background:var(--card);padding:16px;margin-bottom:14px;}
 .cardTitle{font-weight:900;color:var(--ink);margin:0 0 10px;font-size:15px;}
-
-/* ── Table ── */
 .tbl{width:100%;border-collapse:collapse;font-size:13px;margin:8px 0;}
 .tbl th{text-align:left;padding:8px 10px;border-bottom:2px solid var(--border);
   color:var(--muted);font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:.04em;}
@@ -86,49 +70,68 @@ body{font-family:var(--sans);font-size:15px;color:var(--ink);
 .tbl tr:hover td{background:rgba(96,165,250,.04);}
 .up{color:var(--green);font-weight:700}.down{color:var(--red);font-weight:700}
 .warn{color:var(--orange);font-weight:700}
-
-/* ── Callout ── */
 .callout{border-left:4px solid var(--accent);padding:10px 12px;
   background:rgba(59,130,246,.06);border-radius:10px;margin:10px 0;line-height:1.6;font-size:14px;}
 .callout.gold{border-color:var(--gold);background:rgba(245,158,11,.06);}
 .callout.green{border-color:var(--green);background:rgba(52,211,153,.05);}
 .callout.red{border-color:var(--red);background:rgba(248,113,113,.05);}
 .callout.purple{border-color:var(--purple);background:rgba(167,139,250,.06);}
-
-/* ── Metric row ── */
 .metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin:10px 0;}
 .metric{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);
   padding:12px;text-align:center;}
 .metric .val{font-size:22px;font-weight:900;color:var(--ink);}
 .metric .lbl{font-size:11px;color:var(--muted);margin-top:2px;}
-
-/* ── Pill / Badge ── */
 .pillRow{display:flex;gap:6px;flex-wrap:wrap;}
 .pill{border:1px solid var(--border);background:var(--card);border-radius:999px;
   padding:4px 10px;font-weight:700;font-size:12px;color:var(--muted);}
 .pill.g{color:var(--green);border-color:rgba(52,211,153,.25)}
 .pill.r{color:var(--red);border-color:rgba(248,113,113,.25)}
 .pill.o{color:var(--orange);border-color:rgba(251,146,60,.25)}
-
-/* ── Scenario Grid ── */
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
 .grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;}
-
-/* ── Verdict box ── */
 .verdict{border:1px solid rgba(245,158,11,.25);background:rgba(245,158,11,.06);
   border-radius:var(--radius);padding:14px;margin:16px 0;line-height:1.7;}
 .verdict .vTitle{font-weight:900;color:var(--gold);margin-bottom:6px;font-size:15px;}
-
-/* ── Footer ── */
 .footer{margin-top:20px;padding-top:12px;border-top:1px solid var(--border);
   text-align:center;color:var(--dim);font-size:11px;}
 
-@media(max-width:768px){.layout{grid-template-columns:1fr}.sidebar{display:none}}
+/* ── Interactive Calculator ── */
+.calcBox{border:2px solid rgba(96,165,250,.25);border-radius:var(--radius2);
+  background:rgba(19,24,32,.6);padding:18px;margin:14px 0;}
+.calcBox h3{color:var(--accent);margin:0 0 4px;}
+.calcBox .hint{color:var(--muted);font-size:13px;margin-bottom:14px;}
+.sliderGroup{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;}
+.sliderCard{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:14px;}
+.sliderCard label{display:flex;justify-content:space-between;align-items:center;
+  font-weight:700;font-size:13px;color:var(--ink);margin-bottom:8px;}
+.sliderCard label span{color:var(--accent);font-size:18px;font-weight:900;}
+.sliderCard input[type=range]{width:100%;-webkit-appearance:none;appearance:none;
+  height:6px;border-radius:3px;background:var(--border);outline:none;}
+.sliderCard input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;
+  width:22px;height:22px;border-radius:50%;background:var(--accent);cursor:pointer;
+  box-shadow:0 0 12px rgba(96,165,250,.3);transition:.1s;}
+.sliderCard input[type=range]::-webkit-slider-thumb:hover{transform:scale(1.15);}
+.sliderLabels{display:flex;justify-content:space-between;font-size:10px;color:var(--dim);margin-top:4px;}
+.resultBox{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;}
+.result{text-align:center;padding:14px;border-radius:var(--radius);border:1px solid var(--border);}
+.result .rVal{font-size:28px;font-weight:900;}
+.result .rLbl{font-size:11px;color:var(--muted);margin-top:2px;}
+.result.bull{background:rgba(52,211,153,.06);border-color:rgba(52,211,153,.2);}
+.result.bull .rVal{color:var(--green)}
+.result.bear{background:rgba(248,113,113,.06);border-color:rgba(248,113,113,.2);}
+.result.bear .rVal{color:var(--red)}
+.result.neutral{background:rgba(245,158,11,.06);border-color:rgba(245,158,11,.2);}
+.result.neutral .rVal{color:var(--gold)}
+#priceBar{height:8px;border-radius:4px;margin-top:12px;background:var(--border);position:relative;overflow:visible;}
+#priceBar .fill{height:100%;border-radius:4px;transition:width .15s,background .15s;}
+#priceBar .marker{position:absolute;top:-4px;width:2px;height:16px;background:#fff;border-radius:1px;}
+
+@media(max-width:768px){.layout{grid-template-columns:1fr}.sidebar{display:none}
+  .sliderGroup{grid-template-columns:1fr}.resultBox{grid-template-columns:1fr}.grid4{grid-template-columns:1fr 1fr}}
 </style>
 </head>
 <body>
 
-<!-- ═══════════ TOPBAR ═══════════ -->
 <div class="topbar">
   <div class="brand">
     <div class="logo">MB</div>
@@ -143,52 +146,33 @@ body{font-family:var(--sans);font-size:15px;color:var(--ink);
   </div>
 </div>
 
-<!-- ═══════════ LAYOUT ═══════════ -->
 <div class="layout">
-  <!-- SIDEBAR -->
   <nav class="sidebar">
     <div class="navTitle">📋 報告章節</div>
     <button class="navItem active" data-section="s1">📊 同業比較</button>
     <button class="navItem" data-section="s2">💰 DCF 估值</button>
     <button class="navItem" data-section="s3">🎯 情境分析</button>
     <button class="navItem" data-section="s4">📋 估值結論</button>
+    <button class="navItem" data-section="s5" style="color:var(--purple)">🎚️ 互動 DCF 計算器</button>
   </nav>
 
-  <!-- CONTENT -->
   <main class="content">
     <!-- S1: 同業比較 -->
     <section id="s1">
-      <div class="secHead">
-        <div>
-          <h1 class="h1">📊 同業比較</h1>
-          <p class="sub">BBU 鋰電池模組 · TWSE/TPEx 同業 · 2026-06-06 收盤價</p>
-        </div>
-        <span class="tag">Comparable Company Analysis</span>
-      </div>
-
-      <div class="card">
-        <h3 class="cardTitle">同業報價總覽</h3>
+      <div class="secHead"><div><h1 class="h1">📊 同業比較</h1><p class="sub">BBU 鋰電池模組 · TWSE/TPEx · 2026-06-06</p></div><span class="tag">Comparable Company Analysis</span></div>
+      <div class="card"><h3 class="cardTitle">同業報價總覽</h3>
         <table class="tbl">
-          <tr><th>代號</th><th>公司</th><th>定位</th><th>股價</th><th>52週位置</th><th>1M 變動</th><th>3M 變動</th><th>6M 變動</th></tr>
-          <tr>
-            <td><strong>6781</strong></td><td><strong>AES-KY</strong></td><td>BBU 龍頭 + LEV</td>
-            <td><strong>$1,135</strong></td><td><span class="warn">36% ⚠️</span></td>
-            <td class="down">−0.4%</td><td class="up">+9.7%</td><td class="down">−18.6%</td>
-          </tr>
+          <tr><th>代號</th><th>公司</th><th>定位</th><th>股價</th><th>52週位置</th><th>1M</th><th>3M</th><th>6M</th></tr>
+          <tr><td><strong>6781</strong></td><td><strong>AES-KY</strong></td><td>BBU 龍頭 + LEV</td><td><strong>$1,135</strong></td><td><span class="warn">36% ⚠️</span></td><td class="down">−0.4%</td><td class="up">+9.7%</td><td class="down">−18.6%</td></tr>
           <tr><td>3211</td><td>順達</td><td>BBU 競爭者</td><td>$423</td><td>78%</td><td class="up">+13.0%</td><td class="up">+31.4%</td><td>—</td></tr>
           <tr><td>4931</td><td>新盛力</td><td>BBU 新進者</td><td>$242</td><td>88%</td><td class="up">+45.6%</td><td class="up">+83.7%</td><td>—</td></tr>
           <tr><td>6121</td><td>新普</td><td>母公司/消費電池</td><td>$422</td><td>99%</td><td class="up">+16.4%</td><td class="up">+31.8%</td><td>—</td></tr>
         </table>
       </div>
-
-      <div class="callout red">
-        <strong>🚨 關鍵發現：</strong>AES-KY 是四檔中唯一在 52 週低位的股票（36% vs 同業 78–99%）。過去 6 個月跌 18.6%，同業大漲 30–80%。市場正在對 AES-KY 做出差異化定價。
-      </div>
-
-      <div class="card">
-        <h3 class="cardTitle">同業 Divergence 假說</h3>
+      <div class="callout red"><strong>🚨 關鍵發現：</strong>AES-KY 是四檔中唯一在 52 週低位的股票（36% vs 同業 78–99%）。6 個月跌 18.6%，同業大漲 30–80%。市場正在做出差異化定價。</div>
+      <div class="card"><h3 class="cardTitle">同業 Divergence 可能原因</h3>
         <div class="pillRow">
-          <span class="pill o">🔥 漲多回檔（2024 年 $456→$1,500，+229%）</span>
+          <span class="pill o">🔥 漲多回檔（$456→$1,500, +229%）</span>
           <span class="pill o">🔥 BBU 競爭加劇（順達、新盛力搶單）</span>
           <span class="pill">🔥 LEV 業務拖累</span>
           <span class="pill">籌碼面調節</span>
@@ -198,118 +182,98 @@ body{font-family:var(--sans);font-size:15px;color:var(--ink);
 
     <!-- S2: DCF -->
     <section id="s2" style="display:none">
-      <div class="secHead">
-        <div>
-          <h1 class="h1">💰 DCF 現金流折現估值</h1>
-          <p class="sub">Base Case · 5 年 explicit forecast + 永續成長終值 · WACC 10.7%</p>
-        </div>
-        <span class="tag">Discounted Cash Flow</span>
-      </div>
-
+      <div class="secHead"><div><h1 class="h1">💰 DCF 現金流折現估值</h1><p class="sub">Base Case · 5yr forecast + 永續成長終值 · WACC 10.7% · g 2.5%</p></div><span class="tag">Discounted Cash Flow</span></div>
       <div class="metrics">
         <div class="metric"><div class="val" style="color:var(--accent)">$1,280</div><div class="lbl">DCF 隱含價值（Base）</div></div>
         <div class="metric"><div class="val">$1,135</div><div class="lbl">目前股價</div></div>
         <div class="metric"><div class="val" style="color:var(--green)">+13%</div><div class="lbl">潛在上漲空間</div></div>
         <div class="metric"><div class="val">10.7%</div><div class="lbl">WACC</div></div>
       </div>
-
-      <div class="card">
-        <h3 class="cardTitle">敏感性分析（每股價值）</h3>
+      <div class="card"><h3 class="cardTitle">敏感性分析（每股價值）</h3>
         <table class="tbl">
-          <tr><th>WACC ↓ / 終端成長 g →</th><th>2.0%</th><th>2.5%</th><th>3.0%</th></tr>
+          <tr><th>WACC ↓ / g →</th><th>2.0%</th><th>2.5%</th><th>3.0%</th></tr>
           <tr><td><strong>9.5%</strong></td><td class="up">$1,350</td><td class="up">$1,520</td><td class="up">$1,750</td></tr>
           <tr style="background:rgba(96,165,250,.06)"><td><strong>10.7%</strong></td><td>$1,150</td><td><strong>$1,280</strong></td><td>$1,450</td></tr>
           <tr><td><strong>12.0%</strong></td><td class="down">$980</td><td>$1,080</td><td>$1,200</td></tr>
         </table>
       </div>
-
-      <div class="callout gold">
-        <strong>⚠️ 注意：</strong>終值佔總 EV 的 73%，符合 Hooke 觀察（TV 通常 >75%）。DCF 對終端假設極為敏感，請配合敏感性分析使用。
-      </div>
+      <div class="callout gold"><strong>⚠️ TV 佔 EV 73%</strong>，符合 Hooke 觀察（TV 通常 >75%）。DCF 對終端假設極為敏感 → 拖曳下方互動計算器親手感受。</div>
     </section>
 
     <!-- S3: 情境分析 -->
     <section id="s3" style="display:none">
-      <div class="secHead">
-        <div>
-          <h1 class="h1">🎯 情境分析</h1>
-          <p class="sub">四情境機率加權 · Asymmetry Ratio 1.54:1</p>
-        </div>
-        <span class="tag">Scenario Analysis</span>
-      </div>
-
+      <div class="secHead"><div><h1 class="h1">🎯 情境分析</h1><p class="sub">四情境機率加權 · Expected Return +5.2%</p></div><span class="tag">Scenario Analysis</span></div>
       <div class="grid4">
-        <div class="card" style="border-left:3px solid var(--green)">
-          <div class="cardTitle" style="color:var(--green);font-size:13px;">🟢 Bull Case</div>
-          <div class="val" style="font-size:20px;color:var(--green);">$1,500</div>
-          <div style="font-size:12px;color:var(--muted)">機率 25% · BBU 超預期 + LEV 回溫</div>
-        </div>
-        <div class="card" style="border-left:3px solid var(--accent)">
-          <div class="cardTitle" style="color:var(--accent);font-size:13px;">🟡 Base Case</div>
-          <div class="val" style="font-size:20px;color:var(--accent);">$1,260</div>
-          <div style="font-size:12px;color:var(--muted)">機率 45% · BBU 穩健 + LEV 持平</div>
-        </div>
-        <div class="card" style="border-left:3px solid var(--orange)">
-          <div class="cardTitle" style="color:var(--orange);font-size:13px;">🟠 Bear Case</div>
-          <div class="val" style="font-size:20px;color:var(--orange);">$950</div>
-          <div style="font-size:12px;color:var(--muted)">機率 20% · BBU 競爭加劇</div>
-        </div>
-        <div class="card" style="border-left:3px solid var(--red)">
-          <div class="cardTitle" style="color:var(--red);font-size:13px;">🔴 Tail Risk</div>
-          <div class="val" style="font-size:20px;color:var(--red);">$616</div>
-          <div style="font-size:12px;color:var(--muted)">機率 10% · LEV 爆雷 + BBU 砍單</div>
-        </div>
+        <div class="card" style="border-left:3px solid var(--green)"><div class="cardTitle" style="color:var(--green);font-size:13px;">🟢 Bull Case</div><div class="val" style="font-size:20px;color:var(--green);">$1,500</div><div style="font-size:12px;color:var(--muted)">25% · BBU 超預期 + LEV 回溫</div></div>
+        <div class="card" style="border-left:3px solid var(--accent)"><div class="cardTitle" style="color:var(--accent);font-size:13px;">🟡 Base Case</div><div class="val" style="font-size:20px;color:var(--accent);">$1,260</div><div style="font-size:12px;color:var(--muted)">45% · BBU 穩健 + LEV 持平</div></div>
+        <div class="card" style="border-left:3px solid var(--orange)"><div class="cardTitle" style="color:var(--orange);font-size:13px;">🟠 Bear Case</div><div class="val" style="font-size:20px;color:var(--orange);">$950</div><div style="font-size:12px;color:var(--muted)">20% · BBU 競爭加劇</div></div>
+        <div class="card" style="border-left:3px solid var(--red)"><div class="cardTitle" style="color:var(--red);font-size:13px;">🔴 Tail Risk</div><div class="val" style="font-size:20px;color:var(--red);">$616</div><div style="font-size:12px;color:var(--muted)">10% · LEV 爆雷 + BBU 砍單</div></div>
       </div>
-
       <div class="metrics" style="margin-top:14px;">
         <div class="metric"><div class="val" style="color:var(--green)">+5.2%</div><div class="lbl">Expected Return</div></div>
         <div class="metric"><div class="val">1.54:1</div><div class="lbl">Asymmetry Ratio</div></div>
         <div class="metric"><div class="val" style="color:var(--orange)">⚠️</div><div class="lbl">低於 2:1 門檻</div></div>
         <div class="metric"><div class="val">±15%</div><div class="lbl">Hooke 噪音帶</div></div>
       </div>
-
-      <div class="callout purple">
-        <strong>Asymmetry 只有 1.54:1</strong>，遠低於 2:1 的吸引力門檻。這不是一個「明顯便宜」的機會，需要更高的 conviction 才能進場。
-      </div>
     </section>
 
-    <!-- S4: 估值結論 -->
+    <!-- S4: 結論 -->
     <section id="s4" style="display:none">
-      <div class="secHead">
-        <div>
-          <h1 class="h1">📋 估值結論</h1>
-          <p class="sub">Opinionated Valuation Verdict</p>
-        </div>
-        <span class="tag">Verdict</span>
-      </div>
-
-      <div class="verdict">
-        <div class="vTitle">📋 結論：略為低估到合理</div>
-        <p>DCF 暗示價值 <strong>$1,150–$1,450</strong> vs 現價 <strong>$1,135</strong>（距離 13%）。</p>
-        <p>Asymmetry 1.54:1 低於 2:1 門檻，非「明顯便宜」機會。</p>
-        <p style="margin-top:8px;"><strong>關鍵變數：</strong>BBU 毛利率能否維持 >25%（這決定了整條利潤率路徑）。</p>
-      </div>
-
-      <div class="card">
-        <h3 class="cardTitle">三個待解問題</h3>
+      <div class="secHead"><div><h1 class="h1">📋 估值結論</h1><p class="sub">Opinionated Valuation Verdict</p></div><span class="tag">Verdict</span></div>
+      <div class="verdict"><div class="vTitle">📋 結論：略為低估到合理</div><p>DCF 暗示價值 <strong>$1,150–$1,450</strong> vs 現價 <strong>$1,135</strong>（+13%）。Asymmetry 1.54:1 低於 2:1 門檻，非「明顯便宜」機會。</p><p style="margin-top:8px;"><strong>關鍵變數：</strong>BBU 毛利率能否維持 >25%（決定整條利潤率路徑）。</p></div>
+      <div class="card"><h3 class="cardTitle">三個待解問題</h3>
         <table class="tbl">
           <tr><th>#</th><th>問題</th><th>重要性</th></tr>
-          <tr><td>1</td><td>為何同業 +84% 而 AES-KY −19%？是機會還是合理定價？</td><td><span class="pill r">🔴 關鍵</span></td></tr>
-          <tr><td>2</td><td>AES-KY 在 BBU 市場的護城河有多深？新盛力追上要多久？</td><td><span class="pill o">🟠 重要</span></td></tr>
-          <tr><td>3</td><td>市場給了較高風險折價 — 你認為市場高估了什麼風險？</td><td><span class="pill o">🟠 重要</span></td></tr>
+          <tr><td>1</td><td>為何同業 +84% 而 AES-KY −19%？是機會還是合理定價？</td><td><span class="pill r">關鍵</span></td></tr>
+          <tr><td>2</td><td>AES-KY 在 BBU 市場的護城河有多深？</td><td><span class="pill o">重要</span></td></tr>
+          <tr><td>3</td><td>市場給了較高風險折價 — 你認為市場高估了什麼？</td><td><span class="pill o">重要</span></td></tr>
         </table>
       </div>
     </section>
 
+    <!-- ═══════════ S5: 互動 DCF 計算器 ═══════════ -->
+    <section id="s5" style="display:none">
+      <div class="secHead"><div><h1 class="h1">🎚️ 互動 DCF 計算器</h1><p class="sub">拖曳 slider 親手感受 WACC 與成長率如何影響估值</p></div><span class="tag">Interactive</span></div>
+
+      <div class="calcBox">
+        <h3>🔧 調整假設，即時看到估值變化</h3>
+        <p class="hint">拖曳下方 slider，系統用 bilinear interpolation 在敏感性分析網格中計算即時估值。Base Case: WACC 10.7% · g 2.5%</p>
+
+        <div class="sliderGroup">
+          <div class="sliderCard">
+            <label>💰 WACC（加權平均資金成本）<span id="waccVal">10.7%</span></label>
+            <input type="range" id="waccSlider" min="8.0" max="14.0" step="0.1" value="10.7" oninput="recalc()">
+            <div class="sliderLabels"><span>8.0%</span><span>11.0%</span><span>14.0%</span></div>
+          </div>
+          <div class="sliderCard">
+            <label>📈 終端成長率 g <span id="gVal">2.5%</span></label>
+            <input type="range" id="gSlider" min="1.5" max="3.5" step="0.1" value="2.5" oninput="recalc()">
+            <div class="sliderLabels"><span>1.5%</span><span>2.5%</span><span>3.5%</span></div>
+          </div>
+        </div>
+
+        <div class="resultBox">
+          <div class="result neutral" id="resVal"><div class="rVal">$1,280</div><div class="lbl">DCF 隱含價值</div></div>
+          <div class="result neutral" id="resDelta"><div class="rVal">+$145</div><div class="lbl">vs 現價 $1,135</div></div>
+          <div class="result neutral" id="resPct"><div class="rVal">+12.8%</div><div class="lbl">上漲 / 下跌空間</div></div>
+        </div>
+
+        <div id="priceBar"><div class="fill" id="priceFill" style="width:50%;background:var(--accent);"></div><div class="marker" id="priceMarker" style="left:47%;"></div></div>
+        <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--dim);margin-top:4px;">
+          <span>$616</span><span>$1,135 現價</span><span>$1,750</span>
+        </div>
+      </div>
+
+      <div class="callout purple"><strong>💡 試試看：</strong>把 WACC 調到 12%、g 調到 2.0% → 估值掉到 ~$980（−14%）。這正是市場目前給 AES-KY 的「風險溢價」——只要 BBU 競爭加劇導致 WACC 上升 1.3pp，現價就從合理變成偏貴。</div>
+    </section>
   </main>
 </div>
 
-<div class="footer">
-  Maobolin Research · Powered by Hermes Agent (Nous Research) · 2026-06-07 · 資料來源：FinMind, Yahoo Finance, FTNN
-</div>
+<div class="footer">Maobolin Research · Powered by Hermes Agent (Nous Research) · 2026-06-07 · 資料來源：FinMind, Yahoo Finance, FTNN</div>
 
-<!-- ═══════════ SIDEBAR NAV JS ═══════════ -->
+<!-- ═══════════ JS: Sidebar Nav + Interactive DCF ═══════════ -->
 <script>
+// ── Sidebar navigation ──
 document.querySelectorAll('.navItem').forEach(btn => {
   btn.addEventListener('click', () => {
     document.querySelectorAll('.navItem').forEach(b => b.classList.remove('active'));
@@ -318,16 +282,85 @@ document.querySelectorAll('.navItem').forEach(btn => {
     document.getElementById(btn.dataset.section).style.display = 'block';
   });
 });
-// Keyboard nav
 document.addEventListener('keydown', e => {
   const items = [...document.querySelectorAll('.navItem')];
   const idx = items.findIndex(b => b.classList.contains('active'));
   if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
     e.preventDefault();
-    const next = e.key === 'ArrowDown' ? (idx+1)%items.length : (idx-1+items.length)%items.length;
-    items[next].click();
+    const nxt = e.key === 'ArrowDown' ? (idx+1)%items.length : (idx-1+items.length)%items.length;
+    items[nxt].click();
   }
 });
+
+// ── DCF Sensitivity Grid (pre-computed values) ──
+const dcfGrid = {
+  // WACC: { g2.0, g2.5, g3.0 }
+  9.5:  [1350, 1520, 1750],
+  10.7: [1150, 1280, 1450],
+  12.0: [980,  1080, 1200],
+};
+const CURRENT_PRICE = 1135;
+
+function bilinear(wacc, g) {
+  // Find surrounding WACC nodes
+  const waccs = Object.keys(dcfGrid).map(Number).sort((a,b)=>a-b);
+  let w0 = waccs[0], w1 = waccs[waccs.length-1];
+  for (let i = 0; i < waccs.length-1; i++) {
+    if (wacc >= waccs[i] && wacc <= waccs[i+1]) { w0 = waccs[i]; w1 = waccs[i+1]; break; }
+  }
+  const gs = [2.0, 2.5, 3.0];
+  let g0 = gs[0], g1 = gs[gs.length-1];
+  for (let i = 0; i < gs.length-1; i++) {
+    if (g >= gs[i] && g <= gs[i+1]) { g0 = gs[i]; g1 = gs[i+1]; break; }
+  }
+  const gi0 = gs.indexOf(g0), gi1 = gs.indexOf(g1);
+  const wi0 = waccs.indexOf(w0), wi1 = waccs.indexOf(w1);
+
+  const f00 = dcfGrid[w0][gi0], f10 = dcfGrid[w1][gi0];
+  const f01 = dcfGrid[w0][gi1], f11 = dcfGrid[w1][gi1];
+
+  const tW = (wacc - w0) / (w1 - w0);
+  const tG = (g - g0) / (g1 - g0);
+
+  const top = f00*(1-tW)*(1-tG) + f10*tW*(1-tG) + f01*(1-tW)*tG + f11*tW*tG;
+  return Math.round(top);
+}
+
+function recalc() {
+  const wacc = parseFloat(document.getElementById('waccSlider').value);
+  const g = parseFloat(document.getElementById('gSlider').value);
+  document.getElementById('waccVal').textContent = wacc.toFixed(1)+'%';
+  document.getElementById('gVal').textContent = g.toFixed(1)+'%';
+
+  const val = bilinear(wacc, g);
+  const delta = val - CURRENT_PRICE;
+  const pct = (delta / CURRENT_PRICE * 100);
+
+  const rVal = document.getElementById('resVal');
+  const rDelta = document.getElementById('resDelta');
+  const rPct = document.getElementById('resPct');
+
+  rVal.querySelector('.rVal').textContent = '$'+val.toLocaleString();
+  rDelta.querySelector('.rVal').textContent = (delta>=0?'+':'')+'$'+delta.toLocaleString();
+  rPct.querySelector('.rVal').textContent = (pct>=0?'+':'')+pct.toFixed(1)+'%';
+
+  // Color coding
+  [rVal, rDelta, rPct].forEach(el => {
+    el.classList.remove('bull','bear','neutral');
+    if (pct > 8) el.classList.add('bull');
+    else if (pct < -5) el.classList.add('bear');
+    else el.classList.add('neutral');
+  });
+
+  // Price bar
+  const minV=616, maxV=1750;
+  const fillPct = ((val-minV)/(maxV-minV)*100);
+  const markerPct = ((CURRENT_PRICE-minV)/(maxV-minV)*100);
+  const fill = document.getElementById('priceFill');
+  fill.style.width = fillPct+'%';
+  fill.style.background = pct > 8 ? 'var(--green)' : pct < -5 ? 'var(--red)' : 'var(--accent)';
+  document.getElementById('priceMarker').style.left = markerPct+'%';
+}
 </script>
 </body>
 </html>
