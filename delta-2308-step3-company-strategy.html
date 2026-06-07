@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>台達電 2308.TW — 公司策略 | Step 3</title>
+<style>
+:root{
+  --bg:#0a0e14; --surface:#131820; --card:#181f2a;
+  --border:#252d3a; --ink:#e2e8f0; --muted:#7c8aa0; --dim:#4a5568;
+  --accent:#60a5fa; --accent2:#3b82f6;
+  --gold:#f59e0b; --green:#34d399; --red:#f87171;
+  --orange:#fb923c; --purple:#a78bfa;
+  --radius:14px; --radius2:18px;
+  --sans:"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,-apple-system,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.7}
+.topbar{background:var(--surface);border-bottom:1px solid var(--border);padding:14px 24px;display:flex;align-items:center;gap:16px;position:sticky;top:0;z-index:100}
+.topbar .logo{font-size:18px;font-weight:700;color:var(--accent)}
+.topbar .badge{font-size:11px;background:var(--card);color:var(--muted);padding:4px 10px;border-radius:20px;border:1px solid var(--border)}
+.layout{display:flex;min-height:calc(100vh - 57px)}
+.sidebar{width:240px;background:var(--surface);border-right:1px solid var(--border);padding:20px 0;position:sticky;top:57px;height:calc(100vh - 57px);overflow-y:auto;flex-shrink:0}
+.sidebar .navTitle{font-size:10px;text-transform:uppercase;letter-spacing:1.5px;color:var(--dim);padding:8px 20px 16px}
+.navItem{display:block;width:100%;padding:10px 20px;font-size:13px;color:var(--muted);background:none;border:none;text-align:left;cursor:pointer;font-family:var(--sans);transition:all .15s;border-left:3px solid transparent}
+.navItem:hover{color:var(--ink);background:var(--card);border-left-color:var(--dim)}
+.navItem.active{color:var(--accent);background:rgba(96,165,250,.08);border-left-color:var(--accent);font-weight:600}
+.content{flex:1;padding:32px;max-width:1100px}
+section{display:none}
+section.active{display:block}
+section h2{font-size:22px;margin-bottom:8px;color:var(--ink)}
+section h3{font-size:16px;margin:24px 0 12px;color:var(--accent)}
+.sectionDesc{color:var(--muted);font-size:14px;margin-bottom:20px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px 24px;margin-bottom:16px}
+.cardTitle{font-size:15px;font-weight:600;margin-bottom:12px;color:var(--ink)}
+.tbl{width:100%;border-collapse:collapse;margin:12px 0}
+.tbl th{text-align:left;color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.5px;padding:8px 12px;border-bottom:1px solid var(--border)}
+.tbl td{padding:10px 12px;border-bottom:1px solid var(--border);font-size:13px}
+.tbl tr:hover td{background:var(--surface)}
+.up{color:var(--green)} .down{color:var(--red)} .warn{color:var(--orange)} .accent{color:var(--accent)}
+.metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin:16px 0}
+.metric{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px;text-align:center}
+.metric .val{font-size:24px;font-weight:700;color:var(--ink)}
+.metric .lbl{font-size:11px;color:var(--muted);margin-top:4px}
+.callout{border-left:3px solid;border-radius:0 var(--radius) var(--radius) 0;padding:14px 18px;margin:16px 0;background:var(--surface);font-size:13px}
+.callout.red{border-color:var(--red)}.callout.gold{border-color:var(--gold)}.callout.green{border-color:var(--green)}.callout.purple{border-color:var(--purple)}
+.pillRow{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0}
+.pill{font-size:11px;padding:4px 10px;border-radius:20px;font-weight:600}
+.pill.g{background:rgba(52,211,153,.15);color:var(--green)}.pill.r{background:rgba(248,113,113,.15);color:var(--red)}
+.pill.b{background:rgba(96,165,250,.15);color:var(--accent)}.pill.o{background:rgba(251,146,60,.15);color:var(--orange)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.verdict{background:linear-gradient(135deg,var(--card),var(--surface));border:1px solid var(--accent);border-radius:var(--radius2);padding:24px 28px;margin:20px 0}
+.verdict .vTitle{font-size:18px;font-weight:700;color:var(--accent);margin-bottom:8px}
+.verdict p{color:var(--ink);font-size:14px}
+.quote{font-style:italic;color:var(--muted);border-left:2px solid var(--border);padding:8px 16px;margin:8px 0;font-size:13px}
+.quote strong{color:var(--ink)}
+.strategyMap{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);border-radius:var(--radius);overflow:hidden;margin:16px 0}
+.strategyMap .cell{background:var(--surface);padding:20px;text-align:center}
+.strategyMap .cell.highlight{background:rgba(96,165,250,.08);border:1px solid var(--accent)}
+.strategyMap .cellTitle{font-size:13px;font-weight:600;color:var(--accent);margin-bottom:6px}
+.strategyMap .cellDesc{font-size:12px;color:var(--muted)}
+.horizonBar{display:flex;gap:8px;margin:16px 0}
+.horizonBox{flex:1;border-radius:var(--radius);padding:20px;text-align:center}
+.horizonBox.h1{background:rgba(52,211,153,.08);border:1px solid rgba(52,211,153,.3)}
+.horizonBox.h2{background:rgba(96,165,250,.08);border:1px solid rgba(96,165,250,.3)}
+.horizonBox.h3{background:rgba(167,139,250,.08);border:1px solid rgba(167,139,250,.3)}
+.horizonBox .hTitle{font-size:14px;font-weight:700;margin-bottom:6px}
+.horizonBox.h1 .hTitle{color:var(--green)}
+.horizonBox.h2 .hTitle{color:var(--accent)}
+.horizonBox.h3 .hTitle{color:var(--purple)}
+.horizonBox .hPct{font-size:24px;font-weight:700;margin:4px 0}
+.horizonBox .hDesc{font-size:11px;color:var(--muted)}
+.mobileNav{display:none}
+@media(max-width:768px){
+  .sidebar{display:none}
+  .mobileNav{display:flex;gap:4px;overflow-x:auto;padding:8px 0;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+  .mobileNav::-webkit-scrollbar{display:none}
+  .mobileNav .navItem{flex-shrink:0;white-space:nowrap;font-size:11px;padding:6px 10px;border-radius:20px;border:1px solid var(--border)}
+  .mobileNav .navItem.active{background:rgba(96,165,250,.15);border-color:var(--accent)}
+  .content{padding:16px}
+  .grid2,.grid3{grid-template-columns:1fr}
+  .strategyMap{grid-template-columns:1fr}
+  .horizonBar{flex-direction:column}
+  .metrics{grid-template-columns:repeat(2,1fr)}
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <span class="logo">⚡ DELTA 2308</span>
+  <span class="badge">Step 3 / 11</span>
+  <span class="spacer" style="flex:1"></span>
+  <span class="tag">公司策略 · 2026-06-07</span>
+</div>
+
+<div class="layout">
+
+<nav class="sidebar">
+  <div class="navTitle">Step 3 目錄</div>
+  <button class="navItem active" data-section="s1">👤 CEO 與願景</button>
+  <button class="navItem" data-section="s2">📐 Ansoff 成長矩陣</button>
+  <button class="navItem" data-section="s3">🔭 三層成長地平線</button>
+  <button class="navItem" data-section="s4">💎 核心能力</button>
+  <button class="navItem" data-section="s5">💰 成本策略</button>
+  <button class="navItem" data-section="s6">🤖 AI 策略</button>
+  <button class="navItem" data-section="s7">🔮 擴張路線圖</button>
+  <button class="navItem" data-section="s8">🎯 策略結論</button>
+</nav>
+
+<nav class="mobileNav">
+  <button class="navItem active" data-section="s1">👤 CEO</button>
+  <button class="navItem" data-section="s2">📐 Ansoff</button>
+  <button class="navItem" data-section="s3">🔭 地平線</button>
+  <button class="navItem" data-section="s4">💎 核心</button>
+  <button class="navItem" data-section="s5">💰 成本</button>
+  <button class="navItem" data-section="s6">🤖 AI</button>
+  <button class="navItem" data-section="s7">🔮 路線</button>
+  <button class="navItem" data-section="s8">🎯 結論</button>
+</nav>
+
+<main class="content">
+
+<!-- SECTION 1: CEO & VISION -->
+<section id="s1" class="active">
+<h2>👤 領導層與策略願景</h2>
+<p class="sectionDesc">Phase 1: Leadership & Vision — Shallow Dive Template Section 3</p>
+
+<div class="grid2">
+  <div class="card">
+    <div class="cardTitle">核心經營層</div>
+    <table class="tbl">
+      <tr><td style="width:80px">創辦人</td><td><strong>鄭崇華</strong> (Bruce C.H. Cheng)</td></tr>
+      <tr><td>角色</td><td>榮譽董事長（2012 交棒）</td></tr>
+      <tr><td>董事長</td><td><strong>海英俊</strong> (Yancey Hai)</td></tr>
+      <tr><td>執行長</td><td><strong>鄭平</strong> (Cheng Ping)</td></tr>
+      <tr><td>接班</td><td>鄭平為鄭崇華之子，專業經理人接班</td></tr>
+    </table>
+  </div>
+  <div class="card">
+    <div class="cardTitle">CEO 利益一致性</div>
+    <table class="tbl">
+      <tr><td>CEO 背景</td><td>台達內部歷練，非空降</td></tr>
+      <tr><td>公司使命</td><td>「創新、潔淨、節能」55 年不變</td></tr>
+      <tr><td>家族持股</td><td class="warn">⚠️ 數據缺口（年報未公開）</td></tr>
+      <tr><td class="up">一致性</td><td class="up">使命與策略高度整合</td></tr>
+    </table>
+  </div>
+</div>
+
+<div class="card">
+  <div class="cardTitle">CEO 策略願景 — 從逐字稿提取</div>
+  <div class="quote"><strong>鄭平：</strong>「模組化數據中心是下一波趨勢，適合 colocation 客戶，未來也會有 enterprise 客戶。」（2026-04-30）</div>
+  <div class="quote"><strong>鄭平：</strong>「燃料電池技術較新...適用於分散式發電。純發電效率可達 60%，加上熱回收最高可達 85%。」（2026-04-30）</div>
+  <div class="quote"><strong>鄭平：</strong>「若 AI 持續成長，像去年成長 30 多%，今年看起來不會差太多，確實需要大量產能。」（2026-04-30）</div>
+  <div class="quote"><strong>海英俊：</strong>「AI Data Center 已達 critical mass，過去三十多年基本上沒有顯著營收，現在開始產生大量 revenue。」（2026-02-26）</div>
+</div>
+
+<div class="callout purple">
+  <strong>🔍 願景診斷：</strong>鄭平的策略邏輯非常清晰 — 「電力電子核心 × 三大應用場景（資料中心、電動車、能源基礎設施）」。他不是在追逐熱點，而是在 55 年累積的技術基礎上，將同一個核心能力投射到不同的成長市場。這符合 <strong>Prahalad & Hamel 的「核心能力槓桿」</strong>邏輯。
+</div>
+</section>
+
+<!-- SECTION 2: ANSOFF MATRIX -->
+<section id="s2">
+<h2>📐 Ansoff 成長矩陣</h2>
+<p class="sectionDesc">將台達電的成長策略映射到 Ansoff (1957) 四象限（IB7018）</p>
+
+<div class="strategyMap">
+  <div class="cell highlight">
+    <div class="cellTitle">🟢 市場滲透 (H1)</div>
+    <div class="cellDesc"><strong>既有產品 × 既有市場</strong><br><br>AI 伺服器電源：Deepen with Hyperscaler<br>營收佔比 23% → 30%<br><br>冷卻系統：Sidecar $4,000萬 → $16億<br>從空冷升級到液冷</div>
+  </div>
+  <div class="cell highlight">
+    <div class="cellTitle">🔵 產品開發 (H2)</div>
+    <div class="cellDesc"><strong>新產品 × 既有市場</strong><br><br>800V DC-DC（2027 量產）<br>±400V DC 系統<br>模組化數據中心<br>Grid-to-Chip 完整方案<br><br>賣給同樣的 Hyperscaler</div>
+  </div>
+  <div class="cell">
+    <div class="cellTitle">🟡 市場開發</div>
+    <div class="cellDesc"><strong>既有產品 × 新市場</strong><br><br>東南亞（泰國 Yarra 合作）<br>印度擴廠<br>墨西哥新廠評估<br>EV 充電樁全球布局</div>
+  </div>
+  <div class="cell">
+    <div class="cellTitle">🟣 多角化 (H3)</div>
+    <div class="cellDesc"><strong>新產品 × 新市場</strong><br><br>SOFC 燃料電池（2028 量產）<br>微電網 + 儲能系統<br>模組化數據中心（enterprise）<br>分散式發電</div>
+  </div>
+</div>
+
+<div class="callout green">
+  <strong>✅ Ansoff 診斷：台達電的策略組合非常健康。</strong>既有市場滲透（AI 電源加深）提供現金流，產品開發（800V DC、模組化 DC）提供 2-3 年成長動能，多角化（SOFC、微電網）提供 5 年後的選擇權。唯一較弱的是「市場開發」— 目前主要被動因應地緣政治（中國→泰國/印度），而非主動開拓新市場。
+</div>
+</section>
+
+<!-- SECTION 3: THREE HORIZONS -->
+<section id="s3">
+<h2>🔭 McKinsey 三層成長地平線</h2>
+<p class="sectionDesc">Baghai, Coley & White (1999) — IB7018</p>
+
+<div class="horizonBar">
+  <div class="horizonBox h1">
+    <div class="hTitle">H1 · 防守與延伸</div>
+    <div class="hPct">~70%</div>
+    <div class="hDesc">營收佔比<br><br>AI 伺服器電源<br>交換式電源供應器<br>散熱風扇<br>工業自動化</div>
+  </div>
+  <div class="horizonBox h2">
+    <div class="hTitle">H2 · 新興成長引擎</div>
+    <div class="hPct">~25%</div>
+    <div class="hDesc">營收佔比<br><br>液冷系統<br>800V DC-DC<br>模組化數據中心<br>EV 動力系統</div>
+  </div>
+  <div class="horizonBox h3">
+    <div class="hTitle">H3 · 未來選擇權</div>
+    <div class="hPct">~5%</div>
+    <div class="hDesc">營收佔比<br><br>SOFC 燃料電池<br>固態變壓器<br>微電網管理<br>服務型機器人</div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="cardTitle">三層地平線健康度</div>
+  <table class="tbl">
+    <tr><th>地平線</th><th>評估</th><th>證據</th></tr>
+    <tr><td class="up">H1 防守</td><td class="up">🟢 極強</td><td>AI 電源市佔高、Hyperscaler CAPEX +60%、毛利率持續擴張</td></tr>
+    <tr><td class="up">H2 新興</td><td class="up">🟢 強</td><td>800V DC 2027 量產已鎖定客戶、液冷出貨從 $4,000萬→$16億</td></tr>
+    <tr><td class="warn">H3 選擇權</td><td class="warn">🟡 布局中</td><td>SOFC 延遲三年（2025→2028）、服務型機器人「中長期規劃」</td></tr>
+  </table>
+</div>
+
+<div class="callout gold">
+  <strong>⚠️ H3 風險：</strong>燃料電池從「2025 年底量產」延遲到「2028 年觀音廠量產」，三年的落差值得關注。這不是策略方向錯誤，而是<strong>執行節奏落後於宣告</strong>— 管理層對長週期技術專案的時間預估偏樂觀，這是需要持續追蹤的模式。
+</div>
+</section>
+
+<!-- SECTION 4: CORE COMPETENCE -->
+<section id="s4">
+<h2>💎 核心能力評估</h2>
+<p class="sectionDesc">Prahalad & Hamel (1990) 三項測試 — IB7018 W4</p>
+
+<div class="card">
+  <div class="cardTitle">台達電的核心能力：電力電子技術整合</div>
+  <table class="tbl">
+    <tr><th>Prahalad & Hamel 測試</th><th>問題</th><th>台達電表現</th><th>評級</th></tr>
+    <tr>
+      <td><strong>Market Access</strong></td>
+      <td>是否提供進入多種市場的通道？</td>
+      <td>同一核心能力投射到：資料中心、EV、工業自動化、能源基礎設施、醫療、樓宇控制</td>
+      <td class="up">🟢 極強</td>
+    </tr>
+    <tr>
+      <td><strong>Customer Benefit</strong></td>
+      <td>是否對客戶感知價值有顯著貢獻？</td>
+      <td>Grid-to-Chip 效率提升、資料中心 PUE 降低、EV 續航力提升</td>
+      <td class="up">🟢 極強</td>
+    </tr>
+    <tr>
+      <td><strong>Imitation Difficulty</strong></td>
+      <td>競爭對手是否難以模仿？</td>
+      <td>55 年累積 + 路徑依賴 + 跨領域整合 know-how，非單一專利可複製</td>
+      <td class="up">🟢 極難模仿</td>
+    </tr>
+  </table>
+</div>
+
+<div class="card">
+  <div class="cardTitle">有機 vs. 併購成長</div>
+  <table class="tbl">
+    <tr><th>類型</th><th>案例</th><th>品質</th></tr>
+    <tr><td class="up">有機成長</td><td>AI 電源、液冷系統（自主研發，從零到 ~39% 營收）</td><td class="up">🟢 主軸</td></tr>
+    <tr><td class="up">有機成長</td><td>燃料電池 SOFC（自主研發 + 英國技術引進）</td><td class="warn">🟡 初期</td></tr>
+    <tr><td>策略併購</td><td>Universal Instruments (2021, ~US$8,900萬, 自動化)</td><td class="up">🟢 互補</td></tr>
+    <tr><td>策略併購</td><td>晶睿 (100% 收購，安控)</td><td class="warn">🟡 待整合</td></tr>
+    <tr><td class="up">策略合作</td><td>中鼎工程（模組化 DC + microgrid，小規模私募）</td><td class="up">🟢 聰明</td></tr>
+    <tr><td class="up">策略合作</td><td>台積電（GTC Taipei 首度證實合作）</td><td class="up">🟢 高價值</td></tr>
+  </table>
+</div>
+
+<div class="callout green">
+  <strong>💎 核心能力結論：</strong>台達電的「電力電子技術整合」完全符合 Prahalad & Hamel 的三項測試。這不是一個產品或一項專利，而是一個 <strong>55 年累積的跨領域技術遷移系統</strong>。最大的證據：同一核心能力能同時服務 NVIDIA 的 AI 晶片供電、Bloom Energy 的燃料電池逆變器、以及 Tesla 的充電樁。極少公司能做到這種跨度。
+</div>
+</section>
+
+<!-- SECTION 5: COST STRATEGY -->
+<section id="s5">
+<h2>💰 成本策略意涵：差異化 vs. 成本領導</h2>
+<p class="sectionDesc">管理會計視角（MA_Ch1, MA_Ch5）— IB7018 策略成本管理</p>
+
+<div class="grid2">
+  <div class="card" style="border-left:3px solid var(--accent)">
+    <div class="cardTitle">台達電的策略定位：差異化</div>
+    <p style="font-size:13px;color:var(--muted);margin-bottom:12px">「以不顯著高於競爭對手的成本，提供更高效率/更完整的解決方案」</p>
+    <table class="tbl">
+      <tr><td>產品策略</td><td>Total Solution（Grid-to-Chip），非單一零組件</td></tr>
+      <tr><td>定價</td><td>溢價（毛利率 35-37%）</td></tr>
+      <tr><td>研發</td><td class="up">營收 8-9%（每年 US$14-16億）</td></tr>
+      <tr><td>客戶</td><td>Hyperscaler、Tier1 車廠（品質優先）</td></tr>
+    </table>
+  </div>
+  <div class="card" style="border-left:3px solid var(--gold)">
+    <div class="cardTitle">成本系統：需要 ABC 嗎？</div>
+    <p style="font-size:13px;color:var(--muted);margin-bottom:12px">差異化策略 + 多產品線 = ABC 更能反映真實成本</p>
+    <table class="tbl">
+      <tr><td class="warn">風險</td><td class="warn">傳統成本法可能低估低產量特殊產品成本</td></tr>
+      <tr><td class="up">優勢</td><td class="up">高毛利 AI 產品交叉補貼低毛利傳統產品</td></tr>
+      <tr><td>成本層級</td><td>設施層級（全球 55 廠）佔比高</td></tr>
+      <tr><td>安全邊際</td><td class="up">營收 YoY +30%，遠超損益兩平</td></tr>
+    </table>
+  </div>
+</div>
+
+<div class="card">
+  <div class="cardTitle">差異分析的策略意涵</div>
+  <table class="tbl">
+    <tr><th>差異類型</th><th>台達電現狀</th><th>策略訊號</th></tr>
+    <tr><td>材料價格差異</td><td class="warn">油價上升、記憶體漲價</td><td class="warn">⚠️ 管理層說「尚未轉嫁客戶」，若持續可能壓縮毛利</td></tr>
+    <tr><td>人工效率差異</td><td>泰國/印度新廠 ramp-up</td><td class="warn">⚠️ 新廠初期效率低於中國廠（中國「工作效率仍較優秀」— 鄭平）</td></tr>
+    <tr><td class="up">產能利用率</td><td class="up">接近飽和</td><td class="up">🟢 固定成本攤薄效果最大化</td></tr>
+    <tr><td class="warn">費用控制</td><td class="warn">OPEX 緩步上升（R&D + 銷售人力）</td><td class="warn">⚠️ 若營收不達標，費用率將上升</td></tr>
+  </table>
+</div>
+
+<div class="callout purple">
+  <strong>🔍 策略成本診斷：</strong>台達電的差異化策略在成本面上有兩個關鍵矛盾：(1) AI 高毛利產品（~40%+）正在交叉補貼低毛利傳統電源和虧損的 EV 業務；(2) 全球分散生產（泰國、印度、美國、墨西哥）雖然降低地緣風險，但犧牲了中國的「工作效率與供應鏈優勢」（鄭平原話）。這是一個 <strong>「用利潤換安全」的策略取捨</strong>。
+</div>
+</section>
+
+<!-- SECTION 6: AI STRATEGY -->
+<section id="s6">
+<h2>🤖 AI 與數據策略評估</h2>
+<p class="sectionDesc">Phase 3: Shallow Dive Template AI Assessment Framework</p>
+
+<div class="callout gold">
+  <strong>⚠️ 重要前提：</strong>台達電是一家具 AI 數據策略的<strong>硬體公司</strong>，而非 AI 原生企業。這裡的 AI 策略分析聚焦於：台達電如何從 AI 浪潮中獲利（賣鏟子），以及其自身的 AI 化程度。
+</div>
+
+<div class="card">
+  <div class="cardTitle">AI 賦能評估（作為 AI 受益者）</div>
+  <table class="tbl">
+    <tr><th>維度</th><th>評估</th><th>證據</th></tr>
+    <tr><td class="up">AI 營收暴露度</td><td class="up">🟢 極高</td><td>AI Power 30% + Cooling 9% = ~39% 營收直接來自 AI 資料中心</td></tr>
+    <tr><td class="up">客戶集中度</td><td class="up">🟢 四大 CSP</td><td>Meta(+33%)、Amazon(+17%)、Google(+22%)、Microsoft(+18%)</td></tr>
+    <tr><td class="up">NVIDIA 關係</td><td class="up">🟢 深度綁定</td><td>800V DC 專為 NVIDIA Kyber Rack 設計；GTC 參展主力</td></tr>
+    <tr><td>AI 應用廣度</td><td class="warn">🟡 集中</td><td>目前 AI 營收集中在資料中心電源/冷卻，少部分在邊緣 AI</td></tr>
+  </table>
+</div>
+
+<div class="card">
+  <div class="cardTitle">自有 AI 化程度（作為 AI 使用者）</div>
+  <table class="tbl">
+    <tr><th>維度</th><th>狀態</th></tr>
+    <tr><td>工業機器人</td><td class="up">🟢 已有量產與實際應用（工廠自動化）</td></tr>
+    <tr><td>服務型機器人</td><td class="warn">🟡 「中長期規劃，短期難有經濟效益」— 海英俊</td></tr>
+    <tr><td>AI 研發投入</td><td>內含在 8-9% 研發費用中，未單獨揭露</td></tr>
+    <tr><td>數據資產</td><td class="warn">🟡 作為硬體製造商，不具備網路效應型的數據飛輪</td></tr>
+  </table>
+</div>
+
+<div class="card">
+  <div class="cardTitle">AI 時代的護城河：台達電的特殊位置</div>
+  <table class="tbl">
+    <tr><th>層次</th><th>台達電的角色</th><th>競爭壁壘</th></tr>
+    <tr><td class="up">晶片層</td><td>不參與（NVIDIA 主導）</td><td>—</td></tr>
+    <tr><td class="up">伺服器層</td><td>電源 + 冷卻 = 不可或缺</td><td class="up">Grid-to-Chip 技術整合</td></tr>
+    <tr><td class="up">資料中心層</td><td>模組化 DC、400/800V DC 配電</td><td class="up">55 年電力電子 + 客戶認證週期</td></tr>
+    <tr><td>雲端服務層</td><td>不參與</td><td>—</td></tr>
+  </table>
+</div>
+
+<div class="callout green">
+  <strong>🤖 AI 策略診斷：</strong>台達電在 AI 時代的位置是 <strong>「賣鏟子的最上游」</strong>— 無論誰贏得 AI 競賽（NVIDIA vs ASIC、AWS vs Azure），都需要電源和冷卻。這個位置的防禦性極強，但天花板也受限於「每台伺服器需要多少瓦」而非「AI 創造多少產值」。台達不是 AI 賭注，是 AI 基礎設施的 <strong>收費站</strong>。
+</div>
+</section>
+
+<!-- SECTION 7: EXPANSION PATH -->
+<section id="s7">
+<h2>🔮 未來擴張路線圖</h2>
+<p class="sectionDesc">從管理層發言拼出的 3-5 年策略路徑</p>
+
+<div class="card">
+  <div class="cardTitle">台達電 2026-2030 策略路線圖</div>
+  <table class="tbl">
+    <tr><th style="width:80px">時間</th><th>策略行動</th><th>預期影響</th><th>風險</th></tr>
+    <tr>
+      <td class="up">2026</td>
+      <td>AI Power 佔比提升至 30%+<br>±400V DC 開始出貨<br>全球產能擴張加速（泰+美+印）</td>
+      <td class="up">營收 YoY +30%<br>獲利結構優化</td>
+      <td>原物料成本上升<br>新廠 ramp-up 效率</td>
+    </tr>
+    <tr>
+      <td class="up">2027</td>
+      <td>800V DC 大量出貨<br>燃料電池試產線量產<br>模組化 DC 擴展</td>
+      <td class="up">新營收來源<br>產品組合升級</td>
+      <td>800V 技術人員短缺<br>客戶導入時程</td>
+    </tr>
+    <tr>
+      <td class="up">2028</td>
+      <td>SOFC 觀音廠大規模量產<br>微電網 + 分散式發電商業化<br>墨西哥新廠投產</td>
+      <td class="up">H3 選擇權兌現<br>新市場打開</td>
+      <td>技術路線競爭<br>需求預測誤差</td>
+    </tr>
+    <tr>
+      <td class="warn">2030</td>
+      <td>全球據點 100% 再生能源<br>EV Mobility 轉盈<br>服務型機器人商業化？</td>
+      <td class="warn">長期轉型驗收</td>
+      <td>策略執行力<br>家族接班治理</td>
+    </tr>
+  </table>
+</div>
+
+<div class="grid2">
+  <div class="card" style="border-left:3px solid var(--green)">
+    <div class="cardTitle">🟢 策略優勢</div>
+    <ul style="font-size:13px;color:var(--muted);padding-left:18px">
+      <li>「一個核心 × 多個市場」的槓桿模式</li>
+      <li>客戶粘性極高（認證週期 2-3 年）</li>
+      <li>地緣風險分散（中 45% / 泰 30% / 台 12% / 其他）</li>
+      <li>研發投入穩定（8-9% 營收）</li>
+      <li>策略一致性高（55 年使命未變）</li>
+    </ul>
+  </div>
+  <div class="card" style="border-left:3px solid var(--red)">
+    <div class="cardTitle">🔴 策略風險</div>
+    <ul style="font-size:13px;color:var(--muted);padding-left:18px">
+      <li>H3 執行節奏常延遲（燃料電池 3 年）</li>
+      <li>EV Mobility 何時轉盈尚不明確</li>
+      <li>全球擴張犧牲中國效率優勢</li>
+      <li>超大規模 CAPEX 若需求降溫將成負擔</li>
+      <li>第二代接班長期治理不確定性</li>
+    </ul>
+  </div>
+</div>
+</section>
+
+<!-- SECTION 8: VERDICT -->
+<section id="s8">
+<h2>🎯 策略觀點式結論</h2>
+
+<div class="grid3">
+  <div class="card" style="border-left:3px solid var(--green);text-align:center">
+    <div style="font-size:32px;margin-bottom:4px">A−</div>
+    <div style="font-size:13px;color:var(--muted)">策略品質</div>
+  </div>
+  <div class="card" style="border-left:3px solid var(--accent);text-align:center">
+    <div style="font-size:32px;margin-bottom:4px">AI 收費站</div>
+    <div style="font-size:13px;color:var(--muted)">關鍵策略賭注</div>
+  </div>
+  <div class="card" style="border-left:3px solid var(--gold);text-align:center">
+    <div style="font-size:32px;margin-bottom:4px">低</div>
+    <div style="font-size:13px;color:var(--muted)">策略-執行落差</div>
+  </div>
+</div>
+
+<div class="verdict">
+  <div class="vTitle">📋 策略總評</div>
+  <p style="font-size:16px;line-height:1.8">
+    台達電的策略是 <strong>「一個核心，無限期槓桿」</strong>的教科書級案例。鄭平不追逐 AI 熱點，而是在 55 年的電力電子基礎上，將同一個核心能力投射到資料中心、電動車、綠能三個結構性成長市場。<br><br>
+    <strong>最被低估的策略洞察：</strong>台達電在 AI 時代的真正定位不是「AI 概念股」，而是 <strong>AI 基礎設施的收費站</strong>。無論是 NVIDIA 的 GPU、AWS 的 Trainium、還是 Google 的 TPU，都需要電源和冷卻。這個位置的防禦性遠高於市場認知。<br><br>
+    <strong>最大的策略風險：</strong>管理層對長週期技術（燃料電池）的執行時間預估持續偏樂觀；全球分散生產犧牲了中國的效率優勢；EV 業務的虧損若再延續 3 年而無轉盈跡象，策略合理性將受質疑。
+  </p>
+</div>
+
+<div class="card">
+  <div class="cardTitle">策略-執行落差分析</div>
+  <table class="tbl">
+    <tr><th>管理層說</th><th>現實狀況</th><th>落差</th></tr>
+    <tr><td>「燃料電池 2025 量產」</td><td>延至 2028（三年落差）</td><td class="warn">🟡 中等</td></tr>
+    <tr><td>「EV 是重要成長引擎」</td><td>2025 虧損 NT$12 億，「短期難見成長」</td><td class="down">🔴 顯著</td></tr>
+    <tr><td>「模組化 DC 是下一波趨勢」</td><td>目前 colocation 客戶量不大</td><td class="warn">🟡 太早期</td></tr>
+    <tr><td class="up">「毛利率維持高水準」</td><td class="up">確實達成（34.9% → 37.5%）</td><td class="up">🟢 無落差</td></tr>
+    <tr><td class="up">「AI 營收佔比提升」</td><td class="up">Power 23% → 30%（超標）</td><td class="up">🟢 超標</td></tr>
+  </table>
+</div>
+
+<div class="callout gold" style="margin-top:24px">
+  <strong>📌 下一步：Step 4 — 主要成長動能 (Growth Drivers)</strong><br>
+  拆解營收組合（Power 30% + Cooling 9% + 其他 61%）、單位經濟學、邊際報酬、以及 R&D 效率分析。
+</div>
+</section>
+
+</main>
+</div>
+
+<script>
+document.querySelectorAll('.navItem').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const section = btn.dataset.section;
+    document.querySelectorAll('.navItem').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll(`.navItem[data-section="${section}"]`).forEach(b => b.classList.add('active'));
+    document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
+    document.getElementById(section).classList.add('active');
+    if (window.innerWidth <= 768) {
+      btn.scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'});
+    }
+  });
+});
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
+    e.preventDefault();
+    const sections = Array.from(document.querySelectorAll('section'));
+    const current = sections.findIndex(s => s.classList.contains('active'));
+    const next = e.key === 'ArrowDown' ? Math.min(current + 1, sections.length - 1) : Math.max(current - 1, 0);
+    sections[current].classList.remove('active');
+    sections[next].classList.add('active');
+    document.querySelectorAll('.navItem').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll(`.navItem[data-section="${sections[next].id}"]`).forEach(b => b.classList.add('active'));
+  }
+});
+</script>
+
+</body>
+</html>
