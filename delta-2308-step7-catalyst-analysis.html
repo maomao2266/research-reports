@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>台達電 2308.TW — 催化劑分析 | Step 7</title>
+<style>
+:root{
+  --bg:#0a0e14; --surface:#131820; --card:#181f2a;
+  --border:#252d3a; --ink:#e2e8f0; --muted:#7c8aa0; --dim:#4a5568;
+  --accent:#60a5fa; --gold:#f59e0b; --green:#34d399; --red:#f87171;
+  --orange:#fb923c; --purple:#a78bfa; --radius:14px; --radius2:18px;
+  --sans:"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,-apple-system,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.7}
+.topbar{background:var(--surface);border-bottom:1px solid var(--border);padding:14px 24px;display:flex;align-items:center;gap:16px;position:sticky;top:0;z-index:100}
+.topbar .logo{font-size:18px;font-weight:700;color:var(--accent)}
+.topbar .badge{font-size:11px;background:var(--card);color:var(--muted);padding:4px 10px;border-radius:20px;border:1px solid var(--border)}
+.layout{display:flex;min-height:calc(100vh - 57px)}
+.sidebar{width:240px;background:var(--surface);border-right:1px solid var(--border);padding:20px 0;position:sticky;top:57px;height:calc(100vh - 57px);overflow-y:auto;flex-shrink:0}
+.sidebar .navTitle{font-size:10px;text-transform:uppercase;letter-spacing:1.5px;color:var(--dim);padding:8px 20px 16px}
+.navItem{display:block;width:100%;padding:10px 20px;font-size:13px;color:var(--muted);background:none;border:none;text-align:left;cursor:pointer;font-family:var(--sans);transition:all .15s;border-left:3px solid transparent}
+.navItem:hover{color:var(--ink);background:var(--card);border-left-color:var(--dim)}
+.navItem.active{color:var(--accent);background:rgba(96,165,250,.08);border-left-color:var(--accent);font-weight:600}
+.content{flex:1;padding:32px;max-width:1100px}
+section{display:none}
+section.active{display:block}
+section h2{font-size:22px;margin-bottom:8px}
+section h3{font-size:16px;margin:24px 0 12px;color:var(--accent)}
+.sectionDesc{color:var(--muted);font-size:14px;margin-bottom:20px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px 24px;margin-bottom:16px}
+.cardTitle{font-size:15px;font-weight:600;margin-bottom:12px}
+.tbl{width:100%;border-collapse:collapse;margin:12px 0}
+.tbl th{text-align:left;color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.5px;padding:8px 12px;border-bottom:1px solid var(--border)}
+.tbl td{padding:10px 12px;border-bottom:1px solid var(--border);font-size:13px}
+.tbl tr:hover td{background:var(--surface)}
+.up{color:var(--green)} .down{color:var(--red)} .warn{color:var(--orange)}
+.metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin:16px 0}
+.metric{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px;text-align:center}
+.metric .val{font-size:20px;font-weight:700}
+.metric .lbl{font-size:11px;color:var(--muted);margin-top:4px}
+.callout{border-left:3px solid;border-radius:0 var(--radius) var(--radius) 0;padding:14px 18px;margin:16px 0;background:var(--surface);font-size:13px}
+.callout.red{border-color:var(--red)}.callout.gold{border-color:var(--gold)}.callout.green{border-color:var(--green)}.callout.purple{border-color:var(--purple)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.verdict{background:linear-gradient(135deg,var(--card),var(--surface));border:1px solid var(--accent);border-radius:var(--radius2);padding:24px 28px;margin:20px 0}
+.verdict .vTitle{font-size:18px;font-weight:700;color:var(--accent);margin-bottom:8px}
+.timeline{position:relative;padding-left:30px;margin:16px 0}
+.timeline::before{content:'';position:absolute;left:8px;top:0;bottom:0;width:2px;background:var(--border)}
+.timelineItem{position:relative;margin-bottom:20px}
+.timelineDot{position:absolute;left:-26px;top:4px;width:14px;height:14px;border-radius:50%}
+.timelineDate{font-size:11px;color:var(--dim)}
+.timelineTitle{font-size:14px;font-weight:600;margin:2px 0}
+.timelineDesc{font-size:12px;color:var(--muted)}
+.mobileNav{display:none}
+@media(max-width:768px){
+  .sidebar{display:none}
+  .mobileNav{display:flex;gap:4px;overflow-x:auto;padding:8px 0;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+  .mobileNav::-webkit-scrollbar{display:none}
+  .mobileNav .navItem{flex-shrink:0;white-space:nowrap;font-size:11px;padding:6px 10px;border-radius:20px;border:1px solid var(--border)}
+  .mobileNav .navItem.active{background:rgba(96,165,250,.15);border-color:var(--accent)}
+  .content{padding:16px}
+  .grid2{grid-template-columns:1fr}
+  .metrics{grid-template-columns:repeat(2,1fr)}
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <span class="logo">⚡ DELTA 2308</span>
+  <span class="badge">Step 7 / 11</span>
+  <span class="spacer" style="flex:1"></span>
+  <span class="tag">催化劑分析 · 2026-06-07</span>
+</div>
+
+<div class="layout">
+
+<nav class="sidebar">
+  <div class="navTitle">Step 7 目錄</div>
+  <button class="navItem active" data-section="s1">⚡ 催化劑識別</button>
+  <button class="navItem" data-section="s2">📊 量化評分</button>
+  <button class="navItem" data-section="s3">📅 時間軸</button>
+  <button class="navItem" data-section="s4">🎯 vs 市場共識</button>
+  <button class="navItem" data-section="s5">⚖️ 非對稱報酬</button>
+  <button class="navItem" data-section="s6">📋 催化劑結論</button>
+</nav>
+
+<nav class="mobileNav">
+  <button class="navItem active" data-section="s1">⚡ 識別</button>
+  <button class="navItem" data-section="s2">📊 評分</button>
+  <button class="navItem" data-section="s3">📅 時間</button>
+  <button class="navItem" data-section="s4">🎯 共識</button>
+  <button class="navItem" data-section="s5">⚖️ 報酬</button>
+  <button class="navItem" data-section="s6">📋 結論</button>
+</nav>
+
+<main class="content">
+
+<!-- SECTION 1: CATALYST IDENTIFICATION -->
+<section id="s1" class="active">
+<h2>⚡ 催化劑識別</h2>
+<p class="sectionDesc">Sonkin & Johnson (2017) Ch.8 — 找出能驅動股價往內含價值收斂的事件</p>
+
+<div class="card">
+  <div class="cardTitle">十大催化劑總覽</div>
+  <table class="tbl">
+    <tr><th>#</th><th>催化劑</th><th>類型</th><th>預計時間</th><th>機制</th></tr>
+    <tr>
+      <td class="up">1</td>
+      <td class="up"><strong>2026Q2 財報</strong></td>
+      <td>盈餘驚喜</td>
+      <td>2026 年 7 月底</td>
+      <td class="up">資訊傳播</td>
+    </tr>
+    <tr>
+      <td class="up">2</td>
+      <td class="up"><strong>Hyperscaler Q2 CAPEX</strong></td>
+      <td>需求訊號</td>
+      <td>2026 年 7 月底</td>
+      <td class="up">資訊傳播</td>
+    </tr>
+    <tr>
+      <td class="up">3</td>
+      <td><strong>±400V DC 首批出貨</strong></td>
+      <td>產品里程碑</td>
+      <td>2026 下半年</td>
+      <td class="warn">恢復多元化</td>
+    </tr>
+    <tr>
+      <td class="up">4</td>
+      <td class="up"><strong>NVIDIA Kyber Rack 800V 認證</strong></td>
+      <td>產品里程碑</td>
+      <td>2026H2-2027</td>
+      <td class="up">資訊傳播</td>
+    </tr>
+    <tr>
+      <td class="up">5</td>
+      <td class="up"><strong>COMPUTEX + Jensen Huang</strong></td>
+      <td>情緒催化</td>
+      <td>2026 年 6 月</td>
+      <td class="warn">恢復多元化</td>
+    </tr>
+    <tr>
+      <td class="up">6</td>
+      <td><strong>TSMC 合作細節</strong></td>
+      <td>合約/合作</td>
+      <td>2026 下半年</td>
+      <td class="up">資訊傳播</td>
+    </tr>
+    <tr>
+      <td>7</td>
+      <td><strong>SOFC 樣品測試結果</strong></td>
+      <td>技術驗證</td>
+      <td>2026H2-2027</td>
+      <td class="warn">恢復多元化</td>
+    </tr>
+    <tr>
+      <td>8</td>
+      <td><strong>墨西哥新廠宣布</strong></td>
+      <td>擴張</td>
+      <td>2026 年底前</td>
+      <td class="warn">恢復多元化</td>
+    </tr>
+    <tr>
+      <td class="warn">9</td>
+      <td class="warn"><strong>原物料成本壓力</strong></td>
+      <td>負面風險</td>
+      <td>持續</td>
+      <td class="down">恢復多元化</td>
+    </tr>
+    <tr>
+      <td class="up">10</td>
+      <td><strong>SOFC 17 億投資發酵</strong></td>
+      <td>策略訊號</td>
+      <td>2026-2027</td>
+      <td class="up">資訊傳播</td>
+    </tr>
+  </table>
+</div>
+
+<div class="callout purple">
+  <strong>⚡ 催化劑的 Steinhardt 第四問：</strong>「何時以及如何改變？」— 台達電的核心 thesis 是「AI 基礎設施收費站」+ 55 年時間護城河。催化劑的角色是 <strong>讓市場看到這個敘事被數據驗證</strong>。最重要的驗證點 = Q2 財報（證明 Q1 不是一次性高峰）+ Hyperscaler CAPEX（證明需求不是泡沫）。
+</div>
+</section>
+
+<!-- SECTION 2: QUANTIFICATION -->
+<section id="s2">
+<h2>📊 催化劑量化評分</h2>
+<p class="sectionDesc">機率 × 影響幅度 = 催化劑分數。Sonkin & Johnson (2017)</p>
+
+<div class="card">
+  <table class="tbl">
+    <tr><th>催化劑</th><th>機率</th><th>影響幅度</th><th>分數</th><th>確信度</th><th>可操作性</th></tr>
+    <tr>
+      <td class="up">1. 2026Q2 財報</td>
+      <td class="up">85%</td>
+      <td class="up">±8%</td>
+      <td class="up"><strong>6.8</strong></td>
+      <td class="up">高</td>
+      <td class="up">✅ 可操作</td>
+    </tr>
+    <tr>
+      <td class="up">2. Hyperscaler CAPEX</td>
+      <td class="up">80%</td>
+      <td class="up">±5%</td>
+      <td class="up"><strong>4.0</strong></td>
+      <td class="up">高</td>
+      <td class="up">✅ 可操作</td>
+    </tr>
+    <tr>
+      <td class="up">5. COMPUTEX/黃仁勳</td>
+      <td class="up">100%</td>
+      <td class="warn">±3%</td>
+      <td class="warn"><strong>3.0</strong></td>
+      <td>中</td>
+      <td class="down">⚠️ 正在發生</td>
+    </tr>
+    <tr>
+      <td>6. TSMC 合作</td>
+      <td>50%</td>
+      <td class="up">±5%</td>
+      <td class="warn"><strong>2.5</strong></td>
+      <td>低</td>
+      <td class="warn">待觀察</td>
+    </tr>
+    <tr>
+      <td class="warn">9. 原物料壓力</td>
+      <td class="warn">60%</td>
+      <td class="down">−3%</td>
+      <td class="warn"><strong>−1.8</strong></td>
+      <td>中</td>
+      <td>被動</td>
+    </tr>
+  </table>
+  <p style="font-size:11px;color:var(--dim);margin-top:8px">分數 = 機率 × 影響幅度。影響幅度 = 預期股價變動 %。機率 = 催化劑如期兌現的可能性。</p>
+</div>
+
+<div class="grid2">
+  <div class="card">
+    <div class="cardTitle">🔬 Q2 財報：最關鍵的催化劑</div>
+    <table class="tbl">
+      <tr><td>Q1 毛利率</td><td class="warn">37.5%（含 0.7% 一次性）</td></tr>
+      <tr><td>Q2 市場隱含</td><td>OPM ~16-17%（扣除一次性後）</td></tr>
+      <tr><td class="up">若 OPM >17%</td><td class="up">證明 Q1 非一次性 → 股價 +8%+</td></tr>
+      <tr><td class="down">若 OPM <16%</td><td class="down">毛利率見頂確認 → 股價 −5~8%</td></tr>
+      <tr><td>關鍵觀察</td><td>EV 賠償是否延續？原物料成本是否反映？</td></tr>
+    </table>
+  </div>
+  <div class="card">
+    <div class="cardTitle">📡 Hyperscaler CAPEX：需求驗證</div>
+    <table class="tbl">
+      <tr><td>2026 預估</td><td class="up">US$6,700 億（+60% YoY）</td></tr>
+      <tr><td class="up">若維持/上修</td><td class="up">AI 需求 story 持續 → 支撐估值</td></tr>
+      <tr><td class="down">若下修</td><td class="down">AI 過度建設論發酵 → 本益比壓縮</td></tr>
+      <tr><td>觀察窗口</td><td>Meta 7/23、Google 7/22、MSFT 7/22、AMZN 7/30</td></tr>
+    </table>
+  </div>
+</div>
+
+<div class="callout gold">
+  <strong>📊 最大的共識落差機會：</strong>市場對台達 Q2 的預期可能被 Q1 的 37.5% 毛利率餵得太樂觀。管理層已經暗示「大幅提升不易」+「原物料成本上升」+「OPEX 緩步增加」。如果市場沒有充分消化這些警示，Q2 財報可能就是 <strong>「過度樂觀修正」</strong>的催化劑（向下）。
+</div>
+</section>
+
+<!-- SECTION 3: TIMELINE -->
+<section id="s3">
+<h2>📅 催化劑時間軸</h2>
+<p class="sectionDesc">2026 年 6 月 → 2027 年的催化劑序列</p>
+
+<div class="card">
+  <div class="timeline">
+    <div class="timelineItem">
+      <div class="timelineDot" style="background:var(--accent)"></div>
+      <div class="timelineDate">2026 年 6 月初</div>
+      <div class="timelineTitle">🟢 COMPUTEX + Jensen Huang 來台</div>
+      <div class="timelineDesc">情緒催化。台達展示 AI 基礎設施。TSMC 首度公開合作。已發生。</div>
+    </div>
+    <div class="timelineItem">
+      <div class="timelineDot" style="background:var(--accent)"></div>
+      <div class="timelineDate">2026 年 7 月 10 日前</div>
+      <div class="timelineTitle">🟡 6 月營收公告 (TWSE)</div>
+      <div class="timelineDesc">月營收為 Q2 先行指標。若月營收維持高檔（>NT$500 億），Q2 樂觀。</div>
+    </div>
+    <div class="timelineItem">
+      <div class="timelineDot" style="background:var(--green)"></div>
+      <div class="timelineDate">2026 年 7 月下旬</div>
+      <div class="timelineTitle">🔥 Q2 財報 + Hyperscaler CAPEX 同步</div>
+      <div class="timelineDesc">最大催化劑窗口。四家 CSP + 台達 Q2 財報集中在一週內。決定性時刻。</div>
+    </div>
+    <div class="timelineItem">
+      <div class="timelineDot" style="background:var(--accent)"></div>
+      <div class="timelineDate">2026 下半年</div>
+      <div class="timelineTitle">🟢 ±400V DC 首批出貨 + TSMC 合作細節 + 墨西哥決定</div>
+      <div class="timelineDesc">多個中型催化劑連續觸發。累積效應可觀。</div>
+    </div>
+    <div class="timelineItem">
+      <div class="timelineDot" style="background:var(--purple)"></div>
+      <div class="timelineDate">2027</div>
+      <div class="timelineTitle">🟣 800V DC 大量出貨 + SOFC 試產線 + 燃料電池營收</div>
+      <div class="timelineDesc">H2 引擎全面啟動。若如期，將是台達的下一個成長台階。</div>
+    </div>
+  </div>
+</div>
+
+<div class="callout green">
+  <strong>📅 關鍵時間窗口：2026 年 7 月最後一週。</strong>台達 Q2 財報 + 四大 CSP 財報集中在 5 天內。這是一年中最密集的資訊釋放期。如果全部利多 → 股價可能一次反映 2-3 季的預期。如果出現裂縫 → 同理。
+</div>
+</section>
+
+<!-- SECTION 4: VS CONSENSUS -->
+<section id="s4">
+<h2>🎯 催化劑 vs. 市場共識</h2>
+<p class="sectionDesc">Steinhardt 第一問：「你的觀點和市場共識有何不同？」</p>
+
+<div class="card">
+  <table class="tbl">
+    <tr><th>催化劑</th><th>市場共識</th><th>我們認為</th><th>差距</th></tr>
+    <tr>
+      <td>Q2 OPM</td>
+      <td class="warn">延續 Q1 強勢，OPM ~17.5%</td>
+      <td class="down">扣除一次性後可能回落至 16-16.5%。原物料成本開始反映。</td>
+      <td class="down">⚠️ 我們比市場保守</td>
+    </tr>
+    <tr>
+      <td>AI 營收佔比</td>
+      <td class="up">持續快速提升</td>
+      <td class="up">Q2 應維持 38-40%。Cooling 佔比可能小幅回升。</td>
+      <td>≈ 差距小</td>
+    </tr>
+    <tr>
+      <td>EV Mobility</td>
+      <td class="warn">虧損將收斂</td>
+      <td class="down">「短期難見成長」（管理層原話）。Q2 仍將虧損。</td>
+      <td class="down">⚠️ 我們比市場悲觀</td>
+    </tr>
+    <tr>
+      <td>800V DC 時程</td>
+      <td>2026 年底出貨</td>
+      <td class="warn">僅 ±400V 今年出貨。800V 要 2027。</td>
+      <td class="warn">⚠️ 市場過度樂觀</td>
+    </tr>
+    <tr>
+      <td>SOFC 影響</td>
+      <td>忽略</td>
+      <td class="up">17 億投資 + 台電測試是個被低估的長期因子</td>
+      <td class="up">🟢 市場低估</td>
+    </tr>
+  </table>
+</div>
+
+<div class="callout red">
+  <strong>🎯 核心的 Steinhardt 變異觀點：</strong>我們認為市場對台達 Q2-Q3 的獲利預期<strong>過度樂觀</strong>。Q1 的 37.5% 毛利率含有 0.7% 一次性，管理層已暗示「難再大幅提升」+「原物料上升」+「OPEX 緩步增加」。如果這些因素在 Q2 集中反映，OPM 可能回落至 16-17%，觸發<strong>獲利預期修正</strong>。這不是看空——是認為短期有過度樂觀的修正風險。
+</div>
+</section>
+
+<!-- SECTION 5: ASYMMETRIC PAYOFF -->
+<section id="s5">
+<h2>⚖️ 非對稱報酬分析</h2>
+<p class="sectionDesc">上漲空間 ÷ 下跌空間 > 2:1 才值得進場（Sonkin & Johnson, 2017）</p>
+
+<div class="card">
+  <div class="cardTitle">Q2 財報情境矩陣</div>
+  <table class="tbl">
+    <tr><th>情境</th><th>條件</th><th>預期股價變動</th><th>機率</th><th>期望值</th></tr>
+    <tr>
+      <td class="up">🟢 強勁超標</td>
+      <td>OPM >17.5% + CSP CAPEX 上修</td>
+      <td class="up">+10~15% → NT$2,530-2,645</td>
+      <td>25%</td>
+      <td class="up">+3.3%</td>
+    </tr>
+    <tr>
+      <td class="up">🟡 符合預期</td>
+      <td>OPM 16-17% + CAPEX 持平</td>
+      <td>±3% → NT$2,230-2,370</td>
+      <td>50%</td>
+      <td>0%</td>
+    </tr>
+    <tr>
+      <td class="down">🔴 不如預期</td>
+      <td>OPM <16% 或 CAPEX 下修</td>
+      <td class="down">−8~12% → NT$2,024-2,116</td>
+      <td>25%</td>
+      <td class="down">−2.5%</td>
+    </tr>
+    <tr style="background:rgba(96,165,250,.08)"><td colspan="3"><strong>加權期望值</strong></td><td class="up"><strong>+0.8%</strong></td><td></td></tr>
+  </table>
+</div>
+
+<div class="grid2">
+  <div class="card" style="border-left:3px solid var(--green)">
+    <div class="cardTitle">🟢 上漲催化劑鏈</div>
+    <p style="font-size:13px;color:var(--muted)">Q2 OPM >17% → AI story confirmed → consensus upgrade → 本益比擴張 20→25x → NT$3,000+（外資目標價）</p>
+  </div>
+  <div class="card" style="border-left:3px solid var(--red)">
+    <div class="cardTitle">🔴 下跌催化劑鏈</div>
+    <p style="font-size:13px;color:var(--muted)">Q2 OPM <16% → 毛利率見頂確認 → consensus downgrade → 本益比壓縮 20→15x → NT$1,800-2,000</p>
+  </div>
+</div>
+
+<div class="callout gold">
+  <strong>⚖️ 非對稱性判斷：</strong>目前期望值略偏正向（+0.8%），但非對稱性不明顯（上漲 10-15% vs 下跌 8-12%，比例約 1.2:1）。<strong>不構成強烈的非對稱交易機會</strong>。真正的非對稱機會可能在 Q2 財報塵埃落定後：如果股價因過度樂觀修正而回調至 NT$2,000 以下，而 AI 長期 thesis 未受損，那才是絕佳的進場點。
+</div>
+</section>
+
+<!-- SECTION 6: VERDICT -->
+<section id="s6">
+<h2>📋 催化劑結論</h2>
+
+<div class="metrics">
+  <div class="metric"><div class="val up">Q2 財報</div><div class="lbl">最重要催化劑</div></div>
+  <div class="metric"><div class="val">2026/7 下旬</div><div class="lbl">關鍵窗口</div></div>
+  <div class="metric"><div class="val warn">OPM 過度樂觀</div><div class="lbl">最大共識落差</div></div>
+  <div class="metric"><div class="val">+0.8%</div><div class="lbl">期望值</div></div>
+</div>
+
+<div class="verdict">
+  <div class="vTitle">📋 催化劑判決</div>
+  <p style="font-size:16px;line-height:1.8">
+    台達電未來 3-6 個月最重要的催化劑是 <strong>2026 Q2 財報（7 月底）</strong>，同步搭配四大 CSP 的 CAPEX 更新。這五個事件集中在 5 天內，是全年資訊密度最高的時刻。<br><br>
+    <strong>最大的共識落差：</strong>市場對獲利率的預期過度線性外推 Q1 的強勁表現，但管理層已多次暗示「難再大幅提升」。Q2 財報可能觸發 <strong>「過度樂觀修正」</strong>，這不是基本面的惡化，而是預期的正常化。<br><br>
+    <strong>策略建議：</strong>短期不宜追高（現價 NT$2,300，接近 Q1 財報後的高原區），等待 Q2 財報的「預期正常化」回調作為更好的進場點。長期（12 個月+）台達的 AI 基礎設施收費站 thesis 完好無損，800V DC 和 SOFC 是 2027-28 年的下一個成長台階。
+  </p>
+</div>
+
+<div class="card">
+  <div class="cardTitle">Steinhardt 四問 — 催化劑視角</div>
+  <table class="tbl">
+    <tr><th>#</th><th>問題</th><th>回答</th></tr>
+    <tr><td class="up">1</td><td>你的觀點和共識不同嗎？</td><td class="up">✅ 我們比市場更謹慎看待短期獲利率（OPM 回落風險）</td></tr>
+    <tr><td class="up">2</td><td>你是對的嗎？</td><td class="up">✅ 管理層已暗示「難再大幅提升」+ 原物料壓力</td></tr>
+    <tr><td class="up">3</td><td>市場錯過了什麼？</td><td class="warn">⚠️ Q1 的 0.7% 一次性賠償被當作持續性改善</td></tr>
+    <tr><td class="warn">4</td><td>何時以及如何改變？</td><td class="warn">⚠️ 2026 年 7 月底 Q2 財報 — 5 天密集資訊窗口</td></tr>
+  </table>
+</div>
+
+<div class="callout gold" style="margin-top:24px">
+  <strong>📌 下一步：Step 8 — 產業與總經 (Macro & Sector Analysis)</strong><br>
+  AI 資料中心產業的 CAGR、台達所處的產業循環位置、油價/原物料/地緣政治的總經背景。
+</div>
+</section>
+
+</main>
+</div>
+
+<script>
+document.querySelectorAll('.navItem').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const section = btn.dataset.section;
+    document.querySelectorAll('.navItem').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll(`.navItem[data-section="${section}"]`).forEach(b => b.classList.add('active'));
+    document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
+    document.getElementById(section).classList.add('active');
+    if (window.innerWidth <= 768) btn.scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'});
+  });
+});
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
+    e.preventDefault();
+    const sections = Array.from(document.querySelectorAll('section'));
+    const current = sections.findIndex(s => s.classList.contains('active'));
+    const next = e.key === 'ArrowDown' ? Math.min(current + 1, sections.length - 1) : Math.max(current - 1, 0);
+    sections[current].classList.remove('active'); sections[next].classList.add('active');
+    document.querySelectorAll('.navItem').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll(`.navItem[data-section="${sections[next].id}"]`).forEach(b => b.classList.add('active'));
+  }
+});
+</script>
+</body>
+</html>
