@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>台達電 2308.TW — 組合配置與最終 Thesis | Step 11</title>
+<style>
+:root{
+  --bg:#0a0e14; --surface:#131820; --card:#181f2a;
+  --border:#252d3a; --ink:#e2e8f0; --muted:#7c8aa0; --dim:#4a5568;
+  --accent:#60a5fa; --gold:#f59e0b; --green:#34d399; --red:#f87171;
+  --orange:#fb923c; --purple:#a78bfa; --radius:14px; --radius2:18px;
+  --sans:"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,-apple-system,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.7}
+.topbar{background:var(--surface);border-bottom:1px solid var(--border);padding:14px 24px;display:flex;align-items:center;gap:16px;position:sticky;top:0;z-index:100}
+.topbar .logo{font-size:18px;font-weight:700;color:var(--accent)}
+.topbar .badge{font-size:11px;background:var(--card);color:var(--muted);padding:4px 10px;border-radius:20px;border:1px solid var(--border)}
+.layout{display:flex;min-height:calc(100vh - 57px)}
+.sidebar{width:240px;background:var(--surface);border-right:1px solid var(--border);padding:20px 0;position:sticky;top:57px;height:calc(100vh - 57px);overflow-y:auto;flex-shrink:0}
+.sidebar .navTitle{font-size:10px;text-transform:uppercase;letter-spacing:1.5px;color:var(--dim);padding:8px 20px 16px}
+.navItem{display:block;width:100%;padding:10px 20px;font-size:13px;color:var(--muted);background:none;border:none;text-align:left;cursor:pointer;font-family:var(--sans);transition:all .15s;border-left:3px solid transparent}
+.navItem:hover{color:var(--ink);background:var(--card);border-left-color:var(--dim)}
+.navItem.active{color:var(--accent);background:rgba(96,165,250,.08);border-left-color:var(--accent);font-weight:600}
+.content{flex:1;padding:32px;max-width:1100px}
+section{display:none}
+section.active{display:block}
+section h2{font-size:22px;margin-bottom:8px}
+section h3{font-size:16px;margin:24px 0 12px;color:var(--accent)}
+.sectionDesc{color:var(--muted);font-size:14px;margin-bottom:20px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px 24px;margin-bottom:16px}
+.cardTitle{font-size:15px;font-weight:600;margin-bottom:12px}
+.tbl{width:100%;border-collapse:collapse;margin:12px 0}
+.tbl th{text-align:left;color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.5px;padding:8px 12px;border-bottom:1px solid var(--border)}
+.tbl td{padding:10px 12px;border-bottom:1px solid var(--border);font-size:13px}
+.tbl tr:hover td{background:var(--surface)}
+.up{color:var(--green)} .down{color:var(--red)} .warn{color:var(--orange)}
+.metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin:16px 0}
+.metric{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px;text-align:center}
+.metric .val{font-size:20px;font-weight:700}
+.metric .lbl{font-size:11px;color:var(--muted);margin-top:4px}
+.callout{border-left:3px solid;border-radius:0 var(--radius) var(--radius) 0;padding:14px 18px;margin:16px 0;background:var(--surface);font-size:13px}
+.callout.red{border-color:var(--red)}.callout.gold{border-color:var(--gold)}.callout.green{border-color:var(--green)}.callout.purple{border-color:var(--purple)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.verdict{background:linear-gradient(135deg,var(--card),var(--surface));border:1px solid var(--accent);border-radius:var(--radius2);padding:24px 28px;margin:20px 0}
+.verdict .vTitle{font-size:18px;font-weight:700;color:var(--accent);margin-bottom:8px}
+.pitch{background:linear-gradient(135deg,rgba(96,165,250,.08),rgba(52,211,153,.05));border:2px solid var(--accent);border-radius:var(--radius2);padding:28px;margin:20px 0;font-size:16px;line-height:2}
+.pitch .hook{font-size:20px;font-weight:700;color:var(--accent);margin-bottom:16px}
+.summaryGrid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin:16px 0}
+.summaryItem{background:var(--surface);border-radius:var(--radius);padding:12px 8px;text-align:center}
+.summaryItem .step{font-size:10px;color:var(--dim)}
+.summaryItem .grade{font-size:16px;font-weight:700;margin:4px 0}
+.mobileNav{display:none}
+@media(max-width:768px){
+  .sidebar{display:none}
+  .mobileNav{display:flex;gap:4px;overflow-x:auto;padding:8px 0;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+  .mobileNav::-webkit-scrollbar{display:none}
+  .mobileNav .navItem{flex-shrink:0;white-space:nowrap;font-size:11px;padding:6px 10px;border-radius:20px;border:1px solid var(--border)}
+  .mobileNav .navItem.active{background:rgba(96,165,250,.15);border-color:var(--accent)}
+  .content{padding:16px}
+  .grid2{grid-template-columns:1fr}
+  .summaryGrid{grid-template-columns:repeat(3,1fr)}
+  .metrics{grid-template-columns:repeat(2,1fr)}
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <span class="logo">⚡ DELTA 2308</span>
+  <span class="badge">Step 11 / 11</span>
+  <span class="spacer" style="flex:1"></span>
+  <span class="tag">組合配置 · 最終 Thesis</span>
+</div>
+
+<div class="layout">
+
+<nav class="sidebar">
+  <div class="navTitle">Step 11 目錄</div>
+  <button class="navItem active" data-section="s1">📊 11 步成績單</button>
+  <button class="navItem" data-section="s2">🧪 Steinhardt 終極測試</button>
+  <button class="navItem" data-section="s3">📐 Toulmin 論證</button>
+  <button class="navItem" data-section="s4">📈 組合配置</button>
+  <button class="navItem" data-section="s5">⚔️ 進出策略</button>
+  <button class="navItem" data-section="s6">🎤 30 秒 Pitch</button>
+</nav>
+
+<nav class="mobileNav">
+  <button class="navItem active" data-section="s1">📊 成績</button>
+  <button class="navItem" data-section="s2">🧪 Steinhardt</button>
+  <button class="navItem" data-section="s3">📐 Toulmin</button>
+  <button class="navItem" data-section="s4">📈 配置</button>
+  <button class="navItem" data-section="s5">⚔️ 進出</button>
+  <button class="navItem" data-section="s6">🎤 Pitch</button>
+</nav>
+
+<main class="content">
+
+<!-- SECTION 1: 11-STEP SCORECARD -->
+<section id="s1" class="active">
+<h2>📊 11 步完整成績單</h2>
+<p class="sectionDesc">台達電 2308.TW · 完整研究架構總覽</p>
+
+<div class="summaryGrid">
+  <div class="summaryItem"><div class="step">Step 1</div><div class="grade up">A−</div><div style="font-size:10px;color:var(--muted)">公司描述</div></div>
+  <div class="summaryItem"><div class="step">Step 2</div><div class="grade up">B+</div><div style="font-size:10px;color:var(--muted)">公司指引</div></div>
+  <div class="summaryItem"><div class="step">Step 3</div><div class="grade up">A−</div><div style="font-size:10px;color:var(--muted)">策略</div></div>
+  <div class="summaryItem"><div class="step">Step 4</div><div class="grade up">A−</div><div style="font-size:10px;color:var(--muted)">成長動能</div></div>
+  <div class="summaryItem"><div class="step">Step 5</div><div class="grade up">🥇</div><div style="font-size:10px;color:var(--muted)">競爭定位</div></div>
+  <div class="summaryItem"><div class="step">Step 6</div><div class="grade up">A−</div><div style="font-size:10px;color:var(--muted)">護城河</div></div>
+  <div class="summaryItem"><div class="step">Step 7</div><div class="grade up">A−</div><div style="font-size:10px;color:var(--muted)">催化劑</div></div>
+  <div class="summaryItem"><div class="step">Step 8</div><div class="grade up">A</div><div style="font-size:10px;color:var(--muted)">產業總經</div></div>
+  <div class="summaryItem"><div class="step">Step 9</div><div class="grade warn">中高</div><div style="font-size:10px;color:var(--muted)">風險</div></div>
+  <div class="summaryItem"><div class="step">Step 10</div><div class="grade up">+52%</div><div style="font-size:10px;color:var(--muted)">估值 upside</div></div>
+</div>
+
+<div class="metrics">
+  <div class="metric"><div class="val up">A−</div><div class="lbl">綜合投資評級</div></div>
+  <div class="metric"><div class="val up">+52%</div><div class="lbl">公允價值 upside</div></div>
+  <div class="metric"><div class="val up">B+</div><div class="lbl">Steinhardt Edge</div></div>
+  <div class="metric"><div class="val">10-15%</div><div class="lbl">建議部位權重</div></div>
+</div>
+
+<div class="callout green">
+  <strong>📊 11 步平均評級：A−。</strong>台達電在基本面、護城河、產業位置上幾乎全壘打。唯一的扣分項是風險（中高）和價格（已反映部分樂觀但仍有安全邊際）。整體而言，這是一個 <strong>「優質公司在合理偏低價格」</strong>的經典價值投資機會。
+</div>
+</section>
+
+<!-- SECTION 2: STEINHARDT TEST -->
+<section id="s2">
+<h2>🧪 Steinhardt 變異感知終極測試</h2>
+<p class="sectionDesc">Sonkin & Johnson (2017) — 四問全過才能進場</p>
+
+<div class="card">
+  <table class="tbl">
+    <tr><th>#</th><th>問題</th><th>回答</th><th>通過？</th></tr>
+    <tr>
+      <td class="up">1</td>
+      <td><strong>你的觀點與市場共識不同嗎？</strong></td>
+      <td>市場定價 AI 成長 2-3 年後放緩（隱含 CAGR 10%）；我們認為 AI 是 10 年+ 結構性趨勢（CAGR 17%）</td>
+      <td class="up">✅ 顯著不同</td>
+    </tr>
+    <tr>
+      <td class="up">2</td>
+      <td><strong>你是對的嗎？</strong></td>
+      <td>11 步分析支持：護城河 A−、ROIC 18%、產業 CAGR 30-35%、競爭領導地位 → AI 長期需求確定性高</td>
+      <td class="up">✅ 證據充分</td>
+    </tr>
+    <tr>
+      <td class="up">3</td>
+      <td><strong>市場錯過了什麼？</strong></td>
+      <td>市場犯了「可得性偏誤」— 用 2000 網路泡沫的模板套在 AI 上，忽略了 AI 基礎設施的真實 ROI（CSP 營收加速）。台達不是 AI 概念股，是 AI 收費站。</td>
+      <td class="up">✅ 可辨識</td>
+    </tr>
+    <tr>
+      <td class="warn">4</td>
+      <td><strong>何時以及如何改變？</strong></td>
+      <td>2026Q2 財報（7 月底）+ CSP CAPEX 更新 → 若營收和 CAPEX 持續上修，市場將被迫重新定價</td>
+      <td class="warn">⚠️ 時機可辨識，但有短期風險</td>
+    </tr>
+  </table>
+</div>
+
+<div class="card">
+  <div class="cardTitle">效率市場失敗診斷</div>
+  <table class="tbl">
+    <tr><td>哪條效率規則失效？</td><td class="up"><strong>Processing（處理）</strong></td></tr>
+    <tr><td>失靈機制</td><td>市場使用「網路泡沫」模板來理解 AI 基礎設施投資，導致系統性低估成長持續性</td></tr>
+    <tr><td>優勢類型</td><td class="up"><strong>分析性優勢 (Analytical Edge)</strong> — 我們對 AI 長期需求的理解比市場更精確</td></tr>
+    <tr><td>Alpha 衰退時間</td><td>12-18 個月 — 當更多 CSP 財報證明 AI ROI，市場共識將修正</td></tr>
+  </table>
+</div>
+</section>
+
+<!-- SECTION 3: TOULMIN -->
+<section id="s3">
+<h2>📐 Toulmin 論證結構</h2>
+<p class="sectionDesc">Toulmin (1958); Sonkin & Johnson (2017) — 將整個研究收斂成邏輯鏈</p>
+
+<div class="card" style="font-size:14px;line-height:2">
+  <p><strong style="color:var(--accent)">🎯 主張 Claim：</strong>台達電 2308.TW 目前的股價 NT$2,300 顯著低於其內含價值 NT$3,500，市場因 AI 持續性疑慮而給予不合理的折價。</p>
+  <p style="margin-top:16px"><strong style="color:var(--green)">📋 證據 Evidence：</strong></p>
+  <ol style="padding-left:20px;color:var(--muted)">
+    <li>DCF 內含價值 NT$4,683（最保守假設仍有 NT$3,366）</li>
+    <li>Trading Comps 公允區間 NT$2,600-3,500</li>
+    <li>ROIC 18% > WACC 8.5% → 成長創造價值</li>
+    <li>Hyperscaler CAPEX 2026E +60%，尚未見頂</li>
+    <li>護城河 A−：三重隔離機制保護（路徑依賴+社會複雜性+因果模糊）</li>
+  </ol>
+  <p style="margin-top:16px"><strong style="color:var(--gold)">🔗 推論橋樑 Warrant：</strong>市場對 AI 投資週期的判斷犯了「代表性偏誤」— 用網路泡沫的模板來理解 AI 基礎設施，忽略了關鍵差異：2000 年的光纖沒有真實需求，而 2026 年的 AI 算力有明確的 CSP 營收成長支撐（AWS AI 服務季增 170%）。</p>
+  <p style="margin-top:16px"><strong style="color:var(--purple)">🛡️ 支撐 Backing：</strong>四大 CSP 的 AI 相關營收均加速成長；NVIDIA 下一代 GPU 功耗持續上升 → 台達的「每台伺服器採購金額」自然成長；管理層 55 年的策略一致性證明這不是追逐熱點。</p>
+  <p style="margin-top:16px"><strong style="color:var(--orange)">⚠️ 限定詞 Qualifier：</strong>「在 12-18 個月的投資期限內，likely」— 前提是 AI CAPEX 循環沒有出現結構性斷裂。</p>
+  <p style="margin-top:16px"><strong style="color:var(--red)">🔴 反駁 Rebuttal：</strong>若 CSP CAPEX 在 2027 年後驟降 → 台達 AI 營收砍半 → 公允價值降至 NT$1,560-1,820。但此情境發生機率低（~15%），且台達的傳統業務提供底部支撐。</p>
+</div>
+</section>
+
+<!-- SECTION 4: PORTFOLIO FIT -->
+<section id="s4">
+<h2>📈 組合配置建議</h2>
+
+<div class="card">
+  <div class="cardTitle">部位規模計算</div>
+  <table class="tbl">
+    <tr><th>參數</th><th>數值</th><th>說明</th></tr>
+    <tr><td>確信度</td><td class="up">中高</td><td>11 步分析一致支持，唯短期有 Q2 財報風險</td></tr>
+    <tr><td>預期回報 (12m)</td><td class="up">+30-50%</td><td>公允價值 NT$3,500 vs 現價 NT$2,300</td></tr>
+    <tr><td>熊市下行風險</td><td class="down">−25~35%</td><td>CSP CAPEX 放緩情境</td></tr>
+    <tr><td>建議部位權重</td><td class="up"><strong>10-15%</strong></td><td>高確信度但不集中賭注</td></tr>
+    <tr><td>風險金額 (組合 100 萬)</td><td>NT$3.5-5.3 萬</td><td>10-15% × 35% 最大跌幅</td></tr>
+  </table>
+</div>
+
+<div class="grid2">
+  <div class="card">
+    <div class="cardTitle">相關性考量</div>
+    <table class="tbl">
+      <tr><td>與台股大盤</td><td class="warn">🟡 高（Beta ~1.1）</td></tr>
+      <tr><td>與台灣 50</td><td class="warn">🟡 成份股，被動資金聯動</td></tr>
+      <tr><td>與 AI 族群</td><td class="down">🔴 高度相關（廣達/緯創/奇鋐）</td></tr>
+      <tr><td>分散化價值</td><td class="warn">🟡 中等 — 若已持有台股/AI 股，增量分散有限</td></tr>
+    </table>
+  </div>
+  <div class="card">
+    <div class="cardTitle">波動度評估</div>
+    <table class="tbl">
+      <tr><td>52 週範圍</td><td>NT$390 – 2,585（極寬）</td></tr>
+      <tr><td>隱含波動</td><td class="warn">🟡 偏高（AI 題材股特徵）</td></tr>
+      <tr><td>DOL 3.1x</td><td class="down">🔴 營收波動放大 3 倍到獲利</td></tr>
+      <tr><td>適合</td><td>能承受 25-35% 回撤的長期投資人</td></tr>
+    </table>
+  </div>
+</div>
+
+<div class="card">
+  <div class="cardTitle">組合層級 Kill Switch</div>
+  <table class="tbl">
+    <tr><th>條件</th><th>行動</th></tr>
+    <tr class="red"><td>任一 CSP 正式下修全年 CAPEX 指引（絕對金額下降）</td><td class="red">砍半台達部位</td></tr>
+    <tr class="warn"><td>連續兩季營收增速 < 20%</td><td class="warn">減碼至 5%</td></tr>
+    <tr class="warn"><td>台達 OPM 跌破 14%</td><td class="warn">重新評估 thesis</td></tr>
+    <tr><td>組合整體回撤 > 20%</td><td>所有部位減半</td></tr>
+  </table>
+</div>
+</section>
+
+<!-- SECTION 5: ENTRY/EXIT -->
+<section id="s5">
+<h2>⚔️ 進場 / 出場 / 停損策略</h2>
+
+<div class="card">
+  <table class="tbl">
+    <tr><th>元素</th><th>策略</th><th>價格</th></tr>
+    <tr><td class="up">理想進場</td><td>Q2 財報後若回調（過度樂觀修正）</td><td class="up">NT$1,800 – 2,000</td></tr>
+    <tr><td>現在進場</td><td>分 2-3 批進場，降低時機風險</td><td>NT$2,300</td></tr>
+    <tr><td class="down">停損</td><td>CSP CAPEX 正式下修 → 砍半；或跌破 NT$1,500</td><td class="down">NT$1,500</td></tr>
+    <tr><td class="up">目標價</td><td>Comps 公允價值上限</td><td class="up">NT$3,200 – 3,500</td></tr>
+    <tr><td>重新評估</td><td>每季 CSP 財報 + 台達法說會</td><td>持續</td></tr>
+  </table>
+</div>
+
+<div class="callout gold">
+  <strong>⚔️ 策略建議：</strong>最佳進場點是 Q2 財報後（7 月底）— 市場可能因 OPM 回落（扣除一次性後）而過度反應，提供更好的價格。但如果願意接受短期波動，現在分 3 批（現在、Q2 財報前、Q2 財報後）進場也是合理的。關鍵：<strong>不要一次全押</strong>。
+</div>
+</section>
+
+<!-- SECTION 6: 30-SECOND PITCH -->
+<section id="s6">
+<h2>🎤 30 秒 Pitch</h2>
+
+<div class="pitch">
+  <div class="hook">⚡ 台達電不是 AI 概念股，是 AI 基礎設施的收費站。</div>
+  <p style="color:var(--ink)">
+    無論 NVIDIA、AWS 還是 Google 贏得 AI 競賽，<strong>他們都需要台達電的電源和冷卻</strong>。
+    55 年的製程參數、83,000 人的師徒體系、從晶片設計階段就與 NVIDIA 綁定——
+    這些東西花多少錢都買不到。目前股價 NT$2,300，市場定價的是「AI 將在 2-3 年後退潮」。
+    但證據指向相反的結論：AI 是 10 年+的結構性趨勢，台達的護城河只會越挖越深。
+    公允價值 NT$3,500，<strong>上漲空間 +52%，下檔有安全邊際保護</strong>。
+  </p>
+</div>
+
+<div class="card">
+  <div class="cardTitle">PM 四問快速回答</div>
+  <table class="tbl">
+    <tr><td class="up">能賺多少？</td><td class="up">公允價值 NT$3,500，+52% upside（12-18 個月）</td></tr>
+    <tr><td>下一個人怎麼發現？</td><td>2026Q2 財報 + CSP CAPEX 持續上修 → 市場被迫重新定價 AI 成長持續性</td></tr>
+    <tr><td>是不是好得太不真實？</td><td>折價來自市場對 AI 循環的過度悲觀（代表性偏誤）。台達不是沒有風險（DOL 3.1x、CSP 集中），但這些風險已被超額定價。</td></tr>
+    <tr><td class="warn">能虧多少？</td><td class="warn">熊市情境 −25~35%（NT$1,560-1,820）；尾部情境 −55%（NT$1,000）。傳統業務提供底部支撐。</td></tr>
+  </table>
+</div>
+
+<div class="verdict" style="margin-top:24px">
+  <div class="vTitle">🏁 11 步研究架構完成</div>
+  <p style="font-size:16px;line-height:1.8">
+    <strong>台達電 2308.TW：溫和低估，建議 10-15% 部位，目標 NT$3,200-3,500，時間框架 12-18 個月。</strong><br><br>
+    這是典型的 <strong>「優質公司 × 合理偏低價格 × 可辨識催化劑」</strong>的投資機會。最大的優勢不在於我們比市場知道更多，而在於我們比市場<strong>更正確地理解已知資訊的含義</strong>— 這是 Sonkin & Johnson 定義的「分析性優勢」。
+  </p>
+</div>
+
+<div class="callout purple" style="margin-top:16px;text-align:center;font-size:14px">
+  🎉 11 步研究全數完成 · 台達電 2308.TW · 2026-06-07<br>
+  <span style="font-size:11px;color:var(--dim)">研究報告完整列表：https://maomao2266.github.io/research-reports/</span>
+</div>
+</section>
+
+</main>
+</div>
+
+<script>
+document.querySelectorAll('.navItem').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const section = btn.dataset.section;
+    document.querySelectorAll('.navItem').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll(`.navItem[data-section="${section}"]`).forEach(b => b.classList.add('active'));
+    document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
+    document.getElementById(section).classList.add('active');
+    if (window.innerWidth <= 768) btn.scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'});
+  });
+});
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
+    e.preventDefault();
+    const sections = Array.from(document.querySelectorAll('section'));
+    const current = sections.findIndex(s => s.classList.contains('active'));
+    const next = e.key === 'ArrowDown' ? Math.min(current + 1, sections.length - 1) : Math.max(current - 1, 0);
+    sections[current].classList.remove('active'); sections[next].classList.add('active');
+    document.querySelectorAll('.navItem').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll(`.navItem[data-section="${sections[next].id}"]`).forEach(b => b.classList.add('active'));
+  }
+});
+</script>
+</body>
+</html>
