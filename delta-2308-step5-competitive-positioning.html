@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>台達電 2308.TW — 競爭定位 | Step 5</title>
+<style>
+:root{
+  --bg:#0a0e14; --surface:#131820; --card:#181f2a;
+  --border:#252d3a; --ink:#e2e8f0; --muted:#7c8aa0; --dim:#4a5568;
+  --accent:#60a5fa; --gold:#f59e0b; --green:#34d399; --red:#f87171;
+  --orange:#fb923c; --purple:#a78bfa; --radius:14px; --radius2:18px;
+  --sans:"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,-apple-system,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.7}
+.topbar{background:var(--surface);border-bottom:1px solid var(--border);padding:14px 24px;display:flex;align-items:center;gap:16px;position:sticky;top:0;z-index:100}
+.topbar .logo{font-size:18px;font-weight:700;color:var(--accent)}
+.topbar .badge{font-size:11px;background:var(--card);color:var(--muted);padding:4px 10px;border-radius:20px;border:1px solid var(--border)}
+.layout{display:flex;min-height:calc(100vh - 57px)}
+.sidebar{width:240px;background:var(--surface);border-right:1px solid var(--border);padding:20px 0;position:sticky;top:57px;height:calc(100vh - 57px);overflow-y:auto;flex-shrink:0}
+.sidebar .navTitle{font-size:10px;text-transform:uppercase;letter-spacing:1.5px;color:var(--dim);padding:8px 20px 16px}
+.navItem{display:block;width:100%;padding:10px 20px;font-size:13px;color:var(--muted);background:none;border:none;text-align:left;cursor:pointer;font-family:var(--sans);transition:all .15s;border-left:3px solid transparent}
+.navItem:hover{color:var(--ink);background:var(--card);border-left-color:var(--dim)}
+.navItem.active{color:var(--accent);background:rgba(96,165,250,.08);border-left-color:var(--accent);font-weight:600}
+.content{flex:1;padding:32px;max-width:1100px}
+section{display:none}
+section.active{display:block}
+section h2{font-size:22px;margin-bottom:8px}
+section h3{font-size:16px;margin:24px 0 12px;color:var(--accent)}
+.sectionDesc{color:var(--muted);font-size:14px;margin-bottom:20px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px 24px;margin-bottom:16px}
+.cardTitle{font-size:15px;font-weight:600;margin-bottom:12px}
+.tbl{width:100%;border-collapse:collapse;margin:12px 0}
+.tbl th{text-align:left;color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.5px;padding:8px 12px;border-bottom:1px solid var(--border)}
+.tbl td{padding:10px 12px;border-bottom:1px solid var(--border);font-size:13px}
+.tbl tr:hover td{background:var(--surface)}
+.up{color:var(--green)} .down{color:var(--red)} .warn{color:var(--orange)}
+.metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin:16px 0}
+.metric{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px;text-align:center}
+.metric .val{font-size:22px;font-weight:700}
+.metric .lbl{font-size:11px;color:var(--muted);margin-top:4px}
+.callout{border-left:3px solid;border-radius:0 var(--radius) var(--radius) 0;padding:14px 18px;margin:16px 0;background:var(--surface);font-size:13px}
+.callout.red{border-color:var(--red)}.callout.gold{border-color:var(--gold)}.callout.green{border-color:var(--green)}.callout.purple{border-color:var(--purple)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.verdict{background:linear-gradient(135deg,var(--card),var(--surface));border:1px solid var(--accent);border-radius:var(--radius2);padding:24px 28px;margin:20px 0}
+.verdict .vTitle{font-size:18px;font-weight:700;color:var(--accent);margin-bottom:8px}
+.pillRow{display:flex;gap:6px;flex-wrap:wrap;margin:6px 0}
+.pill{font-size:11px;padding:4px 10px;border-radius:20px;font-weight:600}
+.pill.g{background:rgba(52,211,153,.15);color:var(--green)}.pill.r{background:rgba(248,113,113,.15);color:var(--red)}
+.pill.b{background:rgba(96,165,250,.15);color:var(--accent)}.pill.o{background:rgba(251,146,60,.15);color:var(--orange)}
+.forceScore{display:flex;align-items:center;gap:8px;margin:4px 0}
+.forceDot{width:12px;height:12px;border-radius:50%;flex-shrink:0}
+.groupMap{display:flex;align-items:center;justify-content:center;height:300px;border:1px solid var(--border);border-radius:var(--radius);position:relative;margin:16px 0;background:var(--surface);overflow:hidden}
+.groupBubble{position:absolute;border-radius:50%;display:flex;align-items:center;justify-content:center;text-align:center;font-size:10px;font-weight:600;padding:4px;border:2px solid}
+.mobileNav{display:none}
+@media(max-width:768px){
+  .sidebar{display:none}
+  .mobileNav{display:flex;gap:4px;overflow-x:auto;padding:8px 0;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+  .mobileNav::-webkit-scrollbar{display:none}
+  .mobileNav .navItem{flex-shrink:0;white-space:nowrap;font-size:11px;padding:6px 10px;border-radius:20px;border:1px solid var(--border)}
+  .mobileNav .navItem.active{background:rgba(96,165,250,.15);border-color:var(--accent)}
+  .content{padding:16px}
+  .grid2{grid-template-columns:1fr}
+  .metrics{grid-template-columns:repeat(2,1fr)}
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <span class="logo">⚡ DELTA 2308</span>
+  <span class="badge">Step 5 / 11</span>
+  <span class="spacer" style="flex:1"></span>
+  <span class="tag">競爭定位 · 2026-06-07</span>
+</div>
+
+<div class="layout">
+
+<nav class="sidebar">
+  <div class="navTitle">Step 5 目錄</div>
+  <button class="navItem active" data-section="s1">🏗️ Porter 五力</button>
+  <button class="navItem" data-section="s2">🔗 FSA 價值鏈映射</button>
+  <button class="navItem" data-section="s3">🗺️ 策略群組</button>
+  <button class="navItem" data-section="s4">🏛️ 競爭優勢分類</button>
+  <button class="navItem" data-section="s5">💰 利潤池分析</button>
+  <button class="navItem" data-section="s6">🌍 全球維度 CAGE</button>
+  <button class="navItem" data-section="s7">🎯 競爭結論</button>
+</nav>
+
+<nav class="mobileNav">
+  <button class="navItem active" data-section="s1">🏗️ 五力</button>
+  <button class="navItem" data-section="s2">🔗 FSA</button>
+  <button class="navItem" data-section="s3">🗺️ 群組</button>
+  <button class="navItem" data-section="s4">🏛️ 優勢</button>
+  <button class="navItem" data-section="s5">💰 利潤池</button>
+  <button class="navItem" data-section="s6">🌍 CAGE</button>
+  <button class="navItem" data-section="s7">🎯 結論</button>
+</nav>
+
+<main class="content">
+
+<!-- SECTION 1: PORTER'S FIVE FORCES -->
+<section id="s1" class="active">
+<h2>🏗️ Porter 五力分析（量化）</h2>
+<p class="sectionDesc">聚焦台達電的核心戰場：AI 資料中心電源與散熱（Porter, 1980；Grant Ch.3；IB7018 W4）</p>
+
+<div class="card">
+  <div class="cardTitle">五力總覽</div>
+  <table class="tbl">
+    <tr><th>力量</th><th>強度</th><th>對台達獲利影響</th></tr>
+    <tr>
+      <td>新進入者威脅</td>
+      <td><div class="forceScore"><div class="forceDot" style="background:var(--green)"></div><div class="forceDot" style="background:var(--green)"></div><div class="forceDot" style="background:var(--dim)"></div><div class="forceDot" style="background:var(--dim)"></div><div class="forceDot" style="background:var(--dim)"></div></div></td>
+      <td class="up">🟢 低 — 認證週期 2-3 年 + 55 年客戶關係</td>
+    </tr>
+    <tr>
+      <td>現有競爭者敵對</td>
+      <td><div class="forceScore"><div class="forceDot" style="background:var(--gold)"></div><div class="forceDot" style="background:var(--gold)"></div><div class="forceDot" style="background:var(--gold)"></div><div class="forceDot" style="background:var(--dim)"></div><div class="forceDot" style="background:var(--dim)"></div></div></td>
+      <td class="warn">🟡 中等偏高 — 各產品線有專精對手</td>
+    </tr>
+    <tr>
+      <td>替代品威脅</td>
+      <td><div class="forceScore"><div class="forceDot" style="background:var(--gold)"></div><div class="forceDot" style="background:var(--gold)"></div><div class="forceDot" style="background:var(--dim)"></div><div class="forceDot" style="background:var(--dim)"></div><div class="forceDot" style="background:var(--dim)"></div></div></td>
+      <td class="warn">🟡 中低 — 浸沒式冷卻/固態變壓器是長期風險</td>
+    </tr>
+    <tr>
+      <td>買方議價力</td>
+      <td><div class="forceScore"><div class="forceDot" style="background:var(--red)"></div><div class="forceDot" style="background:var(--red)"></div><div class="forceDot" style="background:var(--red)"></div><div class="forceDot" style="background:var(--red)"></div><div class="forceDot" style="background:var(--dim)"></div></div></td>
+      <td class="down">🔴 高 — 四大 CSP 集中度高；客戶指定生產地</td>
+    </tr>
+    <tr>
+      <td>供應商議價力</td>
+      <td><div class="forceScore"><div class="forceDot" style="background:var(--gold)"></div><div class="forceDot" style="background:var(--gold)"></div><div class="forceDot" style="background:var(--dim)"></div><div class="forceDot" style="background:var(--dim)"></div><div class="forceDot" style="background:var(--dim)"></div></div></td>
+      <td class="warn">🟡 中低 — 規模採購優勢，但記憶體/油價波動</td>
+    </tr>
+  </table>
+</div>
+
+<div class="card">
+  <div class="cardTitle">🔍 關鍵力量深入：新進入者壁壘</div>
+  <table class="tbl">
+    <tr><th>壁壘</th><th>高度</th><th>台達電優勢</th></tr>
+    <tr><td class="up">規模經濟</td><td class="up">🔴 極高</td><td>55 座工廠、US$179 億營收、單位成本難以匹敵</td></tr>
+    <tr><td class="up">產品差異化</td><td class="up">🔴 極高</td><td>Grid-to-Chip 完整方案（對手多做單一產品）</td></tr>
+    <tr><td class="up">資本需求</td><td class="up">🔴 極高</td><td>CAPEX ~NT$500 億/年，建廠需 2 年+</td></tr>
+    <tr><td class="up">轉換成本</td><td class="up">🔴 極高</td><td>客戶認證 2-3 年，更換供應商 = 重新驗證</td></tr>
+    <tr><td class="up">學習曲線</td><td class="up">🔴 極高</td><td>55 年電力電子 know-how；熱管理跨領域遷移</td></tr>
+    <tr><td>網路效應</td><td>🟢 N/A</td><td>硬體行業無網路效應</td></tr>
+    <tr><td class="warn">預期報復</td><td class="warn">🟡 中等</td><td>台達財力雄厚但非掠奪性定價者</td></tr>
+  </table>
+</div>
+
+<div class="card">
+  <div class="cardTitle">⚔️ 現有競爭對手矩陣</div>
+  <table class="tbl">
+    <tr><th>領域</th><th>台達電</th><th>主要對手</th><th>台達優勢</th></tr>
+    <tr>
+      <td>AI 伺服器電源</td><td class="up">🥇 領導</td><td>Artesyn (Advanced Energy), 光寶科, 群光</td><td class="up">Grid-to-Chip 方案 + NVIDIA 深度綁定</td>
+    </tr>
+    <tr>
+      <td>液冷系統</td><td class="up">🥇 領導</td><td>奇鋐, 雙鴻, CoolIT, Asetek</td><td class="up">整合電源+冷卻的 Total Solution</td>
+    </tr>
+    <tr>
+      <td>傳統電源</td><td class="up">🥇 領導</td><td>Murata, Artesyn, Mean Well</td><td>全球 #1 交換式電源</td>
+    </tr>
+    <tr>
+      <td>EV 動力</td><td class="warn">挑戰者</td><td>Bosch, Nidec, Valeo, 中國 Tier1</td><td class="warn">仍在虧損，市佔較低</td>
+    </tr>
+    <tr>
+      <td>工業自動化</td><td class="warn">挑戰者</td><td>Siemens, Schneider, Rockwell, 三菱</td><td>亞洲市場強；歐美品牌主導</td>
+    </tr>
+  </table>
+</div>
+
+<div class="callout red">
+  <strong>⚠️ 最大的競爭風險：買方集中度。</strong>台達電 AI 業務 ~40% 營收來自四大 CSP（Meta, Amazon, Google, Microsoft）。這些客戶不僅議價力極強，還會刻意扶植第二供應商來降低依賴——「客戶希望有 Total Solution 供應商，但產品規格穩定後會尋找第二供應商」（鄭平，2025Q3）。這是台達 AI 護城河中最脆弱的一環。
+</div>
+</section>
+
+<!-- SECTION 2: FSA VALUE CHAIN MAPPING -->
+<section id="s2">
+<h2>🔗 價值鏈 FSA 映射</h2>
+<p class="sectionDesc">Porter (1985) Value Chain — 精準定位台達的企業特定優勢（FSA）在哪個活動中（IB7018 W4）</p>
+
+<div class="card">
+  <table class="tbl">
+    <tr><th>價值鏈活動</th><th>FSA 存在？</th><th>類型</th><th>證據</th></tr>
+    <tr><td>進料物流</td><td>—</td><td>無明顯 FSA</td><td>標準化原物料採購</td></tr>
+    <tr><td class="up">營運 Operations</td><td class="up">✅ 極強</td><td class="up">差異化 + 成本</td><td>55 座工廠全球布局；真空硬焊/熱處理 55 年參數累積；AI 電源良率領先</td></tr>
+    <tr><td>出貨物流</td><td>—</td><td>無明顯 FSA</td><td>標準化國際物流</td></tr>
+    <tr><td>行銷/銷售</td><td class="warn">⚠️ 部分</td><td>關係型</td><td>長期 CSP 客戶關係（10 年+）；但非品牌導向</td></tr>
+    <tr><td>服務</td><td class="up">✅ 新興</td><td class="up">差異化</td><td>Solution 團隊擴張（安裝/調試）；中鼎合作強化 facility 端</td></tr>
+    <tr><td colspan="4"></td></tr>
+    <tr><td>基礎建設</td><td>—</td><td>—</td><td></td></tr>
+    <tr><td class="up">人力資源 HRM</td><td class="up">✅ 強</td><td class="up">差異化</td><td>83,000 人；師徒制傳承；但關鍵人才（熱處理師傅）仍稀缺</td></tr>
+    <tr><td class="up">技術開發</td><td class="up">✅ 極強</td><td class="up">差異化</td><td>R&D 8-9% 營收；55 年跨領域技術遷移（熱處理→氫能→AI 水冷）</td></tr>
+    <tr><td>採購 Procurement</td><td class="warn">⚠️ 中等</td><td>成本</td><td>大規模採購議價力；但原物料波動無法完全對沖</td></tr>
+  </table>
+</div>
+
+<div class="callout green">
+  <strong>🔗 價值鏈 FSA 診斷：</strong>台達電的 FSA 集中在 <strong>Operations（營運）+ Technology Development（技術開發）</strong>的結合點。這兩個活動的疊加產生了競爭對手最難複製的優勢：不只是「會做 AI 電源」，而是「55 年的製造工藝 × 跨領域的技術遷移能力 × 全球分散的生產布局」。單一活動可以被追趕，雙活動疊加 = 時間不可壓縮的護城河。
+</div>
+</section>
+
+<!-- SECTION 3: STRATEGIC GROUPS -->
+<section id="s3">
+<h2>🗺️ 策略群組地圖</h2>
+<p class="sectionDesc">Grant Ch.4；IB7018 W4 — 以「產品廣度」和「技術深度」為兩軸</p>
+
+<div class="card">
+  <div class="cardTitle">AI 資料中心電源與散熱：策略群組</div>
+  <div style="padding:20px;text-align:center;position:relative;min-height:300px">
+    <div style="position:absolute;left:50px;bottom:60px;font-size:11px;color:var(--dim)">窄 ← 產品廣度 → 廣</div>
+    <div style="position:absolute;left:20px;top:50%;transform:rotate(-90deg);font-size:11px;color:var(--dim)">淺 ← 技術深度 → 深</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;grid-template-rows:1fr 1fr;gap:16px;padding:40px 60px">
+      <div style="text-align:center;grid-column:1;grid-row:1">
+        <div style="font-size:13px;font-weight:600;color:var(--muted)">零組件專精型</div>
+        <div style="font-size:11px;color:var(--dim);margin-top:4px">Niche Component Players</div>
+        <div style="font-size:11px;color:var(--muted);margin-top:8px">Murata（被動元件）<br>CoolIT（冷板）<br>Asetek（CDU）</div>
+      </div>
+      <div style="text-align:center;grid-column:2;grid-row:1">
+        <div style="font-size:13px;font-weight:600;color:var(--muted)">方案整合型</div>
+        <div style="font-size:11px;color:var(--dim);margin-top:4px">Solution Integrators</div>
+        <div style="font-size:11px;color:var(--muted);margin-top:8px">Vertiv<br>Schneider Electric</div>
+      </div>
+      <div style="text-align:center;grid-column:3;grid-row:1;background:rgba(96,165,250,.08);border:2px solid var(--accent);border-radius:var(--radius);padding:8px">
+        <div style="font-size:14px;font-weight:700;color:var(--accent)">⭐ 台達電 DELTA</div>
+        <div style="font-size:11px;color:var(--accent);margin-top:4px">Grid-to-Chip 完整方案</div>
+        <div style="font-size:11px;color:var(--muted);margin-top:8px">全球唯一：電源+冷卻+DC配電<br>+模組化DC+微電網</div>
+      </div>
+      <div style="text-align:center;grid-column:1;grid-row:2">
+        <div style="font-size:13px;font-weight:600;color:var(--muted)">散熱專精型</div>
+        <div style="font-size:11px;color:var(--dim);margin-top:4px">Thermal Specialists</div>
+        <div style="font-size:11px;color:var(--muted);margin-top:8px">奇鋐 AVC<br>雙鴻 Auras<br>高力 Kaori</div>
+      </div>
+      <div style="text-align:center;grid-column:2;grid-row:2">
+        <div style="font-size:13px;font-weight:600;color:var(--muted)">電源專精型</div>
+        <div style="font-size:11px;color:var(--dim);margin-top:4px">Power Specialists</div>
+        <div style="font-size:11px;color:var(--muted);margin-top:8px">Artesyn / Advanced Energy<br>光寶科 Lite-On<br>群光電能</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="callout purple">
+  <strong>🗺️ 策略群組關鍵洞察：</strong>台達電在 AI 資料中心領域佔據了一個 <strong>獨特的「無人區」</strong>— 同時具備最廣的產品廣度（電源+冷卻+DC配電+模組化）和最深的技術深度（Grid-to-Chip）。其他競爭者都在某個維度上被限制：Vertiv/Schneider 廣但不深（系統整合商）、奇鋐/雙鴻深但不廣（只做散熱）。這解釋了為什麼台達的毛利率能高於所有競爭者。
+</div>
+</section>
+
+<!-- SECTION 4: COMPETITIVE ADVANTAGE CATEGORIES -->
+<section id="s4">
+<h2>🏛️ 競爭優勢分類</h2>
+<p class="sectionDesc">Shallow Dive Template — 四大類優勢系統化評估</p>
+
+<div class="grid2">
+  <div class="card">
+    <div class="cardTitle">🛒 客戶面優勢（定價力來源）</div>
+    <table class="tbl">
+      <tr><td>搜尋成本</td><td class="up">🟢 高</td><td>認證 2-3 年 → 客戶難找到替代</td></tr>
+      <tr><td>轉換成本</td><td class="up">🟢 極高</td><td>更換供應商需重新設計整機</td></tr>
+      <tr><td>習慣/忠誠度</td><td class="warn">🟡 中</td><td>B2B 關係而非品牌忠誠</td></tr>
+    </table>
+  </div>
+  <div class="card">
+    <div class="cardTitle">🏭 生產面優勢（成本優勢）</div>
+    <table class="tbl">
+      <tr><td>專有生產技術</td><td class="up">🟢 極強</td><td>真空硬焊、高功率密度設計</td></tr>
+      <tr><td>低成本投入</td><td class="warn">🟡 中</td><td>大規模採購有優勢，但中國成本優勢正在流失</td></tr>
+      <tr><td>優越通路</td><td class="up">🟢 強</td><td>全球 165 銷售點、55 廠</td></tr>
+    </table>
+  </div>
+  <div class="card">
+    <div class="cardTitle">⚡ 效率面優勢</div>
+    <table class="tbl">
+      <tr><td>學習曲線</td><td class="up">🟢 55 年</td><td>時間不可壓縮的優勢</td></tr>
+      <tr><td>規模經濟</td><td class="up">🟢 極強</td><td>US$179 億營收 → 單位成本最低</td></tr>
+      <tr><td>網路效應</td><td>N/A</td><td>硬體行業不適用</td></tr>
+    </table>
+  </div>
+  <div class="card">
+    <div class="cardTitle">🏛️ 政府/政策面優勢</div>
+    <table class="tbl">
+      <tr><td>專利</td><td class="up">🟢 強</td><td>大量電力電子專利組合</td></tr>
+      <tr><td>法規</td><td class="up">🟢 有利</td><td>全球 PUE 法規趨嚴 → 台達受益</td></tr>
+      <tr><td>關稅保護</td><td class="warn">🟡 中性</td><td>分散生產應對；關稅由客戶付</td></tr>
+    </table>
+  </div>
+</div>
+
+<div class="card">
+  <div class="cardTitle">聚合器理論（Aggregation Theory）評級</div>
+  <p style="font-size:13px;color:var(--muted)">台達電是一家 <strong>Pipeline 公司</strong>（非平台），不適用聚合器框架。它是傳統的垂直整合製造商，沒有多邊市場、沒有零邊際成本、沒有網路效應。但這不是缺點 — 在硬體行業，Pipeline 模式 + 技術深度 = 最強的護城河類型之一。</p>
+</div>
+</section>
+
+<!-- SECTION 5: PROFIT POOL -->
+<section id="s5">
+<h2>💰 利潤池分析</h2>
+<p class="sectionDesc">Gadiesh & Gilbert (1998), HBR — 利潤集中在價值鏈的哪一段？</p>
+
+<div class="card">
+  <div class="cardTitle">AI 資料中心價值鏈利潤池</div>
+  <table class="tbl">
+    <tr><th>價值鏈階段</th><th>代表公司</th><th>行業營收佔比</th><th>行業利潤佔比</th><th>利潤率</th><th>趨勢</th></tr>
+    <tr>
+      <td>晶片</td><td>NVIDIA, AMD, ASIC</td><td>15%</td><td class="up">40%</td><td class="up">60-70%</td><td class="up">↑↑</td>
+    </tr>
+    <tr>
+      <td>伺服器組裝</td><td>廣達, 緯創, 鴻海</td><td>25%</td><td class="down">8%</td><td class="down">3-5%</td><td>→</td>
+    </tr>
+    <tr style="background:rgba(96,165,250,.08)">
+      <td class="accent">⚡ 電源+冷卻</td><td class="accent">台達電</td><td class="accent">10%</td><td class="accent">15%</td><td class="accent up">35-40%</td><td class="accent up">↑</td>
+    </tr>
+    <tr>
+      <td>資料中心營運</td><td>AWS, Azure, GCP</td><td>40%</td><td class="up">30%</td><td class="up">25-35%</td><td class="up">↑</td>
+    </tr>
+    <tr>
+      <td>AI 應用層</td><td>OpenAI, Anthropic</td><td>10%</td><td class="warn">7%</td><td class="warn">負∼15%</td><td>?</td>
+    </tr>
+  </table>
+  <p style="font-size:11px;color:var(--dim);margin-top:8px">* 數字為基於產業結構的推估，非精確財報數據。Source: 產業分析綜合判斷</p>
+</div>
+
+<div class="callout green">
+  <strong>💰 利潤池關鍵洞察：</strong>台達電佔據了 AI 價值鏈中 <strong>利潤率和成長性都極佳的位置</strong>— 電源+冷卻僅佔行業營收 ~10%，卻拿走 ~15% 的利潤，利潤率（35-40%）僅次於 NVIDIA。而且這個位置的利潤池 <strong>正在擴大</strong>（GPU 功耗每代上升 → 電源/冷卻需求增加 → 每台伺服器的採購金額成長）。這是一個「默默賺大錢」的位置。
+</div>
+</section>
+
+<!-- SECTION 6: CAGE -->
+<section id="s6">
+<h2>🌍 全球維度 — CAGE 距離分析</h2>
+<p class="sectionDesc">Ghemawat (2009)；IB7018 W8 — 台達電的全球布局風險</p>
+
+<div class="card">
+  <table class="tbl">
+    <tr><th>CAGE 維度</th><th>具體挑戰</th><th>台達電應對</th><th>風險</th></tr>
+    <tr>
+      <td><strong>C</strong>ultural<br>文化</td>
+      <td>泰國/印度/美國/墨西哥工廠管理文化差異<br>語言障礙（印度、斯洛伐克）</td>
+      <td>派駐台籍幹部 + 本地化管理</td>
+      <td class="warn">🟡 管理複雜度上升</td>
+    </tr>
+    <tr>
+      <td><strong>A</strong>dministrative<br>行政/政治</td>
+      <td>中美關稅戰（產品須分開生產）<br>印度高關稅壁壘<br>美國進口元件仍課稅</td>
+      <td>全球分散生產（中 45% / 泰 30% / 台 12%）<br>客戶指定生產地</td>
+      <td class="down">🔴 地緣風險常態化</td>
+    </tr>
+    <tr>
+      <td><strong>G</strong>eographic<br>地理</td>
+      <td>供應鏈距離拉長<br>物流成本增加</td>
+      <td>各地設廠接近終端市場<br>泰國就近服務美國</td>
+      <td class="warn">🟡 效率犧牲</td>
+    </tr>
+    <tr>
+      <td><strong>E</strong>conomic<br>經濟</td>
+      <td>中國人工效率最高、成本最低<br>美國人力稀缺且昂貴<br>泰國/印度效率待提升</td>
+      <td>「含關稅各地成本差異不大」— 鄭平<br>純工廠成本：中國仍最具競爭力</td>
+      <td class="warn">🟡 長期成本曲線上升</td>
+    </tr>
+  </table>
+</div>
+
+<div class="callout gold">
+  <strong>🌍 CAGE 總結：</strong>台達電的全球化是 <strong>「被動的」而非「主動的」</strong>— 不是為了開拓新市場，而是為了躲避地緣政治風險。這是一個「用效率換安全」的取捨，長期將導致成本結構上升。但目前關稅由客戶負擔（FOB），對利潤的直接影響有限。
+</div>
+</section>
+
+<!-- SECTION 7: VERDICT -->
+<section id="s7">
+<h2>🎯 競爭定位結論</h2>
+
+<div class="metrics">
+  <div class="metric"><div class="val up">🥇 領導</div><div class="lbl">AI 電源+冷卻地位</div></div>
+  <div class="metric"><div class="val up">改善中</div><div class="lbl">競爭地位趨勢</div></div>
+  <div class="metric"><div class="val down">買方集中</div><div class="lbl">最大競爭威脅</div></div>
+  <div class="metric"><div class="val up">強</div><div class="lbl">定價力</div></div>
+</div>
+
+<div class="verdict">
+  <div class="vTitle">📋 競爭定位總評</div>
+  <p style="font-size:16px;line-height:1.8">
+    台達電在 AI 資料中心電源與散熱領域是 <strong>無可爭議的領導者</strong>，佔據了策略群組中唯一的「廣度×深度」無人區。Porter 五力分析顯示新進入者威脅極低（認證週期 + 資本需求 + 學習曲線三重壁壘），但買方集中度是最危險的單點故障——四大 CSP 佔 AI 營收絕大多數，且積極扶植第二供應商。<br><br>
+    <strong>市場最被低估的競爭優勢：</strong>台達不是靠價格競爭，而是靠 <strong>「客戶無法不買」的技術依賴</strong>。當 NVIDIA 設計 Kyber Rack 的 800V DC 標準時，台達是唯一能同步開發的供應商——這不是投標贏來的，是 <strong>從晶片設計階段就綁定</strong>的護城河。<br><br>
+    <strong>最大的競爭隱憂：</strong>中國電源廠商（華為、中興）在 AI 電源領域的追趕速度，以及奇鋐/雙鴻在液冷領域的市佔擴張。台達的 Total Solution 優勢目前無可匹敵，但若 CSP 選擇拆分採購（電源歸電源、冷卻歸冷卻），競爭格局將顯著改變。
+  </p>
+</div>
+
+<div class="callout gold" style="margin-top:24px">
+  <strong>📌 下一步：Step 6 — 護城河分析 (Deep Moat Analysis)</strong><br>
+  VECTOR × VRIN × 隔離機制 × 動態能力 SST — 台達電的護城河到底有多深？
+</div>
+</section>
+
+</main>
+</div>
+
+<script>
+document.querySelectorAll('.navItem').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const section = btn.dataset.section;
+    document.querySelectorAll('.navItem').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll(`.navItem[data-section="${section}"]`).forEach(b => b.classList.add('active'));
+    document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
+    document.getElementById(section).classList.add('active');
+    if (window.innerWidth <= 768) btn.scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'});
+  });
+});
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
+    e.preventDefault();
+    const sections = Array.from(document.querySelectorAll('section'));
+    const current = sections.findIndex(s => s.classList.contains('active'));
+    const next = e.key === 'ArrowDown' ? Math.min(current + 1, sections.length - 1) : Math.max(current - 1, 0);
+    sections[current].classList.remove('active'); sections[next].classList.add('active');
+    document.querySelectorAll('.navItem').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll(`.navItem[data-section="${sections[next].id}"]`).forEach(b => b.classList.add('active'));
+  }
+});
+</script>
+</body>
+</html>
