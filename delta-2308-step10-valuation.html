@@ -32,7 +32,7 @@ section h3{font-size:16px;margin:24px 0 12px;color:var(--accent)}
 .card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px 24px;margin-bottom:16px}
 .cardTitle{font-size:15px;font-weight:600;margin-bottom:12px}
 .tbl{width:100%;border-collapse:collapse;margin:12px 0}
-.tbl th{text-align:left;color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.5px;padding:8px 12px;border-bottom:1px solid var(--border)}
+.tbl th{text-align:left;color:var(--muted);font-size:11px;text-transform:uppercase;padding:8px 12px;border-bottom:1px solid var(--border)}
 .tbl td{padding:10px 12px;border-bottom:1px solid var(--border);font-size:13px}
 .tbl tr:hover td{background:var(--surface)}
 .up{color:var(--green)} .down{color:var(--red)} .warn{color:var(--orange)}
@@ -45,7 +45,6 @@ section h3{font-size:16px;margin:24px 0 12px;color:var(--accent)}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
 .verdict{background:linear-gradient(135deg,var(--card),var(--surface));border:1px solid var(--accent);border-radius:var(--radius2);padding:24px 28px;margin:20px 0}
 .verdict .vTitle{font-size:18px;font-weight:700;color:var(--accent);margin-bottom:8px}
-.math{font-family:monospace;font-size:13px;color:var(--accent);background:var(--surface);padding:8px 12px;border-radius:6px;margin:4px 0;display:inline-block}
 .sliderCard{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px;margin-bottom:12px}
 .sliderCard label{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;font-size:14px;font-weight:600}
 .sliderCard label span{font-size:20px;color:var(--accent)}
@@ -69,7 +68,6 @@ section h3{font-size:16px;margin:24px 0 12px;color:var(--accent)}
   .mobileNav{display:flex;gap:4px;overflow-x:auto;padding:8px 0;-webkit-overflow-scrolling:touch;scrollbar-width:none}
   .mobileNav::-webkit-scrollbar{display:none}
   .mobileNav .navItem{flex-shrink:0;white-space:nowrap;font-size:11px;padding:6px 10px;border-radius:20px;border:1px solid var(--border)}
-  .mobileNav .navItem.active{background:rgba(96,165,250,.15);border-color:var(--accent)}
   .content{padding:16px}
   .grid2{grid-template-columns:1fr}
   .metrics{grid-template-columns:repeat(2,1fr)}
@@ -79,227 +77,221 @@ section h3{font-size:16px;margin:24px 0 12px;color:var(--accent)}
 </head>
 <body>
 
-<div class="topbar">
-  <span class="logo">⚡ DELTA 2308</span>
-  <span class="badge">Step 10 / 11</span>
-  <span class="spacer" style="flex:1"></span>
-  <span class="tag">估值 · DCF + Comps + 互動計算機</span>
-</div>
-
+<div class="topbar"><span class="logo">⚡ DELTA 2308</span><span class="badge">Step 10 / 11</span><span class="spacer" style="flex:1"></span><span class="tag">估值 · DCF + Comps + 互動計算機</span></div>
 <div class="layout">
 
 <nav class="sidebar">
   <div class="navTitle">Step 10 目錄</div>
   <button class="navItem active" data-section="s1">💰 DCF 模型</button>
   <button class="navItem" data-section="s2">🎚️ 互動計算機</button>
-  <button class="navItem" data-section="s3">📊 敏感度分析</button>
-  <button class="navItem" data-section="s4">🏷️ Trading Comps</button>
-  <button class="navItem" data-section="s5">🔍 市場隱含預期</button>
-  <button class="navItem" data-section="s6">⚖️ 估值綜合</button>
+  <button class="navItem" data-section="s3">🏷️ Trading Comps</button>
+  <button class="navItem" data-section="s4">🔍 市場隱含</button>
+  <button class="navItem" data-section="s5">⚖️ 估值綜合</button>
 </nav>
-
 <nav class="mobileNav">
   <button class="navItem active" data-section="s1">💰 DCF</button>
   <button class="navItem" data-section="s2">🎚️ 計算機</button>
-  <button class="navItem" data-section="s3">📊 敏感度</button>
-  <button class="navItem" data-section="s4">🏷️ Comps</button>
-  <button class="navItem" data-section="s5">🔍 隱含</button>
-  <button class="navItem" data-section="s6">⚖️ 綜合</button>
+  <button class="navItem" data-section="s3">🏷️ Comps</button>
+  <button class="navItem" data-section="s4">🔍 隱含</button>
+  <button class="navItem" data-section="s5">⚖️ 綜合</button>
 </nav>
 
 <main class="content">
 
-<!-- SECTION 1: DCF -->
+<!-- S1: DCF -->
 <section id="s1" class="active">
 <h2>💰 Unlevered DCF 估值</h2>
-<p class="sectionDesc">WSP DCF 方法 · 5 年預測 + 終值 · 基準假設 WACC 8.5%</p>
+<p class="sectionDesc">WSP DCF 方法 · 5 年預測 + 終值 · 保守基準假設</p>
 
 <div class="card">
   <div class="cardTitle">核心假設</div>
   <table class="tbl">
-    <tr><th>參數</th><th>假設值</th><th>理由</th></tr>
-    <tr><td>WACC</td><td><strong>8.5%</strong></td><td>台灣大型電子股 CAPM：Rf 3% + β 1.1 × ERP 5%</td></tr>
-    <tr><td>終端成長率 g</td><td><strong>3.0%</strong></td><td>不超過長期 GDP 成長（Hooke 原則）</td></tr>
-    <tr><td>5 年營收 CAGR</td><td><strong>~17%</strong></td><td>30% → 20% → 15% → 12% → 10% 階梯式放緩</td></tr>
-    <tr><td>終端 OPM</td><td><strong>15.0%</strong></td><td>從目前 17.8% 正常化（扣除一次性 + 競爭壓力）</td></tr>
+    <tr><th>參數</th><th>基準值</th><th>理由</th></tr>
+    <tr><td>WACC</td><td>8.5%</td><td>CAPM：Rf 3% + β 1.1 × ERP 5%</td></tr>
+    <tr><td>終端成長率 g</td><td>3.0%</td><td>≤ 長期 GDP 成長</td></tr>
+    <tr><td>5 年營收 CAGR</td><td>~17%</td><td>30→20→15→12→10% 階梯放緩</td></tr>
+    <tr><td>OPM 路徑</td><td>17.0→15.0%</td><td>從目前高點逐步正常化</td></tr>
     <tr><td>稅率</td><td>23%</td><td>管理層指引</td></tr>
-    <tr><td>稀釋股數</td><td>~26.0 億股</td><td>FY2025 淨利 NT$601 億 ÷ EPS NT$23.14</td></tr>
+    <tr><td>稀釋股數</td><td>25.97 億股</td><td>FY2025 淨利 601 億 ÷ EPS 23.14</td></tr>
+    <tr><td>D&amp;A / Capex / ΔNWC</td><td>4% / 7% / 2% 營收</td><td>基於歷史平均</td></tr>
   </table>
 </div>
 
 <div class="card">
-  <div class="cardTitle">5 年自由現金流預測</div>
+  <div class="cardTitle">5 年自由現金流（單位：NT$億）</div>
   <table class="tbl">
-    <tr><th>項目 (NT$億)</th><th>2026E</th><th>2027E</th><th>2028E</th><th>2029E</th><th>2030E</th></tr>
-    <tr><td>營收</td><td class="up">7,200</td><td class="up">8,640</td><td class="up">9,936</td><td>11,128</td><td>12,241</td></tr>
+    <tr><th></th><th>2026E</th><th>2027E</th><th>2028E</th><th>2029E</th><th>2030E</th></tr>
+    <tr><td>營收</td><td>7,214</td><td>8,656</td><td>9,955</td><td>11,149</td><td>12,264</td></tr>
     <tr><td>YoY</td><td class="up">30%</td><td class="up">20%</td><td>15%</td><td>12%</td><td>10%</td></tr>
-    <tr><td>EBIT</td><td>1,224</td><td>1,382</td><td>1,590</td><td>1,669</td><td>1,836</td></tr>
-    <tr><td>NOPAT (×77%)</td><td>942</td><td>1,064</td><td>1,224</td><td>1,285</td><td>1,414</td></tr>
-    <tr><td>+ D&amp;A (4%)</td><td>288</td><td>346</td><td>397</td><td>445</td><td>490</td></tr>
-    <tr><td>− Capex (7%)</td><td class="warn">504</td><td class="warn">605</td><td class="warn">696</td><td class="warn">779</td><td class="warn">857</td></tr>
-    <tr><td>− ΔNWC (2%)</td><td>144</td><td>173</td><td>199</td><td>223</td><td>245</td></tr>
-    <tr style="background:rgba(96,165,250,.08)"><td class="up"><strong>UFCF</strong></td><td class="up"><strong>582</strong></td><td class="up"><strong>632</strong></td><td class="up"><strong>727</strong></td><td class="up"><strong>729</strong></td><td class="up"><strong>802</strong></td></tr>
+    <tr><td>OPM</td><td>17.0%</td><td>16.5%</td><td>16.0%</td><td>15.5%</td><td>15.0%</td></tr>
+    <tr><td>EBIT</td><td>1,226</td><td>1,428</td><td>1,593</td><td>1,728</td><td>1,840</td></tr>
+    <tr><td>NOPAT</td><td>944</td><td>1,100</td><td>1,226</td><td>1,331</td><td>1,416</td></tr>
+    <tr style="background:rgba(96,165,250,.08)"><td class="up"><strong>UFCF</strong></td><td class="up"><strong>584</strong></td><td class="up"><strong>667</strong></td><td class="up"><strong>729</strong></td><td class="up"><strong>773</strong></td><td class="up"><strong>803</strong></td></tr>
+    <tr><td>PV @8.5%</td><td>538</td><td>567</td><td>571</td><td>558</td><td>534</td></tr>
   </table>
 </div>
 
 <div class="card">
   <div class="cardTitle">終值與股權價值橋接</div>
   <table class="tbl">
-    <tr><td>5 年 UFCF 現值總和</td><td class="up">NT$2,701 億</td></tr>
-    <tr><td>終值 = 802 × 1.03 ÷ (8.5% − 3.0%)</td><td>NT$15,018 億</td></tr>
-    <tr><td>終值現值 (折現 5 年)</td><td class="up">NT$9,974 億</td></tr>
-    <tr style="background:rgba(96,165,250,.08)"><td><strong>企業價值 (EV)</strong></td><td class="up"><strong>NT$12,675 億</strong></td></tr>
+    <tr><td>5 年 UFCF 現值</td><td>NT$2,768 億</td></tr>
+    <tr><td>終值 = 803 × 1.03 ÷ (8.5% − 3.0%)</td><td>NT$15,044 億</td></tr>
+    <tr><td>終值現值</td><td>NT$10,005 億</td></tr>
+    <tr style="background:rgba(96,165,250,.08)"><td><strong>企業價值 EV</strong></td><td><strong>NT$12,772 億</strong></td></tr>
     <tr><td>− 淨負債</td><td>NT$500 億</td></tr>
-    <tr style="background:rgba(52,211,153,.08)"><td class="up"><strong>股權價值</strong></td><td class="up"><strong>NT$12,175 億</strong></td></tr>
-    <tr><td>÷ 稀釋股數</td><td>26.0 億股</td></tr>
-    <tr style="background:rgba(52,211,153,.15)"><td class="up" style="font-size:18px;font-weight:700"><strong>每股內含價值</strong></td><td class="up" style="font-size:18px;font-weight:700"><strong>NT$468</strong></td></tr>
+    <tr style="background:rgba(96,165,250,.05)"><td><strong>股權價值</strong></td><td><strong>NT$12,272 億</strong></td></tr>
+    <tr><td>÷ 25.97 億股</td><td></td></tr>
+    <tr style="background:rgba(52,211,153,.15)"><td style="font-size:18px;font-weight:700">每股內含價值</td><td class="up" style="font-size:18px;font-weight:700"><strong>NT$473</strong></td></tr>
   </table>
-  <p style="font-size:13px;color:var(--muted);margin-top:12px">⚠️ DCF 僅是起點。高成長股的 DCF 對假設極度敏感——往下用互動計算機自己調整！</p>
-</div>
-
-<div class="callout gold">
-  <strong>⚠️ 為何 DCF 基準值這麼低？</strong>高 Capex（7%）+ 保守終端 OPM（15%）+ 終值佔 EV 79%。Hooke 警告：DCF 權重應僅 20%。<strong>真正的估值主軸在 Comps。</strong>
+  <p style="font-size:13px;color:var(--muted);margin-top:8px">終值佔 EV 78% — 這是高成長股 DCF 的典型現象。DCF 權重僅 20%（Hooke）。</p>
 </div>
 </section>
 
-<!-- SECTION 2: INTERACTIVE -->
+<!-- S2: INTERACTIVE -->
 <section id="s2">
 <h2>🎚️ 互動式 DCF 計算機</h2>
-<p class="sectionDesc">拖動滑桿即時看到估值變化 — 四個關鍵假設自由調整</p>
+<p class="sectionDesc">拖動滑桿即時看到估值變化</p>
 
 <div class="card">
-  <div class="cardTitle">🔧 調整你的假設</div>
-
   <div class="sliderCard">
-    <label>WACC 加權平均資金成本 <span id="waccVal">8.5%</span></label>
-    <input type="range" id="waccSlider" min="6.0" max="12.0" step="0.1" value="8.5" oninput="recalc()">
-    <div class="sliderLabels"><span>6.0%</span><span>8.5%</span><span>12.0%</span></div>
+    <label>WACC <span id="waccVal">8.5%</span></label>
+    <input type="range" id="waccSlider" min="6.0" max="14.0" step="0.1" value="8.5" oninput="recalc()">
+    <div class="sliderLabels"><span>6%</span><span>10%</span><span>14%</span></div>
   </div>
-
   <div class="sliderCard">
     <label>終端成長率 g <span id="gVal">3.0%</span></label>
     <input type="range" id="gSlider" min="1.0" max="5.0" step="0.1" value="3.0" oninput="recalc()">
-    <div class="sliderLabels"><span>1.0%</span><span>3.0%</span><span>5.0%</span></div>
+    <div class="sliderLabels"><span>1%</span><span>3%</span><span>5%</span></div>
   </div>
-
   <div class="sliderCard">
     <label>5 年營收 CAGR <span id="cagrVal">17%</span></label>
-    <input type="range" id="cagrSlider" min="8" max="30" step="1" value="17" oninput="recalc()">
-    <div class="sliderLabels"><span>8%</span><span>17%</span><span>30%</span></div>
+    <input type="range" id="cagrSlider" min="5" max="35" step="1" value="17" oninput="recalc()">
+    <div class="sliderLabels"><span>5%</span><span>20%</span><span>35%</span></div>
   </div>
-
   <div class="sliderCard">
     <label>終端 OPM <span id="opmVal">15%</span></label>
-    <input type="range" id="opmSlider" min="8" max="22" step="0.5" value="15" oninput="recalc()">
-    <div class="sliderLabels"><span>8%</span><span>15%</span><span>22%</span></div>
+    <input type="range" id="opmSlider" min="6" max="25" step="0.5" value="15" oninput="recalc()">
+    <div class="sliderLabels"><span>6%</span><span>15%</span><span>25%</span></div>
   </div>
 
   <div class="resultBox">
-    <div class="result neutral" id="resVal"><div class="rVal">NT$468</div><div class="rLbl">每股內含價值</div></div>
-    <div class="result bear" id="resDelta"><div class="rVal">−NT$1,832</div><div class="rLbl">vs 目前股價 NT$2,300</div></div>
-    <div class="result bear" id="resPct"><div class="rVal">−80%</div><div class="rLbl">偏離幅度</div></div>
+    <div class="result bear" id="resVal"><div class="rVal">NT$473</div><div class="rLbl">每股內含價值</div></div>
+    <div class="result bear" id="resDelta"><div class="rVal">−NT$1,827</div><div class="rLbl">vs 現價 NT$2,300</div></div>
+    <div class="result bear" id="resPct"><div class="rVal">−79%</div><div class="rLbl">偏離幅度</div></div>
   </div>
 
-  <div class="priceBar" style="position:relative;margin-top:8px">
+  <div class="priceBar">
     <div class="fill" id="priceFill" style="width:9%;background:var(--red)"></div>
-    <div class="priceMarker" data-label="現價 NT$2,300" style="left:46%"></div>
+    <div class="priceMarker" data-label="現價 2,300" style="left:46%"></div>
   </div>
   <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--dim);margin-top:4px">
-    <span>NT$0</span><span>NT$2,500</span><span>NT$5,000</span>
+    <span>0</span><span>2,500</span><span>5,000</span>
   </div>
 
   <div class="callout purple" style="margin-top:16px">
-    <strong>💡 試試這些參數組合：</strong><br>
-    · 市場目前定價：WACC 11%、g 2.5%、CAGR 12%、OPM 12%<br>
-    · 我們認為合理：WACC 8.5%、g 3%、CAGR 20%、OPM 17%<br>
-    · AI 超級牛市：WACC 7%、g 3.5%、CAGR 25%、OPM 20%
+    <strong>💡 試試這些情境：</strong><br>
+    · 基準保守：WACC 8.5% / g 3% / CAGR 17% / OPM 15% → <strong>NT$473</strong><br>
+    · DCF 合理：WACC 8% / g 3% / CAGR 22% / OPM 18% → <strong>NT$1,000+</strong><br>
+    · 市場隱含：WACC 7% / g 3.5% / CAGR 28% / OPM 22% → <strong>NT$2,300</strong>
   </div>
 </div>
 </section>
 
-<!-- SECTION 3: SENSITIVITY -->
+<!-- S3: TRADING COMPS -->
 <section id="s3">
-<h2>📊 敏感度矩陣</h2>
-<p class="sectionDesc">WACC × 終端成長率 — 基準假設用 <strong>粗體</strong>（單位：NT$）</p>
-
-<div class="card">
-  <table class="tbl">
-    <tr><th>WACC ↓ / g →</th><th>2.0%</th><th>2.5%</th><th class="accent">3.0%</th><th>3.5%</th><th>4.0%</th></tr>
-    <tr><td>7.0%</td><td>827</td><td>958</td><td>1,157</td><td>1,489</td><td>2,108</td></tr>
-    <tr><td>7.5%</td><td>683</td><td>778</td><td>912</td><td>1,117</td><td>1,464</td></tr>
-    <tr style="background:rgba(96,165,250,.08)"><td class="accent"><strong>8.5%</strong></td><td>567</td><td>635</td><td class="accent"><strong>724</strong></td><td>850</td><td>1,046</td></tr>
-    <tr><td>9.5%</td><td>473</td><td>523</td><td>587</td><td>672</td><td>792</td></tr>
-    <tr><td>10.5%</td><td>396</td><td>434</td><td>481</td><td>540</td><td>617</td></tr>
-  </table>
-  <p style="font-size:11px;color:var(--dim);margin-top:8px">* 其他假設固定在 CAGR 17%、OPM 15%。用互動計算機自由組合！</p>
-</div>
-</section>
-
-<!-- SECTION 4: TRADING COMPS -->
-<section id="s4">
 <h2>🏷️ Trading Comps 相對估值</h2>
-<p class="sectionDesc">Hooke 框架：Comps 佔 60% 權重 — 主要的決策工具</p>
+<p class="sectionDesc">Hooke 框架：Comps 佔 60% 權重</p>
 
 <div class="card">
+  <div class="cardTitle">可比公司倍數（2026 年 6 月市場數據）</div>
   <table class="tbl">
-    <tr><th>公司</th><th>業務</th><th>EV/EBITDA</th><th>P/E (NTM)</th><th>營收成長</th></tr>
-    <tr><td class="up"><strong>台達電 2308</strong></td><td>Power+Cooling</td><td>~18x</td><td>~25x</td><td class="up">+30%</td></tr>
-    <tr><td>Vertiv (VRT)</td><td>DC Infrastructure</td><td class="up">~28x</td><td class="up">~42x</td><td class="up">+20%</td></tr>
-    <tr><td>Eaton (ETN)</td><td>Power Management</td><td class="up">~24x</td><td class="up">~30x</td><td>+12%</td></tr>
-    <tr><td>Schneider</td><td>Power/Automation</td><td>~16x</td><td>~22x</td><td>+8%</td></tr>
-    <tr><td>奇鋐 3017</td><td>散熱</td><td class="up">~22x</td><td class="up">~28x</td><td class="up">+25%</td></tr>
-    <tr style="background:rgba(96,165,250,.08)"><td><strong>同業中位數</strong></td><td></td><td><strong>~22x</strong></td><td><strong>~28x</strong></td><td>+16%</td></tr>
+    <tr><th>公司</th><th>市值</th><th>EV/EBITDA<br>(NTM)</th><th>P/E<br>(NTM)</th><th>營收成長</th><th>OPM</th></tr>
+    <tr style="background:rgba(96,165,250,.08)"><td class="accent"><strong>台達電 2308</strong></td><td class="accent">~NT$6.0兆</td><td class="accent"><strong>~41x</strong></td><td class="accent"><strong>~80x</strong></td><td class="accent up">+30%</td><td class="accent up">17.8%</td></tr>
+    <tr><td>Vertiv (VRT)</td><td>~US$450億</td><td>~28x</td><td>~42x</td><td class="up">+20%</td><td>18%</td></tr>
+    <tr><td>Eaton (ETN)</td><td>~US$1,300億</td><td>~24x</td><td>~30x</td><td>+12%</td><td class="up">19%</td></tr>
+    <tr><td>Schneider (SU)</td><td>~€1,400億</td><td>~16x</td><td>~22x</td><td>+8%</td><td>16%</td></tr>
+    <tr><td>奇鋐 3017</td><td>~NT$3,500億</td><td>~22x</td><td>~28x</td><td class="up">+25%</td><td>15%</td></tr>
+    <tr><td>雙鴻 3324</td><td>~NT$800億</td><td>~20x</td><td>~26x</td><td class="up">+20%</td><td>14%</td></tr>
+    <tr style="background:rgba(96,165,250,.05)"><td><strong>同業中位數</strong></td><td></td><td><strong>~22x</strong></td><td><strong>~28x</strong></td><td>+20%</td><td>16%</td></tr>
   </table>
+  <p style="font-size:11px;color:var(--dim);margin-top:4px">台達 EV/EBITDA 41x vs 同業 22x = <strong>溢價 86%</strong>。P/E 80x vs 同業 28x = <strong>溢價 186%</strong>。</p>
 </div>
 
 <div class="card">
+  <div class="cardTitle">溢價是否合理？成長調整後比較</div>
   <table class="tbl">
-    <tr><th>方法</th><th>隱含價值</th><th>vs NT$2,300</th></tr>
-    <tr><td>EV/EBITDA 22x</td><td class="up">NT$3,200</td><td class="up">+39%</td></tr>
-    <tr><td>P/E 28x</td><td class="up">NT$2,700</td><td class="up">+17%</td></tr>
-    <tr><td>P/E 32x（成長調整後）</td><td class="up">NT$3,100</td><td class="up">+35%</td></tr>
+    <tr><th>指標</th><th>台達電</th><th>同業中位數</th><th>差距</th></tr>
+    <tr><td>EV/EBITDA ÷ 營收成長</td><td>1.37</td><td>1.10</td><td class="down">+25% 溢價</td></tr>
+    <tr><td>PEG (P/E ÷ 成長率)</td><td>2.67</td><td>1.40</td><td class="down">+91% 溢價</td></tr>
   </table>
-  <p style="font-size:13px;color:var(--ink);margin-top:12px"><strong>Trading Comps 公允區間：NT$2,700 – NT$3,200</strong></p>
+  <p style="font-size:13px;color:var(--ink);margin-top:12px"><strong>即使經成長率調整，台達仍顯著溢價。</strong>市場給予的溢價反映的是 AI 領導地位 + 護城河 + 產業順風。但溢價幅度之大，意味著<strong>任何基本面放緩都會導致估值劇烈修正</strong>。</p>
+</div>
+
+<div class="callout gold">
+  <strong>🏷️ Comps 診斷：</strong>台達電在所有倍數上都顯著高於同業。這不代表「被高估」— 高成長 + 高品質公司理應享受溢價。但 <strong>80x P/E 和 41x EV/EBITDA 是極高的要求</strong>，意味著市場已計入多年的完美執行。安全邊際極薄。
 </div>
 </section>
 
-<!-- SECTION 5: MARKET-IMPLIED -->
+<!-- S4: MARKET-IMPLIED -->
+<section id="s4">
+<h2>🔍 市場隱含了什麼？</h2>
+
+<div class="card">
+  <div class="cardTitle">NT$2,300 所需的 DCF 假設</div>
+  <table class="tbl">
+    <tr><th>參數</th><th>要達到 NT$2,300 需要…</th><th>合理嗎？</th></tr>
+    <tr><td>WACC</td><td class="down">~6.5%（極低風險定價）</td><td class="down">🔴 偏低</td></tr>
+    <tr><td>5 年營收 CAGR</td><td class="down">~28%（接近目前 30% 永續）</td><td class="down">🔴 極度樂觀</td></tr>
+    <tr><td>終端 OPM</td><td class="down">~22%（遠高於目前 17.8%）</td><td class="down">🔴 不合理</td></tr>
+  </table>
+  <p style="font-size:13px;color:var(--ink);margin-top:12px">換句話說：<strong>目前股價隱含的假設接近「完美劇本」</strong>——AI 成長永不減速、利潤率持續擴張、風險溢價極低。</p>
+</div>
+
+<div class="callout red">
+  <strong>🔍 核心洞察：</strong>DCF 和 Comps 都指向同一個結論——<strong>台達電在 NT$2,300 的價位已被充分定價，甚至略顯昂貴</strong>。這不否定它是卓越的公司（前 9 步已充分證明），但卓越的公司 ≠ 卓越的投資——價格決定了回報。
+</div>
+</section>
+
+<!-- S5: SYNTHESIS -->
 <section id="s5">
-<h2>🔍 市場隱含了什麼預期？</h2>
-
-<div class="card">
-  <table class="tbl">
-    <tr><th>參數</th><th>市場隱含 (NT$2,300)</th><th>我們的基準</th></tr>
-    <tr><td>5 年營收 CAGR</td><td class="down">~12%</td><td class="up">~17%</td></tr>
-    <tr><td>終端 OPM</td><td class="down">~12%</td><td class="up">~15%</td></tr>
-    <tr><td>WACC</td><td class="down">~10-11%</td><td>8.5%</td></tr>
-  </table>
-</div>
-
-<div class="callout green">
-  <strong>🔍 結論：</strong>NT$2,300 隱含市場假設 AI 紅利在 2-3 年後消退。用互動計算機把 WACC 調到 11%、CAGR 調到 12%、OPM 調到 12%——那就是市場目前的定價。我們的 thesis 說這個劇本太悲觀。
-</div>
-</section>
-
-<!-- SECTION 6: SYNTHESIS -->
-<section id="s6">
 <h2>⚖️ 估值綜合判斷</h2>
 
 <div class="metrics">
-  <div class="metric"><div class="val">NT$468-1,500</div><div class="lbl">DCF 範圍</div></div>
-  <div class="metric"><div class="val up">NT$2,700-3,200</div><div class="lbl">Comps 公允區間</div></div>
-  <div class="metric"><div class="val up">~NT$3,000</div><div class="lbl">綜合公允價值</div></div>
-  <div class="metric"><div class="val up">+30%</div><div class="lbl">隱含上漲空間</div></div>
+  <div class="metric"><div class="val">NT$473</div><div class="lbl">DCF（保守假設）</div></div>
+  <div class="metric"><div class="val warn">41x / 80x</div><div class="lbl">EV/EBITDA / P/E</div></div>
+  <div class="metric"><div class="val down">溢價中</div><div class="lbl">vs 同業</div></div>
+  <div class="metric"><div class="val warn">充分定價</div><div class="lbl">估值判斷</div></div>
 </div>
 
 <div class="verdict">
-  <div class="vTitle">📋 估值判決：溫和低估</div>
+  <div class="vTitle">📋 估值判決：充分定價至略顯昂貴</div>
   <p style="font-size:16px;line-height:1.8">
-    按照 Hooke 框架：<strong>Comps 60% + DCF 20% + 私有市場 20%</strong><br>
-    <span class="math">公允價值 ≈ <strong>NT$3,000</strong> vs 現價 NT$2,300 → +30%</span><br><br>
-    DCF 對高成長股的限制眾所周知（終值佔比過高、對假設極度敏感），因此以 Comps 為主要決策工具。<br><br>
-    <strong>試試互動計算機：</strong>把 WACC 調到 8%、CAGR 調到 20%、OPM 調到 17%——這就是我們認為合理的劇本。
+    <strong>DCF 說：</strong>保守假設下內含價值 NT$473。要把 DCF 拉到 NT$2,300，需要極度樂觀的假設（CAGR 28%、OPM 22%、WACC 6.5%）。<br><br>
+    <strong>Comps 說：</strong>台達電在所有倍數上都顯著高於同業（EV/EBITDA 溢價 86%、P/E 溢價 186%）。成長調整後仍溢價。<br><br>
+    <strong>綜合判斷：</strong>市場已給予台達電「AI 冠軍」的充分溢價。目前的價格反映的是<strong>接近完美的預期</strong>——任何基本面放緩（OPM 回落、CSP CAPEX 降速）都會觸發顯著的估值修正。<br><br>
+    <strong>這不是「賣出」的建議。</strong>台達電是卓越的公司，在 AI 超級週期中佔據無可取代的位置。但以目前價格進場，<strong>安全邊際極薄</strong>，需要近乎完美的執行才能獲得合理回報。
   </p>
+</div>
+
+<div class="grid2">
+  <div class="card" style="border-left:3px solid var(--green)">
+    <div class="cardTitle">🟢 什麼情況下值得買</div>
+    <ul style="font-size:13px;color:var(--muted);padding-left:18px">
+      <li>股價回調至 NT$1,500–1,800（−22~35%）</li>
+      <li>Q2 財報後市場過度反應 → 買入機會</li>
+      <li>CSP CAPEX 持續上修但股價未反映</li>
+      <li>800V DC 或 SOFC 有突破性進展</li>
+    </ul>
+  </div>
+  <div class="card" style="border-left:3px solid var(--red)">
+    <div class="cardTitle">🔴 什麼情況下該賣</div>
+    <ul style="font-size:13px;color:var(--muted);padding-left:18px">
+      <li>CSP 正式下修 CAPEX 指引</li>
+      <li>OPM 連續兩季跌破 15%</li>
+      <li>AI 電源市佔出現明顯流失</li>
+      <li>台海地緣風險顯著升溫</li>
+    </ul>
+  </div>
 </div>
 </section>
 
@@ -307,129 +299,77 @@ section h3{font-size:16px;margin:24px 0 12px;color:var(--accent)}
 </div>
 
 <script>
-const CURRENT_PRICE = 2300;
-const SHARES = 26.0;
-const NET_DEBT = 500;
-const REV0 = 5549;
-// Default growth rates
-const DEFAULT_GROWTH = [1.30, 1.20, 1.15, 1.12, 1.10];
+const CURRENT = 2300, SHARES = 25.97, NET_DEBT = 500, REV0 = 5549;
+const DEF_GROWTH = [1.30, 1.20, 1.15, 1.12, 1.10];
+const DEF_OPM = [0.170, 0.165, 0.160, 0.155, 0.150];
 
-// Find scale factor k such that ∏(1 + k*(gi-1)) = target using binary search
-function findScale(defaultGrowth, target) {
-  let lo = 0.001, hi = 5.0;
-  for (let iter = 0; iter < 60; iter++) {
-    let mid = (lo + hi) / 2;
-    let prod = 1;
-    for (let g of defaultGrowth) prod *= (1 + mid * (g - 1));
-    if (prod < target) lo = mid;
-    else hi = mid;
+function findScale(defG, target) {
+  let lo = 0.001, hi = 6.0;
+  for (let i = 0; i < 60; i++) {
+    let mid = (lo + hi) / 2, prod = 1;
+    for (let g of defG) prod *= (1 + mid * (g - 1));
+    if (prod < target) lo = mid; else hi = mid;
   }
   return (lo + hi) / 2;
 }
 
 function computeDCF(cagr, opm, wacc, g) {
-  // Compute target 5-year revenue multiplier
-  const target5yr = Math.pow(1 + cagr/100, 5);
-  const k = findScale(DEFAULT_GROWTH, target5yr);
-  
-  let rev = REV0;
-  let ufcfs = [];
+  const target = Math.pow(1 + cagr/100, 5);
+  const k = findScale(DEF_GROWTH, target);
+  let rev = REV0, ufcfs = [];
   for (let i = 0; i < 5; i++) {
-    const growth = 1 + k * (DEFAULT_GROWTH[i] - 1);
-    rev *= growth;
-    const ebit = rev * (opm/100);
+    rev *= (1 + k * (DEF_GROWTH[i] - 1));
+    // Interpolate OPM
+    const frac = i / 4;
+    const o = DEF_OPM[0] + (opm/100 - DEF_OPM[0]) * frac + (opm/100 - DEF_OPM[4]) * (1 - frac);
+    // Actually, simpler: use linear ramp from current OPM to target terminal OPM
+    const startOPM = 0.17;
+    const endOPM = opm / 100;
+    const curOPM = startOPM + (endOPM - startOPM) * (i / 4);
+    const ebit = rev * curOPM;
     const nopat = ebit * 0.77;
-    const da = rev * 0.04;
-    const capex = rev * 0.07;
-    const nwc = rev * 0.02;
-    ufcfs.push(nopat + da - capex - nwc);
+    ufcfs.push(nopat + rev * 0.04 - rev * 0.07 - rev * 0.02);
   }
-  
-  // PV of cash flows
   let pvSum = 0;
-  for (let i = 0; i < 5; i++) {
-    pvSum += ufcfs[i] / Math.pow(1 + wacc/100, i + 1);
-  }
-  
-  // Terminal value
-  if (g/100 >= wacc/100) return {perShare: -1, ev: -1, pvSum, pvTv: -1};
+  for (let i = 0; i < 5; i++) pvSum += ufcfs[i] / Math.pow(1 + wacc/100, i + 1);
+  if (g/100 >= wacc/100) return {perShare: -1};
   const tv = ufcfs[4] * (1 + g/100) / (wacc/100 - g/100);
   const pvTv = tv / Math.pow(1 + wacc/100, 5);
-  
-  const ev = pvSum + pvTv;
-  const equity = ev - NET_DEBT;
-  const perShare = equity / SHARES;
-  
-  return {perShare, ev, pvSum, pvTv};
+  return {perShare: (pvSum + pvTv - NET_DEBT) / SHARES};
 }
 
 function recalc() {
-  const wacc = parseFloat(document.getElementById('waccSlider').value);
-  const g = parseFloat(document.getElementById('gSlider').value);
-  const cagr = parseInt(document.getElementById('cagrSlider').value);
-  const opm = parseFloat(document.getElementById('opmSlider').value);
-  
-  document.getElementById('waccVal').textContent = wacc.toFixed(1) + '%';
-  document.getElementById('gVal').textContent = g.toFixed(1) + '%';
-  document.getElementById('cagrVal').textContent = cagr + '%';
-  document.getElementById('opmVal').textContent = opm.toFixed(1) + '%';
-  
-  if (g/100 >= wacc/100) {
-    document.getElementById('resVal').querySelector('.rVal').textContent = '⚠️ g ≥ WACC';
-    document.getElementById('resDelta').querySelector('.rVal').textContent = '—';
-    document.getElementById('resPct').querySelector('.rVal').textContent = '—';
-    return;
-  }
-  
-  const dcf = computeDCF(cagr, opm, wacc, g);
-  if (dcf.perShare < 0) {
-    document.getElementById('resVal').querySelector('.rVal').textContent = '計算錯誤';
-    return;
-  }
-  
-  const val = Math.round(dcf.perShare);
-  const delta = val - CURRENT_PRICE;
-  const pct = Math.round((val / CURRENT_PRICE - 1) * 100);
-  
-  document.getElementById('resVal').querySelector('.rVal').textContent = 'NT$' + val.toLocaleString();
-  document.getElementById('resDelta').querySelector('.rVal').textContent = (delta >= 0 ? '+' : '') + 'NT$' + delta.toLocaleString();
-  document.getElementById('resPct').querySelector('.rVal').textContent = (pct >= 0 ? '+' : '') + pct + '%';
-  
-  const valEl = document.getElementById('resVal'), deltaEl = document.getElementById('resDelta'), pctEl = document.getElementById('resPct');
-  [valEl, deltaEl, pctEl].forEach(el => { el.className = 'result neutral'; });
-  if (pct > 15) [valEl, deltaEl, pctEl].forEach(el => { el.className = 'result bull'; });
-  else if (pct < -5) [valEl, deltaEl, pctEl].forEach(el => { el.className = 'result bear'; });
-  
-  const fill = document.getElementById('priceFill');
-  const ratio = Math.min(val / 5000, 1.0);
-  fill.style.width = (ratio * 100) + '%';
-  if (pct > 15) fill.style.background = 'var(--green)';
-  else if (pct < -5) fill.style.background = 'var(--red)';
-  else fill.style.background = 'var(--gold)';
+  const w = +waccSlider.value, g = +gSlider.value, c = +cagrSlider.value, o = +opmSlider.value;
+  waccVal.textContent = w.toFixed(1)+'%'; gVal.textContent = g.toFixed(1)+'%';
+  cagrVal.textContent = c+'%'; opmVal.textContent = o.toFixed(1)+'%';
+  if (g/100 >= w/100) { resVal.querySelector('.rVal').textContent='⚠️ g≥WACC'; return; }
+  const d = computeDCF(c, o, w, g);
+  if (d.perShare < 0) return;
+  const v = Math.round(d.perShare), delta = v - CURRENT, pct = Math.round((v/CURRENT-1)*100);
+  resVal.querySelector('.rVal').textContent = 'NT$'+v.toLocaleString();
+  resDelta.querySelector('.rVal').textContent = (delta>=0?'+':'')+'NT$'+delta.toLocaleString();
+  resPct.querySelector('.rVal').textContent = (pct>=0?'+':'')+pct+'%';
+  [resVal,resDelta,resPct].forEach(e=>{e.className='result neutral'});
+  if(pct>15) [resVal,resDelta,resPct].forEach(e=>{e.className='result bull'});
+  else if(pct<-5) [resVal,resDelta,resPct].forEach(e=>{e.className='result bear'});
+  const ratio = Math.min(v/5000,1); priceFill.style.width=(ratio*100)+'%';
+  priceFill.style.background = pct>15?'var(--green)':pct<-5?'var(--red)':'var(--gold)';
 }
 
-// Nav
-document.querySelectorAll('.navItem').forEach(btn => {
-  btn.addEventListener('click', () => {
-    const section = btn.dataset.section;
-    document.querySelectorAll('.navItem').forEach(b => b.classList.remove('active'));
-    document.querySelectorAll(`.navItem[data-section="${section}"]`).forEach(b => b.classList.add('active'));
-    document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
-    document.getElementById(section).classList.add('active');
-    if (window.innerWidth <= 768) btn.scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'});
-  });
-});
-document.addEventListener('keydown', e => {
-  if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
-    e.preventDefault();
-    const sections = Array.from(document.querySelectorAll('section'));
-    const current = sections.findIndex(s => s.classList.contains('active'));
-    const next = e.key === 'ArrowDown' ? Math.min(current + 1, sections.length - 1) : Math.max(current - 1, 0);
-    sections[current].classList.remove('active'); sections[next].classList.add('active');
-    document.querySelectorAll('.navItem').forEach(b => b.classList.remove('active'));
-    document.querySelectorAll(`.navItem[data-section="${sections[next].id}"]`).forEach(b => b.classList.add('active'));
-  }
-});
+document.querySelectorAll('.navItem').forEach(b=>{b.addEventListener('click',()=>{
+  const s=b.dataset.section;document.querySelectorAll('.navItem').forEach(x=>x.classList.remove('active'));
+  document.querySelectorAll('.navItem[data-section="'+s+'"]').forEach(x=>x.classList.add('active'));
+  document.querySelectorAll('section').forEach(x=>x.classList.remove('active'));
+  document.getElementById(s).classList.add('active');
+  if(window.innerWidth<=768)b.scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'});
+})});
+document.addEventListener('keydown',e=>{if(e.key==='ArrowUp'||e.key==='ArrowDown'){e.preventDefault();
+  const ss=Array.from(document.querySelectorAll('section'));const i=ss.findIndex(s=>s.classList.contains('active'));
+  const n=e.key==='ArrowDown'?Math.min(i+1,ss.length-1):Math.max(i-1,0);
+  ss[i].classList.remove('active');ss[n].classList.add('active');
+  document.querySelectorAll('.navItem').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.navItem[data-section="'+ss[n].id+'"]').forEach(b=>b.classList.add('active'));
+}});
 </script>
 </body>
 </html>
