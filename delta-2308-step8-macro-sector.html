@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>台達電 2308.TW — 產業與總經 | Step 8</title>
+<style>
+:root{
+  --bg:#0a0e14; --surface:#131820; --card:#181f2a;
+  --border:#252d3a; --ink:#e2e8f0; --muted:#7c8aa0; --dim:#4a5568;
+  --accent:#60a5fa; --gold:#f59e0b; --green:#34d399; --red:#f87171;
+  --orange:#fb923c; --purple:#a78bfa; --radius:14px; --radius2:18px;
+  --sans:"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,-apple-system,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.7}
+.topbar{background:var(--surface);border-bottom:1px solid var(--border);padding:14px 24px;display:flex;align-items:center;gap:16px;position:sticky;top:0;z-index:100}
+.topbar .logo{font-size:18px;font-weight:700;color:var(--accent)}
+.topbar .badge{font-size:11px;background:var(--card);color:var(--muted);padding:4px 10px;border-radius:20px;border:1px solid var(--border)}
+.layout{display:flex;min-height:calc(100vh - 57px)}
+.sidebar{width:240px;background:var(--surface);border-right:1px solid var(--border);padding:20px 0;position:sticky;top:57px;height:calc(100vh - 57px);overflow-y:auto;flex-shrink:0}
+.sidebar .navTitle{font-size:10px;text-transform:uppercase;letter-spacing:1.5px;color:var(--dim);padding:8px 20px 16px}
+.navItem{display:block;width:100%;padding:10px 20px;font-size:13px;color:var(--muted);background:none;border:none;text-align:left;cursor:pointer;font-family:var(--sans);transition:all .15s;border-left:3px solid transparent}
+.navItem:hover{color:var(--ink);background:var(--card);border-left-color:var(--dim)}
+.navItem.active{color:var(--accent);background:rgba(96,165,250,.08);border-left-color:var(--accent);font-weight:600}
+.content{flex:1;padding:32px;max-width:1100px}
+section{display:none}
+section.active{display:block}
+section h2{font-size:22px;margin-bottom:8px}
+section h3{font-size:16px;margin:24px 0 12px;color:var(--accent)}
+.sectionDesc{color:var(--muted);font-size:14px;margin-bottom:20px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px 24px;margin-bottom:16px}
+.cardTitle{font-size:15px;font-weight:600;margin-bottom:12px}
+.tbl{width:100%;border-collapse:collapse;margin:12px 0}
+.tbl th{text-align:left;color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.5px;padding:8px 12px;border-bottom:1px solid var(--border)}
+.tbl td{padding:10px 12px;border-bottom:1px solid var(--border);font-size:13px}
+.tbl tr:hover td{background:var(--surface)}
+.up{color:var(--green)} .down{color:var(--red)} .warn{color:var(--orange)}
+.metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin:16px 0}
+.metric{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px;text-align:center}
+.metric .val{font-size:22px;font-weight:700}
+.metric .lbl{font-size:11px;color:var(--muted);margin-top:4px}
+.callout{border-left:3px solid;border-radius:0 var(--radius) var(--radius) 0;padding:14px 18px;margin:16px 0;background:var(--surface);font-size:13px}
+.callout.red{border-color:var(--red)}.callout.gold{border-color:var(--gold)}.callout.green{border-color:var(--green)}.callout.purple{border-color:var(--purple)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.verdict{background:linear-gradient(135deg,var(--card),var(--surface));border:1px solid var(--accent);border-radius:var(--radius2);padding:24px 28px;margin:20px 0}
+.verdict .vTitle{font-size:18px;font-weight:700;color:var(--accent);margin-bottom:8px}
+.mobileNav{display:none}
+@media(max-width:768px){
+  .sidebar{display:none}
+  .mobileNav{display:flex;gap:4px;overflow-x:auto;padding:8px 0;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+  .mobileNav::-webkit-scrollbar{display:none}
+  .mobileNav .navItem{flex-shrink:0;white-space:nowrap;font-size:11px;padding:6px 10px;border-radius:20px;border:1px solid var(--border)}
+  .mobileNav .navItem.active{background:rgba(96,165,250,.15);border-color:var(--accent)}
+  .content{padding:16px}
+  .grid2{grid-template-columns:1fr}
+  .metrics{grid-template-columns:repeat(2,1fr)}
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <span class="logo">⚡ DELTA 2308</span>
+  <span class="badge">Step 8 / 11</span>
+  <span class="spacer" style="flex:1"></span>
+  <span class="tag">產業與總經 · 2026-06-07</span>
+</div>
+
+<div class="layout">
+
+<nav class="sidebar">
+  <div class="navTitle">Step 8 目錄</div>
+  <button class="navItem active" data-section="s1">📊 產業 CAGR</button>
+  <button class="navItem" data-section="s2">🌊 長期結構趨勢</button>
+  <button class="navItem" data-section="s3">🔄 循環位置</button>
+  <button class="navItem" data-section="s4">🌍 總經敏感度</button>
+  <button class="navItem" data-section="s5">📈 因子與跨資產</button>
+  <button class="navItem" data-section="s6">🎯 總經結論</button>
+</nav>
+
+<nav class="mobileNav">
+  <button class="navItem active" data-section="s1">📊 CAGR</button>
+  <button class="navItem" data-section="s2">🌊 趨勢</button>
+  <button class="navItem" data-section="s3">🔄 循環</button>
+  <button class="navItem" data-section="s4">🌍 敏感度</button>
+  <button class="navItem" data-section="s5">📈 因子</button>
+  <button class="navItem" data-section="s6">🎯 結論</button>
+</nav>
+
+<main class="content">
+
+<!-- SECTION 1: INDUSTRY CAGR -->
+<section id="s1" class="active">
+<h2>📊 產業規模與成長率</h2>
+<p class="sectionDesc">台達電跨足多個市場，聚焦最關鍵的 AI 資料中心電源與散熱市場</p>
+
+<div class="metrics">
+  <div class="metric"><div class="val up">US$6700億</div><div class="lbl">2026E Hyperscaler CAPEX</div></div>
+  <div class="metric"><div class="val up">+60%</div><div class="lbl">YoY CAPEX 成長</div></div>
+  <div class="metric"><div class="val up">~US$400億</div><div class="lbl">AI 電源+冷卻 TAM (估)</div></div>
+  <div class="metric"><div class="val up">30-35%</div><div class="lbl">TAM CAGR (2024-28E)</div></div>
+</div>
+
+<div class="card">
+  <div class="cardTitle">台達電主力市場 TAM 推估</div>
+  <table class="tbl">
+    <tr><th>市場</th><th>TAM (2026E)</th><th>CAGR</th><th>台達市佔</th><th>趨勢</th></tr>
+    <tr>
+      <td>AI 伺服器電源</td>
+      <td>~US$200 億</td>
+      <td class="up">30-35%</td>
+      <td class="up">40-60%</td>
+      <td class="up">↑ 領導者</td>
+    </tr>
+    <tr>
+      <td>資料中心液冷</td>
+      <td>~US$150 億</td>
+      <td class="up">40-50%</td>
+      <td class="up">20-30%</td>
+      <td class="up">↑ 成長中</td>
+    </tr>
+    <tr>
+      <td>EV 動力系統</td>
+      <td>~US$800 億</td>
+      <td>15-20%</td>
+      <td class="warn"><5%</td>
+      <td class="warn">→ 挑戰者</td>
+    </tr>
+    <tr>
+      <td>工業自動化</td>
+      <td>~US$2,500 億</td>
+      <td>5-8%</td>
+      <td><3%</td>
+      <td>→ 利基</td>
+    </tr>
+    <tr>
+      <td>燃料電池 (SOFC)</td>
+      <td>~US$50 億</td>
+      <td class="up">25-35%</td>
+      <td class="warn">初期</td>
+      <td class="up">↑ 新進入</td>
+    </tr>
+  </table>
+  <p style="font-size:11px;color:var(--dim);margin-top:8px">* TAM 推估基於產業報告 + Hyperscaler CAPEX 數據綜合判斷。AI 電源/冷卻 TAM 估算 = CAPEX × 電源+冷卻佔伺服器 BOM 比 (~8-12%)。</p>
+</div>
+
+<div class="callout green">
+  <strong>📊 產業 CAGR 診斷：</strong>台達電核心的 AI 電源+冷卻市場處於 <strong>30-35% CAGR 的超級成長期</strong>。且台達在最大的兩個市場（AI 電源、液冷）都居領導地位。這是「<strong>成長中的市場 × 成長中的市佔</strong>」— 最理想的產業位置。
+</div>
+</section>
+
+<!-- SECTION 2: SECULAR TRENDS -->
+<section id="s2">
+<h2>🌊 長期結構性趨勢</h2>
+<p class="sectionDesc">識別十年尺度的不可逆力量</p>
+
+<div class="card">
+  <table class="tbl">
+    <tr><th>長期趨勢</th><th>對產業的影響</th><th>台達暴露度</th><th>時間維度</th></tr>
+    <tr>
+      <td class="up">AI 算力需求指數成長</td>
+      <td>GPU 功耗每代 +30-50% → 電源/冷卻需求自然成長</td>
+      <td class="up">🟢 核心受益</td>
+      <td>10-20 年</td>
+    </tr>
+    <tr>
+      <td class="up">全球能源轉型</td>
+      <td>再生能源 + 微電網 + 儲能需求爆發</td>
+      <td class="up">🟢 高度相關</td>
+      <td>20-30 年</td>
+    </tr>
+    <tr>
+      <td class="up">資料中心 PUE 法規趨嚴</td>
+      <td>歐盟/美國強制 PUE <1.3 → 高效率電源+液冷變必需品</td>
+      <td class="up">🟢 直接受益</td>
+      <td>5-15 年</td>
+    </tr>
+    <tr>
+      <td class="up">電動車滲透率提升</td>
+      <td>全球 EV 銷量 CAGR 15-20%</td>
+      <td class="warn">🟡 間接受益</td>
+      <td>10-20 年</td>
+    </tr>
+    <tr>
+      <td class="warn">供應鏈區域化</td>
+      <td>製造從中國分散 → 台達提前布局泰/印/美/墨</td>
+      <td class="up">🟢 已布局</td>
+      <td>5-10 年</td>
+    </tr>
+    <tr>
+      <td class="up">碳排放交易/碳稅</td>
+      <td>高耗能產業成本上升 → 台達節能方案需求增加</td>
+      <td class="up">🟢 受益</td>
+      <td>10-30 年</td>
+    </tr>
+  </table>
+</div>
+
+<div class="callout purple">
+  <strong>🌊 最重要的長期趨勢：GPU 功耗的「物理定律級」成長。</strong>NVIDIA Blackwell → Rubin → 未來每一代，功耗只會上升不會下降。這意味著台達不需要「搶市佔」—— 每台伺服器的電源+冷卻採購金額<strong>自然成長</strong>。這是少數「坐著等需求來找你」的生意。
+</div>
+</section>
+
+<!-- SECTION 3: CYCLICAL POSITION -->
+<section id="s3">
+<h2>🔄 循環位置判斷</h2>
+<p class="sectionDesc">我們在 AI 基礎設施建設週期的哪個階段？</p>
+
+<div class="card">
+  <div class="cardTitle">AI 資料中心建設週期</div>
+  <table class="tbl">
+    <tr><th>週期階段</th><th>特徵</th><th>當前判斷</th><th>台達位置</th></tr>
+    <tr>
+      <td class="up">初期（2022-24）</td><td>ChatGPT 引爆；CAPEX 開始加速</td><td class="up">✅ 已過</td><td>布局期</td>
+    </tr>
+    <tr style="background:rgba(96,165,250,.08)">
+      <td class="up accent">中期加速（2025-27）</td><td class="accent">CAPEX +60% YoY；供不應求；產能追逐需求</td><td class="accent up">🔥 正在此階段</td><td class="accent">收割期</td>
+    </tr>
+    <tr>
+      <td class="warn">後期成熟（2028-30?）</td><td>CAPEX 增速放緩；產能過剩風險；整併</td><td>未來風險</td><td class="warn">警惕</td>
+    </tr>
+    <tr>
+      <td class="down">修正期（TBD）</td><td>AI 投資回報遭質疑；CAPEX 驟降</td><td>尾部風險</td><td class="down">防禦</td>
+    </tr>
+  </table>
+</div>
+
+<div class="grid2">
+  <div class="card">
+    <div class="cardTitle">🟢 支持「仍在中期」的證據</div>
+    <ul style="font-size:13px;color:var(--muted);padding-left:18px">
+      <li>CSP 2026 CAPEX 指引 +60%（持續上修）</li>
+      <li>AI 滲透率仍低（企業採用 <20%）</li>
+      <li>GPU 供不應求（NVIDIA backlog）</li>
+      <li>台達產能接近飽和（需求 > 供給）</li>
+      <li>800V DC 2027 才量產（新架構剛開始）</li>
+    </ul>
+  </div>
+  <div class="card">
+    <div class="cardTitle">🔴 警示「接近後期」的訊號</div>
+    <ul style="font-size:13px;color:var(--muted);padding-left:18px">
+      <li>CAPEX 增速不可能永遠 +60%</li>
+      <li>AI 應用層尚未證明 ROI（OpenAI 仍在燒錢）</li>
+      <li>管理層說「毛利率見頂」（成熟期信號）</li>
+      <li>媒體狂熱（COMPUTEX 全場 AI）</li>
+      <li>非 CSP 企業也開始大買 GPU（FOMO）</li>
+    </ul>
+  </div>
+</div>
+
+<div class="callout gold">
+  <strong>🔄 循環判斷：</strong>我們處於 AI 基礎設施建設的 <strong>「中期加速」階段，但接近後半段</strong>。CAPEX +60% 無法永久持續，但轉折點可能在 2027-28 年而非 2026 年。關鍵觀察點：何時 CSP 開始談「CAPEX 效率」而非「CAPEX 成長」。
+</div>
+</section>
+
+<!-- SECTION 4: MACRO SENSITIVITY -->
+<section id="s4">
+<h2>🌍 總經因子敏感度</h2>
+
+<div class="card">
+  <table class="tbl">
+    <tr><th>總經因子</th><th>台達敏感度</th><th>當前狀態</th><th>方向</th><th>影響</th></tr>
+    <tr>
+      <td>利率</td>
+      <td class="warn">🟡 中等</td>
+      <td>全球利率高原期</td>
+      <td>→</td>
+      <td>高利率壓縮科技股本益比；但台達獲利成長強勁可抵銷</td>
+    </tr>
+    <tr>
+      <td>油價</td>
+      <td class="warn">🟡 中等</td>
+      <td>US$70-100 波動</td>
+      <td class="down">↑</td>
+      <td class="down">原物料成本上升；台達內部認為理想區間 70-80</td>
+    </tr>
+    <tr>
+      <td>匯率 (TWD/USD)</td>
+      <td class="up">🟢 低</td>
+      <td>TWD 穩定</td>
+      <td>→</td>
+      <td>95% AI 營收以美元計價，關稅由客戶負擔</td>
+    </tr>
+    <tr>
+      <td>全球 GDP</td>
+      <td class="warn">🟡 中等</td>
+      <td>溫和成長</td>
+      <td>→</td>
+      <td>傳統業務（工業自動化）受 GDP 影響</td>
+    </tr>
+    <tr>
+      <td>通膨</td>
+      <td class="warn">🟡 中等</td>
+      <td>「AI 造成通膨」（管理層）</td>
+      <td class="down">↑</td>
+      <td class="down">記憶體、人力成本上升</td>
+    </tr>
+    <tr>
+      <td>地緣政治</td>
+      <td class="down">🔴 高</td>
+      <td>中東衝突、美中緊張</td>
+      <td>↑</td>
+      <td class="down">供應鏈中斷風險；但台達已分散產能</td>
+    </tr>
+  </table>
+</div>
+
+<div class="card">
+  <div class="cardTitle">台達電的「天然避險」特徵</div>
+  <table class="tbl">
+    <tr><td>關稅</td><td class="up">🟢 由客戶負擔（FOB 條款），95% 美國營收不受直接影響</td></tr>
+    <tr><td>匯率</td><td class="up">🟢 生產地分散（中/泰/台/印/美），自然對沖</td></tr>
+    <tr><td class="warn">原物料</td><td class="warn">🟡 油價影響運輸+塑膠/化工原料；記憶體漲價影響子公司晶睿</td></tr>
+    <tr><td>利率</td><td class="up">🟢 負債比低（D/E 健康），利息支出可控</td></tr>
+  </table>
+</div>
+</section>
+
+<!-- SECTION 5: FACTOR & CROSS-ASSET -->
+<section id="s5">
+<h2>📈 因子暴露與跨資產脈絡</h2>
+
+<div class="card">
+  <div class="cardTitle">因子風格判斷</div>
+  <table class="tbl">
+    <tr><th>因子</th><th>當前市場偏好</th><th>台達因子負載</th><th>順風/逆風？</th></tr>
+    <tr><td class="up">成長 Growth</td><td class="up">🟢 偏好</td><td class="up">極高（營收 +32%）</td><td class="up">🟢 強順風</td></tr>
+    <tr><td class="up">動能 Momentum</td><td class="up">🟢 偏好</td><td class="up">高（股價趨勢向上）</td><td class="up">🟢 順風</td></tr>
+    <tr><td class="up">品質 Quality</td><td>中性</td><td class="up">極高（ROIC 18%、低負債）</td><td>→ 中性偏多</td></tr>
+    <tr><td>價值 Value</td><td class="down">🔴 不偏好</td><td class="down">低（P/E 偏高）</td><td class="down">🔴 逆風</td></tr>
+    <tr><td>低波動 Low Vol</td><td>中性</td><td class="down">低（DOL 3.1x = 高波動）</td><td>→ 中性</td></tr>
+  </table>
+</div>
+
+<div class="callout green">
+  <strong>📈 因子診斷：</strong>台達電是教科書級的 <strong>「高成長+高品質」</strong>標的。在成長因子受追捧的市場環境中（如 AI 熱潮），估值可以持續擴張。但若市場轉向價值因子（利率上升、風險偏好下降），台達的高本益比將首當其衝。關鍵風險：<strong>因子輪動</strong>。
+</div>
+
+<div class="grid2">
+  <div class="card">
+    <div class="cardTitle">台股大盤背景</div>
+    <table class="tbl">
+      <tr><td>加權指數</td><td class="warn">近期回調（失守 46,000）</td></tr>
+      <tr><td>AI 族群</td><td class="up">COMPUTEX 題材支撐</td></tr>
+      <tr><td>外資動向</td><td class="warn">波動（買超後可能轉賣）</td></tr>
+      <tr><td>台達權重</td><td class="up">台灣 50 成份股，被動資金流入</td></tr>
+    </table>
+  </div>
+  <div class="card">
+    <div class="cardTitle">全球科技股背景</div>
+    <table class="tbl">
+      <tr><td>NASDAQ</td><td class="up">AI 驅動的結構性牛市</td></tr>
+      <tr><td>SOX 半導體</td><td class="up">NVIDIA 領漲</td></tr>
+      <tr><td>利率預期</td><td class="warn">Fed 維持高利率 → 估值天花板</td></tr>
+      <tr><td>AI 資本支出</td><td class="up">「軍備競賽」氛圍</td></tr>
+    </table>
+  </div>
+</div>
+</section>
+
+<!-- SECTION 6: VERDICT -->
+<section id="s6">
+<h2>🎯 產業與總經結論</h2>
+
+<div class="metrics">
+  <div class="metric"><div class="val up">A</div><div class="lbl">產業品質</div></div>
+  <div class="metric"><div class="val up">🟢 順風</div><div class="lbl">總經方向</div></div>
+  <div class="metric"><div class="val up">中期加速</div><div class="lbl">循環位置</div></div>
+  <div class="metric"><div class="val down">因子輪動</div><div class="lbl">最大總經風險</div></div>
+</div>
+
+<div class="verdict">
+  <div class="vTitle">📋 產業與總經總評</div>
+  <p style="font-size:16px;line-height:1.8">
+    台達電處於 <strong>全球最強勁的產業順風中</strong>——AI 資料中心建設的超級週期。核心市場（AI 電源+冷卻）CAGR 30-35%，且台達是該市場的無可爭議領導者。六大長期結構趨勢全部指向台達受益。<br><br>
+    <strong>循環位置：中期加速，但接近後半段。</strong>CAPEX +60% 無法永久持續，但轉折點更可能在 2027-28 年。現在出場太早，盲目追高太貴——關鍵是判斷 CSP 何時開始談「效率」而非「成長」。<br><br>
+    <strong>最大的總經風險：不是利率、不是油價、不是地緣政治——是因子輪動。</strong>如果市場從「成長」轉向「價值」，台達的高本益比將面臨壓縮。但目前沒有看到這個轉向的催化劑。
+  </p>
+</div>
+
+<div class="callout gold" style="margin-top:24px">
+  <strong>📌 下一步：Step 9 — 風險分析 (Risk Analysis)</strong><br>
+  FRM 風險分類法 × 發生機率 × 影響幅度 × 情境壓力測試。
+</div>
+</section>
+
+</main>
+</div>
+
+<script>
+document.querySelectorAll('.navItem').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const section = btn.dataset.section;
+    document.querySelectorAll('.navItem').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll(`.navItem[data-section="${section}"]`).forEach(b => b.classList.add('active'));
+    document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
+    document.getElementById(section).classList.add('active');
+    if (window.innerWidth <= 768) btn.scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'});
+  });
+});
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
+    e.preventDefault();
+    const sections = Array.from(document.querySelectorAll('section'));
+    const current = sections.findIndex(s => s.classList.contains('active'));
+    const next = e.key === 'ArrowDown' ? Math.min(current + 1, sections.length - 1) : Math.max(current - 1, 0);
+    sections[current].classList.remove('active'); sections[next].classList.add('active');
+    document.querySelectorAll('.navItem').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll(`.navItem[data-section="${sections[next].id}"]`).forEach(b => b.classList.add('active'));
+  }
+});
+</script>
+</body>
+</html>
