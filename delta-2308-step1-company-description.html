@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>台達電 2308.TW — 公司描述 | Step 1</title>
+<style>
+:root{
+  --bg:#0a0e14; --surface:#131820; --card:#181f2a;
+  --border:#252d3a; --ink:#e2e8f0; --muted:#7c8aa0; --dim:#4a5568;
+  --accent:#60a5fa; --accent2:#3b82f6;
+  --gold:#f59e0b; --green:#34d399; --red:#f87171;
+  --orange:#fb923c; --purple:#a78bfa;
+  --radius:14px; --radius2:18px;
+  --sans:"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,-apple-system,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.7}
+.topbar{
+  background:var(--surface);border-bottom:1px solid var(--border);
+  padding:14px 24px;display:flex;align-items:center;gap:16px;
+  position:sticky;top:0;z-index:100;backdrop-filter:blur(12px)
+}
+.topbar .logo{font-size:18px;font-weight:700;color:var(--accent)}
+.topbar .badge{font-size:11px;background:var(--card);color:var(--muted);padding:4px 10px;border-radius:20px;border:1px solid var(--border)}
+.topbar .spacer{flex:1}
+.topbar .tag{font-size:12px;color:var(--muted)}
+.layout{display:flex;min-height:calc(100vh - 57px)}
+.sidebar{
+  width:240px;background:var(--surface);border-right:1px solid var(--border);
+  padding:20px 0;position:sticky;top:57px;height:calc(100vh - 57px);overflow-y:auto;
+  flex-shrink:0
+}
+.sidebar .navTitle{font-size:10px;text-transform:uppercase;letter-spacing:1.5px;color:var(--dim);padding:8px 20px 16px}
+.navItem{
+  display:block;width:100%;padding:10px 20px;font-size:13px;color:var(--muted);
+  background:none;border:none;text-align:left;cursor:pointer;font-family:var(--sans);
+  transition:all .15s;border-left:3px solid transparent
+}
+.navItem:hover{color:var(--ink);background:var(--card);border-left-color:var(--dim)}
+.navItem.active{color:var(--accent);background:rgba(96,165,250,.08);border-left-color:var(--accent);font-weight:600}
+.content{flex:1;padding:32px;max-width:1100px}
+section{display:none}
+section.active{display:block}
+section h2{font-size:22px;margin-bottom:8px;color:var(--ink)}
+section h3{font-size:16px;margin:24px 0 12px;color:var(--accent)}
+.sectionDesc{color:var(--muted);font-size:14px;margin-bottom:20px}
+.card{
+  background:var(--card);border:1px solid var(--border);border-radius:var(--radius);
+  padding:20px 24px;margin-bottom:16px
+}
+.cardTitle{font-size:15px;font-weight:600;margin-bottom:12px;color:var(--ink)}
+.tbl{width:100%;border-collapse:collapse;margin:12px 0}
+.tbl th{text-align:left;color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.5px;padding:8px 12px;border-bottom:1px solid var(--border)}
+.tbl td{padding:10px 12px;border-bottom:1px solid var(--border);font-size:13px}
+.tbl tr:last-child td{border-bottom:none}
+.tbl tr:hover td{background:var(--surface)}
+.up{color:var(--green)} .down{color:var(--red)} .warn{color:var(--orange)}
+.metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin:16px 0}
+.metric{
+  background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
+  padding:16px;text-align:center
+}
+.metric .val{font-size:24px;font-weight:700;color:var(--ink)}
+.metric .val.accent{color:var(--accent)}
+.metric .lbl{font-size:11px;color:var(--muted);margin-top:4px;text-transform:uppercase;letter-spacing:.5px}
+.callout{
+  border-left:3px solid;border-radius:0 var(--radius) var(--radius) 0;
+  padding:14px 18px;margin:16px 0;background:var(--surface);font-size:13px
+}
+.callout.red{border-color:var(--red)} .callout.gold{border-color:var(--gold)}
+.callout.green{border-color:var(--green)} .callout.purple{border-color:var(--purple)}
+.callout strong{color:var(--ink)}
+.pillRow{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0}
+.pill{font-size:11px;padding:4px 10px;border-radius:20px;font-weight:600}
+.pill.g{background:rgba(52,211,153,.15);color:var(--green)}
+.pill.r{background:rgba(248,113,113,.15);color:var(--red)}
+.pill.o{background:rgba(251,146,60,.15);color:var(--orange)}
+.pill.b{background:rgba(96,165,250,.15);color:var(--accent)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.grid4{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
+.verdict{
+  background:linear-gradient(135deg, var(--card), var(--surface));
+  border:1px solid var(--accent);border-radius:var(--radius2);
+  padding:24px 28px;margin:20px 0
+}
+.verdict .vTitle{font-size:18px;font-weight:700;color:var(--accent);margin-bottom:8px}
+.verdict p{color:var(--ink);font-size:14px}
+.scoreRow{display:flex;align-items:center;gap:8px;margin:6px 0}
+.scoreBar{height:8px;border-radius:4px;background:var(--border);flex:1;overflow:hidden}
+.scoreFill{height:100%;border-radius:4px}
+.sf5{width:100%;background:var(--green)} .sf4{width:80%;background:var(--accent)}
+.sf3{width:60%;background:var(--gold)} .sf2{width:40%;background:var(--orange)}
+.sf1{width:20%;background:var(--red)}
+.posMap{font-family:monospace;font-size:12px;line-height:1.4;color:var(--muted);white-space:pre;overflow-x:auto;padding:16px;background:var(--surface);border-radius:var(--radius);border:1px solid var(--border)}
+.mobileNav{display:none}
+.gap{color:var(--red)} .check{color:var(--green)}
+@media(max-width:768px){
+  .sidebar{display:none}
+  .mobileNav{display:flex;gap:4px;overflow-x:auto;padding:8px 0;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+  .mobileNav::-webkit-scrollbar{display:none}
+  .mobileNav .navItem{flex-shrink:0;white-space:nowrap;font-size:11px;padding:6px 10px;border-radius:20px;border:1px solid var(--border)}
+  .mobileNav .navItem.active{background:rgba(96,165,250,.15);border-color:var(--accent)}
+  .content{padding:16px}
+  .grid2{grid-template-columns:1fr}
+  .metrics{grid-template-columns:repeat(2,1fr)}
+}
+@media print{
+  .sidebar,.topbar,.mobileNav{display:none}
+  section{display:block!important;page-break-after:always}
+  body{background:#fff;color:#000}
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <span class="logo">⚡ DELTA 2308</span>
+  <span class="badge">Step 1 / 11</span>
+  <span class="spacer"></span>
+  <span class="tag">公司描述 · 2026-06-07</span>
+</div>
+
+<div class="layout">
+
+<nav class="sidebar">
+  <div class="navTitle">研究架構</div>
+  <button class="navItem active" data-section="s1">📋 公司總覽</button>
+  <button class="navItem" data-section="s2">📦 產品與服務</button>
+  <button class="navItem" data-section="s3">🗺️ 定位圖</button>
+  <button class="navItem" data-section="s4">💼 商業模式</button>
+  <button class="navItem" data-section="s5">📜 歷史與里程碑</button>
+  <button class="navItem" data-section="s6">👤 經營層</button>
+  <button class="navItem" data-section="s7">📰 近期新聞</button>
+  <button class="navItem" data-section="s8">🕳️ 資料缺口</button>
+  <button class="navItem" data-section="s9">🎯 結論</button>
+</nav>
+
+<nav class="mobileNav">
+  <button class="navItem active" data-section="s1">📋 總覽</button>
+  <button class="navItem" data-section="s2">📦 產品</button>
+  <button class="navItem" data-section="s3">🗺️ 定位</button>
+  <button class="navItem" data-section="s4">💼 商業</button>
+  <button class="navItem" data-section="s5">📜 歷史</button>
+  <button class="navItem" data-section="s6">👤 經營</button>
+  <button class="navItem" data-section="s7">📰 新聞</button>
+  <button class="navItem" data-section="s8">🕳️ 缺口</button>
+  <button class="navItem" data-section="s9">🎯 結論</button>
+</nav>
+
+<main class="content">
+
+<!-- SECTION 1: COMPANY OVERVIEW -->
+<section id="s1" class="active">
+<h2>📋 公司總覽</h2>
+<p class="sectionDesc">台達電子工業股份有限公司（Delta Electronics, Inc.）— 臺灣證券交易所代號 2308</p>
+
+<div class="metrics">
+  <div class="metric"><div class="val accent">NT$2,300</div><div class="lbl">最新股價 (2026/6/5)</div></div>
+  <div class="metric"><div class="val">US$179億</div><div class="lbl">2025 合併營收</div></div>
+  <div class="metric"><div class="val">US$20億</div><div class="lbl">2025 淨利</div></div>
+  <div class="metric"><div class="val">83,000</div><div class="lbl">全球員工數</div></div>
+  <div class="metric"><div class="val">55年</div><div class="lbl">成立於 1971</div></div>
+  <div class="metric"><div class="val">8-9%</div><div class="lbl">研發佔營收比</div></div>
+</div>
+
+<div class="card">
+  <div class="cardTitle">核心檔案</div>
+  <table class="tbl">
+    <tr><th>項目</th><th>內容</th></tr>
+    <tr><td>一句話描述</td><td><strong>全球電源管理與散熱技術領導者</strong>，從關鍵零組件跨足 AI 資料中心、電動車、工業自動化及能源基礎設施的整合解決方案商</td></tr>
+    <tr><td>成立日</td><td>1971 年 4 月 4 日；1975 年 8 月 20 日改組為股份有限公司</td></tr>
+    <tr><td>總部</td><td>臺北市內湖區（營運總部）+ 桃園市龜山區（工廠）</td></tr>
+    <tr><td>上市</td><td>1988 年 12 月 19 日，臺灣 50 指數成份股</td></tr>
+    <tr><td>全球據點</td><td>165 個銷售據點、55 座生產基地、73 座研發中心</td></tr>
+    <tr><td>52 週股價區間</td><td>NT$2,585 高 / NT$2,300（6/5收盤）</td></tr>
+    <tr><td>再生電力</td><td>全球據點 84% 使用再生電力（2024）</td></tr>
+  </table>
+</div>
+
+<div class="card">
+  <div class="cardTitle">2025 年財務規模</div>
+  <table class="tbl">
+    <tr><th>指標</th><th>金額</th></tr>
+    <tr><td>合併營收</td><td>US$179 億（≈ NT$5,800 億）</td></tr>
+    <tr><td>營業利益</td><td>US$27 億</td></tr>
+    <tr><td class="up">淨利</td><td class="up">US$20 億（≈ NT$650 億）</td></tr>
+    <tr><td>總資產</td><td>US$187 億</td></tr>
+    <tr><td>股東權益</td><td>US$90 億</td></tr>
+    <tr><td>研發投入</td><td>營收 8-9%（每年 US$14-16 億）</td></tr>
+  </table>
+  <p style="font-size:11px;color:var(--dim);margin-top:8px">Source: Wikipedia - Delta Electronics; 台達官網 - About Delta</p>
+</div>
+</section>
+
+<!-- SECTION 2: PRODUCTS & SERVICES -->
+<section id="s2">
+<h2>📦 產品與服務</h2>
+<p class="sectionDesc">四大事業群 — 以電力電子為核心的同心圓擴張</p>
+
+<div class="grid2">
+  <div class="card" style="border-left:3px solid var(--accent)">
+    <div class="cardTitle">🔌 電源電子 (Power Electronics)</div>
+    <p style="font-size:13px;color:var(--muted)">全球交換式電源供應器領導者。AI 時代提供 Grid-to-Chip 完整電源與散熱方案。</p>
+    <div class="pillRow"><span class="pill b">電源供應器</span><span class="pill b">散熱風扇</span><span class="pill b">被動元件</span><span class="pill b">Grid-to-Chip</span></div>
+  </div>
+  <div class="card" style="border-left:3px solid var(--green)">
+    <div class="cardTitle">🚗 移動 (Mobility)</div>
+    <p style="font-size:13px;color:var(--muted)">EV 動力系統、驅動技術、整合式 powertrain。與全球領先車廠合作。</p>
+    <div class="pillRow"><span class="pill g">EV 動力</span><span class="pill g">驅動技術</span><span class="pill g">Powertrain</span></div>
+  </div>
+  <div class="card" style="border-left:3px solid var(--gold)">
+    <div class="cardTitle">🤖 自動化 (Automation)</div>
+    <p style="font-size:13px;color:var(--muted)">工業自動化 + 樓宇自動化。軟硬體整合，智慧製造與節能建築。</p>
+    <div class="pillRow"><span class="pill o">工業自動化</span><span class="pill o">樓宇控制</span><span class="pill o">智慧製造</span></div>
+  </div>
+  <div class="card" style="border-left:3px solid var(--purple)">
+    <div class="cardTitle">🏗️ 基礎設施 (Infrastructure)</div>
+    <p style="font-size:13px;color:var(--muted)">資料中心、電信、能源（充電樁、微電網、儲能）。AIoT + 電力轉換。</p>
+    <div class="pillRow"><span class="pill b">資料中心</span><span class="pill b">UPS</span><span class="pill b">充電樁</span><span class="pill b">微電網</span></div>
+  </div>
+</div>
+
+<div class="callout gold">
+  <strong>💡 關鍵洞察：</strong>台達電的產品矩陣展現極強的<strong>「核心技術遷移能力」</strong>——從交換式電源的電力電子技術出發，橫向延伸到散熱、自動化、EV、綠能。這不是隨機多角化，而是<strong>以電力電子為核心的同心圓擴張</strong>。
+</div>
+
+<div class="card">
+  <div class="cardTitle">完整產品線</div>
+  <div class="pillRow">
+    <span class="pill b">資料中心基礎設施</span><span class="pill b">電子零組件</span><span class="pill b">嵌入式電源</span>
+    <span class="pill g">散熱風扇管理</span><span class="pill o">工業自動化</span><span class="pill b">電信電源系統</span>
+    <span class="pill g">UPS 不斷電</span><span class="pill g">再生能源</span><span class="pill o">車用電子</span>
+    <span class="pill b">EV 充電設備</span><span class="pill b">網路產品</span><span class="pill b">視訊影像系統</span>
+    <span class="pill o">LED 照明</span><span class="pill o">醫療裝置</span><span class="pill b">Innergie 消費電源</span>
+    <span class="pill b">Vivitek 投影機</span><span class="pill b">Eltek 電源系統</span><span class="pill o">Delta Controls 樓宇</span>
+  </div>
+  <p style="font-size:11px;color:var(--dim);margin-top:12px">Source: Wikipedia - Delta Electronics</p>
+</div>
+</section>
+
+<!-- SECTION 3: POSITIONING MAP -->
+<section id="s3">
+<h2>🗺️ 公司定位圖</h2>
+<p class="sectionDesc">依照 Shallow Dive Template — 繪製生態系位置</p>
+
+<div class="card">
+  <div class="cardTitle">價值鏈位置</div>
+  <pre class="posMap">
+        上游                                   中游                         下游
+   ┌──────────┐    ┌────────────────┐    ┌──────────────┐    ┌──────────────┐
+   │ 原料供應商  │ →  │  台達電 DELTA   │ →  │  通路/系統整合  │ →  │  終端客戶      │
+   │           │    │                │    │              │    │              │
+   │ ‧ 銅/鋁    │    │ 🔌 Power      │    │ ‧ 代理商      │    │ ‧ 資料中心營運商│
+   │ ‧ 半導體IC  │    │ 🚗 Mobility   │    │ ‧ SI 系統整合 │    │   (AWS/Azure/  │
+   │ ‧ 磁芯材料  │    │ 🤖 Automation │    │ ‧ 直銷團隊    │    │    GCP/企業)  │
+   │ ‧ PCB     │    │ 🏗️ Infra      │    │              │    │ ‧ 車廠 (Tier1) │
+   └──────────┘    └────────────────┘    └──────────────┘    │ ‧ 工廠/樓宇業主│
+                                                             │ ‧ 電信運營商  │
+                                                             └──────────────┘
+        ↑                  ↑                    ↑
+   議價力：中等         核心位置               ↓ 往下游
+   (規模大量採購)      (技術門檻保護)       ┌──────────────────┐
+                                        │  競爭對手          │
+                                        │ ‧ 電源：Artesyn,  │
+                                        │   Murata, 光寶科   │
+                                        │ ‧ EV：Bosch, 日本電產│
+                                        │ ‧ 散熱：奇鋐, 雙鴻  │
+                                        │ ‧ 自動化：西門子,   │
+                                        │   Schneider        │
+                                        └──────────────────┘
+                    ← 替代威脅 →
+               ┌──────────────────────┐
+               │ • 浸沒式冷卻 vs 氣冷    │
+               │ • SiC/GaN 取代傳統電源 │
+               │ • 固態電池顛覆 EV 供電  │
+               │ • 分散式微電網 vs 集中  │
+               └──────────────────────┘</pre>
+</div>
+
+<div class="card">
+  <div class="cardTitle">五大角色權力動態</div>
+  <table class="tbl">
+    <tr><th>角色</th><th>主要玩家</th><th>台達電優勢</th><th>議價力判斷</th></tr>
+    <tr><td>供應商</td><td>原物料、半導體 IC、PCB</td><td>規模大（US$179 億營收），議價力中上</td><td class="warn">🟡 中等</td></tr>
+    <tr><td>客戶</td><td>CSP、車廠、工廠、電信商</td><td>B2B 為主，技術門檻保護</td><td class="warn">🟡 中偏高</td></tr>
+    <tr><td>競爭者</td><td>Artesyn、奇鋐、Bosch、西門子</td><td>「整體方案」層面有優勢</td><td class="down">🔴 激烈</td></tr>
+    <tr><td>進入者</td><td>中國電源廠、半導體廠</td><td>技術門檻 + 55 年客戶關係 = 高壁壘</td><td class="up">🟢 短期低</td></tr>
+    <tr><td>替代品</td><td>浸沒式冷卻、SiC/GaN、固態電池</td><td>台達同步布局這些替代技術</td><td class="warn">🟡 可控</td></tr>
+  </table>
+</div>
+</section>
+
+<!-- SECTION 4: BUSINESS MODEL -->
+<section id="s4">
+<h2>💼 商業模式分析</h2>
+
+<div class="card">
+  <div class="cardTitle">六大維度評估</div>
+  <table class="tbl">
+    <tr><th>維度</th><th>描述</th><th>評估</th></tr>
+    <tr><td>營收模式</td><td>B2B 硬體銷售 + 系統整合服務。從零組件到完整解決方案（如 Grid-to-Chip）</td><td>從「賣零件」往「賣方案」升級中</td></tr>
+    <tr><td>成本結構</td><td>製造業屬性：原物料、人力、折舊。研發佔比高達 8-9%</td><td>研發密集型，非純代工</td></tr>
+    <tr><td>客戶獲取</td><td>直銷 + 代理商、參展（COMPUTEX）、長期客戶關係</td><td>口碑與技術實力驅動</td></tr>
+    <tr><td>規模化能力</td><td>全球 55 座工廠，規模經濟明顯。但硬體製造仍有變動成本</td><td class="warn">🟡 半規模化</td></tr>
+    <tr><td>資本密集度</td><td>製造業屬性偏高，但研發投入在營收佔比大</td><td class="warn">🟡 中度資本密集</td></tr>
+    <tr><td>經常性收入</td><td>以硬體銷售為主，服務/維護佔比較低</td><td class="down">⚠️ 偏低（硬體導向）</td></tr>
+  </table>
+</div>
+
+<div class="callout purple">
+  <strong>🔮 核心轉型觀察：</strong>台達正在從「零組件供應商」轉型為「解決方案提供商」，但經常性收入佔比仍低，商業模式仍偏硬體導向。AI 資料中心的 Grid-to-Chip 方案是提升價值鏈位階的關鍵機會。
+</div>
+</section>
+
+<!-- SECTION 5: HISTORY -->
+<section id="s5">
+<h2>📜 歷史與里程碑</h2>
+
+<div class="card">
+  <table class="tbl">
+    <tr><th style="width:80px">年份</th><th>事件</th></tr>
+    <tr><td class="up">1971</td><td>創辦人 <strong>鄭崇華</strong>（Bruce C.H. Cheng）在臺北縣新莊鎮創立台達電子，首個產品為電視偏向線圈</td></tr>
+    <tr><td class="up">1988</td><td>於臺灣證券交易所掛牌上市（代號 2308）</td></tr>
+    <tr><td class="up">2012</td><td>鄭崇華卸任董事長，轉任榮譽董事長；海英俊接任董事長</td></tr>
+    <tr><td class="warn">2018-20</td><td>中美貿易戰期間，中國員工人數大砍超過一半，轉向印度與東南亞擴廠</td></tr>
+    <tr><td class="up">2021/12</td><td>收購美國 Universal Instruments Corporation（自動化技術，~US$8,900 萬，>500 項專利）</td></tr>
+    <tr><td class="up">2022/07</td><td>宣布擴建德州 Plano 廠房（40 萬平方呎），目標 2030 年 100% 再生能源營運</td></tr>
+    <tr><td class="up">2025</td><td>與印度科學理工學院 (IISc) 共同開發新型 EV 充電技術</td></tr>
+    <tr><td class="accent">2026/06</td><td>GTC Taipei — 台積電首度證實與台達電合作；COMPUTEX 展示 AI 基礎設施實力</td></tr>
+  </table>
+  <p style="font-size:11px;color:var(--dim);margin-top:8px">Source: Wikipedia - Delta Electronics; 台達官網; Google News</p>
+</div>
+
+<div class="callout green">
+  <strong>🌍 地緣政治韌性：</strong>台達在中美貿易戰期間展現了優異的產能調整能力——中國員工人數砍半、南向印度與東南亞擴廠，顯示管理層對地緣風險的高度警覺與執行力。
+</div>
+</section>
+
+<!-- SECTION 6: MANAGEMENT -->
+<section id="s6">
+<h2>👤 經營層與股東利益一致性</h2>
+
+<div class="metrics">
+  <div class="metric"><div class="val">Bruce C.H. Cheng</div><div class="lbl">創辦人 / 榮譽董事長</div></div>
+  <div class="metric"><div class="val">Yancey Hai</div><div class="lbl">董事長（2012 起）</div></div>
+  <div class="metric"><div class="val">Cheng Ping</div><div class="lbl">執行長 CEO</div></div>
+</div>
+
+<div class="card">
+  <div class="cardTitle">公司使命</div>
+  <p style="font-size:15px;font-style:italic;color:var(--accent);margin:12px 0">"To provide innovative, clean, and energy-efficient solutions for a better tomorrow."</p>
+  <p style="font-size:13px;color:var(--muted)">品牌承諾：<strong>Smarter. Greener. Together.</strong></p>
+</div>
+
+<div class="card">
+  <div class="cardTitle">管理層品質評估 (Horie 2022 框架)</div>
+  <div class="scoreRow"><span style="width:100px;font-size:13px">策略清晰度</span><div class="scoreBar"><div class="scoreFill sf4"></div></div><span>⭐⭐⭐⭐</span></div>
+  <div class="scoreRow"><span style="width:100px;font-size:13px">資源配置</span><div class="scoreBar"><div class="scoreFill sf4"></div></div><span>⭐⭐⭐⭐</span></div>
+  <div class="scoreRow"><span style="width:100px;font-size:13px">執行力</span><div class="scoreBar"><div class="scoreFill sf4"></div></div><span>⭐⭐⭐⭐</span></div>
+  <div class="scoreRow"><span style="width:100px;font-size:13px">誠信度</span><div class="scoreBar"><div class="scoreFill sf5"></div></div><span>⭐⭐⭐⭐⭐</span></div>
+  <div class="scoreRow"><span style="width:100px;font-size:13px">股東利益</span><div class="scoreBar"><div class="scoreFill sf4"></div></div><span>⭐⭐⭐⭐</span></div>
+</div>
+
+<div class="grid2">
+  <div class="card" style="border-left:3px solid var(--green)">
+    <div class="cardTitle"><span class="check">🟢</span> 綠旗</div>
+    <ul style="font-size:13px;color:var(--muted);padding-left:18px;margin-top:8px">
+      <li>創辦人仍參與（榮譽董事長）</li>
+      <li>55 年使命一致：「環保、節能」</li>
+      <li>長期研發投入文化（8-9%）</li>
+      <li>ESG 高度投入（84% 再生電力）</li>
+    </ul>
+  </div>
+  <div class="card" style="border-left:3px solid var(--red)">
+    <div class="cardTitle"><span class="gap">🔴</span> 紅旗</div>
+    <ul style="font-size:13px;color:var(--muted);padding-left:18px;margin-top:8px">
+      <li>鄭平為鄭崇華之子，家族接班控制風險</li>
+      <li>台灣家族企業傳承的長期治理風險</li>
+      <li>董事會獨立性需持續觀察</li>
+    </ul>
+  </div>
+</div>
+</section>
+
+<!-- SECTION 7: NEWS -->
+<section id="s7">
+<h2>📰 近期新聞摘要</h2>
+<p class="sectionDesc">來源：Google News RSS，2026 年 6 月</p>
+
+<div class="card">
+  <table class="tbl">
+    <tr><th>主題</th><th style="width:80px">日期</th><th>內容</th></tr>
+    <tr><td class="up">SOFC 投資</td><td>6/7</td><td>花 17 億買技術門票，布局固態氧化物燃料電池（不燒火的發電廠）</td></tr>
+    <tr><td class="up">TSMC 合作</td><td>6/6</td><td>GTC Taipei — 台積電首度證實與台達電合作，晶圓代工龍頭合體</td></tr>
+    <tr><td class="up">泰國擴張</td><td>6/6</td><td>攜手泰國 Yarra 深化東南亞布局</td></tr>
+    <tr><td class="up">目標價 3,000</td><td>6/6</td><td>外資最新目標價上看 3,000 元（現價 2,300，+30% upside）</td></tr>
+    <tr><td class="up">AI 趨勢</td><td>6/5</td><td>台達電：AI 趨勢非常好，三大事業體都有中長期規劃</td></tr>
+    <tr><td class="accent">黃仁勳旋風</td><td>6/5</td><td>Jensen Huang 來台，COMPUTEX 聚焦 AI 基礎設施，台達展出台廠實力</td></tr>
+    <tr><td class="warn">大盤回調</td><td>6/5</td><td>台股重挫，台達電跟跌，2,300 元附近震盪</td></tr>
+  </table>
+  <p style="font-size:11px;color:var(--dim);margin-top:8px">Source: Google News RSS (news.google.com), 2026-06-05~07</p>
+</div>
+</section>
+
+<!-- SECTION 8: DATA GAPS -->
+<section id="s8">
+<h2>🕳️ 資料缺口</h2>
+<p class="sectionDesc">需要在後續步驟中補齊的關鍵資訊</p>
+
+<div class="card">
+  <table class="tbl">
+    <tr><th>缺口</th><th style="width:60px">重要性</th><th>預計補齊來源</th></tr>
+    <tr><td class="down">各事業群營收佔比</td><td class="down">🔴 高</td><td>法說會簡報 / 年報 → Google Drive 已有</td></tr>
+    <tr><td class="down">客戶集中度</td><td class="down">🔴 高</td><td>法說會逐字稿 → Google Drive 已有三份</td></tr>
+    <tr><td class="warn">內部人持股比例</td><td class="warn">🟡 中</td><td>年報 / 公司治理報告</td></tr>
+    <tr><td class="warn">各產品線全球市佔率</td><td class="warn">🟡 中</td><td>產業報告 / 券商研究</td></tr>
+    <tr><td class="warn">經常性收入佔比</td><td class="warn">🟡 中</td><td>法說會 Q&A</td></tr>
+    <tr><td class="up">股價 / 技術指標</td><td class="up">🟢 已取得</td><td>Yahoo Finance chart API ✓</td></tr>
+    <tr><td class="up">法說會逐字稿</td><td class="up">🟢 已取得</td><td>3 份 (2025/10, 2026/02, 2026/04) ✓</td></tr>
+  </table>
+</div>
+
+<div class="callout green">
+  <strong>✅ 好消息：</strong>Google Drive 上已有台達電的完整資料——5 份季報 PDF、3 份法說會逐字稿、1 份法說會簡報。這些將在 Step 2（公司指引）中全部用上。
+</div>
+</section>
+
+<!-- SECTION 9: VERDICT -->
+<section id="s9">
+<h2>🎯 觀點式結論</h2>
+
+<div class="grid4">
+  <div class="card" style="border-left:3px solid var(--green);text-align:center">
+    <div style="font-size:32px;margin-bottom:4px">A−</div>
+    <div style="font-size:13px;color:var(--muted)">事業品質</div>
+  </div>
+  <div class="card" style="border-left:3px solid var(--accent);text-align:center">
+    <div style="font-size:32px;margin-bottom:4px">強</div>
+    <div style="font-size:13px;color:var(--muted)">定位強度</div>
+  </div>
+  <div class="card" style="border-left:3px solid var(--gold);text-align:center">
+    <div style="font-size:32px;margin-bottom:4px">中上</div>
+    <div style="font-size:13px;color:var(--muted)">商業模式護城河</div>
+  </div>
+  <div class="card" style="border-left:3px solid var(--green);text-align:center">
+    <div style="font-size:32px;margin-bottom:4px">A−</div>
+    <div style="font-size:13px;color:var(--muted)">管理層品質</div>
+  </div>
+</div>
+
+<div class="verdict">
+  <div class="vTitle">📋 一句話總結</div>
+  <p style="font-size:16px;line-height:1.8">
+    台達電不只是「電源供應器公司」，而是<strong>以電力電子為核心技術、55 年累積出跨領域技術遷移能力的節能解決方案巨人</strong>。AI 資料中心是其目前最耀眼的成長引擎，但真正深厚的護城河來自「電源管理 × 散熱 × 自動化 × 能源基礎設施」四條線交叉形成的生態系不可複製性。
+  </p>
+</div>
+
+<div class="card">
+  <div class="cardTitle">核心未知數（決定 Thesis 走向）</div>
+  <table class="tbl">
+    <tr><th style="width:30px">#</th><th>問題</th><th>重要嗎？</th></tr>
+    <tr><td>1</td><td>AI 資料中心業務的客戶集中度（單一 CSP 佔比？）</td><td class="down">🔴 決定風險定價</td></tr>
+    <tr><td>2</td><td>EV 業務何時轉盈？量產規模效應在哪個時間點？</td><td class="warn">🟡 決定中期獲利曲線</td></tr>
+    <tr><td>3</td><td>鄭平接班後的長期策略方向？是否會偏離「環保節能」使命？</td><td class="warn">🟡 決定長期治理</td></tr>
+    <tr><td>4</td><td>SOFC（固態氧化物燃料電池）投資的實際商業化時間表？</td><td class="warn">🟡 新成長引擎驗證</td></tr>
+  </table>
+</div>
+
+<div class="callout gold" style="margin-top:24px">
+  <strong>📌 下一步：Step 2 — 公司指引 (Company Guidance)</strong><br>
+  使用 Google Drive 上的三份法說會逐字稿 + 五份季報，分析管理層的營收/EPS/FCF 指引、歷史達成率、以及市場共識落差。
+</div>
+</section>
+
+</main>
+</div>
+
+<script>
+// Sidebar + mobile nav synchronization
+document.querySelectorAll('.navItem').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const section = btn.dataset.section;
+    document.querySelectorAll('.navItem').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll(`.navItem[data-section="${section}"]`).forEach(b => b.classList.add('active'));
+    document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
+    document.getElementById(section).classList.add('active');
+    if (window.innerWidth <= 768) {
+      btn.scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'});
+    }
+  });
+});
+
+// Keyboard navigation
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
+    e.preventDefault();
+    const sections = Array.from(document.querySelectorAll('section'));
+    const current = sections.findIndex(s => s.classList.contains('active'));
+    const next = e.key === 'ArrowDown' ? Math.min(current + 1, sections.length - 1) : Math.max(current - 1, 0);
+    sections[current].classList.remove('active');
+    sections[next].classList.add('active');
+    document.querySelectorAll('.navItem').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll(`.navItem[data-section="${sections[next].id}"]`).forEach(b => b.classList.add('active'));
+  }
+});
+</script>
+
+</body>
+</html>
