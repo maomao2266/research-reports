@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>台達電 2308.TW — 深度護城河分析 | Step 6</title>
+<style>
+:root{
+  --bg:#0a0e14; --surface:#131820; --card:#181f2a;
+  --border:#252d3a; --ink:#e2e8f0; --muted:#7c8aa0; --dim:#4a5568;
+  --accent:#60a5fa; --gold:#f59e0b; --green:#34d399; --red:#f87171;
+  --orange:#fb923c; --purple:#a78bfa; --radius:14px; --radius2:18px;
+  --sans:"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,-apple-system,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.7}
+.topbar{background:var(--surface);border-bottom:1px solid var(--border);padding:14px 24px;display:flex;align-items:center;gap:16px;position:sticky;top:0;z-index:100}
+.topbar .logo{font-size:18px;font-weight:700;color:var(--accent)}
+.topbar .badge{font-size:11px;background:var(--card);color:var(--muted);padding:4px 10px;border-radius:20px;border:1px solid var(--border)}
+.layout{display:flex;min-height:calc(100vh - 57px)}
+.sidebar{width:240px;background:var(--surface);border-right:1px solid var(--border);padding:20px 0;position:sticky;top:57px;height:calc(100vh - 57px);overflow-y:auto;flex-shrink:0}
+.sidebar .navTitle{font-size:10px;text-transform:uppercase;letter-spacing:1.5px;color:var(--dim);padding:8px 20px 16px}
+.navItem{display:block;width:100%;padding:10px 20px;font-size:13px;color:var(--muted);background:none;border:none;text-align:left;cursor:pointer;font-family:var(--sans);transition:all .15s;border-left:3px solid transparent}
+.navItem:hover{color:var(--ink);background:var(--card);border-left-color:var(--dim)}
+.navItem.active{color:var(--accent);background:rgba(96,165,250,.08);border-left-color:var(--accent);font-weight:600}
+.content{flex:1;padding:32px;max-width:1100px}
+section{display:none}
+section.active{display:block}
+section h2{font-size:22px;margin-bottom:8px}
+section h3{font-size:16px;margin:24px 0 12px;color:var(--accent)}
+.sectionDesc{color:var(--muted);font-size:14px;margin-bottom:20px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px 24px;margin-bottom:16px}
+.cardTitle{font-size:15px;font-weight:600;margin-bottom:12px}
+.tbl{width:100%;border-collapse:collapse;margin:12px 0}
+.tbl th{text-align:left;color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.5px;padding:8px 12px;border-bottom:1px solid var(--border)}
+.tbl td{padding:10px 12px;border-bottom:1px solid var(--border);font-size:13px}
+.tbl tr:hover td{background:var(--surface)}
+.up{color:var(--green)} .down{color:var(--red)} .warn{color:var(--orange)}
+.metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin:16px 0}
+.metric{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px;text-align:center}
+.metric .val{font-size:22px;font-weight:700}
+.metric .lbl{font-size:11px;color:var(--muted);margin-top:4px}
+.callout{border-left:3px solid;border-radius:0 var(--radius) var(--radius) 0;padding:14px 18px;margin:16px 0;background:var(--surface);font-size:13px}
+.callout.red{border-color:var(--red)}.callout.gold{border-color:var(--gold)}.callout.green{border-color:var(--green)}.callout.purple{border-color:var(--purple)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.verdict{background:linear-gradient(135deg,var(--card),var(--surface));border:1px solid var(--accent);border-radius:var(--radius2);padding:24px 28px;margin:20px 0}
+.verdict .vTitle{font-size:18px;font-weight:700;color:var(--accent);margin-bottom:8px}
+.radar{display:flex;justify-content:center;gap:32px;flex-wrap:wrap;margin:16px 0}
+.radarDim{text-align:center;min-width:100px}
+.radarScore{font-size:28px;font-weight:700;margin:4px 0}
+.radarLabel{font-size:11px;color:var(--muted)}
+.mobileNav{display:none}
+@media(max-width:768px){
+  .sidebar{display:none}
+  .mobileNav{display:flex;gap:4px;overflow-x:auto;padding:8px 0;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+  .mobileNav::-webkit-scrollbar{display:none}
+  .mobileNav .navItem{flex-shrink:0;white-space:nowrap;font-size:11px;padding:6px 10px;border-radius:20px;border:1px solid var(--border)}
+  .mobileNav .navItem.active{background:rgba(96,165,250,.15);border-color:var(--accent)}
+  .content{padding:16px}
+  .grid2{grid-template-columns:1fr}
+  .metrics{grid-template-columns:repeat(2,1fr)}
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <span class="logo">⚡ DELTA 2308</span>
+  <span class="badge">Step 6 / 11</span>
+  <span class="spacer" style="flex:1"></span>
+  <span class="tag">深度護城河 · 2026-06-07</span>
+</div>
+
+<div class="layout">
+
+<nav class="sidebar">
+  <div class="navTitle">Step 6 目錄</div>
+  <button class="navItem active" data-section="s1">🔬 L1: FSA 隔離機制</button>
+  <button class="navItem" data-section="s2">📐 L2: VECTOR 制度性</button>
+  <button class="navItem" data-section="s3">🧪 L3: VRIN 耐久測試</button>
+  <button class="navItem" data-section="s4">💵 L3a: ROIC 量化</button>
+  <button class="navItem" data-section="s5">🔄 L4: 動態能力 SST</button>
+  <button class="navItem" data-section="s6">📈 L5: 護城河軌跡</button>
+  <button class="navItem" data-section="s7">🎯 L6: 終極判決</button>
+</nav>
+
+<nav class="mobileNav">
+  <button class="navItem active" data-section="s1">🔬 FSA</button>
+  <button class="navItem" data-section="s2">📐 VECTOR</button>
+  <button class="navItem" data-section="s3">🧪 VRIN</button>
+  <button class="navItem" data-section="s4">💵 ROIC</button>
+  <button class="navItem" data-section="s5">🔄 SST</button>
+  <button class="navItem" data-section="s6">📈 軌跡</button>
+  <button class="navItem" data-section="s7">🎯 判決</button>
+</nav>
+
+<main class="content">
+
+<!-- L1: FSA LOCATION + ISOLATING MECHANISMS -->
+<section id="s1" class="active">
+<h2>🔬 Layer 1：FSA 定位 + 隔離機制</h2>
+<p class="sectionDesc">先定位優勢在哪（Value Chain）→ 再檢驗為何無法複製（Isolating Mechanisms）— Porter (1985), Grant Ch.5,7, IB7018 W4</p>
+
+<div class="card">
+  <div class="cardTitle">W4 Strategy Memo — Sentence 1：定位</div>
+  <p style="font-size:14px;line-height:1.9;background:rgba(96,165,250,.05);padding:16px;border-radius:8px">
+    <strong>台達電的 FSA 存在於「Operations（電力電子製造工藝）」與「Technology Development（跨領域熱管理技術遷移）」兩個價值鏈活動的疊加中，</strong>受到<strong>三重隔離機制</strong>的保護：<strong>路徑依賴</strong>（55 年製程參數累積 = 時間不可壓縮）、<strong>社會複雜性</strong>（83,000 人的師徒制 + 跨世代工程師團隊的內隱知識網絡）、以及<strong>因果模糊性</strong>（競爭對手即使拆解產品，也無法逆向工程出「為什麼台達的電源效率比我們高 2%」— 因為差異不在設計圖上，而在 55 年累積的製程參數微調中）。
+  </p>
+</div>
+
+<div class="grid2">
+  <div class="card">
+    <div class="cardTitle">隔離機制 1：路徑依賴</div>
+    <table class="tbl">
+      <tr><td>定義</td><td>歷史選擇創造了不可逆轉的優勢</td></tr>
+      <tr><td class="up">證據</td><td class="up">• 1971 年從電視線圈起步 → 55 年參數累積<br>• 十年前就布局資料中心散熱（遠早於 AI）<br>• 十年前布局氫燃料電池<br>• 這些決策的時間窗口已永久關閉</td></tr>
+      <tr><td>強度</td><td class="up">🟢 極強 — 5/5</td></tr>
+    </table>
+  </div>
+  <div class="card">
+    <div class="cardTitle">隔離機制 2：社會複雜性</div>
+    <table class="tbl">
+      <tr><td>定義</td><td>優勢根植於人際關係、信任、文化</td></tr>
+      <tr><td class="up">證據</td><td class="up">• 83,000 人師徒制（熱處理人才無法速成）<br>• 跨世代工程師的默契（老帶少）<br>• 與 NVIDIA/TSMC 的深度合作關係（非合約）<br>• 鄭平：「我們在客戶端市佔率都很高」</td></tr>
+      <tr><td>強度</td><td class="up">🟢 極強 — 4/5</td></tr>
+    </table>
+  </div>
+</div>
+
+<div class="card">
+  <div class="cardTitle">隔離機制 3：因果模糊性</div>
+  <table class="tbl">
+    <tr><td>定義</td><td>競爭對手即使想複製，也搞不清楚你為什麼贏</td></tr>
+    <tr><td class="up">證據</td><td class="up">• 台達電源效率高 2-3% → 不是設計問題，是製造工藝問題<br>• 55 年累積的製程參數（溫度曲線、時間、材料配比）無法逆向工程<br>• 連內部員工也未必能說清楚「為什麼這樣做比較好」— 這是 tacit knowledge<br>• 競爭對手砸 10 倍資本也無法複製 — Time Compression Diseconomies</td></tr>
+    <tr><td>強度</td><td class="up">🟢 極強 — 5/5</td></tr>
+  </table>
+</div>
+
+<div class="callout green">
+  <strong>🔬 L1 結論：</strong>台達電的 FSA 受到三種隔離機制的同時保護，且三者互相強化——路徑依賴創造了初始優勢，社會複雜性將它內嵌在組織中，因果模糊性讓競爭對手連要複製什麼都不知道。這不是一道牆，是三道。
+</div>
+</section>
+
+<!-- L2: VECTOR -->
+<section id="s2">
+<h2>📐 Layer 2：VECTOR 制度性檢驗</h2>
+<p class="sectionDesc">Hatam et al. (2023), McKinsey — 「這個優勢是鑲嵌在組織中，還是依賴少數個人？」(IB7018 W4)</p>
+
+<div class="card">
+  <div class="radar">
+    <div class="radarDim"><div class="radarScore" style="color:var(--accent)">4.5</div><div class="radarLabel"><strong>V</strong>ision</div></div>
+    <div class="radarDim"><div class="radarScore" style="color:var(--gold)">3.5</div><div class="radarLabel"><strong>E</strong>mployees</div></div>
+    <div class="radarDim"><div class="radarScore" style="color:var(--green)">4.5</div><div class="radarLabel"><strong>C</strong>ulture</div></div>
+    <div class="radarDim"><div class="radarScore" style="color:var(--accent)">5.0</div><div class="radarLabel"><strong>T</strong>echnology</div></div>
+    <div class="radarDim"><div class="radarScore" style="color:var(--gold)">3.0</div><div class="radarLabel"><strong>O</strong>rganization</div></div>
+    <div class="radarDim"><div class="radarScore" style="color:var(--gold)">3.0</div><div class="radarLabel"><strong>R</strong>outines</div></div>
+  </div>
+  <p style="text-align:center;font-size:20px;font-weight:700;color:var(--accent);margin:8px 0">平均 3.9 / 5.0 — 接近制度級</p>
+</div>
+
+<div class="card">
+  <table class="tbl">
+    <tr><th>維度</th><th>分數</th><th>證據</th></tr>
+    <tr>
+      <td><strong>V</strong>ision</td>
+      <td class="up">4.5</td>
+      <td>「創新、潔淨、節能」55 年使命一致。鄭平三線策略（AI+EV+綠能）邏輯清晰。不追逐熱點，堅守電力電子核心。</td>
+    </tr>
+    <tr>
+      <td><strong>E</strong>mployees</td>
+      <td class="warn">3.5</td>
+      <td>83,000 人，師徒制傳承。但關鍵熱處理/硬焊人才稀缺，訓練週期長。若核心師傅流失，FSA 可能受損。非制度級。</td>
+    </tr>
+    <tr>
+      <td><strong>C</strong>ulture</td>
+      <td class="up">4.5</td>
+      <td>穩健、長期主義、技術驅動。從熱處理→氫能→AI 水冷三次成功轉型，證明組織學習與適應的文化韌性。ESG A 級。</td>
+    </tr>
+    <tr>
+      <td><strong>T</strong>echnology</td>
+      <td class="up">5.0</td>
+      <td>R&D 8-9% 營收。55 年電力電子專利組合。Grid-to-Chip 方案為全球唯一。NVIDIA 800V DC 從設計階段就綁定。SOFC 效率 60-85%。</td>
+    </tr>
+    <tr>
+      <td><strong>O</strong>rganization</td>
+      <td class="warn">3.0</td>
+      <td>四大事業群各自獨立，但全球 55 廠管理複雜度極高。組織再造因應 AI 仍在進行中。決策權偏集中（CFO 主導所有回答）。</td>
+    </tr>
+    <tr>
+      <td><strong>R</strong>outines</td>
+      <td class="warn">3.0</td>
+      <td>熱處理有標準 SOP，但跨領域技術遷移（熱處理→氫能→水冷）的成功模式尚未被制度化為可複製流程。仍高度依賴 tacit knowledge。</td>
+    </tr>
+  </table>
+</div>
+
+<div class="card">
+  <div class="cardTitle">W4 Strategy Memo — Sentence 2：驗體質</div>
+  <p style="font-size:14px;line-height:1.9;background:rgba(96,165,250,.05);padding:16px;border-radius:8px">
+    <strong>VECTOR 的 Vision(4.5)、Culture(4.5) 和 Technology(5.0) 三個維度已達制度級水準：</strong>55 年的組織認同使「能源效率」成為企業基因而非行銷口號，技術專利與製程 know-how 鑲嵌在跨世代工程團隊的集體記憶中。然而，<strong>Employees(3.5)、Organization(3.0) 和 Routines(3.0) 偏低</strong>，反映出關鍵風險：核心工藝仍依賴 tacit knowledge 而非 SOP，跨領域技術遷移的成功尚未制度化，若關鍵人才流失，FSA 可能出現斷層。結論：<strong>這是一個「制度基礎已成形，但人才備援與流程標準化仍待補強」的護城河。</strong>
+  </p>
+</div>
+</section>
+
+<!-- L3: VRIN -->
+<section id="s3">
+<h2>🧪 Layer 3：VRIN 耐久性測試 + 隔離機制</h2>
+<p class="sectionDesc">Barney (1991)；Grant Ch.5；IB7018 W4</p>
+
+<div class="card">
+  <table class="tbl">
+    <tr><th>測試</th><th>判斷</th><th>隔離機制</th><th>證據</th></tr>
+    <tr>
+      <td class="up"><strong>V</strong>aluable</td>
+      <td class="up">✅ 極有價值</td>
+      <td>—</td>
+      <td>AI 電源佔比 30%、OPM 17.8%、增量利潤率 35%。FSA 直接創造超額利潤。</td>
+    </tr>
+    <tr>
+      <td class="up"><strong>R</strong>are</td>
+      <td class="up">✅ 稀有</td>
+      <td>路徑依賴 + 因果模糊</td>
+      <td>全球唯一 Grid-to-Chip 方案。奇鋐/雙鴻只做散熱，Artesyn 只做電源。無人同時擁有兩者深度。</td>
+    </tr>
+    <tr>
+      <td class="up"><strong>I</strong>nimitable</td>
+      <td class="up">✅ 難以模仿</td>
+      <td>時間壓縮不經濟 + 社會複雜性</td>
+      <td>認證週期 2-3 年。55 年參數無法加速累積。NVIDIA 設計綁定。砸 10 倍錢也買不到時間。</td>
+    </tr>
+    <tr>
+      <td class="warn"><strong>N</strong>on-substitutable</td>
+      <td class="warn">⚠️ 有替代威脅</td>
+      <td>—</td>
+      <td>浸沒式冷卻可能長期替代 Cold Plate。SiC/GaN 可能改變電源設計範式。固態變壓器可能取代傳統方案。</td>
+    </tr>
+  </table>
+</div>
+
+<div class="callout gold">
+  <strong>🧪 VRIN 診斷：</strong>V/R/I 三項全數通過，但 <strong>N（不可替代性）是最弱的環節</strong>。台達的護城河建立在「現有技術範式下的不可複製性」，如果技術範式本身改變（浸沒式冷卻全面取代氣冷、SiC 取代傳統矽基電源），護城河可能從內部被繞過。這是典型的「技術路線風險」。
+</div>
+</section>
+
+<!-- L3a: ROIC QUANTIFICATION -->
+<section id="s4">
+<h2>💵 Layer 3a：ROIC/WACC — 護城河的經濟足跡</h2>
+<p class="sectionDesc">Sonkin & Johnson (2017) Ch.3 — ROIC > WACC 才是真正的經濟護城河</p>
+
+<div class="metrics">
+  <div class="metric"><div class="val up">~18%</div><div class="lbl">ROIC (2025 推估)</div></div>
+  <div class="metric"><div class="val">~8.5%</div><div class="lbl">WACC (推估)</div></div>
+  <div class="metric"><div class="val up">~9.5%</div><div class="lbl">超額報酬</div></div>
+  <div class="metric"><div class="val up">~10年</div><div class="lbl">競爭優勢期 CAP</div></div>
+</div>
+
+<div class="card">
+  <div class="cardTitle">ROIC 計算推估</div>
+  <table class="tbl">
+    <tr><th>項目</th><th>數值</th><th>來源</th></tr>
+    <tr><td>NOPAT (稅後營業利益)</td><td>~NT$838億 × (1−23%) = NT$645億</td><td>FY2025 OP 利益 838億；稅率 23%</td></tr>
+    <tr><td>Invested Capital</td><td>~NT$3,600億</td><td>股東權益 NT$2,925億 + 有息負債估算</td></tr>
+    <tr><td class="up">ROIC</td><td class="up"><strong>~18%</strong></td><td>645 ÷ 3,600</td></tr>
+    <tr><td>WACC</td><td><strong>~8.5%</strong></td><td>台灣大型電子股 CAPM 典型值</td></tr>
+    <tr><td class="up">超額報酬率</td><td class="up"><strong>~9.5%</strong></td><td>18% − 8.5%</td></tr>
+    <tr><td class="up">超額報酬金額</td><td class="up"><strong>~NT$342億/年</strong></td><td>9.5% × NT$3,600億</td></tr>
+  </table>
+  <p style="font-size:11px;color:var(--dim);margin-top:8px">* WACC 為推估值，需以完整 CAPM 計算精確值。Invested Capital 需精確拆分營運資產。</p>
+</div>
+
+<div class="card">
+  <div class="cardTitle">Sonkin & Johnson 七情境分類</div>
+  <table class="tbl">
+    <tr><th>情境</th><th>條件</th><th>台達符合？</th></tr>
+    <tr style="background:rgba(52,211,153,.05)"><td class="up"><strong>7. 成長創造價值</strong></td><td class="up">ROIIC > WACC，成長中</td><td class="up">✅ ROIIC ~35%（增量利潤率 35% ÷ 投入資本比）> WACC 8.5%</td></tr>
+  </table>
+  <p style="font-size:13px;color:var(--ink);margin-top:12px"><strong>判決：</strong>台達電處於 Sonkin & Johnson 最優情境——<strong>「成長創造價值」(Scenario 7)</strong>。不僅 ROIC > WACC（存量優勢），增量資本回報 ROIIC ~35% 也遠高於 WACC（流量優勢）。這意味著每一塊新增投資都在擴大護城河，而非消耗它。</p>
+</div>
+
+<div class="callout green">
+  <strong>💵 可持續性條件檢查 (Sonkin & Johnson Ch.3)：</strong>台達電同時具備 (1) <strong>客戶面優勢</strong>（認證綁定 = 高轉換成本）和 (2) <strong>規模面優勢</strong>（55 廠全球布局 = 最低單位成本）。兩者互相強化：大規模 → 更高的 CSP 依賴 → 更多訂單 → 更大規模。這是 Sonkin & Johnson 定義的 <strong>「可持續競爭優勢」的必要條件</strong>。
+</div>
+</section>
+
+<!-- L4: DYNAMIC CAPABILITIES SST -->
+<section id="s5">
+<h2>🔄 Layer 4：動態能力 Teece SST</h2>
+<p class="sectionDesc">Teece (2007), SMJ — 靜態護城河會侵蝕。台達能否持續更新優勢？</p>
+
+<div class="grid2">
+  <div class="card" style="border-left:3px solid var(--green)">
+    <div class="cardTitle">Sensing（感知）— 5/5</div>
+    <table class="tbl">
+      <tr><td class="up">10年前預判</td><td class="up">資料中心散熱需求（遠早於 AI 熱潮）</td></tr>
+      <tr><td class="up">10+年前</td><td class="up">布局氫燃料電池</td></tr>
+      <tr><td class="up">2018-20</td><td class="up">中美貿易戰提前分散產能</td></tr>
+      <tr><td class="up">現在</td><td class="up">SOFC + 模組化 DC + 微電網</td></tr>
+    </table>
+    <p style="font-size:12px;color:var(--up);margin-top:8px">嗅覺極佳，三次重大趨勢都提前 5-10 年布局</p>
+  </div>
+  <div class="card" style="border-left:3px solid var(--accent)">
+    <div class="cardTitle">Seizing（抓住）— 4/5</div>
+    <table class="tbl">
+      <tr><td class="up">AI 電源</td><td class="up">從零到 30% 營收，只用 2 年</td></tr>
+      <tr><td class="up">產能擴張</td><td class="up">泰國 3 廠驗收 + 再建 3-4 廠</td></tr>
+      <tr><td class="up">CAPEX</td><td class="up">從 NT$3億→NT$500億級別</td></tr>
+      <tr><td class="warn">EV</td><td class="warn">仍在虧損，尚未抓住轉折點</td></tr>
+    </table>
+    <p style="font-size:12px;color:var(--accent);margin-top:8px">資源動員力強，但 EV 顯示不是每次出手都成功</p>
+  </div>
+</div>
+
+<div class="card" style="border-left:3px solid var(--gold);margin-top:16px">
+  <div class="cardTitle">Transforming（轉型）— 3/5</div>
+  <table class="tbl">
+    <tr><td class="up">第一次轉型</td><td class="up">傳統熱處理 → 交換式電源（1980s-90s）✅ 成功</td></tr>
+    <tr><td class="up">第二次轉型</td><td class="up">電源 → 綠能 + EV + 資料中心（2010s）✅ 成功</td></tr>
+    <tr><td class="warn">第三次轉型</td><td class="warn">零組件商 → 解決方案商（進行中）⚠️ 組織再造尚未完成</td></tr>
+  </table>
+  <p style="font-size:12px;color:var(--gold);margin-top:8px">兩次重大轉型成功證明韌性。但第三次轉型（賣方案而非賣零件）需要不同的組織能力：solution selling、installation、service — 這些是台達正在學習的新肌肉。</p>
+</div>
+
+<div class="callout gold">
+  <strong>🔄 Choice Cascade 檢驗 (Martin, 2010)：</strong>台達的 Sensing 極強（聽見市場信號），但決策權是否下放到前線？從法說會中 CFO 主導所有回答、董事長補充的現象，暗示組織決策仍偏集中。這在穩定環境中是優點（穩健），但在 AI 快速迭代的時代，可能成為瓶頸。
+</div>
+</section>
+
+<!-- L5: MOAT TRAJECTORY -->
+<section id="s6">
+<h2>📈 Layer 5：護城河軌跡</h2>
+
+<div class="metrics">
+  <div class="metric"><div class="val up">🟢 拓寬中</div><div class="lbl">護城河軌跡</div></div>
+  <div class="metric"><div class="val">AI 電源</div><div class="lbl">23% → 30% 營收佔比</div></div>
+  <div class="metric"><div class="val up">提升中</div><div class="lbl">客戶依存度</div></div>
+  <div class="metric"><div class="val warn">監控中</div><div class="lbl">替代技術威脅</div></div>
+</div>
+
+<div class="card">
+  <table class="tbl">
+    <tr><th>軌跡訊號</th><th>狀態</th><th>證據</th></tr>
+    <tr><td class="up">市場份額</td><td class="up">🟢 擴大</td><td>「客戶端市佔率都很高」— 鄭平。AI 電源從 23%→30% 僅用半年。</td></tr>
+    <tr><td class="up">客戶依存度</td><td class="up">🟢 加深</td><td>NVIDIA 800V DC 設計綁定；TSMC 首次公開合作。從「可替代供應商」變成「共同開發夥伴」。</td></tr>
+    <tr><td class="up">產品組合升級</td><td class="up">🟢 持續</td><td>從 AC-DC 電源 → 800V DC → Grid-to-Chip → 模組化 DC。每代產品都提升技術門檻。</td></tr>
+    <tr><td class="warn">競爭者追趕</td><td class="warn">🟡 存在</td><td>奇鋐/雙鴻在液冷領域快速擴張；中國電源廠商技術追趕。</td></tr>
+    <tr><td class="warn">技術路線風險</td><td class="warn">🟡 可控</td><td>浸沒式冷卻尚在早期；台達同步布局（液冷+氣冷雙軌）。SiC/GaN 是機會也是威脅。</td></tr>
+  </table>
+</div>
+
+<div class="callout green">
+  <strong>📈 軌跡判決：護城河正在拓寬。</strong>AI 時代的到來不是削弱而是強化了台達的競爭優勢——因為 AI 伺服器對電源/冷卻的要求遠高於傳統伺服器，恰好放大了台達 55 年累積的技術深度。只要 GPU 功耗持續上升，台達的護城河就會自然加深。
+</div>
+</section>
+
+<!-- L6: VERDICT -->
+<section id="s7">
+<h2>🎯 Layer 6：終極護城河判決</h2>
+
+<div class="metrics">
+  <div class="metric"><div class="val up">A−</div><div class="lbl">護城河等級</div></div>
+  <div class="metric"><div class="val up">10-15年</div><div class="lbl">耐久度</div></div>
+  <div class="metric"><div class="val down">技術路線</div><div class="lbl">最大脆弱點</div></div>
+  <div class="metric"><div class="val up">ROIC 18%</div><div class="lbl">經濟足跡</div></div>
+</div>
+
+<div class="verdict">
+  <div class="vTitle">📋 終極護城河判決</div>
+  <p style="font-size:16px;line-height:1.8">
+    台達電的護城河是 <strong>A− 級「制度基礎已成形，但尚未完全制度化」的深度優勢</strong>。它不是一道單一的牆，而是<strong>六層疊加的防禦體系</strong>：<br><br>
+    L1 三重隔離機制（路徑依賴 + 社會複雜性 + 因果模糊）→ 競爭對手連要複製什麼都不知道<br>
+    L2 VECTOR 3.9/5 → 優勢已嵌入組織基因，但人才備援與流程標準化待加強<br>
+    L3 VRIN 全通過（N 偏弱）→ 最大風險不在競爭，而在技術路線轉移<br>
+    L3a ROIC 18% vs WACC 8.5% → 每年創造 NT$342 億超額報酬<br>
+    L4 動態能力 SST → 兩次成功轉型證明韌性；Sensing 極強、Transforming 偏弱<br>
+    L5 軌跡 → 正在拓寬，AI 時代是順風而非逆風<br><br>
+    <strong>市場最被低估的護城河維度：時間不可壓縮性。</strong>華爾街和分析師總是在找「下一個台達」（奇鋐？光寶科？），但 55 年的製程參數、83,000 人的師徒體系、NVIDIA 從晶片設計階段就綁定的關係——這些東西不能用 CAPEX 買，不能用人才挖角複製，不能靠政府補貼加速。它們只有一個共同的創造者：<strong>時間</strong>。
+  </p>
+</div>
+
+<div class="grid2">
+  <div class="card" style="border-left:3px solid var(--green)">
+    <div class="cardTitle">🟢 護城河強項</div>
+    <ul style="font-size:13px;color:var(--muted);padding-left:18px">
+      <li>55 年路徑依賴（時間不可壓縮）</li>
+      <li>Grid-to-Chip 全球唯一完整方案</li>
+      <li>NVIDIA/TSMC 設計階段綁定</li>
+      <li>ROIC 18% 遠超 WACC</li>
+      <li>AI 時代自動加深護城河</li>
+    </ul>
+  </div>
+  <div class="card" style="border-left:3px solid var(--red)">
+    <div class="cardTitle">🔴 護城河弱項</div>
+    <ul style="font-size:13px;color:var(--muted);padding-left:18px">
+      <li>技術路線轉移風險（浸沒/SiC/SOFC vs BE）</li>
+      <li>人才 tacit knowledge 過度集中</li>
+      <li>流程標準化不足（Routines=3）</li>
+      <li>決策集中化可能拖慢轉型速度</li>
+      <li>EV Mobility 持續失血（不是護城河，是破洞）</li>
+    </ul>
+  </div>
+</div>
+
+<div class="callout gold" style="margin-top:24px">
+  <strong>📌 下一步：Step 7 — 個別催化劑分析 (Catalyst Analysis)</strong><br>
+  近 6 個月的事件驅動：SOFC 投資、TSMC 合作、800V DC 出貨時程、Hyperscaler CAPEX 更新、黃仁勳 COMPUTEX。
+</div>
+</section>
+
+</main>
+</div>
+
+<script>
+document.querySelectorAll('.navItem').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const section = btn.dataset.section;
+    document.querySelectorAll('.navItem').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll(`.navItem[data-section="${section}"]`).forEach(b => b.classList.add('active'));
+    document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
+    document.getElementById(section).classList.add('active');
+    if (window.innerWidth <= 768) btn.scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'});
+  });
+});
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
+    e.preventDefault();
+    const sections = Array.from(document.querySelectorAll('section'));
+    const current = sections.findIndex(s => s.classList.contains('active'));
+    const next = e.key === 'ArrowDown' ? Math.min(current + 1, sections.length - 1) : Math.max(current - 1, 0);
+    sections[current].classList.remove('active'); sections[next].classList.add('active');
+    document.querySelectorAll('.navItem').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll(`.navItem[data-section="${sections[next].id}"]`).forEach(b => b.classList.add('active'));
+  }
+});
+</script>
+</body>
+</html>
