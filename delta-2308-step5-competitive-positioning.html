@@ -53,6 +53,12 @@ section h3{font-size:16px;margin:24px 0 12px;color:var(--accent)}
 .forceDot{width:12px;height:12px;border-radius:50%;flex-shrink:0}
 .groupMap{display:flex;align-items:center;justify-content:center;height:300px;border:1px solid var(--border);border-radius:var(--radius);position:relative;margin:16px 0;background:var(--surface);overflow:hidden}
 .groupBubble{position:absolute;border-radius:50%;display:flex;align-items:center;justify-content:center;text-align:center;font-size:10px;font-weight:600;padding:4px;border:2px solid}
+.bmc-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin:16px 0}
+.bmc-cell{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px 16px;text-align:center}
+.bmc-cell .bmc-title{font-size:12px;font-weight:700;color:var(--accent);margin-bottom:6px}
+.bmc-cell .bmc-content{font-size:11px;color:var(--muted);line-height:1.5}
+.bmc-cell.highlight{border-color:var(--accent);background:rgba(96,165,250,.06)}
+.bmc-cell.highlight .bmc-title{font-size:13px}
 .mobileNav{display:none}
 @media(max-width:768px){
   .sidebar{display:none}
@@ -80,22 +86,24 @@ section h3{font-size:16px;margin:24px 0 12px;color:var(--accent)}
 <nav class="sidebar">
   <div class="navTitle">Step 5 目錄</div>
   <button class="navItem active" data-section="s1">🏗️ Porter 五力</button>
-  <button class="navItem" data-section="s2">🔗 FSA 價值鏈映射</button>
-  <button class="navItem" data-section="s3">🗺️ 策略群組</button>
-  <button class="navItem" data-section="s4">🏛️ 競爭優勢分類</button>
-  <button class="navItem" data-section="s5">💰 利潤池分析</button>
-  <button class="navItem" data-section="s6">🌍 全球維度 CAGE</button>
-  <button class="navItem" data-section="s7">🎯 競爭結論</button>
+  <button class="navItem" data-section="s2">🧩 BMC 商業模式</button>
+  <button class="navItem" data-section="s3">🔗 FSA 價值鏈映射</button>
+  <button class="navItem" data-section="s4">🗺️ 策略群組</button>
+  <button class="navItem" data-section="s5">🏛️ 競爭優勢分類</button>
+  <button class="navItem" data-section="s6">💰 利潤池分析</button>
+  <button class="navItem" data-section="s7">🌍 全球維度 CAGE</button>
+  <button class="navItem" data-section="s8">🎯 競爭結論</button>
 </nav>
 
 <nav class="mobileNav">
   <button class="navItem active" data-section="s1">🏗️ 五力</button>
-  <button class="navItem" data-section="s2">🔗 FSA</button>
-  <button class="navItem" data-section="s3">🗺️ 群組</button>
-  <button class="navItem" data-section="s4">🏛️ 優勢</button>
-  <button class="navItem" data-section="s5">💰 利潤池</button>
-  <button class="navItem" data-section="s6">🌍 CAGE</button>
-  <button class="navItem" data-section="s7">🎯 結論</button>
+  <button class="navItem" data-section="s2">🧩 BMC</button>
+  <button class="navItem" data-section="s3">🔗 FSA</button>
+  <button class="navItem" data-section="s4">🗺️ 群組</button>
+  <button class="navItem" data-section="s5">🏛️ 優勢</button>
+  <button class="navItem" data-section="s6">💰 利潤池</button>
+  <button class="navItem" data-section="s7">🌍 CAGE</button>
+  <button class="navItem" data-section="s8">🎯 結論</button>
 </nav>
 
 <main class="content">
@@ -178,8 +186,91 @@ section h3{font-size:16px;margin:24px 0 12px;color:var(--accent)}
 </div>
 </section>
 
-<!-- SECTION 2: FSA VALUE CHAIN MAPPING -->
+<!-- SECTION 2: BMC BUSINESS MODEL CANVAS -->
 <section id="s2">
+<h2>🧩 BMC 商業模式分析</h2>
+<p class="sectionDesc">Business Model Canvas（Osterwalder & Pigneur, 2010）— 將 Porter 五力的外部壓力，翻譯成台達電如何創造價值與獲取價值的商業系統設計（IB7018 W4：BMC = VC 活動的商業化表達）</p>
+
+<div class="callout purple">
+  <strong>🧩 W4 框架定位：</strong>BMC 是 Porter 價值鏈與競爭策略之間的<strong>翻譯層</strong>——「Key Activities + Key Resources 直接對應 FSA 核心」。五力告訴我們「外面有多競爭」，BMC 告訴我們「台達如何在這種環境中設計一套能持續賺錢的商業系統」。
+</div>
+
+<div class="card">
+  <div class="cardTitle">台達電 BMC 九宮格 — AI 資料中心業務</div>
+  <div class="bmc-grid">
+    <div class="bmc-cell">
+      <div class="bmc-title">🔑 Key Partners<br>關鍵合作夥伴</div>
+      <div class="bmc-content">NVIDIA（晶片設計階段綁定）<br>TSMC（先進封裝協作）<br>CSP 共同工程<br>中鼎（facility 整合）<br>泰國/印度政府（建廠優惠）</div>
+    </div>
+    <div class="bmc-cell highlight">
+      <div class="bmc-title">⚙️ Key Activities<br>關鍵活動</div>
+      <div class="bmc-content">R&D 8-9% 營收<br>精密製造（真空硬焊、熱管理）<br>方案整合（電源+冷卻+DC）<br>全球產能擴張<br>客戶共同開發</div>
+    </div>
+    <div class="bmc-cell">
+      <div class="bmc-title">💎 Value Propositions<br>價值主張</div>
+      <div class="bmc-content"><strong>Grid-to-Chip 全球唯一完整方案</strong><br>55 年可靠性（0 召回）<br>效率比對手高 2-3%<br>模組化 DC = 客戶 CAPEX 降低<br>一地設計、全球交付</div>
+    </div>
+    <div class="bmc-cell">
+      <div class="bmc-title">🤝 Customer Relationships<br>客戶關係</div>
+      <div class="bmc-content">10 年+ CSP 深度夥伴<br>從「供應商」升級為「共同開發者」<br>認證綁定 2-3 年（轉換成本）<br>NVIDIA 設計階段即綁定規格</div>
+    </div>
+    <div class="bmc-cell highlight">
+      <div class="bmc-title">👥 Customer Segments<br>客戶區隔</div>
+      <div class="bmc-content"><strong>核心：四大 CSP</strong><br>（Meta, Amazon, Google, Microsoft）<br>NVIDIA（參考設計指定）<br>企業資料中心<br>電信基地台</div>
+    </div>
+    <div class="bmc-cell">
+      <div class="bmc-title">🏗️ Key Resources<br>關鍵資源</div>
+      <div class="bmc-content">55 座工廠全球布局<br>83,000 人師徒制<br>55 年電力電子製程參數<br>專利組合<br>NVIDIA 設計整合地位</div>
+    </div>
+    <div class="bmc-cell">
+      <div class="bmc-title">📡 Channels<br>通路</div>
+      <div class="bmc-content">直接 B2B 銷售<br>NVIDIA 參考設計 → 被動拉貨<br>全球 165 銷售服務點<br>CSP 駐廠工程團隊</div>
+    </div>
+    <div class="bmc-cell">
+      <div class="bmc-title">💰 Revenue Streams<br>營收來源</div>
+      <div class="bmc-content"><strong>硬體銷售：</strong>AI 電源、液冷 CDU/Cold Plate、DC 配電櫃<br><strong>模組化 DC：</strong>預裝式資料中心<br><strong>服務：</strong>安裝/調試/維運（新興）</div>
+    </div>
+    <div class="bmc-cell">
+      <div class="bmc-title">📉 Cost Structure<br>成本結構</div>
+      <div class="bmc-content">高固定成本（55 廠）<br>CAPEX ~NT$500 億/年<br>R&D 8-9% 營收<br>原物料（銅、鋁、半導體）<br>全球分散物流</div>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="cardTitle">🔬 BMC 關鍵洞察：台達的「價值創造 → 價值獲取」邏輯</div>
+  <table class="tbl">
+    <tr><th>維度</th><th>台達的 BMC 設計</th><th>競爭意涵</th></tr>
+    <tr>
+      <td class="up"><strong>價值創造</strong></td>
+      <td>Key Activities（精密製造 + 方案整合）× Key Resources（55 年參數 + 83K 人）→ Value Proposition（Grid-to-Chip 全球唯一）</td>
+      <td class="up">競爭對手無法在單一 BMC 方塊複製，更無法複製組合——這是 W4 所說的「活動系統」優勢</td>
+    </tr>
+    <tr>
+      <td class="up"><strong>價值傳遞</strong></td>
+      <td>Channels（NVIDIA 設計綁定 → 被動拉貨）+ Customer Relationships（共同開發 → 認證鎖定）</td>
+      <td class="up">不等客戶招標，直接從晶片設計階段就內建進去——這是「被動通路」的最高境界</td>
+    </tr>
+    <tr>
+      <td class="up"><strong>價值獲取</strong></td>
+      <td>Revenue Streams（硬體銷售為主，模組化 DC + 服務為新引擎）× 高轉換成本（認證 2-3 年）</td>
+      <td class="up">「賣鏟子給淘金客」的經典模式——AI CAPEX 越瘋狂，台達營收越穩</td>
+    </tr>
+    <tr>
+      <td class="warn"><strong>脆弱環節</strong></td>
+      <td>Customer Segments 過度集中四大 CSP + Revenue Streams 以硬體一次性銷售為主（無經常性收入護城河）</td>
+      <td class="warn">若 CSP 成功扶植第二供應商，或拆分採購（電源歸電源、冷卻歸冷卻），BMC 的 Revenue 端將被侵蝕</td>
+    </tr>
+  </table>
+</div>
+
+<div class="callout green">
+  <strong>🧩 BMC 與 W4 Strategy Memo 的連結：</strong>W4 要求 Sentence 1 定位「FSA 的 VC 活動 + 三機制擇一」。BMC 的作用就是把 VC 活動（Operations + Tech Dev）翻譯成商業語言——<strong>Key Activities = R&D + 精密製造 + 方案整合</strong>，<strong>Key Resources = 55 年參數 + 83K 人師徒制</strong>。這兩個 BMC 方塊直接對應 FSA，而三重隔離機制（路徑依賴、社會複雜性、因果模糊）解釋了為何競爭對手的 BMC 無法複製這兩個方塊。
+</div>
+</section>
+
+<!-- SECTION 3: FSA VALUE CHAIN MAPPING -->
+<section id="s3">
 <h2>🔗 價值鏈 FSA 映射</h2>
 <p class="sectionDesc">Porter (1985) Value Chain — 精準定位台達的企業特定優勢（FSA）在哪個活動中（IB7018 W4）</p>
 
@@ -204,8 +295,8 @@ section h3{font-size:16px;margin:24px 0 12px;color:var(--accent)}
 </div>
 </section>
 
-<!-- SECTION 3: STRATEGIC GROUPS -->
-<section id="s3">
+<!-- SECTION 4: STRATEGIC GROUPS -->
+<section id="s4">
 <h2>🗺️ 策略群組地圖</h2>
 <p class="sectionDesc">Grant Ch.4；IB7018 W4 — 以「產品廣度」和「技術深度」為兩軸</p>
 
@@ -249,8 +340,8 @@ section h3{font-size:16px;margin:24px 0 12px;color:var(--accent)}
 </div>
 </section>
 
-<!-- SECTION 4: COMPETITIVE ADVANTAGE CATEGORIES -->
-<section id="s4">
+<!-- SECTION 5: COMPETITIVE ADVANTAGE CATEGORIES -->
+<section id="s5">
 <h2>🏛️ 競爭優勢分類</h2>
 <p class="sectionDesc">Shallow Dive Template — 四大類優勢系統化評估</p>
 
@@ -295,8 +386,8 @@ section h3{font-size:16px;margin:24px 0 12px;color:var(--accent)}
 </div>
 </section>
 
-<!-- SECTION 5: PROFIT POOL -->
-<section id="s5">
+<!-- SECTION 6: PROFIT POOL -->
+<section id="s6">
 <h2>💰 利潤池分析</h2>
 <p class="sectionDesc">Gadiesh & Gilbert (1998), HBR — 利潤集中在價值鏈的哪一段？</p>
 
@@ -328,8 +419,8 @@ section h3{font-size:16px;margin:24px 0 12px;color:var(--accent)}
 </div>
 </section>
 
-<!-- SECTION 6: CAGE -->
-<section id="s6">
+<!-- SECTION 7: CAGE -->
+<section id="s7">
 <h2>🌍 全球維度 — CAGE 距離分析</h2>
 <p class="sectionDesc">Ghemawat (2009)；IB7018 W8 — 台達電的全球布局風險</p>
 
@@ -368,8 +459,8 @@ section h3{font-size:16px;margin:24px 0 12px;color:var(--accent)}
 </div>
 </section>
 
-<!-- SECTION 7: VERDICT -->
-<section id="s7">
+<!-- SECTION 8: VERDICT -->
+<section id="s8">
 <h2>🎯 競爭定位結論</h2>
 
 <div class="metrics">
