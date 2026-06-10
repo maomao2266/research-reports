@@ -1,4 +1,9 @@
 {
-  "folders": [],
-  "assignments": {}
+  "folders": [
+    {"id": "delta-valuation", "emoji": "📊"},
+    {"id": "getting-started", "emoji": "🚀"}
+  ],
+  "assignments": {
+    "home": "delta-valuation"
+  }
 }
