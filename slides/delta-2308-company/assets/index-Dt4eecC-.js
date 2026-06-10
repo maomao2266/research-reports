@@ -1,0 +1,1 @@
+import"./index-GoTkb2wL.js";const t={palette:{bg:"#08090a",text:"#f0f2f5",accent:"#60a5fa"},fonts:{display:'"Noto Sans TC","Inter","SF Pro Display",system-ui,sans-serif',body:'"Noto Sans TC","Inter","SF Pro Display",system-ui,sans-serif'},typeScale:{hero:128,body:32},radius:16};export{t as design};
