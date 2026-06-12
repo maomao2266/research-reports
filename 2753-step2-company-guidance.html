@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>八方雲集 (2753) — 公司指引 | Fundamental Analysis Step 2</title>
+<style>
+:root{
+  --bg:#0a0e14; --surface:#131820; --card:#181f2a;
+  --border:#252d3a; --ink:#e2e8f0; --muted:#7c8aa0; --dim:#4a5568;
+  --accent:#60a5fa; --accent2:#3b82f6;
+  --gold:#f59e0b; --green:#34d399; --red:#f87171;
+  --orange:#fb923c; --purple:#a78bfa;
+  --radius:14px; --radius2:18px;
+  --sans:"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,-apple-system,sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.6}
+.topbar{position:sticky;top:0;z-index:100;background:var(--surface);border-bottom:1px solid var(--border);padding:12px 24px;display:flex;align-items:center;justify-content:space-between}
+.topbar h1{font-size:18px;font-weight:600}
+.topbar .badge{font-size:11px;color:var(--muted);background:var(--card);padding:4px 10px;border-radius:20px}
+.layout{display:flex;min-height:calc(100vh - 53px)}
+.sidebar{width:220px;min-width:220px;background:var(--surface);border-right:1px solid var(--border);padding:16px 0;position:sticky;top:53px;height:calc(100vh - 53px);overflow-y:auto}
+.sidebar .navTitle{font-size:10px;text-transform:uppercase;color:var(--dim);padding:8px 16px;letter-spacing:1px}
+.sidebar .navItem{display:block;padding:8px 16px;color:var(--muted);font-size:13px;cursor:pointer;border:none;background:none;width:100%;text-align:left;transition:all .15s;border-left:3px solid transparent}
+.sidebar .navItem:hover{color:var(--ink);background:var(--card)}
+.sidebar .navItem.active{color:var(--accent);background:var(--card);border-left-color:var(--accent)}
+main{flex:1;padding:24px;max-width:900px}
+section{display:none}
+section.active{display:block}
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px;margin-bottom:20px}
+.cardTitle{font-size:15px;font-weight:600;margin-bottom:12px;color:var(--accent)}
+.callout{border-left:3px solid var(--accent);padding:12px 16px;border-radius:0 var(--radius) var(--radius) 0;margin-bottom:16px;background:color-mix(in srgb,var(--accent) 8%,var(--card))}
+.callout.gold{border-color:var(--gold);background:color-mix(in srgb,var(--gold) 8%,var(--card))}
+.callout.green{border-color:var(--green);background:color-mix(in srgb,var(--green) 8%,var(--card))}
+.callout.red{border-color:var(--red);background:color-mix(in srgb,var(--red) 8%,var(--card))}
+.metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:20px}
+.metric{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px;text-align:center}
+.metric .val{font-size:22px;font-weight:700;color:var(--ink)}
+.metric .lbl{font-size:11px;color:var(--muted);margin-top:4px}
+.tbl{width:100%;border-collapse:collapse;font-size:13px;margin-bottom:16px}
+.tbl th{text-align:left;color:var(--muted);font-weight:500;padding:8px 12px;border-bottom:1px solid var(--border);font-size:11px;text-transform:uppercase}
+.tbl td{padding:8px 12px;border-bottom:1px solid var(--border)}
+.tbl tr:last-child td{border-bottom:none}
+.up{color:var(--green)}.down{color:var(--red)}.warn{color:var(--orange)}
+.pillRow{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px}
+.pill{font-size:11px;padding:3px 10px;border-radius:12px;font-weight:500}
+.pill.g{background:color-mix(in srgb,var(--green) 20%,transparent);color:var(--green)}
+.pill.r{background:color-mix(in srgb,var(--red) 20%,transparent);color:var(--red)}
+.pill.o{background:color-mix(in srgb,var(--orange) 20%,transparent);color:var(--orange)}
+.pill.b{background:color-mix(in srgb,var(--accent) 20%,transparent);color:var(--accent)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.verdict{background:linear-gradient(135deg,color-mix(in srgb,var(--green) 15%,var(--surface)),color-mix(in srgb,var(--accent) 10%,var(--surface)));border:1px solid color-mix(in srgb,var(--green) 30%,var(--border));border-radius:var(--radius2);padding:20px}
+.verdict .vTitle{font-size:16px;font-weight:700;margin-bottom:8px;color:var(--green)}
+.verdict.warn{background:linear-gradient(135deg,color-mix(in srgb,var(--gold) 15%,var(--surface)),color-mix(in srgb,var(--accent) 10%,var(--surface)));border-color:color-mix(in srgb,var(--gold) 30%,var(--border))}
+.verdict.warn .vTitle{color:var(--gold)}
+.source{font-size:10px;color:var(--dim);margin-top:4px}
+.timeline{position:relative;padding:0 0 0 20px;border-left:2px solid var(--border);margin:16px 0}
+.timeline-item{position:relative;margin-bottom:20px;padding-left:16px}
+.timeline-item::before{content:'';position:absolute;left:-27px;top:4px;width:12px;height:12px;border-radius:50%;background:var(--accent);border:2px solid var(--surface)}
+.timeline-item.past::before{background:var(--dim)}
+.timeline-item .ti-date{font-size:10px;color:var(--muted)}
+.timeline-item .ti-content{font-size:13px;margin-top:2px}
+.grade{display:inline-flex;align-items:center;gap:4px;font-weight:700;font-size:18px}
+.grade.A{color:var(--green)}.grade.B{color:var(--green)}.grade.C{color:var(--gold)}.grade.D{color:var(--red)}
+@media(max-width:768px){
+  .sidebar{display:none}
+  .layout{flex-direction:column}
+  main{padding:16px}
+  .grid2{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <h1>八方雲集 (2753.TW) — 公司指引</h1>
+  <span class="badge">Step 2 / 10 · 2026-06-12</span>
+</div>
+<div class="layout">
+<nav class="sidebar">
+  <div class="navTitle">大綱</div>
+  <button class="navItem active" data-section="s1">🎯 最新指引快照</button>
+  <button class="navItem" data-section="s2">📊 關鍵指標</button>
+  <button class="navItem" data-section="s3">📜 歷史達標紀錄</button>
+  <button class="navItem" data-section="s4">🔍 指引品質評估</button>
+  <button class="navItem" data-section="s5">📈 前瞻展望</button>
+  <button class="navItem" data-section="s6">📋 綜合判斷</button>
+</nav>
+<main>
+
+<section id="s1" class="active">
+<div class="card">
+  <div class="cardTitle">🎯 管理層最新指引快照</div>
+  <p style="color:var(--muted);font-size:12px;margin-bottom:16px">資料來源：2025-12-19 法說會（最新）、2025-07-11 法說會（前次）</p>
+  
+  <table class="tbl">
+    <tr><th style="width:120px">指標</th><th>管理層指引</th><th>期間</th><th>來源日期</th></tr>
+    <tr>
+      <td><strong>營收成長</strong></td>
+      <td>約 +10% YoY（隱含，非正式數字）<br>M1-M11 已達 80.2 億，年增 ~10%</td>
+      <td>2024 全年</td>
+      <td>2025-12-19</td>
+    </tr>
+    <tr>
+      <td><strong>台灣展店</strong></td>
+      <td>八方雲集 +30 家、梁社漢 +30 家<br>（2025 年目標）</td>
+      <td>2025</td>
+      <td>2025-12-19</td>
+    </tr>
+    <tr>
+      <td><strong>美國展店</strong></td>
+      <td>2025 年突破 20 家<br>3–5 年營收佔比達 20–30%</td>
+      <td>2025 / 中期</td>
+      <td>2025-12-19</td>
+    </tr>
+    <tr>
+      <td><strong>毛利率</strong></td>
+      <td>持續回升趨勢（隱含）<br>已從 ~35% → 36.45%</td>
+      <td>持續</td>
+      <td>2025-12-19</td>
+    </tr>
+    <tr>
+      <td><strong>營業利益率</strong></td>
+      <td>連五季上升，Q3 創新高</td>
+      <td>持續</td>
+      <td>2025-12-19</td>
+    </tr>
+    <tr>
+      <td><strong>股利</strong></td>
+      <td>配發率 ~80%，2024 年 8 元<br>H1 4 元（配發率 68.8%）H2 調整後趨近</td>
+      <td>2024</td>
+      <td>2025-12-19</td>
+    </tr>
+    <tr>
+      <td><strong>價格策略</strong></td>
+      <td>2025 年不漲價<br>以新品和高毛利產品組合平衡成本壓力</td>
+      <td>2025</td>
+      <td>2025-07-11</td>
+    </tr>
+    <tr>
+      <td><strong>資本支出</strong></td>
+      <td>德州工廠 $13–15M USD<br>台灣豬肉裁切廠、天元新廠</td>
+      <td>2025</td>
+      <td>2025-07-11</td>
+    </tr>
+    <tr>
+      <td><strong>折舊影響</strong></td>
+      <td>2025 年折舊 +3,000–4,000 萬 TWD<br>德州廠前期虧損預期</td>
+      <td>2025</td>
+      <td>2025-07-11</td>
+    </tr>
+    <tr>
+      <td><strong>香港市場</strong></td>
+      <td>保守展店，聚焦平價品牌<br>針對高租金門店調整租約（三年一約）</td>
+      <td>持續</td>
+      <td>2025-12-19</td>
+    </tr>
+  </table>
+
+  <div class="callout">
+    <strong>指引風格：</strong>八方雲集不提供正式的營收/EPS 數字指引，而是以「營運指標」（展店數、銷量成長率、產能擴充進度）作為替代。這是餐飲業常見做法——宏觀數字受太多外部因素影響，營運指標更能反映管理層可控的執行力。
+  </div>
+</div>
+</section>
+
+<section id="s2">
+<div class="card">
+  <div class="cardTitle">📊 管理層最重視的關鍵指標</div>
+  <table class="tbl">
+    <tr><th>指標</th><th>定義</th><th>管理層為何強調</th><th>現值</th><th>趨勢</th></tr>
+    <tr>
+      <td><strong>鍋貼水餃銷量成長率</strong></td>
+      <td>台灣主力產品（八方品牌）銷量 YoY</td>
+      <td>核心產品的需求動能，反映品牌健康度和價格接受度</td>
+      <td class="up">+8–10%</td>
+      <td class="up">↑ 強勁回升</td>
+    </tr>
+    <tr>
+      <td><strong>門市淨增數</strong></td>
+      <td>新開店 − 關店數</td>
+      <td>規模擴張的直接指標，結束三年整理期後重新加速</td>
+      <td class="up">八方 +26 / 梁社漢 +18</td>
+      <td class="up">↑ 轉正加速</td>
+    </tr>
+    <tr>
+      <td><strong>同店銷售成長 (SSSG)</strong></td>
+      <td>既有門市營收 YoY 變化</td>
+      <td>反映品牌價值提升和消費者接受度</td>
+      <td class="up">>10%（25Q1 台灣）</td>
+      <td class="up">↑ 強勁</td>
+    </tr>
+    <tr>
+      <td><strong>關店率</strong></td>
+      <td>年度關閉門市 / 總店數</td>
+      <td>加盟體系健康度，過去三年 ~3% 偏高，現在下降中</td>
+      <td class="up">1.7%（八方）</td>
+      <td class="up">↓ 改善</td>
+    </tr>
+    <tr>
+      <td><strong>營益率趨勢</strong></td>
+      <td>連季上升的營業利益率</td>
+      <td>規模效應兌現的證據</td>
+      <td class="up">Q3 12.55%</td>
+      <td class="up">↑ 連五季</td>
+    </tr>
+    <tr>
+      <td><strong>美國單店獲利</strong></td>
+      <td>加州區首次單月獲利 (24M11)</td>
+      <td>美國市場從燒錢 → 轉盈的轉捩點信號</td>
+      <td class="up">達成</td>
+      <td class="up">↑ 里程碑</td>
+    </tr>
+    <tr>
+      <td><strong>牛肉麵產能</strong></td>
+      <td>調理包日產能 3.5 萬包</td>
+      <td>新品類的第二成長曲線，線上通路（MOMO、家樂福）鋪貨進度</td>
+      <td>3.5 萬包/日</td>
+      <td class="up">↑ 擴產 3x</td>
+    </tr>
+  </table>
+
+  <div class="callout green">
+    <strong>判斷：</strong>管理層強調的指標全部指向營運基本面（銷量、店數、利潤率），沒有刻意迴避 GAAP 而強調非 GAAP 虛榮指標。這些指標與公司的長期價值創造邏輯一致——「加盟規模 × 中央工廠效率 × 品牌溢價」。
+  </div>
+</div>
+</section>
+
+<section id="s3">
+<div class="card">
+  <div class="cardTitle">📜 指引達標紀錄</div>
+  <p style="color:var(--muted);font-size:12px;margin-bottom:12px">八方雲集不提供正式數字指引，以下追蹤公開陳述的營運目標 vs 實際達成</p>
+  
+  <table class="tbl">
+    <tr><th>目標</th><th>提出時間</th><th>期限</th><th>管理層承諾</th><th>實際結果</th><th>判定</th></tr>
+    <tr>
+      <td>台灣八方展店</td><td>2025-07-11</td><td>2025</td><td>全年 30 家</td><td>進行中（至 24M11 已淨增 26 家）</td><td class="up">✓ 超前</td>
+    </tr>
+    <tr>
+      <td>梁社漢展店</td><td>2025-07-11</td><td>2025</td><td>全年 30 家</td><td>至 24M11 淨增 18 家</td><td class="warn">◐ 追蹤中</td>
+    </tr>
+    <tr>
+      <td>美國店數 >20</td><td>2025-12-19</td><td>2025 年底</td><td>突破 20 家</td><td>目前 13 家，H2 再開 4 家</td><td class="warn">◐ 需加速</td>
+    </tr>
+    <tr>
+      <td>毛利率回升</td><td>2025-07-11</td><td>2025</td><td>毛利率 >35%</td><td>Q3 已達 36.45%</td><td class="up">✓ 達成</td>
+    </tr>
+    <tr>
+      <td>股利配發率 ~80%</td><td>2025-07-11</td><td>2024</td><td>接近 80%</td><td>全年 8 元，配發率 88.4%（略高）</td><td class="up">✓ 超出</td>
+    </tr>
+    <tr>
+      <td>美國加州單月獲利</td><td>2025-07-11</td><td>2025</td><td>期望年底前達成</td><td>24M11 首次達成</td><td class="up">✓ 達成</td>
+    </tr>
+    <tr>
+      <td>2025 不漲價</td><td>2025-07-11</td><td>2025</td><td>全年不漲價</td><td>持續中，且銷量不減反增</td><td class="up">✓ 達成中</td>
+    </tr>
+    <tr>
+      <td>德州工廠啟用</td><td>2025-07-11</td><td>2025 年底</td><td>年底啟用</td><td>延至 2026 年 4 月</td><td class="down">✗ 延遲</td>
+    </tr>
+  </table>
+
+  <div class="callout gold">
+    <strong>關鍵觀察：</strong>除德州工廠延遲一季外，所有已到期目標均達成或超前。德州工廠延遲是建設進度問題（非需求面），且管理層在 12 月法說已主動更新時間線。整體達標率：<strong>6/8 達成或超前，1 追蹤中，1 延遲</strong>。
+  </div>
+
+  <div class="pillRow">
+    <span class="pill g">營運目標高達成率</span>
+    <span class="pill o">德州廠延遲但透明</span>
+    <span class="pill b">管理層風格：少承諾、多交付</span>
+  </div>
+</div>
+
+<div class="card">
+  <div class="cardTitle">指引行為模式分析</div>
+  <table class="tbl">
+    <tr><th>行為模式</th><th>信號</th><th>八方雲集匹配度</th></tr>
+    <tr>
+      <td>Sandbagger（保守壓低預期）</td>
+      <td>持續超出指引 3-5%+</td>
+      <td>部分匹配 — 展店和營運指標偏保守，實際常超出</td>
+    </tr>
+    <tr>
+      <td><strong>Honest Guide（誠實指引）</strong></td>
+      <td>通常落在 ±2% 範圍內</td>
+      <td class="up"><strong>✓ 最佳匹配</strong> — 不提供精確財務數字，但營運目標務實可追蹤</td>
+    </tr>
+    <tr>
+      <td>Over-promiser（過度承諾）</td>
+      <td>持續未達指引</td>
+      <td>不匹配</td>
+    </tr>
+    <tr>
+      <td>Never Guides（不提供指引）</td>
+      <td>無量化指引</td>
+      <td>部分匹配 — 不給 EPS/營收數字，但給營運指標</td>
+    </tr>
+  </table>
+</div>
+</section>
+
+<section id="s4">
+<div class="card">
+  <div class="cardTitle">🔍 指引品質評估</div>
+  <table class="tbl">
+    <tr><th style="width:140px">品質維度</th><th>評估</th><th>評級</th></tr>
+    <tr>
+      <td><strong>具體性</strong></td>
+      <td>營運指標具體（展店數、產能、關店率），但無整體營收/EPS 數字。合理——餐飲業逐月營收受太多外部因素，給具體數字反而降低可信度</td>
+      <td><span class="up">★★★★</span></td>
+    </tr>
+    <tr>
+      <td><strong>透明度</strong></td>
+      <td>主動揭露負面資訊：香港獲利萎縮、德州廠延遲、德州廠初期虧損預期。不粉飾問題</td>
+      <td><span class="up">★★★★★</span></td>
+    </tr>
+    <tr>
+      <td><strong>細分程度</strong></td>
+      <td>按地區（台灣/香港/美國）和品牌（八方/梁社漢）提供營收佔比和成長數據。足夠詳細</td>
+      <td><span class="up">★★★★</span></td>
+    </tr>
+    <tr>
+      <td><strong>假設揭露</strong></td>
+      <td>分享部分假設（原物料成本、消費趨勢），但不提供完整的敏感性分析。屬正常水準</td>
+      <td><span>★★★</span></td>
+    </tr>
+    <tr>
+      <td><strong>一致性</strong></td>
+      <td>指標定義穩定，毛利率/營益率計算口徑無明顯變更。展店數追蹤方式一致</td>
+      <td><span class="up">★★★★</span></td>
+    </tr>
+    <tr>
+      <td><strong>主動性</strong></td>
+      <td>每半年一次法說會，不頻繁修正。重大變化（如延遲）會在法說會上主動說明</td>
+      <td><span class="up">★★★★</span></td>
+    </tr>
+    <tr>
+      <td><strong>語氣一致性</strong></td>
+      <td>務實坦誠——正面指標有數據支撐，負面資訊不迴避。法說會語氣與數字一致</td>
+      <td><span class="up">★★★★★</span></td>
+    </tr>
+  </table>
+
+  <div class="callout green">
+    <strong>語言紅旗檢查：</strong>兩次法說會中無明顯紅旗語言。管理層使用「我們觀察到」「目前」「預計」等中性措辭，不用「cautiously optimistic」「visibility is limited」等典型警示語。唯一值得注意的是美國市場的「還在測試」，但這是誠實描述而非掩飾。
+  </div>
+</div>
+</section>
+
+<section id="s5">
+<div class="card">
+  <div class="cardTitle">📈 前瞻展望時間線</div>
+  
+  <div class="timeline">
+    <div class="timeline-item past">
+      <div class="ti-date">2024 Q1–Q3 已實現</div>
+      <div class="ti-content">營收 64.88 億 · EPS 9.34 · Q3 營收首破 22 億 · 淨利率回到 10.4% · 毛利率明顯回升</div>
+    </div>
+    <div class="timeline-item past">
+      <div class="ti-date">2024 M11 已實現</div>
+      <div class="ti-content">單月營收 7.67 億（新高）· 加州首次單月獲利 · 八方雲集達 1,038 店 · M1-M11 營收 ~80.2 億</div>
+    </div>
+    <div class="timeline-item">
+      <div class="ti-date">2025 H1 近期</div>
+      <div class="ti-content">台灣豬肉裁切廠完工投產 · 牛肉麵產線持續擴充 · MOMO + 家樂福通路鋪貨擴大</div>
+    </div>
+    <div class="timeline-item">
+      <div class="ti-date">2025 H2</div>
+      <div class="ti-content">德州中央工廠預定 4 月啟用（原訂 2024 年底，延遲一季）· 德州快餐型態門市（Tarleton 店）開幕測試 · 美國全年目標 >20 店</div>
+    </div>
+    <div class="timeline-item">
+      <div class="ti-date">2025 全年目標</div>
+      <div class="ti-content">台灣八方 +30 店 · 台灣梁社漢 +30 店 · 不漲價策略持續 · 股利配發率維持 ~80%</div>
+    </div>
+    <div class="timeline-item">
+      <div class="ti-date">3–5 年中期</div>
+      <div class="ti-content">美國營收佔比達 20–30%（目前 7.2%）· 德州工廠成為全美供應樞紐 · 評估日本、歐洲、英國、杜拜等新市場</div>
+    </div>
+  </div>
+
+  <div class="callout gold">
+    <strong>隱含預期落差：</strong>中期 3–5 年美國 20–30% 營收佔比是一個非常激進的目標。以目前 7.2% 基礎計算，隱含美國營收 CAGR >40%。管理層對美國市場的樂觀程度遠高於外部共識——這是潛在的正面驚喜來源，也是指引可信度的最大考驗。
+  </div>
+
+  <div class="grid2" style="margin-top:12px">
+    <div>
+      <table class="tbl">
+        <tr><th colspan="2">2025 年隱含財務推估</th></tr>
+        <tr><td>年營收</td><td>~88–90 億 TWD（假設 +10% YoY）</td></tr>
+        <tr><td>EPS</td><td>~12–13 TWD（假設 margin 持平）</td></tr>
+        <tr><td>股利</td><td>~10 TWD（假設 80% 配發率）</td></tr>
+        <tr><td>折舊增加</td><td>+3,000–4,000 萬 TWD</td></tr>
+      </table>
+    </div>
+    <div>
+      <table class="tbl">
+        <tr><th colspan="2">市場共識校準</th></tr>
+        <tr><td>管理層展望</td><td class="up">偏樂觀（美國驅動）</td></tr>
+        <tr><td>市場定價</td><td>P/E ~15x → 中性偏保守</td></tr>
+        <tr><td>Delta</td><td>市場未充分定價美國成功</td></tr>
+        <tr><td>關鍵分歧</td><td>美國執行力 vs 想像空間</td></tr>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section id="s6">
+<div class="card">
+  <div class="cardTitle">📋 綜合判斷 — Guidance Verdict</div>
+  
+  <div class="verdict">
+    <div class="vTitle">📋 結論</div>
+    <table class="tbl" style="margin-top:8px">
+      <tr><td style="width:180px"><strong>指引可信度等級</strong></td><td><span class="grade B">B+ (Generally Reliable)</span></td></tr>
+      <tr><td><strong>指引偏差傾向</strong></td><td>中性偏保守 — 營運目標務實，不吹噓。歷史達成率高（6/8），少數延遲也主動揭露</td></tr>
+      <tr><td><strong>Beat/Miss 預期</strong></td><td>短期營運指標傾向小幅超出；中期美國目標存在執行風險</td></tr>
+      <tr><td><strong>最關鍵指引指標</strong></td><td><strong>美國單店獲利能力</strong>——這決定了美國展店能否從「燒錢」變「自我造血」。加州首次單月獲利是重大信號，但需要持續驗證</td></tr>
+      <tr><td><strong>共識盲點</strong></td><td>市場以台灣本益比（~15x）定價，未給予美國增長選擇權任何溢價。若美國成功，估值有顯著上修空間</td></tr>
+    </table>
+  </div>
+
+  <div class="verdict warn" style="margin-top:16px">
+    <div class="vTitle">⚠️ 需要追蹤的風險信號</div>
+    <table class="tbl" style="margin-top:8px">
+      <tr><td>1</td><td><strong>德州工廠延遲</strong> — 已從 2025 年底延至 2026 年 4 月。若再延遲，將拖累美國展店節奏</td></tr>
+      <tr><td>2</td><td><strong>美國 3-5 年 20-30% 目標</strong> — 這是所有指引中最激進的一項，目前缺乏足夠的營運數據支撐</td></tr>
+      <tr><td>3</td><td><strong>香港獲利持續萎縮</strong> — 管理層坦承但未給出具體改善計劃。佔營收 14%，若持續惡化將拖累整體</td></tr>
+      <tr><td>4</td><td><strong>折舊壓力</strong> — 2025 年折舊 +3-4 千萬，德州廠啟用後折舊更高。管理層已預告前期虧損</td></tr>
+    </table>
+  </div>
+</div>
+</section>
+
+</main>
+</div>
+
+<script>
+document.querySelectorAll('.navItem').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.navItem').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
+    document.getElementById(btn.dataset.section).classList.add('active');
+  });
+});
+document.addEventListener('keydown', e => {
+  if(e.target.tagName==='INPUT') return;
+  const sections = ['s1','s2','s3','s4','s5','s6'];
+  const active = document.querySelector('section.active');
+  let idx = sections.indexOf(active.id);
+  if(e.key==='ArrowDown'||e.key==='ArrowRight') idx=Math.min(idx+1,5);
+  if(e.key==='ArrowUp'||e.key==='ArrowLeft') idx=Math.max(idx-1,0);
+  if(idx!==sections.indexOf(active.id)){
+    document.querySelectorAll('.navItem').forEach(b=>b.classList.remove('active'));
+    document.querySelector(`.navItem[data-section="${sections[idx]}"]`).classList.add('active');
+    document.querySelectorAll('section').forEach(s=>s.classList.remove('active'));
+    document.getElementById(sections[idx]).classList.add('active');
+  }
+});
+</script>
+</body>
+</html>
