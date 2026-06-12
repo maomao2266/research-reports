@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>八方雲集 (2753) — 公司描述 | Fundamental Analysis Step 1</title>
+<style>
+:root{
+  --bg:#0a0e14; --surface:#131820; --card:#181f2a;
+  --border:#252d3a; --ink:#e2e8f0; --muted:#7c8aa0; --dim:#4a5568;
+  --accent:#60a5fa; --accent2:#3b82f6;
+  --gold:#f59e0b; --green:#34d399; --red:#f87171;
+  --orange:#fb923c; --purple:#a78bfa;
+  --radius:14px; --radius2:18px;
+  --sans:"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,-apple-system,sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.6}
+.topbar{
+  position:sticky;top:0;z-index:100;background:var(--surface);
+  border-bottom:1px solid var(--border);padding:12px 24px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.topbar h1{font-size:18px;font-weight:600}
+.topbar .badge{font-size:11px;color:var(--muted);background:var(--card);padding:4px 10px;border-radius:20px}
+.layout{display:flex;min-height:calc(100vh - 53px)}
+.sidebar{
+  width:220px;min-width:220px;background:var(--surface);
+  border-right:1px solid var(--border);padding:16px 0;
+  position:sticky;top:53px;height:calc(100vh - 53px);overflow-y:auto;
+}
+.sidebar .navTitle{font-size:10px;text-transform:uppercase;color:var(--dim);padding:8px 16px;letter-spacing:1px}
+.sidebar .navItem{
+  display:block;padding:8px 16px;color:var(--muted);font-size:13px;
+  cursor:pointer;border:none;background:none;width:100%;text-align:left;
+  transition:all .15s;border-left:3px solid transparent;
+}
+.sidebar .navItem:hover{color:var(--ink);background:var(--card)}
+.sidebar .navItem.active{color:var(--accent);background:var(--card);border-left-color:var(--accent)}
+main{flex:1;padding:24px;max-width:900px}
+section{display:none}
+section.active{display:block}
+.card{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:var(--radius);padding:20px;margin-bottom:20px;
+}
+.cardTitle{font-size:15px;font-weight:600;margin-bottom:12px;color:var(--accent)}
+.callout{
+  border-left:3px solid var(--accent);padding:12px 16px;
+  border-radius:0 var(--radius) var(--radius) 0;margin-bottom:16px;
+  background:color-mix(in srgb,var(--accent) 8%,var(--card));
+}
+.callout.gold{border-color:var(--gold);background:color-mix(in srgb,var(--gold) 8%,var(--card))}
+.callout.green{border-color:var(--green);background:color-mix(in srgb,var(--green) 8%,var(--card))}
+.callout.red{border-color:var(--red);background:color-mix(in srgb,var(--red) 8%,var(--card))}
+.metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:20px}
+.metric{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--radius);padding:16px;text-align:center;
+}
+.metric .val{font-size:22px;font-weight:700;color:var(--ink)}
+.metric .lbl{font-size:11px;color:var(--muted);margin-top:4px}
+.tbl{width:100%;border-collapse:collapse;font-size:13px;margin-bottom:16px}
+.tbl th{text-align:left;color:var(--muted);font-weight:500;padding:8px 12px;border-bottom:1px solid var(--border);font-size:11px;text-transform:uppercase}
+.tbl td{padding:8px 12px;border-bottom:1px solid var(--border)}
+.tbl tr:last-child td{border-bottom:none}
+.up{color:var(--green)} .down{color:var(--red)} .warn{color:var(--orange)}
+.pillRow{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px}
+.pill{font-size:11px;padding:3px 10px;border-radius:12px;font-weight:500}
+.pill.g{background:color-mix(in srgb,var(--green) 20%,transparent);color:var(--green)}
+.pill.r{background:color-mix(in srgb,var(--red) 20%,transparent);color:var(--red)}
+.pill.o{background:color-mix(in srgb,var(--orange) 20%,transparent);color:var(--orange)}
+.pill.p{background:color-mix(in srgb,var(--purple) 20%,transparent);color:var(--purple)}
+.posmap{position:relative;background:var(--surface);border-radius:var(--radius);padding:24px;margin-bottom:20px;overflow-x:auto}
+.posmap svg{display:block;margin:0 auto}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.verdict{
+  background:linear-gradient(135deg,color-mix(in srgb,var(--green) 15%,var(--surface)),color-mix(in srgb,var(--accent) 10%,var(--surface)));
+  border:1px solid color-mix(in srgb,var(--green) 30%,var(--border));
+  border-radius:var(--radius2);padding:20px;
+}
+.verdict .vTitle{font-size:16px;font-weight:700;margin-bottom:8px;color:var(--green)}
+.source{font-size:10px;color:var(--dim);margin-top:4px}
+@media(max-width:768px){
+  .sidebar{display:none}
+  .layout{flex-direction:column}
+  main{padding:16px}
+  .grid2{grid-template-columns:1fr}
+  .grid3{grid-template-columns:1fr 1fr}
+}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <h1>八方雲集 (2753.TW) — 公司描述</h1>
+  <span class="badge">Step 1 / 10 · 2026-06-12</span>
+</div>
+<div class="layout">
+<nav class="sidebar">
+  <div class="navTitle">大綱</div>
+  <button class="navItem active" data-section="s1">📌 公司概覽</button>
+  <button class="navItem" data-section="s2">🏪 品牌與門市</button>
+  <button class="navItem" data-section="s3">📊 營收結構</button>
+  <button class="navItem" data-section="s4">🗺️ 定位地圖</button>
+  <button class="navItem" data-section="s5">💼 商業模式</button>
+  <button class="navItem" data-section="s6">👤 管理層</button>
+  <button class="navItem" data-section="s7">📋 綜合判斷</button>
+</nav>
+<main>
+
+<section id="s1" class="active">
+<div class="card">
+  <div class="cardTitle">公司概覽</div>
+  <table class="tbl">
+    <tr><th style="width:140px">項目</th><th>內容</th></tr>
+    <tr><td>公司全名</td><td>八方雲集國際股份有限公司<br><span style="font-size:11px;color:var(--muted)">Bafang Yunji International Co., Ltd.</span></td></tr>
+    <tr><td>股票代號</td><td>2753.TW（臺灣證券交易所）</td></tr>
+    <tr><td>董事長 / 總經理</td><td>林欣怡（兼任）</td></tr>
+    <tr><td>發言人</td><td>林欣怡</td></tr>
+    <tr><td>策略長</td><td>王仁良</td></tr>
+    <tr><td>財務長</td><td>黃麗麒</td></tr>
+    <tr><td>上市日期</td><td>2021 年 9 月</td></tr>
+    <tr><td>總部</td><td>台灣</td></tr>
+    <tr><td>員工人數</td><td>~3,000+（含直營與總部）</td></tr>
+  </table>
+</div>
+
+<div class="metrics">
+  <div class="metric">
+    <div class="val">190.5</div>
+    <div class="lbl">股價 (TWD)</div>
+  </div>
+  <div class="metric">
+    <div class="val">~127 億</div>
+    <div class="lbl">市值 (TWD)</div>
+  </div>
+  <div class="metric">
+    <div class="val">53.28</div>
+    <div class="lbl">每股淨值</div>
+  </div>
+  <div class="metric">
+    <div class="val">3.58x</div>
+    <div class="lbl">P/B</div>
+  </div>
+  <div class="metric">
+    <div class="val">~14.9x</div>
+    <div class="lbl">預估 P/E</div>
+  </div>
+  <div class="metric">
+    <div class="val">~80 億</div>
+    <div class="lbl">年營收 (TWD)</div>
+  </div>
+</div>
+
+<div class="callout">
+  <strong>一句話描述：</strong>台灣最大鍋貼水餃連鎖品牌，以加盟模式營運超過 1,000 家門市，近年積極拓展美國市場，營收穩定雙位數成長，為台灣中式快餐龍頭。
+</div>
+
+<div class="callout gold">
+  <strong>股價表現：</strong>52 週區間 168.0 – 221.5，目前 190.5（距高點 -14%，距低點 +13.4%）。近一個月 +7.3%，近一年 -0.8%，近兩年 +29.2%。日均量 ~368,000 股。
+</div>
+</section>
+
+<section id="s2">
+<div class="card">
+  <div class="cardTitle">品牌矩陣與門市網絡</div>
+  <table class="tbl">
+    <tr><th>品牌</th><th>定位</th><th>門市數</th><th>主要市場</th><th>營運模式</th></tr>
+    <tr><td><strong>八方雲集</strong></td><td>鍋貼、水餃、麵食</td><td>1,038</td><td>台灣</td><td>加盟為主（佔比 >90%）</td></tr>
+    <tr><td><strong>梁社漢排骨</strong></td><td>排骨飯、便當</td><td>~200</td><td>台灣</td><td>加盟</td></tr>
+    <tr><td><strong>八方雲集 (HK)</strong></td><td>鍋貼、水餃</td><td>59</td><td>香港</td><td>加盟+直營</td></tr>
+    <tr><td><strong>百芳池上便當 (HK)</strong></td><td>台式便當</td><td>13</td><td>香港</td><td>加盟</td></tr>
+    <tr><td><strong>八方麵屋 (HK)</strong></td><td>台式麵食</td><td>4</td><td>香港</td><td>加盟</td></tr>
+    <tr><td><strong>Bafang (US)</strong></td><td>複合式快餐</td><td>13</td><td>美國 (加州)</td><td>直營</td></tr>
+  </table>
+
+  <div class="callout green">
+    <strong>門市動態：</strong>2024 年台灣八方雲集淨增 26 家（開 44 / 關 18），結束過去三年千店整理期。梁社漢淨增 18 家。關店率從 ~3% 下降，留存的店品質提高。2025 年台灣八方與梁社漢各展店目標 30 家。<br>
+    <span class="source">（Source: 2025-12-19 法說會）</span>
+  </div>
+
+  <div class="pillRow">
+    <span class="pill g">台灣: 1,250+ 店</span>
+    <span class="pill g">香港: 78 店</span>
+    <span class="pill o">美國: 13 店</span>
+    <span class="pill p">加盟佔比 >90%</span>
+  </div>
+</div>
+</section>
+
+<section id="s3">
+<div class="card">
+  <div class="cardTitle">營收結構</div>
+  <div class="grid2">
+    <div>
+      <table class="tbl">
+        <tr><th colspan="2">地區營收佔比 (24Q3)</th></tr>
+        <tr><td>台灣</td><td class="up">78.6%</td></tr>
+        <tr><td>香港</td><td>14.2%</td></tr>
+        <tr><td>美國</td><td class="up">7.2%</td></tr>
+      </table>
+    </div>
+    <div>
+      <table class="tbl">
+        <tr><th colspan="2">品牌營收佔比 (台灣)</th></tr>
+        <tr><td>八方雲集</td><td>75%</td></tr>
+        <tr><td>梁社漢排骨</td><td>24.5%</td></tr>
+        <tr><td>其他</td><td>&lt;5%</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <table class="tbl" style="margin-top:12px">
+    <tr><th>期間</th><th>營收 (億 TWD)</th><th>備註</th></tr>
+    <tr><td>24Q3</td><td class="up">22.02</td><td>首次單季突破 22 億，創歷史新高</td></tr>
+    <tr><td>24Q1-Q3</td><td>64.88</td><td>YoY 明顯成長</td></tr>
+    <tr><td>24M11</td><td>7.67（單月）</td><td>連兩月創單月新高</td></tr>
+    <tr><td>24M1-M11</td><td>80.21–80.28</td><td>年增約 10%，全年估 ~87 億</td></tr>
+    <tr><td>25Q1</td><td>21.77</td><td>YoY 成長，同店成長率 >10%</td></tr>
+  </table>
+
+  <div class="callout green">
+    <strong>成長動能：</strong>鍋貼水餃銷量年增 8–10%（價格穩定後的銷量回升）；牛肉麵產線擴充（產能 3.5 萬包，MOMO 單日銷 1.6 萬包）；美國市場北加州新店開幕 + 德州中央工廠 2025 年底啟用。<br>
+    <span class="source">（Source: 2025-12-19 & 2025-07-11 法說會）</span>
+  </div>
+</div>
+
+<div class="card">
+  <div class="cardTitle">財務摘要</div>
+  <div class="grid2">
+    <table class="tbl">
+      <tr><th>指標</th><th>數值</th><th>趨勢</th></tr>
+      <tr><td>毛利率</td><td>36.45%</td><td class="up">↑ 回升</td></tr>
+      <tr><td>營益率</td><td>12.55%</td><td class="up">↑ 連五季成長</td></tr>
+      <tr><td>淨利率 (Q3)</td><td>10.4%</td><td class="up">↑ 回到三年前水準</td></tr>
+    </table>
+    <table class="tbl">
+      <tr><th>指標</th><th>數值</th><th>備註</th></tr>
+      <tr><td>EPS (Q1-Q3)</td><td>9.34</td><td>去年同期 9.05</td></tr>
+      <tr><td>每股淨值</td><td>53.28</td><td>—</td></tr>
+      <tr><td>ROE</td><td>~23%</td><td>預估全年</td></tr>
+      <tr><td>股利</td><td>8 元/年</td><td>配發率 ~80–88%</td></tr>
+    </table>
+  </div>
+</div>
+</section>
+
+<section id="s4">
+<div class="card">
+  <div class="cardTitle">公司定位地圖 — 八方雲集的生態系位置</div>
+  
+  <div class="posmap">
+    <svg viewBox="0 0 800 420" style="width:100%;max-width:750px">
+      <defs>
+        <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M 0 0 L 10 5 L 0 10 z" fill="#60a5fa"/>
+        </marker>
+        <marker id="arrowGray" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+          <path d="M 0 0 L 10 5 L 0 10 z" fill="#4a5568"/>
+        </marker>
+        <marker id="arrowRed" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+          <path d="M 0 0 L 10 5 L 0 10 z" fill="#f87171"/>
+        </marker>
+      </defs>
+      
+      <!-- Suppliers -->
+      <rect x="20" y="150" width="140" height="120" rx="10" fill="#181f2a" stroke="#252d3a"/>
+      <text x="90" y="180" text-anchor="middle" fill="#7c8aa0" font-size="10">上游供應商</text>
+      <text x="90" y="200" text-anchor="middle" fill="#e2e8f0" font-size="12">高麗菜契作農戶</text>
+      <text x="90" y="218" text-anchor="middle" fill="#e2e8f0" font-size="12">豬肉進口商</text>
+      <text x="90" y="236" text-anchor="middle" fill="#e2e8f0" font-size="12">麵粉/調味料供應</text>
+      <text x="90" y="256" text-anchor="middle" fill="#f59e0b" font-size="9">議價力: 中低 ✓</text>
+
+      <!-- Company center -->
+      <rect x="310" y="130" width="180" height="160" rx="12" fill="#181f2a" stroke="#60a5fa" stroke-width="2"/>
+      <text x="400" y="165" text-anchor="middle" fill="#60a5fa" font-size="16" font-weight="600">八方雲集</text>
+      <text x="400" y="188" text-anchor="middle" fill="#e2e8f0" font-size="11">中央工廠 × 低溫物流</text>
+      <text x="400" y="208" text-anchor="middle" fill="#e2e8f0" font-size="11">加盟體系管理</text>
+      <text x="400" y="228" text-anchor="middle" fill="#e2e8f0" font-size="11">品牌 × 研發 × 品管</text>
+      <text x="400" y="252" text-anchor="middle" fill="#34d399" font-size="10">規模優勢 | 配方壁壘 | 品牌信任</text>
+      <text x="400" y="275" text-anchor="middle" fill="#a78bfa" font-size="9">8 座中央工廠（含美/港）</text>
+
+      <!-- Channels -->
+      <rect x="640" y="30" width="140" height="100" rx="10" fill="#181f2a" stroke="#252d3a"/>
+      <text x="710" y="58" text-anchor="middle" fill="#7c8aa0" font-size="10">線上通路</text>
+      <text x="710" y="78" text-anchor="middle" fill="#e2e8f0" font-size="11">MOMO 購物</text>
+      <text x="710" y="96" text-anchor="middle" fill="#e2e8f0" font-size="11">家樂福</text>
+      <text x="710" y="114" text-anchor="middle" fill="#f59e0b" font-size="9">冷凍調理包</text>
+
+      <rect x="640" y="150" width="140" height="100" rx="10" fill="#181f2a" stroke="#252d3a"/>
+      <text x="710" y="178" text-anchor="middle" fill="#7c8aa0" font-size="10">線下門市</text>
+      <text x="710" y="198" text-anchor="middle" fill="#e2e8f0" font-size="11">1,250+ 加盟店</text>
+      <text x="710" y="216" text-anchor="middle" fill="#e2e8f0" font-size="11">直營店（美國）</text>
+      <text x="710" y="234" text-anchor="middle" fill="#f59e0b" font-size="9">高頻消費 | 剛需</text>
+
+      <!-- End Customers -->
+      <rect x="640" y="290" width="140" height="90" rx="10" fill="#181f2a" stroke="#252d3a"/>
+      <text x="710" y="318" text-anchor="middle" fill="#7c8aa0" font-size="10">終端消費者</text>
+      <text x="710" y="340" text-anchor="middle" fill="#e2e8f0" font-size="11">一般大眾（B2C）</text>
+      <text x="710" y="358" text-anchor="middle" fill="#f59e0b" font-size="9">價格敏感 | 品牌忠誠中</text>
+
+      <!-- Competitors (left) -->
+      <rect x="20" y="310" width="140" height="90" rx="10" fill="#181f2a" stroke="#f87171" stroke-width="1.5"/>
+      <text x="90" y="340" text-anchor="middle" fill="#f87171" font-size="11">競爭者</text>
+      <text x="90" y="358" text-anchor="middle" fill="#e2e8f0" font-size="10">四海遊龍</text>
+      <text x="90" y="374" text-anchor="middle" fill="#e2e8f0" font-size="10">鮮天下 / 其他小吃</text>
+      <text x="90" y="392" text-anchor="middle" fill="#f87171" font-size="9">威脅: 中低（規模懸殊）</text>
+
+      <!-- Substitutes (top right) -->
+      <rect x="640" y="390" width="140" height="30" rx="8" fill="#181f2a" stroke="#4a5568" stroke-dasharray="4"/>
+      <text x="710" y="410" text-anchor="middle" fill="#4a5568" font-size="10">替代品: 超商鮮食、外送平台、自煮</text>
+
+      <!-- Arrows -->
+      <line x1="160" y1="210" x2="310" y2="210" stroke="#60a5fa" stroke-width="1.5" marker-end="url(#arrow)"/>
+      <line x1="490" y1="195" x2="640" y2="80" stroke="#4a5568" stroke-width="1" marker-end="url(#arrowGray)"/>
+      <line x1="490" y1="195" x2="640" y2="195" stroke="#60a5fa" stroke-width="1.5" marker-end="url(#arrow)"/>
+      <line x1="490" y1="195" x2="640" y2="330" stroke="#60a5fa" stroke-width="1.5" marker-end="url(#arrow)"/>
+      <line x1="160" y1="350" x2="310" y2="250" stroke="#f87171" stroke-width="1" marker-end="url(#arrowRed)" stroke-dasharray="5"/>
+      
+      <!-- Annotations -->
+      <text x="235" y="203" text-anchor="middle" fill="#4a5568" font-size="9">原料供應</text>
+      <text x="565" y="150" text-anchor="middle" fill="#4a5568" font-size="9">貨源配送</text>
+      <text x="240" y="300" text-anchor="middle" fill="#4a5568" font-size="9">競品替代</text>
+      
+      <!-- Legend -->
+      <rect x="20" y="15" width="200" height="55" rx="8" fill="#131820" stroke="#252d3a"/>
+      <text x="30" y="35" fill="#7c8aa0" font-size="9">實線 = 核心關係</text>
+      <text x="30" y="50" fill="#7c8aa0" font-size="9">虛線 = 間接威脅/次要通路</text>
+      <text x="30" y="65" fill="#7c8aa0" font-size="9">✓ = 八方雲集議價優勢方</text>
+    </svg>
+  </div>
+
+  <div class="callout">
+    <strong>定位分析：</strong>八方雲集處於價值鏈的「品牌營運 + 中央工廠」節點，上游農產品分散、議價力強（自建冷藏庫＋多元採購），下游加盟店對公司依賴度高（中央工廠獨家供應），終端消費者品牌忠誠度中等但規模壁壘極高。最大威脅來自香港市場的中國低價品牌競爭和美國市場的營運模式適應。
+  </div>
+</div>
+</section>
+
+<section id="s5">
+<div class="card">
+  <div class="cardTitle">商業模式分析</div>
+  <table class="tbl">
+    <tr><th style="width:160px">維度</th><th>描述</th><th>評價</th></tr>
+    <tr>
+      <td>營收模式</td>
+      <td>中央工廠生產半成品 → 低溫物流配送 → 加盟門市現場烹調販售。收入來自：原料出貨（主要）+ 加盟金/權利金 + 線上調理包銷售</td>
+      <td><span class="pill g">優良</span></td>
+    </tr>
+    <tr>
+      <td>成本結構</td>
+      <td>食材成本佔 60–80%（高麗菜、豬肉為主）。自建冷藏倉庫（大林倉 6,000 噸）＋契作穩定原料成本。折舊（德州廠）近期上升</td>
+      <td><span class="pill g">可控</span></td>
+    </tr>
+    <tr>
+      <td>客戶獲取</td>
+      <td>街邊店自然流量為主，品牌知名度極高。會員導流效益有限，線上點餐數位化導入中</td>
+      <td><span class="pill o">尚可</span></td>
+    </tr>
+    <tr>
+      <td>規模化能力</td>
+      <td>中央工廠產能可支援現有店數的倍數擴張（加州廠 30–50 店、德州廠數倍）。每間新店增加出貨量但總部固定成本幾乎不變</td>
+      <td><span class="pill g">極佳</span></td>
+    </tr>
+    <tr>
+      <td>資本密集度</td>
+      <td>加盟模式為輕資產（加盟主承擔店租、裝潢、人力）。美國直營和德州工廠需較大資本支出（1,300–1,500 萬美元）</td>
+      <td><span class="pill g">輕資產</span></td>
+    </tr>
+    <tr>
+      <td>經常性收入</td>
+      <td>餐飲為高頻消費，加盟店每日向中央工廠叫貨。原料出貨收入具高度可預測性</td>
+      <td><span class="pill g">高可預測</span></td>
+    </tr>
+  </table>
+
+  <div class="callout green">
+    <strong>商業模式品質：</strong>八方雲集的商業模式核心是「中央工廠 × 加盟網絡」——這是一個被麥當勞、星巴克驗證過的高品質模式。公司賺的是「出貨給加盟店的原料差價」，而非直接承擔門市營運風險。拓店時邊際成本遞減，規模效應顯著。美國從加盟轉直營是短期資本密集的陣痛，但長期可獲取更高的單店利潤。
+  </div>
+
+  <div class="pillRow">
+    <span class="pill g">輕資產加盟</span>
+    <span class="pill g">規模經濟</span>
+    <span class="pill p">中央工廠護城河</span>
+    <span class="pill o">美國直營轉型</span>
+    <span class="pill g">高頻剛需</span>
+  </div>
+</div>
+</section>
+
+<section id="s6">
+<div class="card">
+  <div class="cardTitle">管理層與股東利益一致性</div>
+  <table class="tbl">
+    <tr><th style="width:160px">面向</th><th>證據</th><th>評分</th></tr>
+    <tr>
+      <td>CEO 背景</td>
+      <td>林欣怡，董事長兼總經理。從法說會表現來看，對營運細節（門市數、原物料、各市場策略）極為熟悉，回答具體不閃躲</td>
+      <td>⭐⭐⭐⭐</td>
+    </tr>
+    <tr>
+      <td>CEO 任期</td>
+      <td>長期掌舵，公司從區域品牌成長為國際連鎖。經歷過食安危機和疫情考驗</td>
+      <td>⭐⭐⭐⭐</td>
+    </tr>
+    <tr>
+      <td>薪酬結構</td>
+      <td>未公開細節，但無重大爭議</td>
+      <td>⭐⭐⭐</td>
+    </tr>
+    <tr>
+      <td>內部人持股</td>
+      <td>董監持股 31.38%（20,911 張），高度利益綁定</td>
+      <td>⭐⭐⭐⭐⭐</td>
+    </tr>
+    <tr>
+      <td>內部人交易</td>
+      <td>無明顯負面消息</td>
+      <td>⭐⭐⭐</td>
+    </tr>
+    <tr>
+      <td>股東回饋</td>
+      <td>配發率 80–88%，高現金股利。2024 年募資 10 億（4 億國內、6 億美國擴張），具明確用途</td>
+      <td>⭐⭐⭐⭐</td>
+    </tr>
+  </table>
+
+  <div class="callout green">
+    <strong>管理層判斷：</strong>林欣怡是典型的創始人/長期經營者，利益與股東高度一致（持股 >31%）。法說會表現務實坦誠：坦承「香港獲利逐步下降」「美國快餐模式還在測試」「德州廠初期會虧損」——不粉飾問題。高股利配發率（~80%）提供下檔保護。總體而言，管理層可信賴度高。
+  </div>
+</div>
+</section>
+
+<section id="s7">
+<div class="card">
+  <div class="cardTitle">綜合判斷 — Company Description Verdict</div>
+  
+  <div class="verdict">
+    <div class="vTitle">📋 結論</div>
+    <table class="tbl" style="margin-top:8px">
+      <tr><td style="width:180px"><strong>商業品質等級</strong></td><td><span style="color:var(--green);font-weight:700;font-size:16px">B+ (Good)</span></td></tr>
+      <tr><td><strong>定位強度</strong></td><td>在台灣中式快餐的價值鏈中處於強勢位置——上游分散、下游依賴、品牌信任、規模無人能敵</td></tr>
+      <tr><td><strong>商業模式護城河</strong></td><td>中央工廠 × 加盟網絡的規模經濟 + 配方標準化 + 品牌信任形成自然壟斷</td></tr>
+      <tr><td><strong>管理層品質</strong></td><td>務實、坦誠、利益一致。創始人經營、高持股、高配息</td></tr>
+      <tr><td><strong style="color:var(--gold)">核心未知數</strong></td><td>① 美國市場能否複製台灣成功模式？② 香港獲利是否持續萎縮？③ 德州工廠折舊對短期獲利衝擊多大？</td></tr>
+    </table>
+  </div>
+
+  <div class="callout gold" style="margin-top:16px">
+    <strong>🔑 關鍵投資命題：</strong>八方雲集是典型的「成熟市場現金牛 + 新市場增長期權」組合——台灣本業穩定成長（+10% YoY），美國市場若成功將打開 3–5 倍的 TAM 想像空間。核心風險在於美國市場的執行力，以及短期資本支出對獲利的壓抑。
+  </div>
+</div>
+</section>
+
+</main>
+</div>
+
+<script>
+document.querySelectorAll('.navItem').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.navItem').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
+    document.getElementById(btn.dataset.section).classList.add('active');
+  });
+});
+// Keyboard navigation
+document.addEventListener('keydown', e => {
+  if(e.target.tagName==='INPUT') return;
+  const sections = ['s1','s2','s3','s4','s5','s6','s7'];
+  const active = document.querySelector('section.active');
+  let idx = sections.indexOf(active.id);
+  if(e.key==='ArrowDown'||e.key==='ArrowRight') idx=Math.min(idx+1,6);
+  if(e.key==='ArrowUp'||e.key==='ArrowLeft') idx=Math.max(idx-1,0);
+  if(idx!==sections.indexOf(active.id)){
+    document.querySelectorAll('.navItem').forEach(b=>b.classList.remove('active'));
+    document.querySelector(`.navItem[data-section="${sections[idx]}"]`).classList.add('active');
+    document.querySelectorAll('section').forEach(s=>s.classList.remove('active'));
+    document.getElementById(sections[idx]).classList.add('active');
+  }
+});
+</script>
+</body>
+</html>
