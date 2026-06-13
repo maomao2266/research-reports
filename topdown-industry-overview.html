@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>台股 Top-Down 產業篩選 · Gerstein/Gray 框架</title>
+<style>
+:root{--bg:#0a0e14;--surface:#131820;--card:#181f2a;--border:#252d3a;--ink:#e2e8f0;--muted:#7c8aa0;--dim:#4a5568;--accent:#60a5fa;--accent2:#3b82f6;--gold:#f59e0b;--green:#34d399;--red:#f87171;--orange:#fb923c;--purple:#a78bfa;--radius:14px;--radius2:18px;--sans:"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,-apple-system,sans-serif}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--sans);background:var(--bg);color:var(--ink);line-height:1.6;padding:0}
+
+/* Topbar */
+.topbar{background:var(--surface);border-bottom:1px solid var(--border);padding:16px 24px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:10}
+.topbar h1{font-size:18px;font-weight:700}
+.topbar .badge{font-size:11px;background:var(--accent2);color:#fff;padding:3px 10px;border-radius:20px}
+
+/* Layout */
+.layout{display:flex;max-width:1200px;margin:0 auto}
+.sidebar{width:240px;min-width:240px;padding:20px 16px;border-right:1px solid var(--border);position:sticky;top:56px;height:calc(100vh - 56px);overflow-y:auto}
+.content{flex:1;padding:24px;min-height:calc(100vh - 56px)}
+
+/* Nav */
+.navItem{display:block;padding:10px 12px;color:var(--muted);text-decoration:none;border-radius:8px;font-size:13px;cursor:pointer;margin-bottom:2px}
+.navItem:hover{background:var(--card);color:var(--ink)}
+.navItem.active{background:var(--card);color:var(--accent);font-weight:600}
+.navSection{font-size:10px;text-transform:uppercase;color:var(--dim);padding:16px 12px 6px;letter-spacing:1px}
+
+/* Cards */
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px;margin-bottom:16px}
+.cardTitle{font-size:15px;font-weight:700;margin-bottom:12px;color:var(--ink)}
+.cardSub{font-size:12px;color:var(--muted);margin-bottom:8px}
+
+/* Metrics */
+.metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:20px}
+.metric{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:14px;text-align:center}
+.metric .val{font-size:24px;font-weight:800;color:var(--accent)}
+.metric .lbl{font-size:11px;color:var(--muted);margin-top:4px}
+
+/* Tables */
+.tbl{width:100%;border-collapse:collapse;font-size:13px}
+.tbl th{text-align:left;padding:8px 12px;border-bottom:2px solid var(--border);color:var(--muted);font-weight:600;font-size:11px;white-space:nowrap}
+.tbl td{padding:8px 12px;border-bottom:1px solid var(--border)}
+.tbl tr:hover{background:var(--surface)}
+.tbl .up{color:var(--green)}
+.tbl .down{color:var(--red)}
+.tbl .warn{color:var(--orange)}
+.tbl .right{text-align:right}
+
+/* Pills */
+.pill{display:inline-block;font-size:10px;padding:2px 8px;border-radius:10px;margin:0 2px}
+.pill.g{background:#064e3b;color:var(--green)}
+.pill.r{background:#4c0519;color:var(--red)}
+.pill.o{background:#422006;color:var(--orange)}
+.pill.b{background:#172554;color:var(--accent)}
+
+/* Grid */
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+
+/* Callout */
+.callout{border-left:3px solid;padding:12px 16px;border-radius:0 var(--radius) var(--radius) 0;margin:12px 0;font-size:13px}
+.callout.green{border-color:var(--green);background:rgba(52,211,153,.08)}
+.callout.gold{border-color:var(--gold);background:rgba(245,158,11,.08)}
+.callout.red{border-color:var(--red);background:rgba(248,113,113,.08)}
+.callout.purple{border-color:var(--purple);background:rgba(167,139,250,.08)}
+
+/* Verdict */
+.verdict{background:linear-gradient(135deg,var(--surface),var(--card));border:1px solid var(--accent2);border-radius:var(--radius2);padding:24px;margin-top:20px}
+.verdict .vTitle{font-size:18px;font-weight:800;color:var(--accent);margin-bottom:12px}
+
+/* Bar chart */
+.barRow{display:flex;align-items:center;gap:8px;margin:4px 0}
+.barLabel{width:80px;font-size:12px;text-align:right;color:var(--muted)}
+.barTrack{flex:1;height:18px;background:var(--surface);border-radius:4px;overflow:hidden}
+.barFill{height:100%;border-radius:4px;transition:width .5s}
+.barVal{width:60px;font-size:11px;color:var(--ink);text-align:right}
+
+/* Heat colors */
+.hit-green{background:var(--green)}
+.hit-yellow{background:var(--gold)}
+.hit-orange{background:var(--orange)}
+.hit-red{background:var(--red)}
+
+/* Recommendation card */
+.recCard{border:1px solid var(--accent);background:linear-gradient(135deg,var(--card),rgba(59,130,246,.06));padding:20px;border-radius:var(--radius2);margin-bottom:16px}
+.recCard .rank{font-size:48px;font-weight:900;color:var(--accent);opacity:.3;line-height:1}
+.recCard h3{font-size:17px;margin-top:-20px;margin-bottom:8px}
+.recCard p{font-size:12px;color:var(--muted);line-height:1.5}
+
+/* Mobile tabs */
+.mobileNav{display:none}
+@media(max-width:768px){
+  .layout{flex-direction:column}
+  .sidebar{display:none}
+  .mobileNav{display:flex;gap:4px;overflow-x:auto;padding:8px 16px;-webkit-overflow-scrolling:touch;scrollbar-width:none;border-bottom:1px solid var(--border)}
+  .mobileNav::-webkit-scrollbar{display:none}
+  .mobileNav .navItem{flex-shrink:0;white-space:nowrap;font-size:11px;padding:6px 10px}
+  .content{padding:16px}
+  .grid2{grid-template-columns:1fr}
+  .metrics{grid-template-columns:repeat(2,1fr)}
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <h1>🏭 Top-Down 產業篩選</h1>
+  <div>
+    <span class="badge" style="margin-right:8px">Gerstein/Gray</span>
+    <span class="badge" style="background:var(--green)">2026-06-12</span>
+  </div>
+</div>
+
+<div class="layout">
+<nav class="sidebar">
+  <div class="navSection">總覽</div>
+  <div class="navItem active" data-section="s0">📊 市場全景</div>
+  <div class="navItem" data-section="s1">🏆 Top 產業推薦</div>
+  <div class="navSection">產業明細</div>
+  <div class="navItem" data-section="s2">🟢 高品質產業</div>
+  <div class="navItem" data-section="s3">🟡 中等品質產業</div>
+  <div class="navItem" data-section="s4">🟠 低品質但有機會</div>
+  <div class="navItem" data-section="s5">🔴 無品質標的</div>
+  <div class="navSection">下一步</div>
+  <div class="navItem" data-section="s6">🎯 行動建議</div>
+  <div class="navItem" data-section="s7">⚙️ 方法論</div>
+</nav>
+
+<main class="content">
+
+<!-- ========== S0: Market Overview ========== -->
+<section id="s0">
+<h2 style="margin-bottom:16px">📊 台股市場全景</h2>
+
+<div class="metrics">
+  <div class="metric"><div class="val">1,052</div><div class="lbl">上市股票總數</div></div>
+  <div class="metric"><div class="val">597</div><div class="lbl">Layer 0 通過</div></div>
+  <div class="metric"><div class="val">83</div><div class="lbl">品質池 (Layer 1)</div></div>
+  <div class="metric"><div class="val" style="color:var(--gold)">14%</div><div class="lbl">品質通過率</div></div>
+  <div class="metric"><div class="val" style="color:var(--green)">25</div><div class="lbl">Value 精選</div></div>
+  <div class="metric"><div class="val" style="color:var(--purple)">57</div><div class="lbl">Growth 精選</div></div>
+</div>
+
+<div class="callout purple">
+  <strong>📌 方法論：</strong>Gerstein 雙層 AND 邏輯 — 品質門檻（ROE + 毛利率 + 負債比 全部>同業中位數）→ 價格排名（PE分位 + P/S + P/B + 動能反轉）。只有通過品質門檻的 83 檔進入定價層。
+</div>
+
+<div class="card">
+  <div class="cardTitle">產業品質密度排名</div>
+  <div class="cardSub">通過品質門檻的比例 × 同業中位數估值</div>
+
+<div class="barRow" style="font-weight:600;color:var(--muted);font-size:10px">
+  <span class="barLabel"></span><span class="barTrack" style="background:transparent"><span style="margin-left:4px">品質通過率 →</span></span><span class="barVal">P/E 中位數</span>
+</div>
+
+<div class="barRow"><span class="barLabel">運動休閒</span><span class="barTrack"><span class="barFill hit-green" style="width:83.5%"></span></span><span class="barVal">14.5x (3/18)</span></div>
+<div class="barRow"><span class="barLabel">水泥</span><span class="barTrack"><span class="barFill hit-green" style="width:71.5%"></span></span><span class="barVal">16.9x (1/7)</span></div>
+<div class="barRow"><span class="barLabel">造紙</span><span class="barTrack"><span class="barFill hit-green" style="width:71.5%"></span></span><span class="barVal">18.8x (1/7)</span></div>
+<div class="barRow"><span class="barLabel">電器電纜</span><span class="barTrack"><span class="barFill hit-yellow" style="width:62.5%"></span></span><span class="barVal">15.6x (2/16)</span></div>
+<div class="barRow"><span class="barLabel">化工生技</span><span class="barTrack"><span class="barFill hit-yellow" style="width:39.5%"></span></span><span class="barVal">20.0x (7/89)</span></div>
+<div class="barRow"><span class="barLabel">食品</span><span class="barTrack"><span class="barFill hit-yellow" style="width:40%"></span></span><span class="barVal">20.2x (2/25)</span></div>
+<div class="barRow"><span class="barLabel">綠能</span><span class="barTrack"><span class="barFill hit-yellow" style="width:38.5%"></span></span><span class="barVal">18.0x (2/26)</span></div>
+<div class="barRow"><span class="barLabel">營建</span><span class="barTrack"><span class="barFill hit-yellow" style="width:36.5%"></span></span><span class="barVal">11.9x (4/55)</span></div>
+<div class="barRow"><span class="barLabel">紡織</span><span class="barTrack"><span class="barFill hit-yellow" style="width:35.5%"></span></span><span class="barVal">16.8x (3/42)</span></div>
+<div class="barRow"><span class="barLabel">電腦週邊</span><span class="barTrack"><span class="barFill hit-orange" style="width:24.5%"></span></span><span class="barVal">23.6x (3/61)</span></div>
+<div class="barRow"><span class="barLabel">半導體</span><span class="barTrack"><span class="barFill hit-orange" style="width:17%"></span></span><span class="barVal">38.0x (3/87)</span></div>
+</div>
+</section>
+
+<!-- ========== S1: Top Recommendations ========== -->
+<section id="s1" style="display:none">
+<h2 style="margin-bottom:16px">🏆 優先關注產業（Top-Down 建議）</h2>
+<p style="color:var(--muted);font-size:13px;margin-bottom:20px">根據品質密度、絕對檔數、產業估值、以及子產業多元性，優先推薦以下產業：</p>
+
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+
+<div class="recCard">
+  <div class="rank">#1</div>
+  <h3>🧬 化工生技</h3>
+  <p>7 檔通過品質門檻 · 6 檔入 Value Top 25 · 產業 PE 中位數 20.0x 合理</p>
+  <div style="margin-top:12px;display:flex;gap:4px;flex-wrap:wrap">
+    <span class="pill g">Value×6</span><span class="pill b">Growth×1</span><span class="pill o">G&I×2</span>
+  </div>
+  <div style="margin-top:12px;font-size:11px;color:var(--muted)">
+    含生技製藥（泰博 PE 6.8x、生達 PE 11.6x）、材料（材料-KY PE 8.6x）、醫材（視陽）、學名藥（美吾華）。子產業多元，估值偏低。
+  </div>
+</div>
+
+<div class="recCard">
+  <div class="rank">#2</div>
+  <h3>🏗️ 營建</h3>
+  <p>4 檔通過品質門檻 · 產業 PE 中位數 11.9x（全市場最低之一）</p>
+  <div style="margin-top:12px;display:flex;gap:4px;flex-wrap:wrap">
+    <span class="pill g">Value×2</span><span class="pill b">Growth×1</span><span class="pill o">G&I×3</span>
+  </div>
+  <div style="margin-top:12px;font-size:11px;color:var(--muted)">
+    ⚠️ 營建股週期性強，PE 3-4x 可能是價值陷阱。遠雄（PE 8.5x）、櫻花建（PE 13.7x）相對穩健。需確認在手案量及交屋時程。
+  </div>
+</div>
+
+<div class="recCard">
+  <div class="rank">#3</div>
+  <h3>⛳ 運動休閒</h3>
+  <p>3 檔通過品質門檻 · 品質密度最高（16.7%）· PE 中位數 14.5x</p>
+  <div style="margin-top:12px;display:flex;gap:4px;flex-wrap:wrap">
+    <span class="pill g">Value×2</span><span class="pill o">G&I×1</span>
+  </div>
+  <div style="margin-top:12px;font-size:11px;color:var(--muted)">
+    含高爾夫球具（復盛應用 ROE 21.2%）、遊艇（東哥遊艇 PE 9.3x）、自行車鏈條（桂盟）。全球高端消費復甦受益者。
+  </div>
+</div>
+
+<div class="recCard">
+  <div class="rank">#4</div>
+  <h3>🧵 紡織</h3>
+  <p>3 檔通過品質門檻 · 2 檔入 Value Top 25 · PE 中位數 16.8x</p>
+  <div style="margin-top:12px;display:flex;gap:4px;flex-wrap:wrap">
+    <span class="pill g">Value×2</span><span class="pill b">Growth×2</span><span class="pill o">G&I×1</span>
+  </div>
+  <div style="margin-top:12px;font-size:11px;color:var(--muted)">
+    儒鴻（ROE 25.7% 運動服飾代工王者）、新紡（PE 4.9x 但 ROE 59% 受一次性收益影響）。需區分本業與業外。
+  </div>
+</div>
+
+</div>
+</section>
+
+<!-- ========== S2: High Quality ========== -->
+<section id="s2" style="display:none">
+<h2 style="margin-bottom:16px">🟢 高品質密度產業（hit rate ≥ 15%）</h2>
+<p style="color:var(--muted);font-size:13px;margin-bottom:20px">品質通過率最高的產業 — 代表整個產業的體質相對好</p>
+
+<div class="card">
+  <div class="cardTitle">⛳ 運動休閒 <span class="pill g" style="margin-left:8px">16.7% 通過</span></div>
+  <table class="tbl">
+  <tr><th>代碼</th><th>名稱</th><th class="right">PE</th><th class="right">ROE</th><th class="right">毛利率</th><th>策略</th></tr>
+  <tr><td>5306</td><td>桂盟</td><td class="right">14.0x</td><td class="right">10.0%</td><td class="right">44.3%</td><td><span class="pill g">Value</span></td></tr>
+  <tr><td>6670</td><td>復盛應用</td><td class="right">13.8x</td><td class="right up">21.2%</td><td class="right">24.9%</td><td><span class="pill g">Value</span><span class="pill o">G&I</span></td></tr>
+  <tr><td>8478</td><td>東哥遊艇</td><td class="right">9.3x</td><td class="right up">15.4%</td><td class="right">47.7%</td><td><span class="pill g">Value</span></td></tr>
+  </table>
+  <div class="callout green" style="margin-top:16px">
+    <strong>💡 亮點：</strong>三檔都是外銷為主的消費品牌/代工，毛利率高（25-48%），受惠全球富裕階層消費韌性。PE 9-14x 相對國際同業偏低。
+  </div>
+</div>
+</section>
+
+<!-- ========== S3: Medium Quality ========== -->
+<section id="s3" style="display:none">
+<h2 style="margin-bottom:16px">🟡 中等品質產業（hit rate 7-15%）</h2>
+
+<div class="card">
+  <div class="cardTitle">🧬 化工生技 <span class="pill o" style="margin-left:8px">7.9% 通過</span> <span style="font-size:13px;color:var(--muted)">· 7 檔 · PE 中位數 20.0x</span></div>
+  <table class="tbl">
+  <tr><th>代碼</th><th>名稱</th><th class="right">PE</th><th class="right">ROE</th><th>子產業</th><th>策略</th></tr>
+  <tr><td>4736</td><td>泰博</td><td class="right down">6.8x</td><td class="right">11.7%</td><td>醫材/血糖儀</td><td><span class="pill g">Value</span><span class="pill o">G&I</span></td></tr>
+  <tr><td>4763</td><td>材料-KY</td><td class="right down">8.6x</td><td class="right up">21.3%</td><td>醋片/絲束</td><td><span class="pill g">Value</span><span class="pill o">G&I</span></td></tr>
+  <tr><td>1720</td><td>生達</td><td class="right down">11.6x</td><td class="right">13.0%</td><td>學名藥</td><td><span class="pill g">Value</span></td></tr>
+  <tr><td>1783</td><td>和康生</td><td class="right down">12.9x</td><td class="right">13.4%</td><td>生醫材料</td><td><span class="pill g">Value</span></td></tr>
+  <tr><td>6782</td><td>視陽</td><td class="right down">13.1x</td><td class="right up">22.2%</td><td>隱形眼鏡</td><td><span class="pill g">Value</span></td></tr>
+  <tr><td>1731</td><td>美吾華</td><td class="right">15.5x</td><td class="right">10.5%</td><td>品牌藥/通路</td><td><span class="pill g">Value</span><span class="pill o">G&I</span></td></tr>
+  <tr><td>6446</td><td>藥華藥</td><td class="right up">59.5x</td><td class="right up">25.9%</td><td>新藥研發</td><td><span class="pill b">Growth</span></td></tr>
+  </table>
+  <div class="callout green" style="margin-top:16px">
+    <strong>💡 最推薦深挖的產業：</strong>7 檔中 6 檔入 Value Top 25，PE 6.8-15.5x 全面低於同業。子產業橫跨醫材、學名藥、生醫材料、隱形眼鏡 — 多元性高，可做產業內 peer comparison。
+  </div>
+</div>
+
+<div class="card">
+  <div class="cardTitle">🏗️ 營建 <span class="pill o" style="margin-left:8px">7.3% 通過</span> <span style="font-size:13px;color:var(--muted)">· 4 檔 · PE 中位數 11.9x</span></div>
+  <table class="tbl">
+  <tr><th>代碼</th><th>名稱</th><th class="right">PE</th><th class="right">ROE</th><th>策略</th></tr>
+  <tr><td>9946</td><td>三發地產</td><td class="right down">4.3x</td><td class="right up">48.0%</td><td><span class="pill g">Value</span><span class="pill b">Growth</span><span class="pill o">G&I</span></td></tr>
+  <tr><td>2527</td><td>宏璟</td><td class="right down">7.2x</td><td class="right up">18.2%</td><td><span class="pill g">Value</span></td></tr>
+  <tr><td>5522</td><td>遠雄</td><td class="right down">8.5x</td><td class="right">11.2%</td><td><span class="pill o">G&I</span></td></tr>
+  <tr><td>2539</td><td>櫻花建</td><td class="right">13.7x</td><td class="right up">17.8%</td><td><span class="pill o">G&I</span></td></tr>
+  </table>
+  <div class="callout gold" style="margin-top:16px">
+    <strong>⚠️ 注意：</strong>營建股 ROE 可能來自單一年度大案入帳。三發地產 ROE 48% 需確認是否可持續。建議檢查歷年營收穩定性及在手案量。
+  </div>
+</div>
+
+<div class="card">
+  <div class="cardTitle">🧵 紡織 <span class="pill o" style="margin-left:8px">7.1% 通過</span> <span style="font-size:13px;color:var(--muted)">· 3 檔 · PE 中位數 16.8x</span></div>
+  <table class="tbl">
+  <tr><th>代碼</th><th>名稱</th><th class="right">PE</th><th class="right">ROE</th><th>策略</th></tr>
+  <tr><td>1419</td><td>新紡</td><td class="right down">4.9x</td><td class="right up">59.1%</td><td><span class="pill g">Value</span><span class="pill b">Growth</span></td></tr>
+  <tr><td>1446</td><td>宏和</td><td class="right down">9.9x</td><td class="right">9.8%</td><td><span class="pill o">G&I</span></td></tr>
+  <tr><td>1476</td><td>儒鴻</td><td class="right">16.7x</td><td class="right up">25.7%</td><td><span class="pill g">Value</span><span class="pill b">Growth</span></td></tr>
+  </table>
+  <div class="callout gold" style="margin-top:16px">
+    <strong>⚠️ 注意：</strong>新紡 ROE 59% 可能是資產重估或一次性收益。儒鴻才是真正的高品質紡織股 — ROE 穩定 20%+，Nike/Lululemon 核心供應商。
+  </div>
+</div>
+
+<div class="card">
+  <div class="cardTitle">🍔 食品 <span class="pill o" style="margin-left:8px">8.0% 通過</span> <span style="font-size:13px;color:var(--muted)">· 2 檔 · PE 中位數 20.2x</span></div>
+  <table class="tbl">
+  <tr><th>代碼</th><th>名稱</th><th class="right">PE</th><th class="right">ROE</th><th>策略</th></tr>
+  <tr><td>1256</td><td>鮮活果汁-KY</td><td class="right">13.4x</td><td class="right">11.4%</td><td><span class="pill g">Value</span></td></tr>
+  <tr><td>3054</td><td>立萬利</td><td class="right">20.1x</td><td class="right up">38.0%</td><td><span class="pill b">Growth</span></td></tr>
+  </table>
+  <div class="callout purple" style="margin-top:16px">
+    <strong>📌 八方雲集不在品質池：</strong>八方（2753）PE 18.6x 但 ROE 17.5%、毛利率 34.5%、負債比 63.6%（因 IFRS 16 租賃）。負債比偏高未能通過品質門檻。建議同業比較時納入八方、王品、瓦城等未通過門檻但值得關注的餐飲股。
+  </div>
+</div>
+</section>
+
+<!-- ========== S4: Low Quality ========== -->
+<section id="s4" style="display:none">
+<h2 style="margin-bottom:16px">🟠 低品質但仍有個股機會</h2>
+
+<div class="card">
+  <div class="cardTitle">💻 電腦週邊 <span class="pill r" style="margin-left:8px">4.9%</span> <span style="font-size:13px;color:var(--muted)">· 3 檔 · PE 中位數 23.6x</span></div>
+  <table class="tbl">
+  <tr><th>代碼</th><th>名稱</th><th class="right">PE</th><th class="right">ROE</th></tr>
+  <tr><td>3005</td><td>神基</td><td class="right down">12.9x</td><td class="right up">16.8%</td></tr>
+  <tr><td>6206</td><td>飛捷</td><td class="right">18.4x</td><td class="right up">26.1%</td></tr>
+  <tr><td>8114</td><td>振樺電</td><td class="right">14.0x</td><td class="right">13.7%</td></tr>
+  </table>
+</div>
+
+<div class="card">
+  <div class="cardTitle">⚡ 半導體 <span class="pill r" style="margin-left:8px">3.4%</span> <span style="font-size:13px;color:var(--muted)">· 3 檔 · PE 中位數 38.0x</span></div>
+  <table class="tbl">
+  <tr><th>代碼</th><th>名稱</th><th class="right">PE</th><th class="right">ROE</th></tr>
+  <tr><td>2451</td><td>創見</td><td class="right down">9.9x</td><td class="right up">132.0%</td></tr>
+  <tr><td>2408</td><td>南亞科</td><td class="right">33.5x</td><td class="right up">57.3%</td></tr>
+  <tr><td>8081</td><td>致新</td><td class="right">16.1x</td><td class="right up">17.8%</td></tr>
+  </table>
+  <div class="callout red" style="margin-top:16px">
+    <strong>🚨 警告：</strong>創見 ROE 132% 來自資產處分（廠房出售），非本業。半導體景氣循環性強，南亞科 DRAM 報價波動大。致新（類比 IC）相對穩健。
+  </div>
+</div>
+</section>
+
+<!-- ========== S5: Dead Zones ========== -->
+<section id="s5" style="display:none">
+<h2 style="margin-bottom:16px">🔴 無品質標的 — 整個產業 0 通過</h2>
+
+<div class="card">
+  <table class="tbl">
+  <tr><th>產業</th><th class="right">股票數</th><th class="right">PE 中位數</th><th>原因推測</th></tr>
+  <tr><td>塑膠</td><td class="right">21</td><td class="right">39.7x</td><td>原物料景氣低谷，毛利率集體偏低</td></tr>
+  <tr><td>鋼鐵</td><td class="right">31</td><td class="right">18.6x</td><td>中國產能過剩壓縮利潤，負債比偏高</td></tr>
+  <tr><td>金融</td><td class="right">32</td><td class="right">15.4x</td><td>金融業不適用毛利率/負債比指標（需另設框架）</td></tr>
+  <tr><td>觀光餐旅</td><td class="right">19</td><td class="right">15.9x</td><td>疫情後復甦不均，部分公司仍虧損</td></tr>
+  <tr><td>貿易百貨</td><td class="right">17</td><td class="right">23.6x</td><td>毛利率低（通路本質），ROE 普遍偏低</td></tr>
+  <tr><td>橡膠</td><td class="right">11</td><td class="right">18.4x</td><td>原物料產業，週期性強</td></tr>
+  <tr><td>資訊服務</td><td class="right">11</td><td class="right">18.6x</td><td>規模偏小，ROE 波動大</td></tr>
+  <tr><td>家居生活</td><td class="right">11</td><td class="right">13.9x</td><td>內需市場飽和，成長性低</td></tr>
+  </table>
+  <div class="callout gold" style="margin-top:16px">
+    <strong>📌 金融業例外：</strong>金融業不適用製造業的毛利率/負債比邏輯。需另建 P/B + ROE + 逾放比框架。這是未來可以擴展的方向。
+  </div>
+</div>
+</section>
+
+<!-- ========== S6: Action ========== -->
+<section id="s6" style="display:none">
+<h2 style="margin-bottom:16px">🎯 行動建議</h2>
+
+<div class="verdict">
+  <div class="vTitle">📋 Top-Down 執行路徑</div>
+
+  <div style="margin:20px 0">
+    <h4 style="color:var(--accent)">Step 1：鎖定 2 個產業</h4>
+    <p style="font-size:13px;color:var(--muted);margin-top:4px">
+      <strong>首選：化工生技</strong>（7 檔品質股，子產業最多元）<br>
+      <strong>次選：運動休閒</strong> 或 <strong>紡織</strong>（需先確認新紡/儒鴻是否為真品質）<br>
+      <strong>備選：營建</strong>（若想賭景氣循環反轉，但風險高）
+    </p>
+  </div>
+
+  <div style="margin:20px 0">
+    <h4 style="color:var(--accent)">Step 2：子產業細分</h4>
+    <p style="font-size:13px;color:var(--muted);margin-top:4px">
+      例如化工生技可細分：醫材（泰博、和康生、視陽）、學名藥（生達、美吾華）、材料（材料-KY）、新藥（藥華藥）。各子產業商業模式不同，需分開做 peer comparison。
+    </p>
+  </div>
+
+  <div style="margin:20px 0">
+    <h4 style="color:var(--accent)">Step 3：個股深挖</h4>
+    <p style="font-size:13px;color:var(--muted);margin-top:4px">
+      對選定的子產業 top pick 執行完整 10-step equity research（公司簡介 → 成長動因 → 競爭優勢 → DCF 估值 → 風險矩陣）。
+    </p>
+  </div>
+
+  <div style="margin:20px 0">
+    <h4 style="color:var(--accent)">Step 4：定期追蹤</h4>
+    <p style="font-size:13px;color:var(--muted);margin-top:4px">
+      每週自動執行 screener v2，檢查品質池是否有新進/退出標的。注意 PE 歷史分位變化（0% = 極度便宜，>80% = 可能過熱）。
+    </p>
+  </div>
+</div>
+</section>
+
+<!-- ========== S7: Methodology ========== -->
+<section id="s7" style="display:none">
+<h2 style="margin-bottom:16px">⚙️ 方法論：Gerstein/Gray 雙層架構</h2>
+
+<div class="card">
+  <div class="cardTitle">Pipeline 結構</div>
+  <table class="tbl">
+  <tr><th>Layer</th><th>邏輯</th><th class="right">結果</th></tr>
+  <tr><td>Layer 0</td><td>硬過濾：PE>0, PE<150, ROE>0, 成交量>100 張</td><td class="right">597/1052</td></tr>
+  <tr><td>Layer 1</td><td>品質 AND 閘：ROE > 同業中位數 <strong>且</strong> 毛利率 > 同業中位數 <strong>且</strong> 負債比 < 同業中位數</td><td class="right">83/597 (14%)</td></tr>
+  <tr><td>Layer 2</td><td>價格排名：PE 分位(50%) + P/S(20%) + P/B(15%) + 動能反轉(15%)</td><td class="right">Top 25 Value</td></tr>
+  <tr><td>Layer 3</td><td>策略分類：Value (PE<12 or P/S<0.8x) · Growth (ROE>20%) · G&I (殖利率>2%)</td><td class="right">25/57/60</td></tr>
+  </table>
+</div>
+
+<div class="callout purple" style="margin-top:16px">
+  <strong>📖 參考書目：</strong>Gerstein《The Value Connection》(2003) — 「好公司 ≠ 好股票，品質和價格必須分開篩選」。Gray & Carlisle《Quantitative Value》(2012) — 「AND 邏輯優於加權平均，因為你在買的是公司，不只是買一個分數」。
+</div>
+</section>
+
+</main>
+</div>
+
+<!-- Mobile Nav -->
+<nav class="mobileNav">
+  <button class="navItem active" data-section="s0">📊 全景</button>
+  <button class="navItem" data-section="s1">🏆 推薦</button>
+  <button class="navItem" data-section="s2">🟢 高品質</button>
+  <button class="navItem" data-section="s3">🟡 中等</button>
+  <button class="navItem" data-section="s4">🟠 有機會</button>
+  <button class="navItem" data-section="s5">🔴 無</button>
+  <button class="navItem" data-section="s6">🎯 建議</button>
+  <button class="navItem" data-section="s7">⚙️ 方法</button>
+</nav>
+
+<script>
+document.querySelectorAll('.navItem').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const section = btn.dataset.section;
+    document.querySelectorAll('.navItem').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll(`.navItem[data-section="${section}"]`).forEach(b => b.classList.add('active'));
+    document.querySelectorAll('section').forEach(s => s.style.display = 'none');
+    document.getElementById(section).style.display = 'block';
+    if (window.innerWidth <= 768) btn.scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'});
+  });
+});
+</script>
+
+</body>
+</html>
