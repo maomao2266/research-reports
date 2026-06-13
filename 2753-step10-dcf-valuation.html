@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>八方雲集 (2753) — DCF 估值 | Fundamental Analysis Step 10</title>
+<style>
+:root{
+  --bg:#0a0e14; --surface:#131820; --card:#181f2a;
+  --border:#252d3a; --ink:#e2e8f0; --muted:#7c8aa0; --dim:#4a5568;
+  --accent:#60a5fa; --accent2:#3b82f6;
+  --gold:#f59e0b; --green:#34d399; --red:#f87171;
+  --orange:#fb923c; --purple:#a78bfa;
+  --radius:14px; --radius2:18px;
+  --sans:"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,-apple-system,sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.6}
+.topbar{position:sticky;top:0;z-index:100;background:var(--surface);border-bottom:1px solid var(--border);padding:12px 24px;display:flex;align-items:center;justify-content:space-between}
+.topbar h1{font-size:18px;font-weight:600}
+.topbar .badge{font-size:11px;color:var(--muted);background:var(--card);padding:4px 10px;border-radius:20px}
+.layout{display:flex;min-height:calc(100vh - 53px)}
+.sidebar{width:220px;min-width:220px;background:var(--surface);border-right:1px solid var(--border);padding:16px 0;position:sticky;top:53px;height:calc(100vh - 53px);overflow-y:auto}
+.sidebar .navTitle{font-size:10px;text-transform:uppercase;color:var(--dim);padding:8px 16px;letter-spacing:1px}
+.sidebar .navItem{display:block;padding:8px 16px;color:var(--muted);font-size:13px;cursor:pointer;border:none;background:none;width:100%;text-align:left;transition:all .15s;border-left:3px solid transparent}
+.sidebar .navItem:hover{color:var(--ink);background:var(--card)}
+.sidebar .navItem.active{color:var(--accent);background:var(--card);border-left-color:var(--accent)}
+main{flex:1;padding:24px;max-width:950px}
+section{display:none}
+section.active{display:block}
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px;margin-bottom:20px}
+.cardTitle{font-size:15px;font-weight:600;margin-bottom:12px;color:var(--accent)}
+.callout{border-left:3px solid var(--accent);padding:12px 16px;border-radius:0 var(--radius) var(--radius) 0;margin-bottom:16px;background:color-mix(in srgb,var(--accent) 8%,var(--card))}
+.callout.gold{border-color:var(--gold);background:color-mix(in srgb,var(--gold) 8%,var(--card))}
+.callout.green{border-color:var(--green);background:color-mix(in srgb,var(--green) 8%,var(--card))}
+.callout.red{border-color:var(--red);background:color-mix(in srgb,var(--red) 8%,var(--card))}
+.metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin-bottom:16px}
+.metric{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:12px;text-align:center}
+.metric .val{font-size:20px;font-weight:700;color:var(--ink)}
+.metric .lbl{font-size:9px;color:var(--muted);margin-top:2px}
+.metric .sub{font-size:9px;margin-top:2px}
+.tbl{width:100%;border-collapse:collapse;font-size:12px;margin-bottom:16px}
+.tbl th{text-align:left;color:var(--muted);font-weight:500;padding:6px 8px;border-bottom:1px solid var(--border);font-size:10px;text-transform:uppercase}
+.tbl td{padding:6px 8px;border-bottom:1px solid var(--border)}
+.tbl tr:last-child td{border-bottom:none}
+.up{color:var(--green)}.down{color:var(--red)}.warn{color:var(--orange)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.verdict{background:linear-gradient(135deg,color-mix(in srgb,var(--green) 15%,var(--surface)),color-mix(in srgb,var(--accent) 10%,var(--surface)));border:1px solid color-mix(in srgb,var(--green) 30%,var(--border));border-radius:var(--radius2);padding:20px}
+.verdict .vTitle{font-size:16px;font-weight:700;margin-bottom:8px;color:var(--accent)}
+.grade{display:inline-flex;align-items:center;gap:4px;font-weight:700;font-size:16px}
+.sens-cell{text-align:center;padding:6px 4px;border-radius:6px;font-size:11px;font-weight:600}
+.sens-g{background:color-mix(in srgb,var(--green) 25%,var(--card));color:var(--green);border:1px solid color-mix(in srgb,var(--green) 40%,transparent)}
+.sens-y{background:color-mix(in srgb,var(--gold) 20%,var(--card));color:var(--gold);border:1px solid color-mix(in srgb,var(--gold) 35%,transparent)}
+.sens-r{background:color-mix(in srgb,var(--red) 20%,var(--card));color:var(--red);border:1px solid color-mix(in srgb,var(--red) 30%,transparent)}
+.source{font-size:9px;color:var(--dim);margin-top:4px}
+/* Slider */
+.calcBox{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius2);padding:20px;margin-bottom:20px}
+.calcBox h3{font-size:16px;margin-bottom:16px;color:var(--accent)}
+.sliderGroup{display:flex;gap:20px;flex-wrap:wrap;margin-bottom:20px}
+.sliderCard{flex:1;min-width:200px}
+.sliderCard label{display:block;font-size:12px;color:var(--muted);margin-bottom:6px}
+.sliderCard label span{color:var(--accent);font-weight:600;font-size:15px}
+.sliderCard input[type=range]{width:100%;accent-color:var(--accent)}
+.sliderLabels{display:flex;justify-content:space-between;font-size:9px;color:var(--dim);margin-top:4px}
+.resultBox{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:16px}
+.result{padding:10px 16px;border-radius:8px;font-size:14px;font-weight:600;min-width:100px;text-align:center}
+.result.neutral{background:var(--card);color:var(--ink);border:1px solid var(--border)}
+.result.up{background:color-mix(in srgb,var(--green) 15%,var(--card));border:1px solid var(--green)}
+.result.down{background:color-mix(in srgb,var(--red) 15%,var(--card));border:1px solid var(--red)}
+#priceBar{width:100%;height:8px;background:var(--card);border-radius:4px;position:relative;margin:16px 0}
+#priceBar .fill{height:100%;border-radius:4px;background:var(--accent);transition:width .3s}
+#priceMarker{position:absolute;top:-4px;width:2px;height:16px;background:var(--ink);border-radius:2px}
+.value-table{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-bottom:16px}
+.value-table table{margin:0}
+.value-table table th{background:var(--surface);position:sticky;top:0}
+.note{font-size:11px;color:var(--muted);line-height:1.7}
+@media(max-width:768px){
+  .sidebar{display:none}
+  .layout{flex-direction:column}
+  main{padding:16px}
+  .grid2,.grid4{grid-template-columns:1fr 1fr}
+}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <h1>八方雲集 (2753.TW) — DCF 估值</h1>
+  <span class="badge">Step 10 / 10 · 2026-06-12</span>
+</div>
+<div class="layout">
+<nav class="sidebar">
+  <div class="navTitle">大綱</div>
+  <button class="navItem active" data-section="s1">📐 模型假設</button>
+  <button class="navItem" data-section="s2">📊 UFCF 預測</button>
+  <button class="navItem" data-section="s3">🌡️ 敏感度分析</button>
+  <button class="navItem" data-section="s4">🏗️ 三層價值拆解</button>
+  <button class="navItem" data-section="s5">🔧 互動計算機</button>
+  <button class="navItem" data-section="s6">📋 估值判決</button>
+</nav>
+<main>
+
+<!-- ==================== Section 1: Assumptions ==================== -->
+<section id="s1" class="active">
+<div class="card">
+  <div class="cardTitle">📐 DCF 模型假設 — 基期 2025 年度</div>
+  <p style="color:var(--muted);font-size:10px;margin-bottom:16px">方法：Unlevered DCF (UFCF → WACC → EV → Equity) · 預測期 5 年 (2026E-2030E)</p>
+
+  <div class="grid2">
+    <div class="card" style="border-left:3px solid var(--accent)">
+      <div class="cardTitle" style="font-size:13px">📈 營收成長預測</div>
+      <table class="tbl">
+        <tr><th>年度</th><th>成長率</th><th>營收 (M TWD)</th><th>邏輯</th></tr>
+        <tr><td>2026E</td><td class="up">+8.0%</td><td>9,494</td><td>YTD May +13.3% YoY · 保守化</td></tr>
+        <tr><td>2027E</td><td class="up">+7.0%</td><td>10,159</td><td>展店 + SSSG 趨緩但仍強</td></tr>
+        <tr><td>2028E</td><td class="up">+6.0%</td><td>10,768</td><td>基期擴大 · 成長自然放緩</td></tr>
+        <tr><td>2029E</td><td>+5.0%</td><td>11,307</td><td>成熟期穩定成長</td></tr>
+        <tr><td>2030E</td><td>+4.0%</td><td>11,759</td><td>接近長期 GDP 成長</td></tr>
+      </table>
+    </div>
+    <div class="card" style="border-left:3px solid var(--purple)">
+      <div class="cardTitle" style="font-size:13px">⚙️ 關鍵參數</div>
+      <table class="tbl">
+        <tr><th>參數</th><th>值</th><th>來源/說明</th></tr>
+        <tr><td>EBIT 利潤率</td><td>12.26%</td><td>保守使用 2025 實際值</td></tr>
+        <tr><td>D&A / 營收</td><td>8.67%</td><td>2025 實際 (762M/8,791M)</td></tr>
+        <tr><td>CapEx / 營收</td><td>6.0%</td><td>展店期偏高 · 含裁切廠</td></tr>
+        <tr><td>NWC / 營收</td><td>0.5%</td><td>加盟模式 · 輕營運資金</td></tr>
+        <tr><td>稅率</td><td>20%</td><td>台灣營所稅率</td></tr>
+        <tr><td>WACC (基礎)</td><td>8.0%</td><td>Rf 1.7% + β 0.9 × ERP 6% + 債務</td></tr>
+        <tr><td>終端成長率</td><td>2.0%</td><td>低於台灣長期 GDP ~2.5%</td></tr>
+        <tr><td>股數</td><td>66.67M</td><td>2025 加權股數</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="callout gold">
+    <strong>⚠️ WACC 選擇說明：</strong>八方雲集的淨現金部位（現金 1,518M > 負債 1,338M）和低波動餐飲業務支持較低的 WACC（7.5-8.5%）。基礎案例使用 8.0%，涵蓋標準 CAPM + 小型流動性溢價。敏感性分析覆蓋 7.0-9.5%。
+  </div>
+</div>
+</section>
+
+<!-- ==================== Section 2: UFCF Projection ==================== -->
+<section id="s2">
+<div class="card">
+  <div class="cardTitle">📊 UFCF 預測與現金流折現</div>
+  <p style="color:var(--muted);font-size:10px;margin-bottom:12px">基礎案例：WACC 8.0% · 終端成長 2.0% · 單位：百萬 TWD</p>
+
+  <table class="tbl">
+    <tr><th></th><th>2025A</th><th>2026E</th><th>2027E</th><th>2028E</th><th>2029E</th><th>2030E</th></tr>
+    <tr><td><strong>營收</strong></td><td>8,791</td><td>9,494</td><td>10,159</td><td>10,768</td><td>11,307</td><td>11,759</td></tr>
+    <tr><td>營收成長</td><td>+9.5%</td><td class="up">+8.0%</td><td class="up">+7.0%</td><td class="up">+6.0%</td><td>+5.0%</td><td>+4.0%</td></tr>
+    <tr><td><strong>EBIT</strong></td><td>1,078</td><td>1,164</td><td>1,245</td><td>1,320</td><td>1,386</td><td>1,442</td></tr>
+    <tr><td style="padding-left:12px;color:var(--muted)">利潤率</td><td>12.3%</td><td>12.3%</td><td>12.3%</td><td>12.3%</td><td>12.3%</td><td>12.3%</td></tr>
+    <tr><td>稅後 EBIT (EBIAT)</td><td></td><td>931</td><td>996</td><td>1,056</td><td>1,109</td><td>1,153</td></tr>
+    <tr><td style="padding-left:12px;color:var(--green)">+ D&A</td><td></td><td>823</td><td>881</td><td>934</td><td>981</td><td>1,020</td></tr>
+    <tr><td style="padding-left:12px;color:var(--red)">− CapEx</td><td></td><td>(570)</td><td>(610)</td><td>(646)</td><td>(678)</td><td>(706)</td></tr>
+    <tr><td style="padding-left:12px;color:var(--red)">− NWC 增加</td><td></td><td>(47)</td><td>(51)</td><td>(54)</td><td>(57)</td><td>(59)</td></tr>
+    <tr style="background:color-mix(in srgb,var(--accent) 10%,var(--card))"><td><strong>UFCF</strong></td><td></td><td class="up" style="font-weight:700">1,137</td><td class="up" style="font-weight:700">1,217</td><td class="up" style="font-weight:700">1,290</td><td class="up" style="font-weight:700">1,354</td><td class="up" style="font-weight:700">1,409</td></tr>
+    <tr><td style="padding-left:12px;color:var(--muted)">折現因子 (8.0%)</td><td></td><td>0.926</td><td>0.857</td><td>0.794</td><td>0.735</td><td>0.681</td></tr>
+    <tr style="background:color-mix(in srgb,var(--green) 8%,var(--card))"><td><strong>PV(UFCF)</strong></td><td></td><td class="up">1,053</td><td class="up">1,043</td><td class="up">1,024</td><td class="up">995</td><td class="up">959</td></tr>
+  </table>
+
+  <div class="grid2" style="margin-top:16px">
+    <div class="card" style="border-left:3px solid var(--accent)">
+      <div style="font-size:12px;line-height:1.7">
+        <strong>預計現金流 PV</strong><br>
+        <span style="font-size:20px;font-weight:700;color:var(--accent)">5,074M</span><br>
+        <span style="font-size:10px;color:var(--muted)">5 年 UFCF 折現值合計</span>
+      </div>
+    </div>
+    <div class="card" style="border-left:3px solid var(--purple)">
+      <div style="font-size:12px;line-height:1.7">
+        <strong>終端價值 PV</strong><br>
+        <span style="font-size:20px;font-weight:700;color:var(--purple)">16,296M</span><br>
+        <span style="font-size:10px;color:var(--muted)">TV = 1,409×1.02 / (8.0%−2.0%)</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout" style="margin-top:12px">
+    <strong>TV/EV = 76.3%</strong> — 終端價值佔比偏高（DCF 經典現象），但對餐飲業屬於正常範圍（穩定現金流 + 長期成長）。Hooke (2010) 指出 DCF 中 TV 通常 >75%，此處與產業常態一致。敏感度分析（下節）涵蓋不同 WACC 和 g 組合的影響。
+  </div>
+</div>
+</section>
+
+<!-- ==================== Section 3: Sensitivity ==================== -->
+<section id="s3">
+<div class="card">
+  <div class="cardTitle">🌡️ 敏感度分析 — WACC × 終端成長率</div>
+  <p style="color:var(--muted);font-size:10px;margin-bottom:12px">數值為每股隱含價值 (TWD) · 現價 190.5 · 綠底 = 顯著低估 (>+30%) · 黃底 = 溫和低估 · 紅底 = 接近現價</p>
+
+  <div class="value-table">
+    <table class="tbl">
+      <tr><th>WACC \ g</th><th>1.5%</th><th>2.0%</th><th>2.5%</th><th>3.0%</th></tr>
+      <tr><td><strong>7.0%</strong></td><td class="sens-cell sens-g">359</td><td class="sens-cell sens-g">388</td><td class="sens-cell sens-g">424</td><td class="sens-cell sens-g">469</td></tr>
+      <tr><td><strong>7.5%</strong></td><td class="sens-cell sens-g">329</td><td class="sens-cell sens-g">353</td><td class="sens-cell sens-g">382</td><td class="sens-cell sens-g">417</td></tr>
+      <tr style="background:color-mix(in srgb,var(--accent) 10%,var(--card))"><td><strong>8.0% ★</strong></td><td class="sens-cell sens-g">303</td><td class="sens-cell sens-g" style="font-weight:700;border:2px solid var(--accent)">323</td><td class="sens-cell sens-g">347</td><td class="sens-cell sens-g">375</td></tr>
+      <tr><td><strong>8.5%</strong></td><td class="sens-cell sens-g">282</td><td class="sens-cell sens-y">298</td><td class="sens-cell sens-g">318</td><td class="sens-cell sens-g">341</td></tr>
+      <tr><td><strong>9.0%</strong></td><td class="sens-cell sens-y">263</td><td class="sens-cell sens-y">277</td><td class="sens-cell sens-y">293</td><td class="sens-cell sens-g">312</td></tr>
+      <tr><td><strong>9.5%</strong></td><td class="sens-cell sens-y">246</td><td class="sens-cell sens-y">258</td><td class="sens-cell sens-y">272</td><td class="sens-cell sens-y">288</td></tr>
+    </table>
+  </div>
+
+  <div class="callout green">
+    <strong>🔑 關鍵發現：在所有合理假設範圍內（WACC 7.0-9.5%，g 1.5-3.0%），隱含價值均顯著高於現價 190.5。</strong>最低估值（WACC 9.5%/g 1.5%）= 246（+29%），最高（WACC 7.0%/g 3.0%）= 469（+146%）。基礎案例 323 代表 +70% 上行空間。<br><br>
+    <strong>即使考慮 Hooke 的 ±15% 安全邊際建議：</strong>基礎案例調整後範圍 275-371，仍全數高於現價。
+  </div>
+</div>
+</section>
+
+<!-- ==================== Section 4: Three-Layer Value ==================== -->
+<section id="s4">
+<div class="card">
+  <div class="cardTitle">🏗️ 三層價值拆解 — 護城河的估值證據</div>
+  <p style="color:var(--muted);font-size:10px;margin-bottom:12px">Sonkin & Johnson (2017) 框架：EV = 投入資本 + 競爭優勢價值 + 成長價值</p>
+
+  <table class="tbl">
+    <tr><th>層次</th><th>內涵</th><th>估算 (M TWD)</th><th>佔 EV%</th><th>創造條件</th></tr>
+    <tr>
+      <td><strong>Layer 1</strong></td>
+      <td>投入資本（零成長基線）</td>
+      <td>~4,153</td><td>19.4%</td>
+      <td>— 任何企業都有的基線價值</td>
+    </tr>
+    <tr style="background:color-mix(in srgb,var(--green) 8%,var(--card))">
+      <td><strong>Layer 2</strong></td>
+      <td>競爭優勢價值<br><span style="font-size:9px;color:var(--muted)">PV(ROIC−WACC) × IC<br>≈ (15.5%−8.0%) × 4,153 / 8.0%</span></td>
+      <td class="up">~3,891</td><td>18.2%</td>
+      <td class="up">✅ ROIC 15.5% > WACC 8.0%</td>
+    </tr>
+    <tr style="background:color-mix(in srgb,var(--accent) 10%,var(--card))">
+      <td><strong>Layer 3</strong></td>
+      <td>成長價值<br><span style="font-size:9px;color:var(--muted)">EV − L1 − L2</span></td>
+      <td class="up">~13,327</td><td>62.4%</td>
+      <td class="up">✅ 增量利潤率 46.7% · DOL 2.22x</td>
+    </tr>
+    <tr style="border-top:2px solid var(--accent)"><td><strong>合計</strong></td><td><strong>Enterprise Value</strong></td><td class="up" style="font-weight:700;font-size:14px">~21,371</td><td>100%</td><td></td></tr>
+  </table>
+
+  <div class="callout">
+    <strong>解讀：</strong>成長價值佔 EV 的 62% — 這與 Step 4（成長驅動力）和 Step 6（護城河）的發現一致：八方雲集的價值主要來自增量資本的高回報（46.7% 增量利潤率）和營運槓桿（DOL 2.22x）。競爭優勢層（18%）來自 ROIC 持續高於 WACC 的歷史記錄（Step 6：護城河量化）。<br><br>
+    <strong>護城河 → 估值的橋樑：</strong>若沒有護城河（ROIC = WACC），Layer 2 = 0。若沒有增量成長（ROIIC = WACC），Layer 3 歸零。八方雲集同時滿足兩個條件（ROIC > WACC, ROIIC ≫ WACC），這使得三層價值全部為正。
+  </div>
+</div>
+</section>
+
+<!-- ==================== Section 5: Interactive Calculator ==================== -->
+<section id="s5">
+<div class="card">
+  <div class="cardTitle">🔧 互動估值計算機</div>
+  <p style="color:var(--muted);font-size:10px;margin-bottom:16px">拖曳滑桿調整 WACC 和終端成長率 · 使用預先計算的敏感度格點 + 雙線性插值</p>
+
+  <div class="calcBox">
+    <div class="sliderGroup">
+      <div class="sliderCard">
+        <label>WACC <span id="waccVal">8.0%</span></label>
+        <input type="range" id="waccSlider" min="7.0" max="9.5" step="0.1" value="8.0" oninput="recalc()">
+        <div class="sliderLabels"><span>7.0%</span><span>8.0%</span><span>9.5%</span></div>
+      </div>
+      <div class="sliderCard">
+        <label>終端成長率 <span id="gVal">2.0%</span></label>
+        <input type="range" id="gSlider" min="1.5" max="3.0" step="0.1" value="2.0" oninput="recalc()">
+        <div class="sliderLabels"><span>1.5%</span><span>2.0%</span><span>3.0%</span></div>
+      </div>
+    </div>
+    <div class="resultBox">
+      <div class="result neutral" id="resVal">323</div>
+      <div class="result neutral" id="resDelta">每股價值</div>
+      <div class="result neutral" id="resPct">+70% vs 現價</div>
+    </div>
+    <div id="priceBar">
+      <div class="fill" id="priceFill" style="width:50%"></div>
+      <div id="priceMarker" style="left:30%"></div>
+    </div>
+    <div style="display:flex;justify-content:space-between;font-size:9px;color:var(--dim)">
+      <span>最低 (WACC 9.5/g 1.5): 246</span>
+      <span style="position:absolute;left:calc(30% - 20px);color:var(--ink)">現價 190.5</span>
+      <span>最高 (WACC 7.0/g 3.0): 469</span>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ==================== Section 6: Verdict ==================== -->
+<section id="s6">
+<div class="card">
+  <div class="cardTitle">📋 估值判決</div>
+
+  <div class="verdict">
+    <div class="vTitle">📋 DCF 估值結論</div>
+    <table class="tbl" style="margin-top:8px">
+      <tr><td style="width:160px"><strong>估值方法</strong></td><td>Unlevered DCF（WACC 8.0% · g 2.0%）</td></tr>
+      <tr><td><strong>隱含每股價值</strong></td><td class="up" style="font-weight:700;font-size:16px">323 TWD</td></tr>
+      <tr><td><strong>vs 現價 190.5</strong></td><td class="up" style="font-weight:700;font-size:16px">+70%（132.5 TWD 上行）</td></tr>
+      <tr><td><strong>價值範圍（±15%）</strong></td><td class="up">275 – 371 TWD（全部高於現價）</td></tr>
+      <tr><td><strong>24 格點全距</strong></td><td class="up">246 – 469 TWD（100% 格點高於現價）</td></tr>
+      <tr><td><strong>安全邊際</strong></td><td class="up">現價隱含 41% 安全邊際（以基礎案例計）</td></tr>
+      <tr><td><strong>Terminal Value 佔比</strong></td><td>76.3%（餐飲業正常範圍）</td></tr>
+      <tr><td><strong style="color:var(--gold)">估值風險</strong></td><td>① 成長假設過度樂觀（若 SSSG 轉負，營收成長可能低於預測）<br>② CapEx 低估（美國擴張可能需要更高資本投入）<br>③ 終端成長率 2.0% 可能偏高（但即使 1.5% 仍顯著低估）</td></tr>
+      <tr><td><strong>估值等級</strong></td><td><span class="grade" style="color:var(--green)">顯著低估（Significantly Undervalued）</span></td></tr>
+    </table>
+  </div>
+
+  <div class="grid4" style="margin-top:16px">
+    <div class="card" style="border-left:3px solid var(--green);text-align:center">
+      <div style="font-size:10px;color:var(--muted);margin-bottom:4px">🟢 樂觀</div>
+      <div style="font-size:22px;font-weight:700;color:var(--green)">469</div>
+      <div style="font-size:10px;color:var(--muted)">WACC 7.0 · g 3.0%</div>
+      <div style="font-size:10px;color:var(--green)">+146%</div>
+    </div>
+    <div class="card" style="border-left:3px solid var(--accent);text-align:center">
+      <div style="font-size:10px;color:var(--muted);margin-bottom:4px">🔵 基礎</div>
+      <div style="font-size:22px;font-weight:700;color:var(--accent)">323</div>
+      <div style="font-size:10px;color:var(--muted)">WACC 8.0 · g 2.0%</div>
+      <div style="font-size:10px;color:var(--accent)">+70%</div>
+    </div>
+    <div class="card" style="border-left:3px solid var(--gold);text-align:center">
+      <div style="font-size:10px;color:var(--muted);margin-bottom:4px">🟡 保守</div>
+      <div style="font-size:22px;font-weight:700;color:var(--gold)">258</div>
+      <div style="font-size:10px;color:var(--muted)">WACC 9.5 · g 2.0%</div>
+      <div style="font-size:10px;color:var(--gold)">+36%</div>
+    </div>
+    <div class="card" style="border-left:3px solid var(--orange);text-align:center">
+      <div style="font-size:10px;color:var(--muted);margin-bottom:4px">🟠 極保守</div>
+      <div style="font-size:22px;font-weight:700;color:var(--orange)">246</div>
+      <div style="font-size:10px;color:var(--muted)">WACC 9.5 · g 1.5%</div>
+      <div style="font-size:10px;color:var(--orange)">+29%</div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:16px">
+    <div class="cardTitle">🔗 跨步驟一致性檢查</div>
+    <div class="note">
+      <p><strong>← Step 6 (Moat)：</strong>ROIC 15.5% > WACC 8.0% → 競爭優勢層（Layer 2）為正 → DCF 不是空中樓閣</p>
+      <p><strong>← Step 4 (Growth)：</strong>增量利潤率 46.7% → 成長價值（Layer 3）巨大 → 說明為何成長佔 EV 62%</p>
+      <p><strong>← Step 8 (Macro)：</strong>食物類 CPI +1.36% 減輕成本壓力 + GDP +14.6% 支撐營收 → DCF 成長假設有宏觀基礎</p>
+      <p><strong>← Step 9 (Risk)：</strong>U/D 1.38:1（風險調整） + DCF +70%（估值） → 風險/報酬高度不對稱，偏向正面</p>
+      <p><strong>← Step 7 (Catalysts)：</strong>不對稱比率 2.8:1（催化劑情境） → 若任一催化劑實現，估值可能走向樂觀情境</p>
+    </div>
+  </div>
+
+  <div class="callout green">
+    <strong>🔟 十步驟最終判斷：</strong><br>
+    八方雲集是一家 <strong>顯著低估</strong> 的優質企業。擁有寬護城河（ROIC 15.5%）、高營運槓桿（DOL 2.22x）、強勁的台灣內需順風（GDP +14.6%），且實際食材成本壓力遠低於市場恐慌（食物類 CPI 僅 +1.36% vs PPI +14.1%）。<br><br>
+    DCF 估值在 24 個敏感性格點中 <strong>100% 高於現價</strong>，基礎案例隱含 +70% 上行空間。最大風險已從成本端（經食物 CPI 數據緩解）轉為美國擴張執行。<br><br>
+    <strong>這是在合理安全邊際下，值得配置的價值標的。</strong>
+  </div>
+</div>
+</section>
+
+</main>
+</div>
+
+<script>
+// === Navigation ===
+document.querySelectorAll('.navItem').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.navItem').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
+    document.getElementById(btn.dataset.section).classList.add('active');
+  });
+});
+document.addEventListener('keydown', e => {
+  if(e.target.tagName==='INPUT') return;
+  const s=['s1','s2','s3','s4','s5','s6'];
+  const a=document.querySelector('section.active');let i=s.indexOf(a.id);
+  if(e.key==='ArrowDown'||e.key==='ArrowRight') i=Math.min(i+1,s.length-1);
+  if(e.key==='ArrowUp'||e.key==='ArrowLeft') i=Math.max(i-1,0);
+  if(i!==s.indexOf(a.id)){
+    document.querySelectorAll('.navItem').forEach(b=>b.classList.remove('active'));
+    document.querySelector(`.navItem[data-section="${s[i]}"]`).classList.add('active');
+    document.querySelectorAll('section').forEach(x=>x.classList.remove('active'));
+    document.getElementById(s[i]).classList.add('active');
+  }
+});
+
+// === Interactive Calculator ===
+const CURRENT = 190.5;
+const MIN_VAL = 246, MAX_VAL = 469;
+
+// Pre-computed grid (WACC% × g%): value per share
+const grid = {
+  '7.0': {'1.5':359,'2.0':388,'2.5':424,'3.0':469},
+  '7.5': {'1.5':329,'2.0':353,'2.5':382,'3.0':417},
+  '8.0': {'1.5':303,'2.0':323,'2.5':347,'3.0':375},
+  '8.5': {'1.5':282,'2.0':298,'2.5':318,'3.0':341},
+  '9.0': {'1.5':263,'2.0':277,'2.5':293,'3.0':312},
+  '9.5': {'1.5':246,'2.0':258,'2.5':272,'3.0':288}
+};
+
+function bilinear(w, g) {
+  // Find surrounding grid points
+  let wKeys = Object.keys(grid).map(Number).sort((a,b)=>a-b);
+  let gKeys = Object.keys(grid[wKeys[0]]).map(Number).sort((a,b)=>a-b);
+  
+  let w0 = wKeys[0], w1 = wKeys[wKeys.length-1];
+  let g0 = gKeys[0], g1 = gKeys[gKeys.length-1];
+  
+  for (let wk of wKeys) { if (wk <= w) w0 = wk; if (wk >= w) { w1 = wk; break; } }
+  for (let gk of gKeys) { if (gk <= g) g0 = gk; if (gk >= g) { g1 = gk; break; } }
+  
+  if (w0 === w1) w1 = w0 + 0.5;
+  if (g0 === g1) g1 = g0 + 0.5;
+  
+  let kw0 = w0.toFixed(1), kw1 = w1.toFixed(1);
+  let kg0 = g0.toFixed(1), kg1 = g1.toFixed(1);
+  
+  let v00 = grid[kw0][kg0], v10 = grid[kw1][kg0];
+  let v01 = grid[kw0][kg1], v11 = grid[kw1][kg1];
+  
+  let wt = (w - w0) / (w1 - w0);
+  let gt = (g - g0) / (g1 - g0);
+  
+  return Math.round(
+    v00 * (1-wt) * (1-gt) +
+    v10 * wt * (1-gt) +
+    v01 * (1-wt) * gt +
+    v11 * wt * gt
+  );
+}
+
+function recalc() {
+  let wacc = parseFloat(document.getElementById('waccSlider').value);
+  let g = parseFloat(document.getElementById('gSlider').value);
+  
+  document.getElementById('waccVal').textContent = wacc.toFixed(1) + '%';
+  document.getElementById('gVal').textContent = g.toFixed(1) + '%';
+  
+  let val = bilinear(wacc, g);
+  let delta = val - CURRENT;
+  let pct = ((val / CURRENT - 1) * 100);
+  
+  document.getElementById('resVal').textContent = val;
+  document.getElementById('resDelta').textContent = (delta > 0 ? '+' : '') + delta.toFixed(0) + ' vs 現價';
+  document.getElementById('resPct').textContent = (pct > 0 ? '+' : '') + pct.toFixed(0) + '%';
+  
+  // Color coding
+  let resVal = document.getElementById('resVal');
+  let resDelta = document.getElementById('resDelta');
+  let resPct = document.getElementById('resPct');
+  
+  [resVal, resDelta, resPct].forEach(el => {
+    el.className = 'result ' + (pct > 30 ? 'up' : pct > 0 ? 'neutral' : 'down');
+  });
+  
+  // Price bar - position of current price relative to value range
+  let barPct = ((val - MIN_VAL) / (MAX_VAL - MIN_VAL)) * 100;
+  let curPct = ((CURRENT - MIN_VAL) / (MAX_VAL - MIN_VAL)) * 100;
+  document.getElementById('priceFill').style.width = barPct + '%';
+  document.getElementById('priceMarker').style.left = curPct + '%';
+}
+</script>
+</body>
+</html>
