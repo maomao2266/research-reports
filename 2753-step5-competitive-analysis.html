@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>八方雲集 (2753) — 競爭定位 | Fundamental Analysis Step 5</title>
+<style>
+:root{
+  --bg:#0a0e14; --surface:#131820; --card:#181f2a;
+  --border:#252d3a; --ink:#e2e8f0; --muted:#7c8aa0; --dim:#4a5568;
+  --accent:#60a5fa; --accent2:#3b82f6;
+  --gold:#f59e0b; --green:#34d399; --red:#f87171;
+  --orange:#fb923c; --purple:#a78bfa;
+  --radius:14px; --radius2:18px;
+  --sans:"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,-apple-system,sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.6}
+.topbar{position:sticky;top:0;z-index:100;background:var(--surface);border-bottom:1px solid var(--border);padding:12px 24px;display:flex;align-items:center;justify-content:space-between}
+.topbar h1{font-size:18px;font-weight:600}
+.topbar .badge{font-size:11px;color:var(--muted);background:var(--card);padding:4px 10px;border-radius:20px}
+.layout{display:flex;min-height:calc(100vh - 53px)}
+.sidebar{width:220px;min-width:220px;background:var(--surface);border-right:1px solid var(--border);padding:16px 0;position:sticky;top:53px;height:calc(100vh - 53px);overflow-y:auto}
+.sidebar .navTitle{font-size:10px;text-transform:uppercase;color:var(--dim);padding:8px 16px;letter-spacing:1px}
+.sidebar .navItem{display:block;padding:8px 16px;color:var(--muted);font-size:13px;cursor:pointer;border:none;background:none;width:100%;text-align:left;transition:all .15s;border-left:3px solid transparent}
+.sidebar .navItem:hover{color:var(--ink);background:var(--card)}
+.sidebar .navItem.active{color:var(--accent);background:var(--card);border-left-color:var(--accent)}
+main{flex:1;padding:24px;max-width:900px}
+section{display:none}
+section.active{display:block}
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px;margin-bottom:20px}
+.cardTitle{font-size:15px;font-weight:600;margin-bottom:12px;color:var(--accent)}
+.callout{border-left:3px solid var(--accent);padding:12px 16px;border-radius:0 var(--radius) var(--radius) 0;margin-bottom:16px;background:color-mix(in srgb,var(--accent) 8%,var(--card))}
+.callout.gold{border-color:var(--gold);background:color-mix(in srgb,var(--gold) 8%,var(--card))}
+.callout.green{border-color:var(--green);background:color-mix(in srgb,var(--green) 8%,var(--card))}
+.callout.red{border-color:var(--red);background:color-mix(in srgb,var(--red) 8%,var(--card))}
+.metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(100px,1fr));gap:12px;margin-bottom:20px}
+.metric{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:14px;text-align:center}
+.metric .val{font-size:20px;font-weight:700;color:var(--ink)}
+.metric .lbl{font-size:10px;color:var(--muted);margin-top:4px}
+.tbl{width:100%;border-collapse:collapse;font-size:12px;margin-bottom:16px}
+.tbl th{text-align:left;color:var(--muted);font-weight:500;padding:7px 10px;border-bottom:1px solid var(--border);font-size:10px;text-transform:uppercase}
+.tbl td{padding:7px 10px;border-bottom:1px solid var(--border)}
+.tbl tr:last-child td{border-bottom:none}
+.up{color:var(--green)}.down{color:var(--red)}.warn{color:var(--orange)}
+.pillRow{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px}
+.pill{font-size:11px;padding:3px 10px;border-radius:12px;font-weight:500}
+.pill.g{background:color-mix(in srgb,var(--green) 20%,transparent);color:var(--green)}
+.pill.r{background:color-mix(in srgb,var(--red) 20%,transparent);color:var(--red)}
+.pill.o{background:color-mix(in srgb,var(--orange) 20%,transparent);color:var(--orange)}
+.pill.b{background:color-mix(in srgb,var(--accent) 20%,transparent);color:var(--accent)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.force-row{display:flex;align-items:center;gap:10px;padding:6px 0;border-bottom:1px solid var(--border);font-size:12px}
+.force-row:last-child{border-bottom:none}
+.force-name{width:100px;flex-shrink:0;font-weight:600}
+.force-bar{flex:1;height:14px;background:var(--surface);border-radius:7px;overflow:hidden}
+.force-fill{height:100%;border-radius:7px}
+.force-val{width:28px;text-align:right;font-size:11px;font-weight:600;flex-shrink:0}
+.strat-map{position:relative;width:100%;height:300px;background:var(--surface);border-radius:var(--radius);margin-bottom:16px;overflow:hidden}
+.verdict{background:linear-gradient(135deg,color-mix(in srgb,var(--green) 15%,var(--surface)),color-mix(in srgb,var(--accent) 10%,var(--surface)));border:1px solid color-mix(in srgb,var(--green) 30%,var(--border));border-radius:var(--radius2);padding:20px}
+.verdict .vTitle{font-size:16px;font-weight:700;margin-bottom:8px;color:var(--green)}
+.grade{display:inline-flex;align-items:center;gap:4px;font-weight:700;font-size:16px}
+.grade.A{color:var(--green)}.grade.B{color:var(--green)}
+.source{font-size:10px;color:var(--dim);margin-top:4px}
+@media(max-width:768px){
+  .sidebar{display:none}
+  .layout{flex-direction:column}
+  main{padding:16px}
+  .grid2{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <h1>八方雲集 (2753.TW) — 競爭定位</h1>
+  <span class="badge">Step 5 / 10 · 2026-06-12</span>
+</div>
+<div class="layout">
+<nav class="sidebar">
+  <div class="navTitle">大綱</div>
+  <button class="navItem active" data-section="s1">🔱 Porter 五力</button>
+  <button class="navItem" data-section="s2">🗺️ 策略群組</button>
+  <button class="navItem" data-section="s3">💰 利潤池</button>
+  <button class="navItem" data-section="s4">🌍 國際 CAGE</button>
+  <button class="navItem" data-section="s5">🏆 競爭優勢分類</button>
+  <button class="navItem" data-section="s6">📋 綜合判斷</button>
+</nav>
+<main>
+
+<section id="s1" class="active">
+<div class="card">
+  <div class="cardTitle">🔱 Porter 五力分析 — 台灣中式快餐業</div>
+
+  <div style="margin-bottom:16px">
+    <div class="force-row"><span class="force-name">新進者威脅</span><div class="force-bar"><div class="force-fill" style="width:44%;background:var(--green)"></div></div><span class="force-val" style="color:var(--green)">2.2</span></div>
+    <div class="force-row"><span class="force-name">現有競爭</span><div class="force-bar"><div class="force-fill" style="width:64%;background:var(--gold)"></div></div><span class="force-val" style="color:var(--gold)">3.2</span></div>
+    <div class="force-row"><span class="force-name">替代品威脅</span><div class="force-bar"><div class="force-fill" style="width:80%;background:var(--red)"></div></div><span class="force-val" style="color:var(--red)">4.0</span></div>
+    <div class="force-row"><span class="force-name">買方議價力</span><div class="force-bar"><div class="force-fill" style="width:54%;background:var(--gold)"></div></div><span class="force-val" style="color:var(--gold)">2.7</span></div>
+    <div class="force-row"><span class="force-name">供應商議價力</span><div class="force-bar"><div class="force-fill" style="width:36%;background:var(--green)"></div></div><span class="force-val" style="color:var(--green)">1.8</span></div>
+  </div>
+  <div style="text-align:center;font-size:11px;color:var(--muted);margin-bottom:12px">1=弱(有利公司) / 5=強(不利公司) · 越低越好</div>
+
+  <div class="callout green">
+    <strong>總體評估：</strong>八方雲集面對的競爭環境「中低強度」——供應商分散無議價力、新進者門檻極高、現有對手規模懸殊。最大威脅是<strong>替代品</strong>（外送平台、超商鮮食、自煮趨勢），這不是單一競爭者而是整個消費習慣的轉變。
+  </div>
+</div>
+
+<div class="grid2">
+  <div class="card">
+    <div class="cardTitle" style="font-size:13px">🚪 新進者威脅 — 2.2/5</div>
+    <table class="tbl">
+      <tr><td>規模經濟</td><td class="up">高壁壘 — 1,250+店、8座中央工廠</td></tr>
+      <tr><td>資本需求</td><td class="up">中高 — 建廠+展店需數億 TWD</td></tr>
+      <tr><td>品牌差異化</td><td class="up">高 — 30年品牌信任</td></tr>
+      <tr><td>通路取得</td><td class="up">中 — 好地點已被佔據</td></tr>
+      <tr><td>法規障礙</td><td>低 — 餐飲業進入門檻低</td></tr>
+    </table>
+  </div>
+  <div class="card">
+    <div class="cardTitle" style="font-size:13px">⚔️ 現有競爭 — 3.2/5</div>
+    <table class="tbl">
+      <tr><td>競爭者數量/規模</td><td class="up">低 — 八方獨大，四海遊龍遠小</td></tr>
+      <tr><td>產業成長</td><td>中 — 台灣市場成熟</td></tr>
+      <tr><td>固定成本壓力</td><td class="warn">中 — 中央工廠需高產能利用率</td></tr>
+      <tr><td>差異化程度</td><td class="up">高 — 品牌忠誠度強</td></tr>
+      <tr><td>退出障礙</td><td>低 — 加盟店可個別退出</td></tr>
+    </table>
+  </div>
+  <div class="card">
+    <div class="cardTitle" style="font-size:13px">🔄 替代品威脅 — 4.0/5</div>
+    <table class="tbl">
+      <tr><td>替代品數量</td><td class="down">多 — 超商/外送/夜市/自煮</td></tr>
+      <tr><td>消費者偏好</td><td class="down">轉移中 — 外送平台便利性</td></tr>
+      <tr><td>價格效能比</td><td class="down">改善中 — 超商鮮食品質提升</td></tr>
+      <tr><td>轉換成本</td><td class="down">極低 — 零轉換成本</td></tr>
+    </table>
+  </div>
+  <div class="card" style="grid-column:1/-1">
+    <div class="cardTitle" style="font-size:13px">👥 買方 & 🔗 供應商</div>
+    <div style="font-size:12px">
+      <strong>買方（消費者）— 2.7/5：</strong>極度分散（個別消費者）、產品佔支出比例低（幾十元）、品牌忠誠度中等。但資訊透明（比價容易）、轉換成本零。核心防禦是「便利性 + 習慣」，不是鎖定。
+      <br><br>
+      <strong>供應商 — 1.8/5：</strong>農產品高度分散（高麗菜農戶、豬肉進口商），八方自建冷藏庫 + 契作 + 多元採購（丹麥/法國/西班牙）大幅削弱供應商議價力。唯一風險是天災/豬瘟造成的供給衝擊，但八方有多元採購緩衝。
+    </div>
+  </div>
+</div>
+</section>
+
+<section id="s2">
+<div class="card">
+  <div class="cardTitle">🗺️ 策略群組地圖 — 台灣中式快餐</div>
+  
+  <div class="strat-map" style="position:relative">
+    <svg viewBox="0 0 700 280" style="width:100%;height:100%">
+      <!-- Axes -->
+      <line x1="60" y1="250" x2="660" y2="250" stroke="#4a5568" stroke-width="1"/>
+      <line x1="60" y1="20" x2="60" y2="250" stroke="#4a5568" stroke-width="1"/>
+      <text x="350" y="275" text-anchor="middle" fill="#4a5568" font-size="10">價格帶 →</text>
+      <text x="40" y="140" text-anchor="middle" fill="#4a5568" font-size="10" transform="rotate(-90,40,140)">規模（店數）↑</text>
+      <text x="120" y="272" fill="#7c8aa0" font-size="9">平價 ($)</text>
+      <text x="580" y="272" fill="#7c8aa0" font-size="9">中高價 ($$$)</text>
+      
+      <!-- Groups -->
+      <ellipse cx="180" cy="140" rx="100" ry="60" fill="rgba(96,165,250,0.1)" stroke="#60a5fa" stroke-width="2" stroke-dasharray="6"/>
+      <text x="180" y="115" text-anchor="middle" fill="#60a5fa" font-size="13" font-weight="600">連鎖加盟巨頭</text>
+      <circle cx="160" cy="155" r="12" fill="#60a5fa" opacity="0.8"/><text x="180" y="158" fill="#e2e8f0" font-size="11">八方雲集</text>
+      <circle cx="250" cy="175" r="6" fill="#4a5568" opacity="0.5"/><text x="260" y="178" fill="#4a5568" font-size="9">四海遊龍</text>
+      
+      <ellipse cx="460" cy="190" rx="100" ry="45" fill="rgba(245,158,11,0.1)" stroke="#f59e0b" stroke-width="1.5" stroke-dasharray="6"/>
+      <text x="460" y="170" text-anchor="middle" fill="#f59e0b" font-size="12">特色麵食/水餃專門店</text>
+      <circle cx="420" cy="195" r="5" fill="#f59e0b" opacity="0.5"/><text x="430" y="198" fill="#7c8aa0" font-size="9">鮮天下</text>
+      <circle cx="500" cy="200" r="5" fill="#f59e0b" opacity="0.5"/><text x="510" y="203" fill="#7c8aa0" font-size="9">周胖子</text>
+      
+      <ellipse cx="300" cy="70" rx="80" ry="35" fill="rgba(167,139,250,0.1)" stroke="#a78bfa" stroke-width="1" stroke-dasharray="4"/>
+      <text x="300" y="55" text-anchor="middle" fill="#a78bfa" font-size="11">小吃攤/夜市</text>
+      <circle cx="280" cy="75" r="3" fill="#a78bfa" opacity="0.3"/><circle cx="310" cy="72" r="3" fill="#a78bfa" opacity="0.3"/>
+      
+      <ellipse cx="580" cy="120" rx="70" ry="40" fill="rgba(251,146,60,0.1)" stroke="#fb923c" stroke-width="1" stroke-dasharray="4"/>
+      <text x="580" y="105" text-anchor="middle" fill="#fb923c" font-size="11">外送平台 + 超商</text>
+      <circle cx="560" cy="125" r="5" fill="#fb923c" opacity="0.5"/><text x="570" y="128" fill="#7c8aa0" font-size="9">Uber Eats</text>
+      <circle cx="610" cy="120" r="5" fill="#fb923c" opacity="0.5"/><text x="620" y="123" fill="#7c8aa0" font-size="9">7-11 鮮食</text>
+      
+      <!-- Mobility barriers -->
+      <text x="170" y="235" fill="#60a5fa" font-size="8">移動障礙：資本+品牌+中央工廠</text>
+    </svg>
+  </div>
+
+  <div class="callout">
+    <strong>策略群組洞察：</strong>八方雲集在自己的策略群組內幾乎沒有同量級的競爭者（四海遊龍規模不到 1/5）。真正的威脅來自不同群組——外送平台和超商鮮食正在模糊「快餐」的定義。八方進入線上通路（MOMO/家樂福調理包）正是對這個威脅的回應。
+  </div>
+</div>
+</section>
+
+<section id="s3">
+<div class="card">
+  <div class="cardTitle">💰 利潤池分析 — 台灣中式快餐價值鏈</div>
+
+  <table class="tbl">
+    <tr><th>價值鏈階段</th><th>代表</th><th>營收佔比</th><th>利潤佔比</th><th>利潤率</th><th>趨勢</th></tr>
+    <tr>
+      <td>上游原料（農產品）</td>
+      <td>高麗菜農、豬肉進口商</td>
+      <td>30%</td>
+      <td>15%</td>
+      <td>5-10%</td>
+      <td class="warn">→ 波動大</td>
+    </tr>
+    <tr>
+      <td>中央工廠 / 品牌</td>
+      <td style="color:var(--accent);font-weight:600">八方雲集</td>
+      <td>40%</td>
+      <td style="color:var(--green);font-weight:600">45%</td>
+      <td class="up">12.3%</td>
+      <td class="up">↑ 改善中</td>
+    </tr>
+    <tr>
+      <td>加盟門市營運</td>
+      <td>加盟主</td>
+      <td>100%（終端）</td>
+      <td>30%</td>
+      <td>8-12%</td>
+      <td>→ 穩定</td>
+    </tr>
+    <tr>
+      <td>外送平台</td>
+      <td>Uber Eats, foodpanda</td>
+      <td>5-10%</td>
+      <td>5%</td>
+      <td class="down">-10~-20%</td>
+      <td class="down">↓ 燒錢中</td>
+    </tr>
+    <tr>
+      <td>零售通路</td>
+      <td>MOMO, 家樂福, 超商</td>
+      <td>2%</td>
+      <td>5%</td>
+      <td>3-5%</td>
+      <td class="up">↑ 成長中</td>
+    </tr>
+  </table>
+
+  <div class="callout green">
+    <strong>八方雲集的利潤池位置極佳：</strong>它佔產業營收的 40%，卻拿走 45% 的利潤——這是不成比例的利潤捕獲，經典的「微笑曲線」品牌端優勢。加盟主承擔前端風險（店租、人事、水電），八方賺出貨價差和品牌授權。外送平台目前是利潤破壞者（虧損補貼），但八方透過調理包進入零售通路，正在開闢新利潤池。
+  </div>
+</div>
+</section>
+
+<section id="s4">
+<div class="card">
+  <div class="cardTitle">🌍 CAGE 距離分析 — 國際擴張障礙</div>
+
+  <div class="grid2">
+    <div class="card" style="border-left:3px solid var(--accent)">
+      <div class="cardTitle" style="font-size:13px;color:var(--accent)">🇭🇰 香港 → 低 CAGE</div>
+      <table class="tbl" style="font-size:11px">
+        <tr><td><strong>C</strong> 文化</td><td class="up">低 — 同文同種，飲食習慣相近</td></tr>
+        <tr><td><strong>A</strong> 行政</td><td class="up">低 — 一國兩制但商業法規接近</td></tr>
+        <tr><td><strong>G</strong> 地理</td><td class="up">極低 — 1.5 小時航程</td></tr>
+        <tr><td><strong>E</strong> 經濟</td><td class="up">低 — 人均 GDP 相近</td></tr>
+      </table>
+      <div style="font-size:10px;color:var(--muted);margin-top:4px">現況：59 店，獲利萎縮中。主因非 CAGE 障礙，而是中國品牌低價競爭 + 北上消費。</div>
+    </div>
+    <div class="card" style="border-left:3px solid var(--gold)">
+      <div class="cardTitle" style="font-size:13px;color:var(--gold)">🇺🇸 美國 → 中高 CAGE</div>
+      <table class="tbl" style="font-size:11px">
+        <tr><td><strong>C</strong> 文化</td><td class="warn">中高 — 飲食習慣差異大，需調整口味和營運模式</td></tr>
+        <tr><td><strong>A</strong> 行政</td><td class="warn">中 — 食安法規嚴格，訴訟風險高</td></tr>
+        <tr><td><strong>G</strong> 地理</td><td class="down">高 — 12 小時航程，冷鏈物流複雜</td></tr>
+        <tr><td><strong>E</strong> 經濟</td><td class="up">低 — 客單 $27，ASP 是台灣 3-4x</td></tr>
+      </table>
+      <div style="font-size:10px;color:var(--muted);margin-top:4px">現況：13 店。最大障礙是文化適應（快餐 vs 現點現做）和營運模式驗證。德州工廠是降低 G 障礙的關鍵。</div>
+    </div>
+  </div>
+
+  <div class="callout gold" style="margin-top:12px">
+    <strong>CAGE 啟示：</strong>八方雲集的國際化路徑是合理的——先攻低 CAGE 的香港（已驗證可跨文化），再攻中高 CAGE 的美國（最大 TAM）。美國的 CAGE 障礙正在被主動降低：德州工廠解決地理障礙、快餐模式測試解決文化障礙、直營模式解決行政障礙（食安控制）。<br>
+    <span class="source">（Ghemawat, 2009; IB7018 W8: CAGE Framework）</span>
+  </div>
+</div>
+</section>
+
+<section id="s5">
+<div class="card">
+  <div class="cardTitle">🏆 競爭優勢分類</div>
+
+  <div class="grid2">
+    <div>
+      <table class="tbl">
+        <tr><th colspan="2">顧客面優勢（定價權）</th></tr>
+        <tr><td><strong>搜尋成本</strong></td><td class="up">中 — 街邊店高可見度，但非獨佔</td></tr>
+        <tr><td><strong>轉換成本</strong></td><td class="warn">低 — 零轉換成本</td></tr>
+        <tr><td><strong>消費習慣</strong></td><td class="up">高 — 30 年品牌，「鍋貼=八方」的條件反射</td></tr>
+      </table>
+    </div>
+    <div>
+      <table class="tbl">
+        <tr><th colspan="2">生產面優勢（成本優勢）</th></tr>
+        <tr><td><strong>專有生產技術</strong></td><td class="up">中 — 配方雖非專利，但標準化難複製</td></tr>
+        <tr><td><strong>投入成本優勢</strong></td><td class="up">高 — 自建冷藏庫+契作+多元採購</td></tr>
+        <tr><td><strong>通路優勢</strong></td><td class="up">高 — 1,250+ 加盟點 = 無可匹敵的密度</td></tr>
+      </table>
+    </div>
+    <div>
+      <table class="tbl">
+        <tr><th colspan="2">效率面優勢</th></tr>
+        <tr><td><strong>學習曲線</strong></td><td class="up">高 — 30 年加盟體系營運 know-how</td></tr>
+        <tr><td><strong>規模經濟</strong></td><td class="up">極高 — 8 座中央工廠，對手無法匹敵</td></tr>
+        <tr><td><strong>網路效應</strong></td><td>無 — 非平台商業模式</td></tr>
+      </table>
+    </div>
+    <div>
+      <table class="tbl">
+        <tr><th colspan="2">政策面優勢</th></tr>
+        <tr><td><strong>專利</strong></td><td>無</td></tr>
+        <tr><td><strong>法規障礙</strong></td><td>低 — 餐飲業管制少</td></tr>
+        <tr><td><strong>配額</strong></td><td>無</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="callout green" style="margin-top:12px">
+    <strong>競爭優勢核心：</strong>八方雲集的護城河不是單一優勢，而是 <strong>規模經濟 + 消費習慣 + 通路密度</strong> 的三重疊加。規模經濟讓它成本最低，消費習慣讓顧客自動回流，通路密度讓競爭者找不到足夠的好地點。這三者互相強化——規模降低成本 → 低價強化習慣 → 習慣支撐更多加盟店 → 更多店擴大規模。
+  </div>
+</div>
+</section>
+
+<section id="s6">
+<div class="card">
+  <div class="cardTitle">📋 綜合判斷 — Competitive Verdict</div>
+  
+  <div class="verdict">
+    <div class="vTitle">📋 結論</div>
+    <table class="tbl" style="margin-top:8px">
+      <tr><td style="width:140px"><strong>競爭地位</strong></td><td><span class="grade A">市場領導者</span> — 台灣中式快餐無可爭議的第一，規模是第二名 5x+</td></tr>
+      <tr><td><strong>地位趨勢</strong></td><td class="up"><strong>改善中</strong> — 結束三年千店整理期，2024 重回淨展店，關店率下降</td></tr>
+      <tr><td><strong>最大競爭威脅</strong></td><td><strong>非傳統競爭者</strong> — 外送平台（Uber Eats/foodpanda）和超商鮮食正在重新定義「快餐」。八方轉做線上調理包就是防禦性佈局</td></tr>
+      <tr><td><strong>定價能力</strong></td><td class="up"><strong>中等偏強</strong> — 2023-24 調價後雖有短期銷量下滑，但 2025 已完全消化且銷量回升。2025 宣示不漲價反映品牌社會責任考量，非定價力不足</td></tr>
+      <tr><td><strong style="color:var(--gold)">共識忽略的洞察</strong></td><td>八方雲集的真正競爭對手不是四海遊龍，而是<strong>消費者的時間和胃容量</strong>。它參與的是「台灣人每餐 80-120 元的胃納量爭奪戰」，對手包括超商、便當店、泡麵、外送平台。這個 TAM 是台灣 2,300 萬人 × 每日 3 餐，而不是「鍋貼市場」</td></tr>
+    </table>
+  </div>
+
+  <div class="card" style="margin-top:16px">
+    <div class="cardTitle">⏭️ 競爭風險矩陣</div>
+    <table class="tbl">
+      <tr><th>威脅</th><th>嚴重性</th><th>急迫性</th><th>八方應對</th></tr>
+      <tr><td>外送平台改變消費習慣</td><td class="down">高</td><td class="down">現在</td><td>調理包進 MOMO/家樂福 + 自有線上點餐</td></tr>
+      <tr><td>香港中國低價品牌</td><td>中</td><td class="warn">持續</td><td>聚焦平價品牌、調整高租金門店</td></tr>
+      <tr><td>美國 QSR 巨頭（Panda Express 等）</td><td>中</td><td>中</td><td>差異化：現點現做 vs 快餐、台式風味</td></tr>
+      <tr><td>原物料價格衝擊</td><td>中</td><td>持續</td><td>自建倉儲+多元採購+契作</td></tr>
+    </table>
+  </div>
+</div>
+</section>
+
+</main>
+</div>
+
+<script>
+document.querySelectorAll('.navItem').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.navItem').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
+    document.getElementById(btn.dataset.section).classList.add('active');
+  });
+});
+document.addEventListener('keydown', e => {
+  if(e.target.tagName==='INPUT') return;
+  const s=['s1','s2','s3','s4','s5','s6'];
+  const a=document.querySelector('section.active');let i=s.indexOf(a.id);
+  if(e.key==='ArrowDown'||e.key==='ArrowRight') i=Math.min(i+1,5);
+  if(e.key==='ArrowUp'||e.key==='ArrowLeft') i=Math.max(i-1,0);
+  if(i!==s.indexOf(a.id)){
+    document.querySelectorAll('.navItem').forEach(b=>b.classList.remove('active'));
+    document.querySelector(`.navItem[data-section="${s[i]}"]`).classList.add('active');
+    document.querySelectorAll('section').forEach(x=>x.classList.remove('active'));
+    document.getElementById(s[i]).classList.add('active');
+  }
+});
+</script>
+</body>
+</html>
