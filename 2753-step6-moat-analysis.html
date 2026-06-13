@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>八方雲集 (2753) — 護城河 | Fundamental Analysis Step 6</title>
+<style>
+:root{
+  --bg:#0a0e14; --surface:#131820; --card:#181f2a;
+  --border:#252d3a; --ink:#e2e8f0; --muted:#7c8aa0; --dim:#4a5568;
+  --accent:#60a5fa; --accent2:#3b82f6;
+  --gold:#f59e0b; --green:#34d399; --red:#f87171;
+  --orange:#fb923c; --purple:#a78bfa;
+  --radius:14px; --radius2:18px;
+  --sans:"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,-apple-system,sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.6}
+.topbar{position:sticky;top:0;z-index:100;background:var(--surface);border-bottom:1px solid var(--border);padding:12px 24px;display:flex;align-items:center;justify-content:space-between}
+.topbar h1{font-size:18px;font-weight:600}
+.topbar .badge{font-size:11px;color:var(--muted);background:var(--card);padding:4px 10px;border-radius:20px}
+.layout{display:flex;min-height:calc(100vh - 53px)}
+.sidebar{width:220px;min-width:220px;background:var(--surface);border-right:1px solid var(--border);padding:16px 0;position:sticky;top:53px;height:calc(100vh - 53px);overflow-y:auto}
+.sidebar .navTitle{font-size:10px;text-transform:uppercase;color:var(--dim);padding:8px 16px;letter-spacing:1px}
+.sidebar .navItem{display:block;padding:8px 16px;color:var(--muted);font-size:13px;cursor:pointer;border:none;background:none;width:100%;text-align:left;transition:all .15s;border-left:3px solid transparent}
+.sidebar .navItem:hover{color:var(--ink);background:var(--card)}
+.sidebar .navItem.active{color:var(--accent);background:var(--card);border-left-color:var(--accent)}
+main{flex:1;padding:24px;max-width:900px}
+section{display:none}
+section.active{display:block}
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px;margin-bottom:20px}
+.cardTitle{font-size:15px;font-weight:600;margin-bottom:12px;color:var(--accent)}
+.callout{border-left:3px solid var(--accent);padding:12px 16px;border-radius:0 var(--radius) var(--radius) 0;margin-bottom:16px;background:color-mix(in srgb,var(--accent) 8%,var(--card))}
+.callout.gold{border-color:var(--gold);background:color-mix(in srgb,var(--gold) 8%,var(--card))}
+.callout.green{border-color:var(--green);background:color-mix(in srgb,var(--green) 8%,var(--card))}
+.callout.red{border-color:var(--red);background:color-mix(in srgb,var(--red) 8%,var(--card))}
+.metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:12px;margin-bottom:20px}
+.metric{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:14px;text-align:center}
+.metric .val{font-size:20px;font-weight:700;color:var(--ink)}
+.metric .lbl{font-size:10px;color:var(--muted);margin-top:4px}
+.tbl{width:100%;border-collapse:collapse;font-size:12px;margin-bottom:16px}
+.tbl th{text-align:left;color:var(--muted);font-weight:500;padding:7px 10px;border-bottom:1px solid var(--border);font-size:10px;text-transform:uppercase}
+.tbl td{padding:7px 10px;border-bottom:1px solid var(--border)}
+.tbl tr:last-child td{border-bottom:none}
+.up{color:var(--green)}.down{color:var(--red)}.warn{color:var(--orange)}
+.pillRow{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px}
+.pill{font-size:11px;padding:3px 10px;border-radius:12px;font-weight:500}
+.pill.g{background:color-mix(in srgb,var(--green) 20%,transparent);color:var(--green)}
+.pill.r{background:color-mix(in srgb,var(--red) 20%,transparent);color:var(--red)}
+.pill.o{background:color-mix(in srgb,var(--orange) 20%,transparent);color:var(--orange)}
+.pill.b{background:color-mix(in srgb,var(--accent) 20%,transparent);color:var(--accent)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.verdict{background:linear-gradient(135deg,color-mix(in srgb,var(--green) 15%,var(--surface)),color-mix(in srgb,var(--accent) 10%,var(--surface)));border:1px solid color-mix(in srgb,var(--green) 30%,var(--border));border-radius:var(--radius2);padding:20px}
+.verdict .vTitle{font-size:16px;font-weight:700;margin-bottom:8px;color:var(--green)}
+.grade{display:inline-flex;align-items:center;gap:4px;font-weight:700;font-size:16px}
+.grade.A{color:var(--green)}.grade.B{color:var(--green)}.grade.C{color:var(--gold)}
+.vector-bar{display:flex;align-items:center;gap:8px;padding:3px 0}
+.vector-label{width:100px;font-size:11px;color:var(--muted);text-align:right;flex-shrink:0}
+.vector-track{flex:1;height:10px;background:var(--surface);border-radius:5px;overflow:hidden}
+.vector-fill{height:100%;border-radius:5px}
+.vector-score{width:20px;font-size:10px;font-weight:600;text-align:right;flex-shrink:0}
+.source{font-size:10px;color:var(--dim);margin-top:4px}
+@media(max-width:768px){
+  .sidebar{display:none}
+  .layout{flex-direction:column}
+  main{padding:16px}
+  .grid2{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <h1>八方雲集 (2753.TW) — 護城河分析</h1>
+  <span class="badge">Step 6 / 10 · 2026-06-12</span>
+</div>
+<div class="layout">
+<nav class="sidebar">
+  <div class="navTitle">大綱</div>
+  <button class="navItem active" data-section="s1">📍 FSA 定位</button>
+  <button class="navItem" data-section="s2">🏛️ VECTOR 制度化</button>
+  <button class="navItem" data-section="s3">🔬 VRIN 耐久性</button>
+  <button class="navItem" data-section="s4">💰 ROIC 量化</button>
+  <button class="navItem" data-section="s5">🔄 動態能力 SST</button>
+  <button class="navItem" data-section="s6">📋 綜合判斷</button>
+</nav>
+<main>
+
+<section id="s1" class="active">
+<div class="card">
+  <div class="cardTitle">📍 Layer 1: FSA 定位 — 優勢在哪裡？</div>
+  
+  <div class="callout">
+    <strong>FSA 核心命題：</strong>八方雲集的 Firm-Specific Advantage 位於價值鏈的 <strong>Operations（中央工廠生產）+ 加盟體系管理</strong>。這是「規模化的標準化生產能力 × 加盟網絡的營運管理 know-how」的複合優勢。
+  </div>
+
+  <table class="tbl">
+    <tr><th style="width:120px">價值鏈活動</th><th>FSA 類型</th><th>證據</th></tr>
+    <tr><td><strong>進料物流</strong></td><td>成本優勢</td><td>自建冷藏庫（大林倉 6,000 噸）+ 契作 + 丹麥/法國多元採購 → 原料成本低於同業</td></tr>
+    <tr><td style="color:var(--accent)"><strong>營運生產</strong></td><td style="color:var(--accent)">成本 + 差異化</td><td>8 座中央工廠，標準化配方/製程，產能過剩（可支應倍數展店）</td></tr>
+    <tr><td><strong>出貨物流</strong></td><td>成本優勢</td><td>自有低溫冷鏈物流，每日配送至 1,250+ 加盟點</td></tr>
+    <tr><td><strong>行銷/銷售</strong></td><td>差異化</td><td>30 年品牌累積，「鍋貼=八方」的消費者條件反射</td></tr>
+    <tr><td style="color:var(--accent)"><strong>加盟管理</strong></td><td style="color:var(--accent)">差異化</td><td>加盟主招募/訓練/品管系統，30 年 iterated know-how</td></tr>
+  </table>
+</div>
+
+<div class="card">
+  <div class="cardTitle">🔒 隔離機制 — 為什麼競爭者無法複製？</div>
+  
+  <div class="grid2">
+    <div class="card" style="border-left:3px solid var(--accent)">
+      <div style="font-size:13px;font-weight:600;margin-bottom:6px">路徑依賴 (Path Dependence)</div>
+      <div style="font-size:11px;color:var(--muted)">
+        1,250+ 個好地點是 30 年累積的結果——這些位置現在租金已鎖定，新進者即使有資本也找不到同等級的地點密度。8 座工廠的選址也是歷史決策的產物。
+      </div>
+    </div>
+    <div class="card" style="border-left:3px solid var(--gold)">
+      <div style="font-size:13px;font-weight:600;margin-bottom:6px">社會複雜性 (Social Complexity)</div>
+      <div style="font-size:11px;color:var(--muted)">
+        加盟網絡是 1,250+ 個獨立加盟主的關係網——信任、默契、品牌認同需要時間建立。不是有錢就能買到的關係資產。
+      </div>
+    </div>
+    <div class="card" style="border-left:3px solid var(--purple)">
+      <div style="font-size:13px;font-weight:600;margin-bottom:6px">因果模糊性 (Causal Ambiguity)</div>
+      <div style="font-size:11px;color:var(--muted)">
+        為什麼八方成功而四海遊龍沒有？不是單一因素——是配方 + 加盟管理 + 供應鏈 + 品牌 + 地點選擇的複合結果。競爭者難以精確定位「到底要抄哪一項」。
+      </div>
+    </div>
+    <div class="card" style="border-left:3px solid var(--green)">
+      <div style="font-size:13px;font-weight:600;margin-bottom:6px">時間壓縮不經濟 (Time Compression)</div>
+      <div style="font-size:11px;color:var(--muted)">
+        10 倍資本無法讓新進者在 1 年內建立 1,250 家加盟店——加盟主招募、訓練、品管系統需要時間沉澱。中央工廠的產能爬坡也是時間的函數。
+      </div>
+    </div>
+  </div>
+
+  <div class="source">(Porter, 1985 Value Chain; Grant Ch.5,7; IB7018 W4)</div>
+</div>
+</section>
+
+<section id="s2">
+<div class="card">
+  <div class="cardTitle">🏛️ Layer 2: VECTOR 制度化評估</div>
+  <p style="color:var(--muted);font-size:11px;margin-bottom:12px">制度化能力 = 不能用錢買到的競爭優勢 (Hatam et al., 2023, McKinsey)</p>
+
+  <div style="margin-bottom:12px">
+    <div class="vector-bar"><span class="vector-label">Vision 願景</span><div class="vector-track"><div class="vector-fill" style="width:80%;background:var(--green)"></div></div><span class="vector-score" style="color:var(--green)">4</span></div>
+    <div class="vector-bar"><span class="vector-label">Employees 人才</span><div class="vector-track"><div class="vector-fill" style="width:60%;background:var(--accent)"></div></div><span class="vector-score" style="color:var(--accent)">3</span></div>
+    <div class="vector-bar"><span class="vector-label">Culture 文化</span><div class="vector-track"><div class="vector-fill" style="width:80%;background:var(--green)"></div></div><span class="vector-score" style="color:var(--green)">4</span></div>
+    <div class="vector-bar"><span class="vector-label">Technology 技術</span><div class="vector-track"><div class="vector-fill" style="width:60%;background:var(--accent)"></div></div><span class="vector-score" style="color:var(--accent)">3</span></div>
+    <div class="vector-bar"><span class="vector-label">Organization 組織</span><div class="vector-track"><div class="vector-fill" style="width:80%;background:var(--green)"></div></div><span class="vector-score" style="color:var(--green)">4</span></div>
+    <div class="vector-bar"><span class="vector-label">Routines 慣例</span><div class="vector-track"><div class="vector-fill" style="width:80%;background:var(--green)"></div></div><span class="vector-score" style="color:var(--green)">4</span></div>
+  </div>
+
+  <table class="tbl">
+    <tr><th>維度</th><th>評分</th><th>證據</th></tr>
+    <tr><td><strong>V 願景</strong></td><td class="up">4</td><td>「台灣現金牛 + 美國增長引擎」雙軌策略清晰，創始人長期掌舵，願景一致性高</td></tr>
+    <tr><td><strong>E 人才</strong></td><td>3</td><td>管理層穩定（策略長/財務長長期在職），但加盟體系的人才密度難以量化</td></tr>
+    <tr><td><strong>C 文化</strong></td><td class="up">4</td><td>務實坦誠（法說會不粉飾問題）、長期導向（創始人持股 31%、高股利回饋）</td></tr>
+    <tr><td><strong>T 技術</strong></td><td>3</td><td>無專利或獨特技術，優勢在「系統性 know-how」而非個別技術</td></tr>
+    <tr><td><strong>O 組織</strong></td><td class="up">4</td><td>中央工廠 × 加盟體系的組織設計是核心能耐，決策權清晰（總部控品質/配方）</td></tr>
+    <tr><td><strong>R 慣例</strong></td><td class="up">4</td><td>加盟主 SOP、品管巡檢、中央工廠標準化製程——30 年 iterated 的營運慣例</td></tr>
+  </table>
+
+  <div class="callout green">
+    <strong>VECTOR 總評 3.7/5：</strong>八方雲集的優勢已深度制度化——不依賴單一個人（創始人雖重要但系統已成熟到可自行運作）。Vision、Culture、Organization、Routines 都達到 4 分（制度化等級）。弱項在 Technology（非科技公司）和 Employees（加盟體系難以統一評估）。這意味著護城河是 <strong>組織層級</strong> 的，而非個人層級——即使管理層換代，系統仍可運作。<br>
+    <span class="source">(Hatam et al., 2023, McKinsey; IB7018 W4)</span>
+  </div>
+</div>
+</section>
+
+<section id="s3">
+<div class="card">
+  <div class="cardTitle">🔬 Layer 3: VRIN 耐久性測試</div>
+  <p style="color:var(--muted);font-size:11px;margin-bottom:12px">(Barney, 1991; Grant Ch.5)</p>
+
+  <table class="tbl">
+    <tr><th style="width:100px">測試</th><th>判定</th><th>關鍵證據</th></tr>
+    <tr>
+      <td><strong>V 有價值</strong></td>
+      <td class="up">✓ 通過</td>
+      <td>規模化標準化生產直接創造成本優勢和品質一致性——這是加盟主和消費者都認可的價值</td>
+    </tr>
+    <tr>
+      <td><strong>R 稀有</strong></td>
+      <td class="up">✓ 通過</td>
+      <td>台灣只有八方有「1,250+ 店 + 8 座中央工廠」的組合。四海遊龍規模不到 1/5。第二名的差距本身就是稀有性</td>
+    </tr>
+    <tr>
+      <td><strong>I 不可模仿</strong></td>
+      <td class="up">✓ 通過</td>
+      <td><strong>最關鍵測試。</strong>四個隔離機制同時作用：路徑依賴（地點累積）+ 社會複雜性（加盟網絡關係）+ 因果模糊性（複合成功因素）+ 時間壓縮不經濟（加盟體系需要時間沉澱）</td>
+    </tr>
+    <tr>
+      <td><strong>N 不可替代</strong></td>
+      <td class="warn">◐ 部分</td>
+      <td><strong>最弱環節。</strong>外送平台 + 超商鮮食是不同商業模式但滿足相同需求（快速、平價的餐食）。消費者的「方便性需求」可以被 Uber Eats 替代，雖然「鍋貼需求」不會</td>
+    </tr>
+    <tr>
+      <td><strong>O 組織化</strong></td>
+      <td class="up">✓ 通過</td>
+      <td>VECTOR 評估顯示組織已圍繞核心能力構建。創始人持股 31%、高股利政策確保長期導向</td>
+    </tr>
+  </table>
+
+  <div class="callout gold">
+    <strong>VRIN 判決：V-R-I 全通過，N（不可替代性）是弱點。</strong>八方雲集的護城河是「規模 + 品牌 + 加盟體系」的複合體，傳統競爭者無法複製。但外送平台和消費習慣轉變是不同維度的威脅——它們不跟你競爭「鍋貼市場」，而是競爭「消費者的胃納量」。這是 Porter 五力中「替代品威脅 4.0/5」的根源。
+  </div>
+</div>
+
+<div class="card">
+  <div class="cardTitle">🔄 Sonkin & Johnson 永續條件</div>
+  <p style="color:var(--muted);font-size:11px;margin-bottom:8px">「企業的競爭優勢只有在同時擁有顧客面優勢 + 規模面優勢時才可永續」— Sonkin & Johnson (2017)</p>
+
+  <div class="grid2">
+    <div class="card" style="border-left:3px solid var(--green)">
+      <div style="font-size:13px;font-weight:600;color:var(--green);margin-bottom:4px">✓ 顧客面優勢</div>
+      <div style="font-size:11px;color:var(--muted)">消費習慣 — 30 年品牌沉澱，「鍋貼=八方」的條件反射。每天數十萬消費者自動回流，不需重新獲取。</div>
+    </div>
+    <div class="card" style="border-left:3px solid var(--green)">
+      <div style="font-size:13px;font-weight:600;color:var(--green);margin-bottom:4px">✓ 規模面優勢</div>
+      <div style="font-size:11px;color:var(--muted)">8 座中央工廠 + 1,250+ 店 → 單位成本業界最低。原物料採購量是第二名的 5x+，議價力懸殊。</div>
+    </div>
+  </div>
+  <div style="text-align:center;padding:8px;color:var(--green);font-size:13px;font-weight:600;margin-top:4px">
+    ↑ 互相強化 ↓
+  </div>
+  <div style="text-align:center;font-size:11px;color:var(--muted);padding:0 40px">
+    更多店 → 更強品牌認知 → 更強消費習慣 → 更多顧客 → 更大採購量 → 更低成本 → 更低價格 → 更強品牌認知...
+  </div>
+
+  <div class="callout green" style="margin-top:12px">
+    <strong>雙條件通過。</strong>八方雲集同時擁有顧客面優勢（消費習慣）和規模面優勢（中央工廠規模經濟），且兩者互相強化。這是 Sonkin & Johnson 定義的「可永續競爭優勢」。
+  </div>
+</div>
+</section>
+
+<section id="s4">
+<div class="card">
+  <div class="cardTitle">💰 Layer 3a: ROIC 量化 — 護城河的經濟足跡</div>
+
+  <div class="metrics">
+    <div class="metric"><div class="val">20.8%</div><div class="lbl">ROE (2025)</div></div>
+    <div class="metric"><div class="val">~15.5%</div><div class="lbl">ROIC (估)</div></div>
+    <div class="metric"><div class="val">~8.5%</div><div class="lbl">WACC (估)</div></div>
+    <div class="metric"><div class="val" style="color:var(--green)">~7.0%</div><div class="lbl">超額回報</div></div>
+  </div>
+
+  <table class="tbl">
+    <tr><th>指標</th><th>2019</th><th>2020</th><th>2021</th><th>2022</th><th>2023</th><th>2024</th><th>2025</th></tr>
+    <tr><td>ROE</td><td>30.9%</td><td>34.7%</td><td>20.5%</td><td>20.2%</td><td>15.8%</td><td>16.3%</td><td class="up">20.8%</td></tr>
+    <tr><td>ROA</td><td>17.5%</td><td>17.6%</td><td>11.6%</td><td>12.0%</td><td>9.4%</td><td>9.7%</td><td class="up">11.7%</td></tr>
+    <tr><td>毛利率</td><td>39.7%</td><td>39.5%</td><td>37.5%</td><td>37.2%</td><td>34.8%</td><td>34.6%</td><td class="up">36.0%</td></tr>
+  </table>
+
+  <div class="callout green">
+    <strong>ROE 的 V 型復甦是護城河的最佳證據：</strong>2019-2020 ROE >30% 是「小規模 + 高毛利」的甜蜜期。2021 上市後規模擴大、ROE 因股本膨脹和毛利率下滑而降至 16% 低谷。2024-2025 隨著展店恢復、營運槓桿釋放、毛利率回升，ROE 反彈至 20.8%。<strong>這不是景氣循環——這是競爭優勢在壓力測試後的展現。</strong>毛利率從 42%（2018 峰值）跌到 35% 後反彈至 36%，顯示公司有定價力和成本控制力。ROE 長期 >15% 且處於回升軌道，超額回報 ~7%，符合「寬護城河」的量化標準。
+  </div>
+</div>
+</section>
+
+<section id="s5">
+<div class="card">
+  <div class="cardTitle">🔄 Layer 4: 動態能力 SST</div>
+  <p style="color:var(--muted);font-size:11px;margin-bottom:12px">靜態護城河會侵蝕。公司能否主動更新其優勢？(Teece, 2007, SMJ)</p>
+
+  <table class="tbl">
+    <tr><th style="width:80px">能力</th><th>評分</th><th>證據</th></tr>
+    <tr>
+      <td><strong>S 感知</strong></td>
+      <td class="up">4</td>
+      <td>
+        ① 提前識別郊區商圈的營運潛力（「過去認為郊區人流不足，這兩年發現只要交通便利即可」）<br>
+        ② 察覺美國快餐模式機會並在德州試點<br>
+        ③ 調理包通路佈局（MOMO/家樂福）是對外送平台威脅的感知反應
+      </td>
+    </tr>
+    <tr>
+      <td><strong>S 把握</strong></td>
+      <td class="up">4</td>
+      <td>
+        ① 美國建廠決策果斷（$13-15M 德州工廠）<br>
+        ② 牛肉麵產線快速擴充（3x 產能）<br>
+        ③ 梁社漢品牌從 0 到 200 店的執行力<br>
+        ④ 2024 年募資 10 億投入美國擴張
+      </td>
+    </tr>
+    <tr>
+      <td><strong>T 轉型</strong></td>
+      <td>3</td>
+      <td>
+        ① 關閉績效不佳的加盟店（2021-2023 千店整理期）——願意汰弱留強<br>
+        ② 從純加盟轉向美國直營——組織模式調整<br>
+        ③ 香港從高端品牌（百芳、麵屋）回歸平價八方——策略轉向的彈性<br>
+        ④ 但轉型速度不算快（德州工廠延遲一季）
+      </td>
+    </tr>
+  </table>
+
+  <div class="callout">
+    <strong>SST 總評 3.7/5：</strong>八方雲集的 Sensing 和 Seizing 能力強——管理層對市場變化的感知準確且行動果斷。Transforming 能力中等——組織轉型速度不算快，但方向正確。餐飲業本質上不需要像科技業那樣快速轉型，穩定性和一致性本身就是優勢。
+  </div>
+</div>
+</section>
+
+<section id="s6">
+<div class="card">
+  <div class="cardTitle">📋 綜合判斷 — Moat Verdict</div>
+  
+  <div class="verdict">
+    <div class="vTitle">📋 結論</div>
+    <table class="tbl" style="margin-top:8px">
+      <tr><td style="width:140px"><strong>護城河等級</strong></td><td><span class="grade B">B+ (Strong Moat)</span></td></tr>
+      <tr><td><strong>耐久性展望</strong></td><td><strong>10-15 年</strong> — 規模 + 品牌 + 加盟體系的複合優勢需要長時間才能侵蝕。台灣市場基本上已鎖定（規模差距太大），美國市場正在建立新護城河</td></tr>
+      <tr><td><strong>護城河軌跡</strong></td><td class="up"><strong>Widening 🟢</strong> — 結束三年整理期，重新展店加速。營運槓桿釋放中。美國擴張將加深規模壁壘</td></tr>
+      <tr><td><strong>最大脆弱點</strong></td><td><strong>不可替代性（VRIN 的 N）</strong> — 外送平台和消費習慣轉變是不同維度的威脅。八方主動進入線上通路（調理包）是正確的防禦，但需要持續追蹤</td></tr>
+      <tr><td><strong style="color:var(--gold)">市場忽略的洞察</strong></td><td>市場用 ~15x P/E 和 3.6x P/B 定價，反映的是「成熟餐飲股」的估值框架。但 ROE 從 16% 谷底反彈至 20.8% 且仍在上升——這意味著護城河正在 <strong>變寬而非變窄</strong>。估值未反映「護城河強化中的企業」應有的溢價</td></tr>
+    </table>
+  </div>
+</div>
+</section>
+
+</main>
+</div>
+
+<script>
+document.querySelectorAll('.navItem').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.navItem').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
+    document.getElementById(btn.dataset.section).classList.add('active');
+  });
+});
+document.addEventListener('keydown', e => {
+  if(e.target.tagName==='INPUT') return;
+  const s=['s1','s2','s3','s4','s5','s6'];
+  const a=document.querySelector('section.active');let i=s.indexOf(a.id);
+  if(e.key==='ArrowDown'||e.key==='ArrowRight') i=Math.min(i+1,5);
+  if(e.key==='ArrowUp'||e.key==='ArrowLeft') i=Math.max(i-1,0);
+  if(i!==s.indexOf(a.id)){
+    document.querySelectorAll('.navItem').forEach(b=>b.classList.remove('active'));
+    document.querySelector(`.navItem[data-section="${s[i]}"]`).classList.add('active');
+    document.querySelectorAll('section').forEach(x=>x.classList.remove('active'));
+    document.getElementById(s[i]).classList.add('active');
+  }
+});
+</script>
+</body>
+</html>
