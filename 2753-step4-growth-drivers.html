@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>八方雲集 (2753) — 成長動能 | Fundamental Analysis Step 4</title>
+<style>
+:root{
+  --bg:#0a0e14; --surface:#131820; --card:#181f2a;
+  --border:#252d3a; --ink:#e2e8f0; --muted:#7c8aa0; --dim:#4a5568;
+  --accent:#60a5fa; --accent2:#3b82f6;
+  --gold:#f59e0b; --green:#34d399; --red:#f87171;
+  --orange:#fb923c; --purple:#a78bfa;
+  --radius:14px; --radius2:18px;
+  --sans:"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,-apple-system,sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.6}
+.topbar{position:sticky;top:0;z-index:100;background:var(--surface);border-bottom:1px solid var(--border);padding:12px 24px;display:flex;align-items:center;justify-content:space-between}
+.topbar h1{font-size:18px;font-weight:600}
+.topbar .badge{font-size:11px;color:var(--muted);background:var(--card);padding:4px 10px;border-radius:20px}
+.layout{display:flex;min-height:calc(100vh - 53px)}
+.sidebar{width:220px;min-width:220px;background:var(--surface);border-right:1px solid var(--border);padding:16px 0;position:sticky;top:53px;height:calc(100vh - 53px);overflow-y:auto}
+.sidebar .navTitle{font-size:10px;text-transform:uppercase;color:var(--dim);padding:8px 16px;letter-spacing:1px}
+.sidebar .navItem{display:block;padding:8px 16px;color:var(--muted);font-size:13px;cursor:pointer;border:none;background:none;width:100%;text-align:left;transition:all .15s;border-left:3px solid transparent}
+.sidebar .navItem:hover{color:var(--ink);background:var(--card)}
+.sidebar .navItem.active{color:var(--accent);background:var(--card);border-left-color:var(--accent)}
+main{flex:1;padding:24px;max-width:900px}
+section{display:none}
+section.active{display:block}
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px;margin-bottom:20px}
+.cardTitle{font-size:15px;font-weight:600;margin-bottom:12px;color:var(--accent)}
+.callout{border-left:3px solid var(--accent);padding:12px 16px;border-radius:0 var(--radius) var(--radius) 0;margin-bottom:16px;background:color-mix(in srgb,var(--accent) 8%,var(--card))}
+.callout.gold{border-color:var(--gold);background:color-mix(in srgb,var(--gold) 8%,var(--card))}
+.callout.green{border-color:var(--green);background:color-mix(in srgb,var(--green) 8%,var(--card))}
+.callout.red{border-color:var(--red);background:color-mix(in srgb,var(--red) 8%,var(--card))}
+.metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:20px}
+.metric{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px;text-align:center}
+.metric .val{font-size:22px;font-weight:700;color:var(--ink)}
+.metric .lbl{font-size:11px;color:var(--muted);margin-top:4px}
+.tbl{width:100%;border-collapse:collapse;font-size:13px;margin-bottom:16px}
+.tbl th{text-align:left;color:var(--muted);font-weight:500;padding:8px 12px;border-bottom:1px solid var(--border);font-size:11px;text-transform:uppercase}
+.tbl td{padding:8px 12px;border-bottom:1px solid var(--border)}
+.tbl tr:last-child td{border-bottom:none}
+.up{color:var(--green)}.down{color:var(--red)}.warn{color:var(--orange)}
+.pillRow{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px}
+.pill{font-size:11px;padding:3px 10px;border-radius:12px;font-weight:500}
+.pill.g{background:color-mix(in srgb,var(--green) 20%,transparent);color:var(--green)}
+.pill.r{background:color-mix(in srgb,var(--red) 20%,transparent);color:var(--red)}
+.pill.o{background:color-mix(in srgb,var(--orange) 20%,transparent);color:var(--orange)}
+.pill.b{background:color-mix(in srgb,var(--accent) 20%,transparent);color:var(--accent)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.grid4{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.verdict{background:linear-gradient(135deg,color-mix(in srgb,var(--green) 15%,var(--surface)),color-mix(in srgb,var(--accent) 10%,var(--surface)));border:1px solid color-mix(in srgb,var(--green) 30%,var(--border));border-radius:var(--radius2);padding:20px}
+.verdict .vTitle{font-size:16px;font-weight:700;margin-bottom:8px;color:var(--green)}
+.grade{display:inline-flex;align-items:center;gap:4px;font-weight:700;font-size:18px}
+.grade.A{color:var(--green)}.grade.B{color:var(--green)}.grade.C{color:var(--gold)}
+.source{font-size:10px;color:var(--dim);margin-top:4px}
+.bar-row{display:flex;align-items:center;gap:8px;margin:4px 0;font-size:12px}
+.bar-label{width:80px;text-align:right;color:var(--muted);flex-shrink:0}
+.bar-track{flex:1;height:20px;background:var(--surface);border-radius:4px;overflow:hidden}
+.bar-fill{height:100%;border-radius:4px;transition:width .5s}
+.bar-val{width:60px;font-size:11px;color:var(--ink);flex-shrink:0}
+@media(max-width:768px){
+  .sidebar{display:none}
+  .layout{flex-direction:column}
+  main{padding:16px}
+  .grid2,.grid4{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <h1>八方雲集 (2753.TW) — 成長動能</h1>
+  <span class="badge">Step 4 / 10 · 2026-06-12</span>
+</div>
+<div class="layout">
+<nav class="sidebar">
+  <div class="navTitle">大綱</div>
+  <button class="navItem active" data-section="s1">📊 營收拆解</button>
+  <button class="navItem" data-section="s2">🏪 單位經濟學</button>
+  <button class="navItem" data-section="s3">📈 增量利潤率</button>
+  <button class="navItem" data-section="s4">⚙️ 營運槓桿</button>
+  <button class="navItem" data-section="s5">🛡️ 安全邊際</button>
+  <button class="navItem" data-section="s6">🔮 領先指標</button>
+  <button class="navItem" data-section="s7">📋 綜合判斷</button>
+</nav>
+<main>
+
+<section id="s1" class="active">
+<div class="card">
+  <div class="cardTitle">📊 營收拆解 (2025)</div>
+  <p style="color:var(--muted);font-size:12px;margin-bottom:12px">總營收 8,791 百萬 TWD · +9.5% YoY</p>
+
+  <div class="grid2">
+    <div>
+      <table class="tbl">
+        <tr><th colspan="3">地區拆解</th></tr>
+        <tr><td><strong>台灣</strong></td><td>6,909M</td><td style="color:var(--muted)">78.6%</td></tr>
+        <tr><td><strong>香港</strong></td><td>1,248M</td><td style="color:var(--muted)">14.2%</td></tr>
+        <tr><td><strong>美國</strong></td><td>633M</td><td style="color:var(--muted)">7.2%</td></tr>
+      </table>
+    </div>
+    <div>
+      <table class="tbl">
+        <tr><th colspan="3">品牌拆解 (台灣)</th></tr>
+        <tr><td><strong>八方雲集</strong></td><td>5,182M</td><td style="color:var(--muted)">75%</td></tr>
+        <tr><td><strong>梁社漢排骨</strong></td><td>1,693M</td><td style="color:var(--muted)">24.5%</td></tr>
+        <tr><td><strong>其他</strong></td><td>35M</td><td style="color:var(--muted)">&lt;5%</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="callout">
+    <strong>成長品質評估：</strong>營收成長動能來自三個結構性來源——① 展店（台灣八方 +26、梁社漢 +18、美國 +2），② 同店銷售成長（SSSG >10%），③ 新品貢獻（牛肉麵佔台灣營收 ~10%）。全部是有機成長，無併購灌水。
+  </div>
+</div>
+
+<div class="card">
+  <div class="cardTitle">📐 成長驅動力分類</div>
+  <table class="tbl">
+    <tr><th style="width:140px">成長來源</th><th>性質</th><th>貢獻度</th><th>持續性</th></tr>
+    <tr>
+      <td><strong>展店（淨增店數）</strong></td>
+      <td>長期結構性</td>
+      <td>~50%</td>
+      <td class="up">高 — 台灣郊區/新商圈仍有空間；美國才剛起步</td>
+    </tr>
+    <tr>
+      <td><strong>同店銷售成長</strong></td>
+      <td>結構性 + 部分週期</td>
+      <td>~30%</td>
+      <td class="up">中高 — 品牌恢復 + 消費者接受度提升，但物價影響敏感</td>
+    </tr>
+    <tr>
+      <td><strong>新品/新通路</strong></td>
+      <td>長期結構性</td>
+      <td>~15%</td>
+      <td class="up">中高 — 牛肉麵、調理包仍在滲透初期</td>
+    </tr>
+    <tr>
+      <td><strong>價格調整</strong></td>
+      <td>一次性</td>
+      <td>~5%</td>
+      <td>低 — 2025 宣示不漲價</td>
+    </tr>
+  </table>
+  <div class="pillRow">
+    <span class="pill g">85% 結構性</span>
+    <span class="pill o">15% 週期/一次性</span>
+    <span class="pill g">100% 有機</span>
+  </div>
+</div>
+</section>
+
+<section id="s2">
+<div class="card">
+  <div class="cardTitle">🏪 單位經濟學</div>
+  <p style="color:var(--muted);font-size:11px;margin-bottom:12px">八方雲集的事業單位是「加盟門市」。以下為總部視角的單店經濟：</p>
+
+  <table class="tbl">
+    <tr><th style="width:180px">指標</th><th>2025</th><th>2024</th><th>變化</th></tr>
+    <tr>
+      <td>台灣總店數（八方+梁社漢）</td>
+      <td>~1,240</td>
+      <td>~1,196</td>
+      <td class="up">+44</td>
+    </tr>
+    <tr>
+      <td>台灣營收（百萬）</td>
+      <td>6,909</td>
+      <td>~6,276</td>
+      <td class="up">+10.1%</td>
+    </tr>
+    <tr>
+      <td><strong>單店年營收（百萬 TWD）</strong></td>
+      <td><strong>5.57</strong></td>
+      <td><strong>5.25</strong></td>
+      <td class="up">+6.1%</td>
+    </tr>
+    <tr>
+      <td>單店月營收（萬 TWD）</td>
+      <td>46.4</td>
+      <td>43.7</td>
+      <td class="up">+6.1%</td>
+    </tr>
+  </table>
+
+  <div class="callout">
+    <strong>解讀：</strong>這不是終端消費者的單店營收，而是 <strong>總部對加盟店的出貨金額</strong>。實際終端單店月營收約 80-100 萬 TWD（加盟主毛利約 40-50%）。總部單店出貨成長 6.1% 反映：① 終端銷量成長（鍋貼水餃 +8-10%），② 加盟主訂貨金額增加。
+  </div>
+
+  <div class="card" style="margin-top:12px">
+    <div class="cardTitle" style="font-size:13px">🇺🇸 美國單店經濟（初估）</div>
+    <table class="tbl">
+      <tr><th>指標</th><th>估計值</th><th>備註</th></tr>
+      <tr><td>店數</td><td>13</td><td>2024 年底</td></tr>
+      <tr><td>美國營收（百萬 TWD）</td><td>~633</td><td>佔比 7.2%</td></tr>
+      <tr><td>單店年營收（百萬 TWD）</td><td>~48.7</td><td>約台灣的 8.7x</td></tr>
+      <tr><td>單店年營收（萬 USD）</td><td>~150</td><td>客單 ~$27 × 每日來客</td></tr>
+      <tr><td>單店獲利狀態</td><td class="up">加州區 24M11 首次單月獲利</td><td>轉捩點信號</td></tr>
+      <tr><td>單店資本支出（萬 USD）</td><td>60-80</td><td>含裝潢、設備</td></tr>
+    </table>
+  </div>
+</div>
+</section>
+
+<section id="s3">
+<div class="card">
+  <div class="cardTitle">📈 增量利潤率 (Incremental Margin)</div>
+  
+  <table class="tbl">
+    <tr><th>期間</th><th>Δ 營收</th><th>Δ 營業利益</th><th>增量利潤率</th><th>品質</th></tr>
+    <tr>
+      <td>2023 → 2024</td>
+      <td>+688M</td>
+      <td>+53M</td>
+      <td class="warn">7.7%</td>
+      <td>受調價後銷量下滑壓抑</td>
+    </tr>
+    <tr>
+      <td>2024 → 2025</td>
+      <td class="up">+763M</td>
+      <td class="up">+356M</td>
+      <td class="up"><strong>46.7%</strong></td>
+      <td class="up">營運槓桿全面釋放</td>
+    </tr>
+    <tr style="background:color-mix(in srgb,var(--green) 5%,transparent)">
+      <td><strong>預估 2025 → 2026</strong></td>
+      <td><strong>+880M (估 10%)</strong></td>
+      <td><strong>~350-400M</strong></td>
+      <td><strong>~40-45%</strong></td>
+      <td>假設美國擴張維持、台灣穩定</td>
+    </tr>
+  </table>
+
+  <div class="callout green">
+    <strong>關鍵轉折：</strong>2023→2024 增量利潤率僅 7.7%（漲價後消費者觀望，銷量下滑吃掉 margin）。2024→2025 跳升至 <strong>46.7%</strong>——這是「漲價消化期結束 + 銷量回升 + 成本控制」三重利好疊加的結果。46.7% 的增量利潤率意味著：每多賺 1 元營收，有 0.47 元直接轉化為營業利益。這是極高的營運槓桿信號。
+  </div>
+
+  <div class="metrics">
+    <div class="metric">
+      <div class="val" style="color:var(--orange)">7.7%</div>
+      <div class="lbl">2023→2024 增量利潤率</div>
+    </div>
+    <div class="metric">
+      <div class="val" style="color:var(--green)">46.7%</div>
+      <div class="lbl">2024→2025 增量利潤率</div>
+    </div>
+    <div class="metric">
+      <div class="val" style="color:var(--green)">6.1x</div>
+      <div class="lbl">改善倍數</div>
+    </div>
+  </div>
+</div>
+</section>
+
+<section id="s4">
+<div class="card">
+  <div class="cardTitle">⚙️ 營運槓桿分析 (DOL)</div>
+
+  <div class="grid2">
+    <div>
+      <table class="tbl">
+        <tr><th colspan="2">成本結構估計 (2025)</th></tr>
+        <tr><td>營收</td><td>8,791M (100%)</td></tr>
+        <tr><td>變動成本 (COGS + 變動推銷)</td><td>~6,400M (73%)</td></tr>
+        <tr><td>邊際貢獻</td><td class="up">~2,391M (27.2%)</td></tr>
+        <tr><td>固定成本 (管理+研發+固定推銷)</td><td>~1,313M (14.9%)</td></tr>
+        <tr><td>營業利益</td><td>1,078M (12.3%)</td></tr>
+      </table>
+    </div>
+    <div>
+      <table class="tbl">
+        <tr><th>指標</th><th>數值</th><th>判讀</th></tr>
+        <tr><td><strong>營運槓桿度 (DOL)</strong></td><td><strong>2.22x</strong></td><td class="up">中等偏高</td></tr>
+        <tr><td>營收 +10% → 營益變化</td><td class="up">+22.2%</td><td>利潤放大</td></tr>
+        <tr><td>營收 -10% → 營益變化</td><td class="down">-22.2%</td><td>利潤急縮</td></tr>
+        <tr><td>損益兩平營收</td><td>~4,820M</td><td>產能利用率 182%</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="callout gold">
+    <strong>DOL 2.22x 的解讀：</strong>中等偏高的營運槓桿是雙面刃——上行時利潤快速放大（2024→2025 營收 +9.5% 但營益 +49% 就是證據），但下行時同樣危險。好消息是損益兩平點僅 ~4,820M（目前營收的 55%），即使營收腰斬也不會虧損。加盟模式的一大優勢：大部分固定成本（店租、人事）由加盟主承擔，總部的固定成本主要是工廠折舊和管理薪資，可控性高。<br>
+    <span class="source">（MA_Ch2: Cost Behavior & Operating Leverage）</span>
+  </div>
+
+  <div class="pillRow">
+    <span class="pill g">DOL 2.22x 中等</span>
+    <span class="pill b">損益兩平僅 55%</span>
+    <span class="pill g">加盟模式低固定成本</span>
+  </div>
+</div>
+</section>
+
+<section id="s5">
+<div class="card">
+  <div class="cardTitle">🛡️ 安全邊際 (Margin of Safety)</div>
+
+  <div style="background:var(--surface);border-radius:var(--radius);padding:20px;margin-bottom:16px">
+    <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:8px">
+      <span style="font-size:11px;color:var(--muted)">損益兩平點 4,820M</span>
+      <span style="font-size:11px;color:var(--green)">實際營收 8,791M</span>
+    </div>
+    <div style="height:28px;background:var(--bg);border-radius:6px;overflow:hidden;position:relative">
+      <div style="width:55%;height:100%;background:var(--dim);border-radius:6px 0 0 6px;position:absolute"></div>
+      <div style="width:45%;height:100%;background:linear-gradient(90deg,var(--green),var(--accent));border-radius:0 6px 6px 0;position:absolute;left:55%"></div>
+      <div style="position:absolute;left:55%;top:0;bottom:0;width:2px;background:var(--gold)"></div>
+      <span style="position:absolute;left:56%;top:4px;font-size:10px;color:var(--gold)">安全邊際 45.2%</span>
+    </div>
+  </div>
+
+  <table class="tbl">
+    <tr><th>情境</th><th>營收 (百萬)</th><th>營業利益 (百萬)</th><th>營益率</th><th>安全邊際</th></tr>
+    <tr style="background:color-mix(in srgb,var(--green) 5%,transparent)">
+      <td class="up">樂觀 (+15% vs 2025)</td><td>10,110</td><td class="up">1,450</td><td class="up">14.3%</td><td class="up">52.3%</td></tr>
+    <tr>
+      <td>基本 (+10%)</td><td>9,670</td><td>1,350</td><td>14.0%</td><td>50.2%</td></tr>
+    <tr>
+      <td><strong>2025 實際</strong></td><td><strong>8,791</strong></td><td><strong>1,078</strong></td><td><strong>12.3%</strong></td><td><strong>45.2%</strong></td></tr>
+    <tr>
+      <td class="warn">悲觀 (-5%)</td><td>8,351</td><td class="warn">850</td><td class="warn">10.2%</td><td class="warn">42.3%</td></tr>
+    <tr style="background:color-mix(in srgb,var(--red) 5%,transparent)">
+      <td class="down">極端 (-15%)</td><td>7,472</td><td class="down">550</td><td class="down">7.4%</td><td class="down">35.5%</td></tr>
+    </table>
+
+  <div class="callout green">
+    <strong>結論：</strong>八方雲集擁有 <strong>極佳的下檔保護</strong>。即使在極端情境（營收 -15%），安全邊際仍有 35.5%，不會虧損。這來自加盟模式的結構性優勢：總部不承擔店租和人事成本，固定成本基數低。
+  </div>
+</div>
+</section>
+
+<section id="s6">
+<div class="card">
+  <div class="cardTitle">🔮 領先指標 (高頻 vs. 低頻)</div>
+
+  <table class="tbl">
+    <tr><th>指標</th><th>頻率</th><th>領先/滯後</th><th>訊號意義</th></tr>
+    <tr>
+      <td><strong>月營收</strong></td>
+      <td>每月 10 日前公告</td>
+      <td class="up">領先 1-2 月</td>
+      <td>最直接的營收趨勢，Mom/YoY 可預判季報</td>
+    </tr>
+    <tr>
+      <td><strong>展店數（開店-關店）</strong></td>
+      <td>法說會每半年</td>
+      <td class="up">領先 2-4 季</td>
+      <td>新店需要 3-6 個月 ramp-up，展店加速 = 未來營收成長</td>
+    </tr>
+    <tr>
+      <td><strong>關店率</strong></td>
+      <td>法說會每半年</td>
+      <td>同步</td>
+      <td>加盟體系健康度；上升 = 加盟主獲利惡化</td>
+    </tr>
+    <tr>
+      <td><strong>豬肉/高麗菜價格</strong></td>
+      <td>每日/每週</td>
+      <td class="up">領先 1-2 季</td>
+      <td>食材成本佔 60-80%，原料價格直接影響毛利率</td>
+    </tr>
+    <tr>
+      <td><strong>美國單店損益</strong></td>
+      <td>法說會每半年</td>
+      <td class="up">領先 2-4 季</td>
+      <td>加州轉盈是信號，持續擴大代表美國模式驗證成功</td>
+    </tr>
+    <tr>
+      <td><strong>Google Trends「八方雲集」</strong></td>
+      <td>每週</td>
+      <td>同步</td>
+      <td>品牌搜尋熱度可輔助判斷消費者興趣</td>
+    </tr>
+  </table>
+
+  <div class="callout">
+    <strong>實務建議：</strong>月營收是最關鍵的領先指標——每月 10 日左右公告，比季報早 1-2 個月。2025 年逐月營收趨勢（7.2-8.1 億/月，穩定增長）已經提前預示了強勁的年度業績。
+  </div>
+</div>
+</section>
+
+<section id="s7">
+<div class="card">
+  <div class="cardTitle">📋 綜合判斷 — Growth Verdict</div>
+  
+  <div class="verdict">
+    <div class="vTitle">📋 結論</div>
+    <table class="tbl" style="margin-top:8px">
+      <tr><td style="width:180px"><strong>成長品質等級</strong></td><td><span class="grade A">A- (High-quality, mostly secular)</span></td></tr>
+      <tr><td><strong>成長持續性</strong></td><td>台灣展店仍有 3-5 年空間（郊區 + 新商圈）；美國才剛起步（13 店 vs 潛在數百家）；調理包/線上通路還在滲透初期</td></tr>
+      <tr><td><strong>最關鍵成長動能</strong></td><td><strong>同店銷售成長 (SSSG >10%)</strong> —— 這比展店更難，因為反映品牌價值提升和消費者接受度。展店總有天花板，但單店營收可以持續增長</td></tr>
+      <tr><td><strong>成長瓶頸</strong></td><td>① 美國快餐模式驗證速度（文化適應） ② 加盟主招募品質（擴張過快可能稀釋品質） ③ 香港獲利萎縮可能拖累整體增速</td></tr>
+      <tr><td><strong>盈餘驚喜方向</strong></td><td class="up"><strong>偏向上行</strong> — 增量利潤率 46.7% 意味著只要營收達標，獲利就會大幅超出（營運槓桿放大利潤）</td></tr>
+      <tr><td><strong style="color:var(--gold)">共識忽略的動態</strong></td><td>市場用 ~15x P/E 定價，隱含「低成長」假設。但 46.7% 的增量利潤率意味著：營收每 +10%，EPS +22%。若營收成長持續 8-10%，EPS 成長將達 18-22%，當前估值顯著低估了營運槓桿的放大效應</td></tr>
+    </table>
+  </div>
+</div>
+</section>
+
+</main>
+</div>
+
+<script>
+document.querySelectorAll('.navItem').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.navItem').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
+    document.getElementById(btn.dataset.section).classList.add('active');
+  });
+});
+document.addEventListener('keydown', e => {
+  if(e.target.tagName==='INPUT') return;
+  const sections = ['s1','s2','s3','s4','s5','s6','s7'];
+  const active = document.querySelector('section.active');
+  let idx = sections.indexOf(active.id);
+  if(e.key==='ArrowDown'||e.key==='ArrowRight') idx=Math.min(idx+1,6);
+  if(e.key==='ArrowUp'||e.key==='ArrowLeft') idx=Math.max(idx-1,0);
+  if(idx!==sections.indexOf(active.id)){
+    document.querySelectorAll('.navItem').forEach(b=>b.classList.remove('active'));
+    document.querySelector(`.navItem[data-section="${sections[idx]}"]`).classList.add('active');
+    document.querySelectorAll('section').forEach(s=>s.classList.remove('active'));
+    document.getElementById(sections[idx]).classList.add('active');
+  }
+});
+</script>
+</body>
+</html>
