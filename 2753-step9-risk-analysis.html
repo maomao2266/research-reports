@@ -76,7 +76,7 @@ section.active{display:block}
 <body>
 <div class="topbar">
   <h1>八方雲集 (2753.TW) — 風險分析</h1>
-  <span class="badge">Step 9 / 10 · 2026-06-12 · FRM Framework</span>
+  <span class="badge">Step 9 / 10 · 2026-06-12 (v2: +食物CPI數據 · 風險降級 C→B)</span>
 </div>
 <div class="layout">
 <nav class="sidebar">
@@ -115,8 +115,12 @@ section.active{display:block}
       <tr><th style="width:140px">風險因子</th><th>曝險說明</th><th>嚴重度</th></tr>
       <tr>
         <td><strong>原物料價格</strong></td>
-        <td>豬肉、麵粉、食用油、高麗菜 — 佔 COGS 60-80%。台灣 PPI +14.1%、美國 +13.1%，雙重壓力。<br><span class="down">⚠️ 三個月內 PPI 從 +2.53% 急升至 +14.11% — 加速惡化中</span></td>
-        <td><span class="risk-box risk-high">HIGH</span></td>
+        <td>豬肉、麵粉、食用油、高麗菜 — 佔 COGS 60-80%。<br>
+        <span class="down">PPI +14.1%（台灣）、+13.1%（美國）</span> — 名目數字驚人<br>
+        <span class="up" style="color:var(--green)">BUT 食物類 CPI 僅 +1.36% — PPI→食物成本傳導遠弱於表觀</span><br>
+        肉類 +2.58%、穀類 +2.89% — 實際食材通膨溫和。PPI 的大漲主要來自能源/金屬，非食品。<br>
+        <strong>更新結論：</strong>成本壓力比 Step 8 初版假設的溫和得多。PPI 恐慌可能是過度反應。</td>
+        <td><span class="risk-box risk-mid">MID</span> <span style="font-size:9px;color:var(--green)">↓ 降級</span></td>
       </tr>
       <tr>
         <td><strong>消費需求</strong></td>
@@ -262,10 +266,10 @@ section.active{display:block}
       <td><strong>PPI 成本擠壓</strong></td>
       <td>市場</td>
       <td><span class="risk-box risk-high">4</span></td>
-      <td><span class="risk-box risk-high">4</span></td>
-      <td class="heatmap-cell heat-red" style="font-size:16px;font-weight:700">16</td>
-      <td>月營收公告中毛利率隱含趨勢；台灣 PPI 月增率</td>
-      <td>垂直整合（自建裁切廠）；多元供應商；選擇性漲價</td>
+      <td><span class="risk-box risk-mid">3</span> <span style="font-size:9px;color:var(--green)">↓ 食物CPI+1.36%</span></td>
+      <td class="heatmap-cell heat-orange" style="font-size:16px;font-weight:700">12</td>
+      <td>月營收公告中毛利率隱含趨勢；台灣 PPI 月增率 + 食物類 CPI</td>
+      <td>垂直整合（自建裁切廠）；多元供應商；外食費 +2.99% 提供定價空間</td>
     </tr>
     <tr>
       <td><strong>美國擴張失敗</strong></td>
@@ -332,13 +336,14 @@ section.active{display:block}
     </tr>
   </table>
 
-  <div class="callout red">
-    <strong>🚨 三大風險因子佔總風險預算 78%（38/49 分）：</strong><br>
-    ① PPI 成本擠壓（16/25）— 正在發生，非假設性風險<br>
-    ② 美國擴張失敗（12/25）— 低機率但高衝擊<br>
-    ③ 食品安全事件（10/25）— 低機率但極高衝擊<br>
+  <div class="callout gold">
+    <strong>🚨 風險預算重新分配（納入食物類 CPI +1.36% 後）：</strong><br>
+    ① PPI 成本擠壓（12/25 → 降級）— 實際食材通膨溫和，PPI 恐慌過度<br>
+    ② 美國擴張失敗（12/25）— 仍為最大實際風險<br>
+    ③ 食品安全事件（10/25）— 低機率極高衝擊<br>
+    ④ 敘事破裂（9/25）— 若「PPI 恐慌」消散，此風險自動降低<br>
     <br>
-    這三個風險是投資論證的核心變數。若第一項惡化 + 第二或第三項同時發生，論證將崩塌。
+    <strong>總風險預算：42/125（原 49/125，-14%）— 食物 CPI 數據顯著改善風險圖像</strong>
   </div>
 </div>
 </section>
@@ -358,28 +363,28 @@ section.active{display:block}
       <td>食安事件 + PPI 飆升 + 消費萎縮 三重打擊</td>
     </tr>
     <tr><td><strong>營收成長</strong></td><td class="up">+8% → 9,494M</td><td class="warn">+3% → 9,055M</td><td class="down">-8% → 8,088M</td></tr>
-    <tr><td><strong>毛利率</strong></td><td class="up">36.0% (持平+)</td><td class="down">33.5% (-2.5pp)</td><td class="down">31.0% (-5pp)</td></tr>
-    <tr><td><strong>營業利益</strong></td><td class="up">~1,282M (+19%)</td><td class="down">~815M (-24%)</td><td class="down">~485M (-55%)</td></tr>
-    <tr><td><strong>營益率</strong></td><td class="up">13.5%</td><td class="down">9.0%</td><td class="down">6.0%</td></tr>
-    <tr><td><strong>EPS</strong></td><td class="up">~15.0</td><td class="down">~9.5</td><td class="down">~5.5</td></tr>
-    <tr><td><strong>隱含 P/E (15x)</strong></td><td class="up">225</td><td class="down">143</td><td class="down">83</td></tr>
-    <tr><td><strong style="color:var(--red)">vs 現價跌幅</strong></td><td class="up">+18%</td><td class="down" style="font-weight:700">-25%</td><td class="down" style="font-weight:700">-57%</td></tr>
+    <tr><td><strong>毛利率</strong></td><td class="up">36.0% (持平+)</td><td class="warn">34.5% (-1.5pp) <span style="font-size:9px;color:var(--green)">更新：食物CPI溫和</span></td><td class="down">31.0% (-5pp)</td></tr>
+    <tr><td><strong>營業利益</strong></td><td class="up">~1,282M (+19%)</td><td class="warn">~950M (-12%) <span style="font-size:9px;color:var(--green)">↓ 改善</span></td><td class="down">~485M (-55%)</td></tr>
+    <tr><td><strong>營益率</strong></td><td class="up">13.5%</td><td class="warn">10.5%</td><td class="down">6.0%</td></tr>
+    <tr><td><strong>EPS</strong></td><td class="up">~15.0</td><td class="warn">~11.0 <span style="font-size:9px;color:var(--green)">↑ 原 9.5</span></td><td class="down">~5.5</td></tr>
+    <tr><td><strong>隱含 P/E (15x)</strong></td><td class="up">225</td><td class="warn">165</td><td class="down">83</td></tr>
+    <tr><td><strong style="color:var(--red)">vs 現價跌幅</strong></td><td class="up">+18%</td><td class="warn" style="font-weight:700">-13% <span style="font-size:9px;color:var(--green)">原 -25%</span></td><td class="down" style="font-weight:700">-57%</td></tr>
     <tr><td><strong>損益兩平</strong></td><td>安全</td><td>安全（BP ~4,820M vs 營收 9,055M）</td><td>安全（BP ~4,820M vs 營收 8,088M）</td></tr>
   </table>
 
   <div style="margin-top:12px">
     <div class="grid2">
       <div class="card" style="border-left:3px solid var(--gold)">
-        <div class="cardTitle" style="font-size:13px;color:var(--gold)">🐻 熊市情境詳解</div>
+        <div class="cardTitle" style="font-size:13px;color:var(--gold)">🐻 熊市情境詳解（更新：食物CPI緩解後下修）</div>
         <div style="font-size:11px;color:var(--muted);line-height:1.6">
           <strong>情境邏輯：</strong><br>
-          ① 台灣 PPI 持續在 +10-12% 高位，豬肉/麵粉成本上升 → 毛利率從 36% 降至 33.5%<br>
-          ② 八方 2026 年選擇部分漲價（3-5%），但漲價後同店客流 -3%<br>
-          ③ 美國擴張維持 13 家，但同店銷售成長放緩至 +5%（不再驚豔）<br>
-          ④ 香港市場繼續萎縮<br><br>
-          <strong>機率：</strong>~25-30%（PPI 持續高位是最可能的路徑）<br>
-          <strong>EPS -26% vs 2025：</strong>EPS 9.5 · P/E 15x = 143（-25%）<br>
-          <strong>關鍵緩衝：</strong>淨現金部位 + 損益兩平點遠低於營收 → 不會出現財務危機
+          ① 台灣 PPI 持續在 +10-12% 高位，但傳導至食物 CPI 仍緩慢（食物類 +1.5-2.0%）→ 毛利率從 36% 輕微降至 34.5%<br>
+          ② 八方 2026 年部分漲價（3-5%），外食費 +2.99% 提供良好定價環境 → 同店客流僅 -1-2%<br>
+          ③ 美國擴張維持 13 家，同店銷售成長放緩至 +5%<br>
+          ④ 香港市場繼續萎縮但可控<br><br>
+          <strong>機率：</strong>~20-25%（原 30%，下修因食物 CPI 數據優於預期）<br>
+          <strong>EPS -14% vs 2025：</strong>EPS 11.0 · P/E 15x = 165（<strong>-13%</strong>，原 -25%）<br>
+          <strong>關鍵緩衝：</strong>外食費 +2.99% 提供 1.6pp 定價空間 + 淨現金財務體質
         </div>
       </div>
       <div class="card" style="border-left:3px solid var(--red)">
@@ -418,15 +423,15 @@ section.active{display:block}
     </tr>
     <tr>
       <td><strong style="color:var(--gold)">市場忽略的風險</strong></td>
-      <td class="warn">⚠️ <strong>PPI 加速惡化</strong> — 三個月內 +2.5% → +14.1%，市場可能低估了這個速度<br>
+      <td class="warn">⚠️ <strong>PPI 加速 — 但傳導至食物成本遠弱於表觀</strong> — 三個月內 PPI +2.5% → +14.1%，但食物類 CPI 僅 +1.36%（肉類 +2.58%）。PPI 漲幅主要來自能源/金屬，非食品。<strong>PPI 恐慌可能被過度渲染。</strong><br>
       ⚠️ <strong>美國敘事破裂的估值衝擊</strong> — 若美國故事不再，P/E 可能從 15x 壓至 12x（Pure Taiwan comp）<br>
-      ⚠️ <strong>營運槓桿下行風險</strong> — DOL 2.22x，營收若因成本轉嫁失敗而下滑，EPS 加速下跌</td>
+      ⚠️ <strong>營運槓桿下行風險</strong> — DOL 2.22x，但損益兩平點遠低（4,820M），風險可控</td>
     </tr>
     <tr>
       <td><strong>安全邊際</strong></td>
       <td>以 2025 EPS 12.84、P/E 15x = 190.5 為基準<br>
-      🐻 熊市下檔：EPS 9.5 × P/E 15x = 143（<strong class="down">-25%</strong>）<br>
-      🐻 熊市 + P/E 壓縮至 12x：114（<strong class="down">-40%</strong>）<br>
+      🐻 熊市下檔：EPS 11.0 × P/E 15x = 165（<strong class="warn">-13%</strong>，原 -25%）<br>
+      🐻 熊市 + P/E 壓縮至 12x：132（<strong class="down">-31%</strong>，原 -40%）<br>
       💀 尾部：EPS 5.5 × P/E 10x = 55（<strong class="down">-71%</strong>）</td>
     </tr>
     <tr>
@@ -444,15 +449,17 @@ section.active{display:block}
     <tr>
       <td><strong>不對稱報酬</strong></td>
       <td>Upside（基本情境 EPS 15 × P/E 15x = 225）：<strong class="up">+18%</strong><br>
-      Downside（熊市 EPS 9.5 × P/E 15x = 143）：<strong class="down">-25%</strong><br>
-      <strong>Upside/Downside = 0.72:1</strong> — 不對稱性偏向下行<br><br>
-      <span class="warn">⚠️ 但若 P/E 擴張至 18x（市場重新評價成長潛力）：Upside = 270（+42%），U/D = 1.68:1</span></td>
+      Downside（熊市 EPS 11.0 × P/E 15x = 165）：<strong class="warn">-13%</strong><br>
+      <strong>Upside/Downside = 1.38:1</strong> — 更新後轉正！<br><br>
+      <span class="up">原 U/D = 0.72:1（熊市 -25%），食物 CPI 數據使下檔從 -25% 改善至 -13%，不對稱性翻正。</span><br>
+      <span class="up">若 P/E 擴張至 18x：Upside = 270（+42%），U/D = 3.23:1</span></td>
     </tr>
   </table>
 
-  <div class="callout gold">
-    <strong>核心判斷：</strong>以目前 P/E 15x 買入，上漲空間（+18%）略小於下跌空間（-25%），不對稱性偏向下行。但這取決於 PPI 走勢——若 PPI Q3 見頂回落，基本情境實現機率將大幅上升，U/D 轉正。當前是「等 PPI 確認見頂」的觀望窗口。<br><br>
-    <strong>雙重風險觀點（FRM）：</strong>對專業投資人而言，除資本損失風險外，還有<strong>績效落後風險</strong>。若等 PPI 見頂再進場，可能錯過最肥美的一段。這需要根據投資人對 tracking error 的容忍度來決定。
+  <div class="callout green">
+    <strong>核心判斷（更新）：</strong>以目前 P/E 15x 買入，<strong>U/D 已轉正至 1.38:1</strong>（原 0.72:1）。食物類 CPI +1.36% 的實際數據表明：PPI 的飆升（+14.1%）主要影響能源和金屬，傳導至食品成本的幅度遠低於市場恐慌的程度。<br><br>
+    八方雲集的實際食材成本環境（肉類 +2.58%、穀類 +2.89%、蔬菜 +9.69%）雖有壓力但可控，而外食費 +2.99% 為漲價轉嫁提供了充足空間。<strong>風險調整後，論證從「觀望」轉為「有條件的看好」。</strong><br><br>
+    <strong>雙重風險觀點：</strong>資本損失風險已顯著降低，績效落後風險（錯過上漲）現在成為更大的顧慮。若市場也認知到 PPI 恐慌過度，P/E 可能快速重估。
   </div>
 </div>
 </section>
@@ -506,22 +513,24 @@ section.active{display:block}
   <div class="verdict">
     <div class="vTitle">📋 風險判決</div>
     <table class="tbl" style="margin-top:8px">
-      <tr><td style="width:180px"><strong>風險等級</strong></td><td><span class="grade C">C (Moderate-High)</span> — 品牌穩固但面臨多重可量化風險，尤其 PPI 正在加速惡化</td></tr>
-      <tr><td><strong>風險預算</strong></td><td>熊市情境下約 <strong class="down">25-40%</strong> 部位面臨風險（視 P/E 是否同時壓縮）。尾部情境 -57-71% 但機率極低（~5%）</td></tr>
-      <tr><td><strong>不對稱報酬</strong></td><td><strong>U/D = 0.72:1（以 15x P/E 計）</strong> — 偏向下行。但若 P/E 擴張至 18x，U/D = 1.68:1。敏感性極高</td></tr>
+      <tr><td style="width:180px"><strong>風險等級</strong></td><td><span class="grade B">B (Moderate)</span> <span style="font-size:11px;color:var(--green)">↑ 從 C 升級</span> — 品牌穩固，食物 CPI 數據顯著緩解成本恐慌，風險圖像改善</td></tr>
+      <tr><td><strong>風險預算</strong></td><td>熊市情境下約 <strong class="warn">13-31%</strong> 部位面臨風險（視 P/E 是否同時壓縮）。尾部情境仍 -71% 但機率 ~5%</td></tr>
+      <tr><td><strong>不對稱報酬</strong></td><td><strong class="up">U/D = 1.38:1（以 15x P/E 計）</strong> — 轉正。若 P/E 擴張至 18x，U/D = 3.23:1。風險調整後吸引力顯著改善</td></tr>
       <tr><td><strong>論證終結條件</strong></td><td class="down">① 食安事件造成品牌不可逆損害 ② PPI 持續 >15% + 毛利率跌破 30% ③ 美國連續關店。任一條件觸發 → 立即檢討。兩條件同時觸發 → 出場</td></tr>
-      <tr><td><strong style="color:var(--gold)">市場忽略點</strong></td><td>① <strong>PPI 加速未被充分定價</strong> — 三個月內 +2.5% → +14.1%，市場共識 EPS 尚未反映這速度<br>② <strong>營運槓桿的下行風險</strong> — DOL 2.22x 被市場視為利多，但下行加速同樣凌厲<br>③ <strong>香港是慢速失血而非急性危機</strong> — 市場把它當成已解決的問題，但其實仍在持續惡化</td></tr>
+      <tr><td><strong style="color:var(--gold)">市場忽略點</strong></td><td>① <strong>PPI ≠ 食物成本 — 市場犯了分類錯誤</strong> — PPI +14.1% 主要來自能源/金屬，實際食物類 CPI 僅 +1.36%。PPI 恐慌是過度反應<br>② <strong>外食費 +2.99% 的定價權訊號被忽略</strong> — 這代表八方可以合理漲價而不會流失客戶<br>③ <strong>台灣 GDP +14.6% 是十年一遇的內需順風</strong> — 消費者荷包遠比市場意識到的厚<br>④ 香港是慢速失血而非急性危機 — 市場把它當成已解決但仍在惡化</td></tr>
       <tr><td><strong style="color:var(--green)">最大的風險緩衝</strong></td><td>① 淨現金財務體質（現金 1,518M > 負債）— 不會倒<br>② 加盟模式的固定成本隔離 — 總部不會虧損<br>③ 台灣 GDP +14.6% — 消費基礎極強，提供了成本轉嫁空間<br>④ 平價定位的防禦性 — 消費降級的最後一哩</td></tr>
-      <tr><td><strong>投資人行動建議</strong></td><td class="warn"><strong>觀望但準備好。</strong>當前 PPI 加速環境下，立即大量買入的風險/報酬不對稱性不利。等待 PPI 月增率出現見頂信號（連續 2 個月下降）後分批進場，是風險調整後的最佳策略。<br><br>但若相信台灣 GDP +14.6% 的強勁內需將讓八方成功轉嫁成本 → 現在買入可能捕捉最大的 mispricing。</td></tr>
+      <tr><td><strong>投資人行動建議</strong></td><td class="up"><strong>轉為有條件的看好。</strong>食物 CPI 數據解決了最大的不確定性（PPI 恐慌）。U/D 1.38:1 提供合理的安全邊際。<strong>最大風險不再是成本，而是美國擴張執行。</strong><br><br>
+      建議策略：初始部位 50% → 等待 6 月月營收確認 YoY 成長趨勢（每月 10 日）→ Q2 財報確認毛利率 ≥35% → 加碼至完整部位。<br>
+      <span class="up">若市場因 PPI 數據恐慌性下跌 5-10% → 是加碼機會，非減碼信號。</span></td></tr>
     </table>
   </div>
 
   <div class="card" style="margin-top:16px">
     <div class="cardTitle">🔗 跨步驟連結</div>
     <div style="font-size:12px;color:var(--muted);line-height:1.8">
-      <p><strong>← Step 8 (Macro/Sector)：</strong>PPI +14.1% 是風險矩陣中最高分因子的來源。台灣 GDP 強勁是最大的下行緩衝。</p>
-      <p><strong>← Step 7 (Catalysts)：</strong>不對稱比率從 Step 7 的 2.8:1 降為風險調整後的 0.72:1。Step 7 的不對稱性基於催化劑情境（最佳可能），Step 9 納入風險後更保守。兩者差距來自 PPI 的不確定性。</p>
-      <p><strong>→ Step 10 (Valuation)：</strong>DCF 估值需建立多情境（基本/熊/尾部），terminal growth rate 受 GDP +14.6% 支撐但 PPI 風險需以較高 WACC 或較低 margin 假設來反映。</p>
+      <p><strong>← Step 8 (Macro/Sector)：</strong>食物類 CPI +1.36% 是本次更新最關鍵的新數據 — 證明 PPI +14.1% ≠ 食物成本 +14%。PPI 恐慌過度，風險圖像顯著改善。</p>
+      <p><strong>← Step 7 (Catalysts)：</strong>更新後 U/D = 1.38:1（原 0.72:1），與 Step 7 的催化劑 U/D 2.8:1 的差距大幅縮小。風險調整後論證更加一致。</p>
+      <p><strong>→ Step 10 (Valuation)：</strong>DCF 悲觀情境的 margin 假設可從 33.5% 上調至 34.5%。WACC 不變，terminal growth 受台灣 GDP +14.6% 支撐。</p>
     </div>
   </div>
 </div>
