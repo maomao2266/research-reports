@@ -265,18 +265,18 @@ section.active{display:block}
       </div>
     </div>
     <div class="resultBox">
-      <div class="result neutral" id="resVal">323</div>
-      <div class="result neutral" id="resDelta">每股價值</div>
-      <div class="result neutral" id="resPct">+70% vs 現價</div>
+      <div class="result neutral" id="resVal">323 TWD</div>
+      <div class="result neutral" id="resDelta">▲ 133 vs 現價</div>
+      <div class="result neutral" id="resPct">+70%</div>
     </div>
     <div id="priceBar">
-      <div class="fill" id="priceFill" style="width:50%"></div>
-      <div id="priceMarker" style="left:30%"></div>
+      <div class="fill" id="priceFill" style="width:35%"></div>
+      <div id="priceMarker" style="left:0%"></div>
     </div>
-    <div style="display:flex;justify-content:space-between;font-size:9px;color:var(--dim)">
-      <span>最低 (WACC 9.5/g 1.5): 246</span>
-      <span style="position:absolute;left:calc(30% - 20px);color:var(--ink)">現價 190.5</span>
-      <span>最高 (WACC 7.0/g 3.0): 469</span>
+    <div style="display:flex;justify-content:space-between;font-size:9px;color:var(--dim);position:relative">
+      <span>最低: 246</span>
+      <span>現價 190.5</span>
+      <span>最高: 469</span>
     </div>
   </div>
 </div>
@@ -391,9 +391,8 @@ const grid = {
 };
 
 function bilinear(w, g) {
-  // Find surrounding grid points
   let wKeys = Object.keys(grid).map(Number).sort((a,b)=>a-b);
-  let gKeys = Object.keys(grid[wKeys[0]]).map(Number).sort((a,b)=>a-b);
+  let gKeys = Object.keys(grid[wKeys[0].toFixed(1)]).map(Number).sort((a,b)=>a-b);
   
   let w0 = wKeys[0], w1 = wKeys[wKeys.length-1];
   let g0 = gKeys[0], g1 = gKeys[gKeys.length-1];
@@ -432,25 +431,24 @@ function recalc() {
   let delta = val - CURRENT;
   let pct = ((val / CURRENT - 1) * 100);
   
-  document.getElementById('resVal').textContent = val;
-  document.getElementById('resDelta').textContent = (delta > 0 ? '+' : '') + delta.toFixed(0) + ' vs 現價';
+  document.getElementById('resVal').textContent = val + ' TWD';
+  document.getElementById('resDelta').textContent = (delta > 0 ? '▲ ' : '▼ ') + Math.abs(delta).toFixed(0) + ' vs 現價';
   document.getElementById('resPct').textContent = (pct > 0 ? '+' : '') + pct.toFixed(0) + '%';
   
   // Color coding
-  let resVal = document.getElementById('resVal');
-  let resDelta = document.getElementById('resDelta');
-  let resPct = document.getElementById('resPct');
-  
-  [resVal, resDelta, resPct].forEach(el => {
-    el.className = 'result ' + (pct > 30 ? 'up' : pct > 0 ? 'neutral' : 'down');
+  [document.getElementById('resVal'), document.getElementById('resDelta'), document.getElementById('resPct')].forEach(el => {
+    el.className = 'result ' + (pct > 30 ? 'up' : pct >= 0 ? 'neutral' : 'down');
   });
   
-  // Price bar - position of current price relative to value range
+  // Price bar
   let barPct = ((val - MIN_VAL) / (MAX_VAL - MIN_VAL)) * 100;
   let curPct = ((CURRENT - MIN_VAL) / (MAX_VAL - MIN_VAL)) * 100;
   document.getElementById('priceFill').style.width = barPct + '%';
   document.getElementById('priceMarker').style.left = curPct + '%';
 }
+
+// Initial call
+recalc();
 </script>
 </body>
 </html>
