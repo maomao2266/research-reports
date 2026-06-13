@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>八方雲集 (2753) — 宏觀與產業 | Fundamental Analysis Step 8</title>
+<style>
+:root{
+  --bg:#0a0e14; --surface:#131820; --card:#181f2a;
+  --border:#252d3a; --ink:#e2e8f0; --muted:#7c8aa0; --dim:#4a5568;
+  --accent:#60a5fa; --accent2:#3b82f6;
+  --gold:#f59e0b; --green:#34d399; --red:#f87171;
+  --orange:#fb923c; --purple:#a78bfa;
+  --radius:14px; --radius2:18px;
+  --sans:"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,-apple-system,sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.6}
+.topbar{position:sticky;top:0;z-index:100;background:var(--surface);border-bottom:1px solid var(--border);padding:12px 24px;display:flex;align-items:center;justify-content:space-between}
+.topbar h1{font-size:18px;font-weight:600}
+.topbar .badge{font-size:11px;color:var(--muted);background:var(--card);padding:4px 10px;border-radius:20px}
+.layout{display:flex;min-height:calc(100vh - 53px)}
+.sidebar{width:220px;min-width:220px;background:var(--surface);border-right:1px solid var(--border);padding:16px 0;position:sticky;top:53px;height:calc(100vh - 53px);overflow-y:auto}
+.sidebar .navTitle{font-size:10px;text-transform:uppercase;color:var(--dim);padding:8px 16px;letter-spacing:1px}
+.sidebar .navItem{display:block;padding:8px 16px;color:var(--muted);font-size:13px;cursor:pointer;border:none;background:none;width:100%;text-align:left;transition:all .15s;border-left:3px solid transparent}
+.sidebar .navItem:hover{color:var(--ink);background:var(--card)}
+.sidebar .navItem.active{color:var(--accent);background:var(--card);border-left-color:var(--accent)}
+main{flex:1;padding:24px;max-width:900px}
+section{display:none}
+section.active{display:block}
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px;margin-bottom:20px}
+.cardTitle{font-size:15px;font-weight:600;margin-bottom:12px;color:var(--accent)}
+.callout{border-left:3px solid var(--accent);padding:12px 16px;border-radius:0 var(--radius) var(--radius) 0;margin-bottom:16px;background:color-mix(in srgb,var(--accent) 8%,var(--card))}
+.callout.gold{border-color:var(--gold);background:color-mix(in srgb,var(--gold) 8%,var(--card))}
+.callout.green{border-color:var(--green);background:color-mix(in srgb,var(--green) 8%,var(--card))}
+.callout.red{border-color:var(--red);background:color-mix(in srgb,var(--red) 8%,var(--card))}
+.metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin-bottom:16px}
+.metric{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:12px;text-align:center}
+.metric .val{font-size:18px;font-weight:700;color:var(--ink)}
+.metric .lbl{font-size:9px;color:var(--muted);margin-top:2px}
+.metric .sub{font-size:9px;margin-top:2px}
+.tbl{width:100%;border-collapse:collapse;font-size:12px;margin-bottom:16px}
+.tbl th{text-align:left;color:var(--muted);font-weight:500;padding:6px 8px;border-bottom:1px solid var(--border);font-size:10px;text-transform:uppercase}
+.tbl td{padding:6px 8px;border-bottom:1px solid var(--border)}
+.tbl tr:last-child td{border-bottom:none}
+.up{color:var(--green)}.down{color:var(--red)}.warn{color:var(--orange)}
+.pillRow{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px}
+.pill{font-size:10px;padding:3px 8px;border-radius:10px;font-weight:500}
+.pill.g{background:color-mix(in srgb,var(--green) 20%,transparent);color:var(--green)}
+.pill.r{background:color-mix(in srgb,var(--red) 20%,transparent);color:var(--red)}
+.pill.o{background:color-mix(in srgb,var(--orange) 20%,transparent);color:var(--orange)}
+.pill.b{background:color-mix(in srgb,var(--accent) 20%,transparent);color:var(--accent)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.verdict{background:linear-gradient(135deg,color-mix(in srgb,var(--green) 15%,var(--surface)),color-mix(in srgb,var(--accent) 10%,var(--surface)));border:1px solid color-mix(in srgb,var(--green) 30%,var(--border));border-radius:var(--radius2);padding:20px}
+.verdict .vTitle{font-size:16px;font-weight:700;margin-bottom:8px;color:var(--green)}
+.grade{display:inline-flex;align-items:center;gap:4px;font-weight:700;font-size:16px}
+.grade.B{color:var(--green)}.grade.C{color:var(--gold)}
+.source{font-size:9px;color:var(--dim);margin-top:4px}
+.signal-row{display:flex;align-items:center;gap:8px;padding:4px 0}
+.signal-icon{font-size:16px;width:22px;text-align:center;flex-shrink:0}
+.signal-text{font-size:11px}
+@media(max-width:768px){
+  .sidebar{display:none}
+  .layout{flex-direction:column}
+  main{padding:16px}
+  .grid2{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <h1>八方雲集 (2753.TW) — 宏觀與產業</h1>
+  <span class="badge">Step 8 / 10 · 2026-06-12</span>
+</div>
+<div class="layout">
+<nav class="sidebar">
+  <div class="navTitle">大綱</div>
+  <button class="navItem active" data-section="s1">🇺🇸 FRED 宏觀儀表板</button>
+  <button class="navItem" data-section="s2">🍽️ 產業趨勢</button>
+  <button class="navItem" data-section="s3">🌡️ 敏感度分析</button>
+  <button class="navItem" data-section="s4">📋 綜合判斷</button>
+</nav>
+<main>
+
+<section id="s1" class="active">
+<div class="card">
+  <div class="cardTitle">🇺🇸 FRED 宏觀儀表板 — 2026 年 6 月</div>
+  <p style="color:var(--muted);font-size:10px;margin-bottom:12px">資料來源：FRED (Federal Reserve Economic Data) · 22 指標 · 最後更新 2026-06-12 cron job</p>
+
+  <div class="metrics">
+    <div class="metric" style="border-left:3px solid var(--green)"><div class="val">4.3%</div><div class="lbl">失業率</div><div class="sub up">穩定 · 就業市場健康</div></div>
+    <div class="metric" style="border-left:3px solid var(--orange)"><div class="val" style="color:var(--gold)">49.8</div><div class="lbl">消費信心</div><div class="sub down">極低 · 2年前 77.2</div></div>
+    <div class="metric" style="border-left:3px solid var(--orange)"><div class="val" style="color:var(--gold)">+4.2%</div><div class="lbl">CPI YoY</div><div class="sub warn">通膨仍偏高</div></div>
+    <div class="metric" style="border-left:3px solid var(--red)"><div class="val" style="color:var(--red)">+13.1%</div><div class="lbl">PPI YoY</div><div class="sub down">原物料加速漲</div></div>
+    <div class="metric" style="border-left:3px solid var(--green)"><div class="val">3.63%</div><div class="lbl">聯邦利率</div><div class="sub up">降息中 · 2年前 5.3%</div></div>
+    <div class="metric" style="border-left:3px solid var(--accent)"><div class="val">4.55%</div><div class="lbl">10Y 殖利率</div><div class="sub">穩定 · 利差 +0.4%</div></div>
+    <div class="metric" style="border-left:3px solid var(--green)"><div class="val">+2.6%</div><div class="lbl">實質 GDP</div><div class="sub up">溫和擴張</div></div>
+    <div class="metric" style="border-left:3px solid var(--accent)"><div class="val">+4.9%</div><div class="lbl">零售銷售 YoY</div><div class="sub up">消費仍有韌性</div></div>
+  </div>
+
+  <div class="callout gold">
+    <strong>核心矛盾：</strong>消費信心 49.8（歷史低點）vs 零售銷售 +4.9% YoY（持續成長）。美國消費者在問卷上說「我很悲觀」，但在收銀機前說「我還要買」。對於八方雲集來說，這意味著總體消費仍有支撐，但若信心進一步惡化，低價餐飲（八方雲集的核心定位）可能反而受益於消費降級。
+  </div>
+</div>
+
+<div class="card">
+  <div class="cardTitle">📊 關鍵指標近期趨勢</div>
+  <div class="grid2">
+    <div>
+      <table class="tbl">
+        <tr><th colspan="4">通膨與成本面</th></tr>
+        <tr><th>指標</th><th>最新</th><th>3月前</th><th>1年前</th></tr>
+        <tr><td>CPI</td><td>334.0</td><td>327.5</td><td>320.6</td></tr>
+        <tr><td>Core CPI</td><td>336.1</td><td>333.5</td><td>326.9</td></tr>
+        <tr><td>PCE</td><td>130.9</td><td>129.0</td><td>126.2</td></tr>
+        <tr><td style="color:var(--red)">PPI 商品</td><td class="down">292.5</td><td>269.6</td><td>258.7</td></tr>
+      </table>
+    </div>
+    <div>
+      <table class="tbl">
+        <tr><th colspan="4">消費與就業面</th></tr>
+        <tr><th>指標</th><th>最新</th><th>3月前</th><th>1年前</th></tr>
+        <tr><td>失業率</td><td>4.3%</td><td>4.4%</td><td>4.3%</td></tr>
+        <tr><td style="color:var(--red)">消費信心</td><td class="down">49.8</td><td>56.4</td><td>52.2</td></tr>
+        <tr><td>零售銷售(B)</td><td>757</td><td>735</td><td>722</td></tr>
+        <tr><td>非農就業(M)</td><td>159.0</td><td>158.4</td><td>158.5</td></tr>
+      </table>
+    </div>
+    <div>
+      <table class="tbl">
+        <tr><th colspan="4">利率與殖利率</th></tr>
+        <tr><th>指標</th><th>最新</th><th>3月前</th><th>1年前</th></tr>
+        <tr><td>聯邦利率</td><td class="up">3.63</td><td>3.63</td><td>4.25</td></tr>
+        <tr><td>10Y 殖利率</td><td>4.55</td><td>4.31</td><td>4.24</td></tr>
+        <tr><td>2Y 殖利率</td><td>4.06</td><td>3.79</td><td>3.74</td></tr>
+        <tr><td>10Y-2Y 利差</td><td class="up">0.39</td><td>0.52</td><td>0.50</td></tr>
+      </table>
+    </div>
+    <div>
+      <table class="tbl">
+        <tr><th colspan="4">經濟活動</th></tr>
+        <tr><th>指標</th><th>最新</th><th>3月前</th><th>1年前</th></tr>
+        <tr><td>實質 GDP(B)</td><td>24,153</td><td>24,056</td><td>23,548</td></tr>
+        <tr><td>工業生產</td><td>102.5</td><td>101.5</td><td>101.1</td></tr>
+        <tr><td>房屋開工(K)</td><td>1,465</td><td>1,385</td><td>1,400</td></tr>
+      </table>
+    </div>
+  </div>
+</div>
+</section>
+
+<section id="s2">
+<div class="card">
+  <div class="cardTitle">🍽️ 餐飲產業趨勢</div>
+
+  <div class="grid2">
+    <div class="card" style="border-left:3px solid var(--green)">
+      <div class="cardTitle" style="font-size:13px">🟢 順風</div>
+      <div class="signal-row"><span class="signal-icon">📉</span><span class="signal-text"><strong>聯準會降息循環</strong> — Fed Funds 從 5.3%→3.6%，降低八方美國擴張的融資成本</span></div>
+      <div class="signal-row"><span class="signal-icon">🏗️</span><span class="signal-text"><strong>台積電亞利桑那擴廠</strong> — 鳳凰城半導體聚落帶動台式餐飲需求，八方 13 家店直接受益</span></div>
+      <div class="signal-row"><span class="signal-icon">💵</span><span class="signal-text"><strong>消費降級趨勢</strong> — 低迷的消費信心若持續，平價餐飲（八方核心定位）可能受益</span></div>
+      <div class="signal-row"><span class="signal-icon">🌐</span><span class="signal-text"><strong>亞洲飲食全球化</strong> — 美國消費者對亞洲風味接受度持續提升（Panda Express 成功驗證）</span></div>
+    </div>
+    <div class="card" style="border-left:3px solid var(--red)">
+      <div class="cardTitle" style="font-size:13px">🔴 逆風</div>
+      <div class="signal-row"><span class="signal-icon">📈</span><span class="signal-text"><strong>PPI 加速上漲 (+13% YoY)</strong> — 原物料成本壓力正在累積，豬肉/牛肉/麵粉成本上升</span></div>
+      <div class="signal-row"><span class="signal-icon">😟</span><span class="signal-text"><strong>消費信心崩跌 (49.8)</strong> — 若從「悲觀但消費」轉為「悲觀且縮手」，餐飲業將受衝擊</span></div>
+      <div class="signal-row"><span class="signal-icon">⚔️</span><span class="signal-text"><strong>香港消費北移</strong> — 港人北上深圳消費趨勢持續，香港門市獲利萎縮中</span></div>
+      <div class="signal-row"><span class="signal-icon">🏪</span><span class="signal-text"><strong>超商鮮食競爭加劇</strong> — 台灣 7-11/全家便當品質提升，模糊快餐邊界</span></div>
+    </div>
+  </div>
+
+  <div class="callout" style="margin-top:12px">
+    <strong>產業定位：</strong>八方雲集的「平價快餐」定位在當前宏觀環境中處於 <strong>防禦型位置</strong>。高通膨 + 消費信心低迷的環境下，消費者傾向從餐廳 downgrade 到快餐，而非從快餐 downgrade 到自煮。八方雲集 80-120 元的價格帶正好是「最後一個外食選擇」的甜蜜點。這與麥當勞在 2008 金融危機期間營收逆勢成長的邏輯相同。
+  </div>
+</div>
+</section>
+
+<section id="s3">
+<div class="card">
+  <div class="cardTitle">🌡️ 宏觀因子敏感度分析</div>
+
+  <table class="tbl">
+    <tr><th>宏觀因子</th><th>敏感度</th><th>方向</th><th>當前狀態</th><th>對八方影響</th></tr>
+    <tr>
+      <td><strong>利率</strong></td>
+      <td>中</td>
+      <td class="up">正面</td>
+      <td>Fed 降息中（5.3→3.6%）</td>
+      <td class="up">美國融資成本降低、估值支撐</td>
+    </tr>
+    <tr>
+      <td><strong>商品價格（食物）</strong></td>
+      <td class="down">高</td>
+      <td class="down">負面</td>
+      <td class="down">PPI +13% YoY，豬肉/穀物上漲</td>
+      <td class="down">毛利率壓力，但自建倉儲 + 多元採購緩衝</td>
+    </tr>
+    <tr>
+      <td><strong>匯率 (TWD/USD)</strong></td>
+      <td>低</td>
+      <td>中性</td>
+      <td>穩定</td>
+      <td>美國食材當地採購、台灣營收為主，影響小</td>
+    </tr>
+    <tr>
+      <td><strong>GDP 成長</strong></td>
+      <td>中低</td>
+      <td class="up">正面</td>
+      <td class="up">實質 GDP +2.6%</td>
+      <td class="up">經濟溫和擴張支撐消費</td>
+    </tr>
+    <tr>
+      <td><strong>通膨</strong></td>
+      <td>中</td>
+      <td>混合</td>
+      <td>CPI +4.2%</td>
+      <td>成本壓力 vs 定價權（2025 不漲價承諾限制轉嫁能力）</td>
+    </tr>
+    <tr>
+      <td><strong>就業市場</strong></td>
+      <td>低</td>
+      <td class="up">正面</td>
+      <td class="up">失業率 4.3% 穩定</td>
+      <td class="up">消費者有穩定收入支撐外食支出</td>
+    </tr>
+    <tr>
+      <td><strong>消費信心</strong></td>
+      <td class="down">高</td>
+      <td class="down">負面</td>
+      <td class="down">UMich 49.8（歷史低點）</td>
+      <td class="down">若持續惡化將衝擊外食頻率</td>
+    </tr>
+    <tr>
+      <td><strong>信用利差</strong></td>
+      <td>低</td>
+      <td>中性</td>
+      <td>利差正常</td>
+      <td>無直接影響（八方以自有資金和銀行融資為主）</td>
+    </tr>
+  </table>
+
+  <div class="callout gold">
+    <strong>最大的宏觀風險：PPI + 消費信心的雙重擠壓。</strong>原物料成本上漲（PPI +13%）壓縮毛利率，同時消費信心崩跌（49.8）可能壓縮營收。八方 2025 年宣示不漲價，2026 年是否能維持是關鍵變數。若被迫漲價，可能觸發第二輪銷量下滑（如 2023-24 年的經驗）。
+  </div>
+</div>
+</section>
+
+<section id="s4">
+<div class="card">
+  <div class="cardTitle">📋 綜合判斷 — Macro Verdict</div>
+  
+  <div class="verdict">
+    <div class="vTitle">📋 結論</div>
+    <table class="tbl" style="margin-top:8px">
+      <tr><td style="width:140px"><strong>產業等級</strong></td><td><span class="grade B">B (Moderate/Defensive)</span> — 餐飲業成熟但平價快餐具防禦性</td></tr>
+      <tr><td><strong>宏觀風向</strong></td><td><strong>輕微逆風</strong> — 降息利多 vs PPI 成本壓力 + 消費信心低迷。淨效果偏負但可控</td></tr>
+      <tr><td><strong>週期位置</strong></td><td class="warn"><strong>晚期擴張</strong> — GDP 仍在成長但消費信心已大幅下滑。典型 late-cycle 特徵：基本面尚可但市場情緒惡化</td></tr>
+      <tr><td><strong>最大宏觀風險</strong></td><td><strong>PPI 加速 + 消費信心崩跌的雙重擠壓</strong> — 若豬肉/穀物價格持續上漲且消費者縮減外食，八方將面臨營收和毛利率的雙重打擊</td></tr>
+      <tr><td><strong style="color:var(--gold)">市場忽略的動態</strong></td><td>消費信心 49.8 vs 零售銷售 +4.9% 的分歧——市場可能過度關注信心數據而忽略實際消費行為。八方雲集的低價定位使其在消費降級環境中反而是受益者（消費者從餐廳轉向快餐）。但這假設信心下滑不演變為實際消費萎縮</td></tr>
+    </table>
+  </div>
+
+  <div class="card" style="margin-top:16px">
+    <div class="cardTitle">⚠️ 台灣消費數據缺口</div>
+    <div style="font-size:11px;color:var(--muted)">
+      FRED 數據僅涵蓋美國宏觀指標。以下台灣本地數據目前缺失，對分析完整性有影響：<br><br>
+      ① <strong>台灣 CPI / 食物類 CPI</strong> — 直接影響八方台灣營運的成本端和消費端<br>
+      ② <strong>台灣餐飲業營業額</strong> — 經濟部統計處每月公告，是產業健康度的直接指標<br>
+      ③ <strong>台灣消費者信心指數</strong> — 對應 UMich 的本地版本<br>
+      ④ <strong>豬肉/高麗菜批發價</strong> — 八方最敏感的兩種原物料<br>
+      <br>
+      建議後續接入台灣政府開放資料平台或透過 cron job 補齊這些數據。
+    </div>
+  </div>
+</div>
+</section>
+
+</main>
+</div>
+
+<script>
+document.querySelectorAll('.navItem').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.navItem').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
+    document.getElementById(btn.dataset.section).classList.add('active');
+  });
+});
+document.addEventListener('keydown', e => {
+  if(e.target.tagName==='INPUT') return;
+  const s=['s1','s2','s3','s4'];
+  const a=document.querySelector('section.active');let i=s.indexOf(a.id);
+  if(e.key==='ArrowDown'||e.key==='ArrowRight') i=Math.min(i+1,3);
+  if(e.key==='ArrowUp'||e.key==='ArrowLeft') i=Math.max(i-1,0);
+  if(i!==s.indexOf(a.id)){
+    document.querySelectorAll('.navItem').forEach(b=>b.classList.remove('active'));
+    document.querySelector(`.navItem[data-section="${s[i]}"]`).classList.add('active');
+    document.querySelectorAll('section').forEach(x=>x.classList.remove('active'));
+    document.getElementById(s[i]).classList.add('active');
+  }
+});
+</script>
+</body>
+</html>
