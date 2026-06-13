@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>八方雲集 (2753) — 公司策略 | Fundamental Analysis Step 3</title>
+<style>
+:root{
+  --bg:#0a0e14; --surface:#131820; --card:#181f2a;
+  --border:#252d3a; --ink:#e2e8f0; --muted:#7c8aa0; --dim:#4a5568;
+  --accent:#60a5fa; --accent2:#3b82f6;
+  --gold:#f59e0b; --green:#34d399; --red:#f87171;
+  --orange:#fb923c; --purple:#a78bfa;
+  --radius:14px; --radius2:18px;
+  --sans:"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,-apple-system,sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.6}
+.topbar{position:sticky;top:0;z-index:100;background:var(--surface);border-bottom:1px solid var(--border);padding:12px 24px;display:flex;align-items:center;justify-content:space-between}
+.topbar h1{font-size:18px;font-weight:600}
+.topbar .badge{font-size:11px;color:var(--muted);background:var(--card);padding:4px 10px;border-radius:20px}
+.layout{display:flex;min-height:calc(100vh - 53px)}
+.sidebar{width:220px;min-width:220px;background:var(--surface);border-right:1px solid var(--border);padding:16px 0;position:sticky;top:53px;height:calc(100vh - 53px);overflow-y:auto}
+.sidebar .navTitle{font-size:10px;text-transform:uppercase;color:var(--dim);padding:8px 16px;letter-spacing:1px}
+.sidebar .navItem{display:block;padding:8px 16px;color:var(--muted);font-size:13px;cursor:pointer;border:none;background:none;width:100%;text-align:left;transition:all .15s;border-left:3px solid transparent}
+.sidebar .navItem:hover{color:var(--ink);background:var(--card)}
+.sidebar .navItem.active{color:var(--accent);background:var(--card);border-left-color:var(--accent)}
+main{flex:1;padding:24px;max-width:900px}
+section{display:none}
+section.active{display:block}
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px;margin-bottom:20px}
+.cardTitle{font-size:15px;font-weight:600;margin-bottom:12px;color:var(--accent)}
+.callout{border-left:3px solid var(--accent);padding:12px 16px;border-radius:0 var(--radius) var(--radius) 0;margin-bottom:16px;background:color-mix(in srgb,var(--accent) 8%,var(--card))}
+.callout.gold{border-color:var(--gold);background:color-mix(in srgb,var(--gold) 8%,var(--card))}
+.callout.green{border-color:var(--green);background:color-mix(in srgb,var(--green) 8%,var(--card))}
+.callout.red{border-color:var(--red);background:color-mix(in srgb,var(--red) 8%,var(--card))}
+.metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:20px}
+.metric{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px;text-align:center}
+.metric .val{font-size:22px;font-weight:700;color:var(--ink)}
+.metric .lbl{font-size:11px;color:var(--muted);margin-top:4px}
+.tbl{width:100%;border-collapse:collapse;font-size:13px;margin-bottom:16px}
+.tbl th{text-align:left;color:var(--muted);font-weight:500;padding:8px 12px;border-bottom:1px solid var(--border);font-size:11px;text-transform:uppercase}
+.tbl td{padding:8px 12px;border-bottom:1px solid var(--border)}
+.tbl tr:last-child td{border-bottom:none}
+.up{color:var(--green)}.down{color:var(--red)}.warn{color:var(--orange)}
+.pillRow{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px}
+.pill{font-size:11px;padding:3px 10px;border-radius:12px;font-weight:500}
+.pill.g{background:color-mix(in srgb,var(--green) 20%,transparent);color:var(--green)}
+.pill.r{background:color-mix(in srgb,var(--red) 20%,transparent);color:var(--red)}
+.pill.o{background:color-mix(in srgb,var(--orange) 20%,transparent);color:var(--orange)}
+.pill.b{background:color-mix(in srgb,var(--accent) 20%,transparent);color:var(--accent)}
+.pill.p{background:color-mix(in srgb,var(--purple) 20%,transparent);color:var(--purple)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.grid4{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.verdict{background:linear-gradient(135deg,color-mix(in srgb,var(--green) 15%,var(--surface)),color-mix(in srgb,var(--accent) 10%,var(--surface)));border:1px solid color-mix(in srgb,var(--green) 30%,var(--border));border-radius:var(--radius2);padding:20px;margin-bottom:16px}
+.verdict .vTitle{font-size:16px;font-weight:700;margin-bottom:8px;color:var(--green)}
+.grade{display:inline-flex;align-items:center;gap:4px;font-weight:700;font-size:18px}
+.grade.B{color:var(--green)}.grade.C{color:var(--gold)}
+.source{font-size:10px;color:var(--dim);margin-top:4px}
+.strat-matrix{display:grid;grid-template-columns:1fr 1fr;gap:2px;background:var(--border);border-radius:var(--radius);overflow:hidden;margin-bottom:16px}
+.strat-cell{background:var(--surface);padding:16px;min-height:100px}
+.strat-cell h4{font-size:13px;color:var(--accent);margin-bottom:8px}
+.strat-cell p{font-size:12px;color:var(--muted)}
+.strat-cell .tag{font-size:10px;padding:2px 6px;border-radius:8px;margin-top:6px;display:inline-block}
+.strat-cell .tag.active{background:color-mix(in srgb,var(--green) 30%,transparent);color:var(--green)}
+.strat-cell .tag.emerging{background:color-mix(in srgb,var(--gold) 30%,transparent);color:var(--gold)}
+.strat-cell .tag.future{background:color-mix(in srgb,var(--purple) 30%,transparent);color:var(--purple)}
+@media(max-width:768px){
+  .sidebar{display:none}
+  .layout{flex-direction:column}
+  main{padding:16px}
+  .grid2,.grid4{grid-template-columns:1fr}
+  .strat-matrix{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <h1>八方雲集 (2753.TW) — 公司策略</h1>
+  <span class="badge">Step 3 / 10 · 2026-06-12</span>
+</div>
+<div class="layout">
+<nav class="sidebar">
+  <div class="navTitle">大綱</div>
+  <button class="navItem active" data-section="s1">👤 CEO 與願景</button>
+  <button class="navItem" data-section="s2">📐 Ansoff 成長矩陣</button>
+  <button class="navItem" data-section="s3">⏳ 三層成長架構</button>
+  <button class="navItem" data-section="s4">🧬 核心能力</button>
+  <button class="navItem" data-section="s5">💰 成本策略</button>
+  <button class="navItem" data-section="s6">🤖 AI/數據策略</button>
+  <button class="navItem" data-section="s7">📋 綜合判斷</button>
+</nav>
+<main>
+
+<section id="s1" class="active">
+<div class="card">
+  <div class="cardTitle">👤 CEO 背景與利益一致性</div>
+  <table class="tbl">
+    <tr><th style="width:160px">面向</th><th>評估</th></tr>
+    <tr><td><strong>CEO 背景</strong></td><td>林欣怡，創始人/董事長/總經理三職兼任。長期經營，從區域品牌擴張至國際連鎖，經歷食安危機、疫情、原物料波動等多次壓力測試</td></tr>
+    <tr><td><strong>薪酬結構</strong></td><td>未公開細節，但與股東利益高度一致（持股 31.38%）</td></tr>
+    <tr><td><strong>內部人持股</strong></td><td>董監持股 20,911 張（31.38%）。高持股 = 高利益綁定，決策傾向長期價值而非短期股價</td></tr>
+    <tr><td><strong>董事會</strong></td><td>策略長王仁良 + 財務長黃麗麒輔助，團隊穩定</td></tr>
+    <tr><td><strong>股東利益評分</strong></td><td><span style="color:var(--green);font-weight:700;font-size:18px">★★★★★</span> — 創始人經營 + 31% 持股 + 80% 配發率</td></tr>
+  </table>
+</div>
+
+<div class="card">
+  <div class="cardTitle">🎯 CEO 策略願景</div>
+  <div class="callout">
+    <strong>核心命題：</strong>「台灣是現金牛，美國是增長引擎，香港守成。」— 本質上是一個 <strong>成熟市場收割 + 新市場複製</strong> 的雙軌策略。<br>
+    <span class="source">（Source: 2025-12-19 法說會，管理層多次強調美國 3-5 年營收佔比 20-30%）</span>
+  </div>
+
+  <table class="tbl">
+    <tr><th>市場</th><th>策略定位</th><th>資源配置</th><th>風險/回報</th></tr>
+    <tr>
+      <td><strong>台灣</strong></td>
+      <td>現金牛 — 穩定成長（+10% YoY），高股利配發</td>
+      <td>溫和擴張（各品牌年增 30 店）</td>
+      <td>低風險、穩定回報</td>
+    </tr>
+    <tr>
+      <td><strong>美國</strong></td>
+      <td>增長引擎 — 直營為主，德州工廠為供應樞紐</td>
+      <td>高資本投入（$13-15M 工廠 + 每店 $60-80 萬）</td>
+      <td class="warn">高風險、高回報</td>
+    </tr>
+    <tr>
+      <td><strong>香港</strong></td>
+      <td>守成 — 聚焦平價品牌，優化高租金門店</td>
+      <td>低投入、防守型</td>
+      <td>低增長、獲利萎縮中</td>
+    </tr>
+    <tr>
+      <td><strong>新市場</strong></td>
+      <td>探索期 — 日本、歐洲、英國、杜拜</td>
+      <td>幾乎零投入（評估階段）</td>
+      <td class="warn">極早期，不確定性極高</td>
+    </tr>
+  </table>
+
+  <div class="callout green">
+    <strong>願景一致性：</strong>管理層的公開陳述沒有明顯轉向或矛盾。從 7 月到 12 月法說會，策略主軸一致：台灣深耕 + 美國擴張 + 香港精簡。唯一調整是德州工廠時間線（2025 底 → 2026/4），但管理層主動說明，未試圖掩飾。
+  </div>
+</div>
+</section>
+
+<section id="s2">
+<div class="card">
+  <div class="cardTitle">📐 Ansoff 成長矩陣</div>
+
+  <div class="strat-matrix">
+    <div class="strat-cell">
+      <h4>🔵 市場滲透 (Market Penetration)</h4>
+      <p>台灣既有市場 × 既有產品</p>
+      <p style="margin-top:4px">• 八方雲集年淨增 26 店 → 目標 30<br>• 同店銷售 +10% (25Q1)<br>• 數位化：線上點餐、自助點餐機<br>• 關店率從 3% 降至 1.7%</p>
+      <span class="tag active">進行中 · 核心</span>
+    </div>
+    <div class="strat-cell">
+      <h4>🟢 產品開發 (Product Development)</h4>
+      <p>台灣既有市場 × 新產品</p>
+      <p style="margin-top:4px">• 牛肉麵調理包（MOMO/家樂福）<br>• 梁社漢新品（排骨麵、雞排飯）<br>• 產能：牛肉麵日產 3.5 萬包<br>• 線上線下（OMO）雙通路</p>
+      <span class="tag emerging">成長中</span>
+    </div>
+    <div class="strat-cell">
+      <h4>🟡 市場開發 (Market Development)</h4>
+      <p>既有產品 × 新市場</p>
+      <p style="margin-top:4px">• 美國：加州 13 店 → 目標 >20 (2025)<br>• 德州快餐模式測試（Tarleton 店）<br>• 3-5 年美國營收佔比 20-30%<br>• 德州中央工廠 2026/4 啟用</p>
+      <span class="tag emerging">核心增長</span>
+    </div>
+    <div class="strat-cell">
+      <h4>🟣 多角化 (Diversification)</h4>
+      <p>新產品 × 新市場</p>
+      <p style="margin-top:4px">• 美國快餐型態（QSR 模式）<br>• 調理包進軍美國 Costco/Walmart<br>• 評估日本、歐洲、英國、杜拜<br>• 目前僅為評估/探索階段</p>
+      <span class="tag future">遠期期權</span>
+    </div>
+  </div>
+
+  <div class="callout">
+    <strong>矩陣診斷：</strong>八方雲集的 Ansoff 部署堪稱教科書級別——四個象限都有對應的具體行動，且資源配置和風險回報匹配。台灣滲透（低風險）+ 美國開發（中高風險）+ 新市場探索（極低投入期權），沒有孤注一擲的賭注。
+  </div>
+</div>
+</section>
+
+<section id="s3">
+<div class="card">
+  <div class="cardTitle">⏳ 三層成長架構 (McKinsey Three Horizons)</div>
+
+  <div class="grid4">
+    <div class="metric" style="border-left:3px solid var(--green)">
+      <div class="val" style="color:var(--green)">H1</div>
+      <div class="lbl"><strong>防守與延伸</strong></div>
+      <div style="font-size:11px;color:var(--muted);margin-top:6px;text-align:left">
+        台灣八方雲集 + 梁社漢<br>
+        營收佔比 ~78%<br>
+        YoY 成長 +10%<br>
+        現金流穩定、高股利
+      </div>
+    </div>
+    <div class="metric" style="border-left:3px solid var(--gold)">
+      <div class="val" style="color:var(--gold)">H2</div>
+      <div class="lbl"><strong>新興成長引擎</strong></div>
+      <div style="font-size:11px;color:var(--muted);margin-top:6px;text-align:left">
+        美國市場擴張<br>
+        營收佔比 7.2% → 目標 20-30%<br>
+        加州轉盈為里程碑<br>
+        調理包線上通路
+      </div>
+    </div>
+    <div class="metric" style="border-left:3px solid var(--purple)">
+      <div class="val" style="color:var(--purple)">H3</div>
+      <div class="lbl"><strong>創造未來選項</strong></div>
+      <div style="font-size:11px;color:var(--muted);margin-top:6px;text-align:left">
+        日/歐/中東市場評估<br>
+        快餐模式創新<br>
+        肉品裁切垂直整合<br>
+        美國大型通路鋪貨
+      </div>
+    </div>
+  </div>
+
+  <div class="callout green">
+    <strong>健康診斷：</strong>H1（台灣）現金流充沛，足以 self-fund H2（美國擴張）。H3 僅需少量探索性投入，不消耗核心資源。這是教科書級的三層均衡配置。唯一隱憂：H2（美國）的轉換時程極度依賴德州工廠順利啟用和快餐模式驗證成功。
+  </div>
+</div>
+</section>
+
+<section id="s4">
+<div class="card">
+  <div class="cardTitle">🧬 核心能力評估 (Prahalad & Hamel, 1990)</div>
+  
+  <table class="tbl">
+    <tr><th style="width:140px">核心能力三測試</th><th>八方雲集評估</th><th>判定</th></tr>
+    <tr>
+      <td><strong>市場進入</strong><br><span style="font-size:10px;color:var(--muted)">是否提供進入多種市場的通道？</span></td>
+      <td>加盟系統 + 中央工廠模式可複製至任何有華人/亞洲飲食需求的市場。已在台、港、美三地證明可跨文化適應</td>
+      <td class="up">✓ 通過</td>
+    </tr>
+    <tr>
+      <td><strong>客戶利益</strong><br><span style="font-size:10px;color:var(--muted)">是否對客戶感知價值有顯著貢獻？</span></td>
+      <td>「平價、快速、一致品質」是核心價值主張。中央工廠確保每間加盟店的產品品質一致，這是分散式小吃店無法達到的</td>
+      <td class="up">✓ 通過</td>
+    </tr>
+    <tr>
+      <td><strong>模仿難度</strong><br><span style="font-size:10px;color:var(--muted)">競爭者是否難以模仿？</span></td>
+      <td>1,250+ 店的規模 + 8 座中央工廠 + 30 年品牌累積 + 加盟體系管理 know-how + 供應鏈縱深。新進者即使有資本也難以在短期內複製</td>
+      <td class="up">✓ 通過</td>
+    </tr>
+  </table>
+
+  <div class="callout green">
+    <strong>核心能力判定：</strong>八方雲集的核心能力是「加盟體系營運管理 × 中央工廠的規模化生產」。這不是單一技術或專利，而是一個需要時間積累的系統性能力——訓練加盟主、標準化食譜、冷鏈物流、原物料採購、品質控制。三者全過，符合 Prahalad & Hamel 的核心能力定義。<br>
+    <span class="source">（IB7018 W4: Core Competence）</span>
+  </div>
+</div>
+
+<div class="card">
+  <div class="cardTitle">🔄 有機成長 vs. 併購</div>
+  <table class="tbl">
+    <tr><th>類型</th><th>證據</th><th>品質</th></tr>
+    <tr><td><strong>有機成長</strong></td><td>加盟展店（台灣 + 美國）、新品開發（牛肉麵、梁社漢新品）、線上通路拓展（MOMO、家樂福）</td><td class="up">★★★★ 主軸</td></tr>
+    <tr><td><strong>併購</strong></td><td>無重大併購紀錄</td><td>N/A</td></tr>
+    <tr><td><strong>垂直整合</strong></td><td>自建冷藏倉庫（大林倉 6,000 噸）、豬肉裁切廠（2025 H2 投產）、中央工廠持續擴充</td><td class="up">★★★★ 持續深化</td></tr>
+  </table>
+  <div class="pillRow">
+    <span class="pill g">有機為主</span>
+    <span class="pill b">垂直整合</span>
+    <span class="pill p">無併購風險</span>
+  </div>
+</div>
+</section>
+
+<section id="s5">
+<div class="card">
+  <div class="cardTitle">💰 成本策略意涵：成本領導 vs. 差異化</div>
+
+  <div class="grid2">
+    <div class="card" style="border-left:3px solid var(--accent)">
+      <div class="cardTitle" style="font-size:13px">🔵 成本領導面</div>
+      <table class="tbl" style="font-size:11px">
+        <tr><td>中央工廠規模經濟</td><td class="up">8 座、產能大幅過剩</td></tr>
+        <tr><td>原料成本控制</td><td class="up">契作 + 多元採購 + 自建倉儲</td></tr>
+        <tr><td>加盟輕資產</td><td class="up">加盟主承擔店租/人事</td></tr>
+        <tr><td>營運槓桿</td><td>固定成本占比中等</td></tr>
+        <tr><td>2025 不漲價</td><td class="up">以新品組合平衡成本</td></tr>
+      </table>
+    </div>
+    <div class="card" style="border-left:3px solid var(--gold)">
+      <div class="cardTitle" style="font-size:13px">🟡 差異化面</div>
+      <table class="tbl" style="font-size:11px">
+        <tr><td>品牌信任</td><td class="up">30 年累積，食品安全事件後恢復</td></tr>
+        <tr><td>產品一致品質</td><td class="up">中央工廠標準化</td></tr>
+        <tr><td>多品牌矩陣</td><td>八方、梁社漢、百芳、麵屋</td></tr>
+        <tr><td>新品研發</td><td>牛肉麵、調理包、季節新品</td></tr>
+        <tr><td>數位化體驗</td><td>線上點餐、自助點餐機導入中</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="callout">
+    <strong>策略定位：混合型——</strong>八方雲集的策略本質上是 <strong>成本領導為基礎，差異化為加成</strong>。中央工廠提供成本優勢（規模經濟），品牌和品質一致性提供溢價能力。這不是單純的「低價策略」，而是 Porter 所說的「相同品質下的低成本」+「合理成本下的品質溢價」。(MA_Ch1:8)
+  </div>
+
+  <div class="card" style="margin-top:16px">
+    <div class="cardTitle" style="font-size:13px">📊 成本結構分析 (依 MoneyDJ 2025 年報)</div>
+    <table class="tbl">
+      <tr><th>項目</th><th>金額 (百萬)</th><th>佔營收%</th><th>YoY</th></tr>
+      <tr><td>營收</td><td>8,791</td><td>100%</td><td class="up">+9.5%</td></tr>
+      <tr><td>銷貨成本</td><td>5,629</td><td>64.0%</td><td class="up">+7.2%</td></tr>
+      <tr><td>推銷費用</td><td>1,577</td><td>17.9%</td><td class="up">-0.5%</td></tr>
+      <tr><td>管理費用</td><td>487</td><td>5.5%</td><td class="up">+7.5%</td></tr>
+      <tr><td>研發費用</td><td>20</td><td>0.2%</td><td>+11%</td></tr>
+      <tr><td><strong>營業利益</strong></td><td><strong>1,078</strong></td><td><strong>12.3%</strong></td><td class="up"><strong>+49%</strong></td></tr>
+    </table>
+    <div class="callout green" style="margin-top:8px">
+      <strong>關鍵訊號：</strong>營收 +9.5%，但營業利益 +49%——這是 <strong>營運槓桿正在兌現</strong> 的經典信號。推銷費用率下降（規模效應），管理費用成長低於營收成長。毛利率從 34.6% → 36.0%，也反映原物料成本控制奏效。
+    </div>
+  </div>
+</div>
+</section>
+
+<section id="s6">
+<div class="card">
+  <div class="cardTitle">🤖 AI / 數據策略評估</div>
+
+  <table class="tbl">
+    <tr><th>面向</th><th>評估</th><th>評分</th></tr>
+    <tr><td><strong>專有數據</strong></td><td>擁有大量交易數據（1,250+ 店 × 每日數千筆交易），但數據本質是傳統 POS 交易記錄，非獨特/不可複製</td><td>★★</td></tr>
+    <tr><td><strong>數據規模化</strong></td><td>無明顯數據網路效應（更多店 ≠ 數據品質線性提升）</td><td>★★</td></tr>
+    <tr><td><strong>AI 應用現狀</strong></td><td>低。法說會未提及任何 AI 相關策略。數位化目前僅限於線上點餐和自助點餐機——屬於「營運效率提升」而非「AI 轉型」</td><td>★</td></tr>
+    <tr><td><strong>AI 對營收影響</strong></td><td>近零。餐飲業的 AI 應用（需求預測、供應鏈優化、個人化推薦）仍在早期</td><td>★</td></tr>
+    <tr><td><strong>AI 對成本影響</strong></td><td>有限。自動化點餐可節省人力，但八方以加盟為主，人力成本由加盟主承擔</td><td>★★</td></tr>
+    <tr><td><strong>專有模型 vs API</strong></td><td>不適用。公司無 AI 團隊，無 R&D 投入 AI</td><td>N/A</td></tr>
+  </table>
+
+  <div class="callout">
+    <strong>誠實評估：</strong>八方雲集 <strong>不需要 AI 策略來證明其投資價值</strong>。餐飲連鎖的護城河來自規模、品牌和營運效率，而非數據或演算法。強加 AI 敘事反而是紅旗。這不是缺點——這是餐飲業的本質。少數例外（如麥當勞的 Dynamic Yield 收購）也是例外而非規則。
+  </div>
+</div>
+</section>
+
+<section id="s7">
+<div class="card">
+  <div class="cardTitle">📋 綜合判斷 — Strategy Verdict</div>
+  
+  <div class="verdict">
+    <div class="vTitle">📋 結論</div>
+    <table class="tbl" style="margin-top:8px">
+      <tr><td style="width:180px"><strong>策略等級</strong></td><td><span class="grade B">B+ (Sound & Executable)</span></td></tr>
+      <tr><td><strong>關鍵策略賭注</strong></td><td><strong>美國市場複製台灣加盟模式的成功。</strong>德州工廠是這一切的基石——沒有它，美國擴張就是空中樓閣</td></tr>
+      <tr><td><strong>策略-執行差距</strong></td><td>小。管理層的公開陳述和財務數字方向一致（營收 +9.5%、營益 +49%、展店達標）。德州工廠延遲一季是唯一可見差距，但主動揭露</td></tr>
+      <tr><td><strong>AI 差異化</strong></td><td>不適用。餐飲連鎖的競爭力不來自 AI，要求 AI 敘事反而是判斷失準</td></tr>
+      <tr><td><strong style="color:var(--gold)">共識忽略的洞察</strong></td><td><strong>八方雲集不是「賣鍋貼的公司」，而是一個「加盟平台」。</strong>它真正的產品是「可以賺錢的加盟系統」——提供品牌、配方、供應鏈、營運 know-how，讓加盟主承擔前端風險。這個模式的單位經濟學（加盟主獲利 → 更多人想加盟 → 中央工廠出貨量成長 → 單位成本下降）比產品本身更重要</td></tr>
+    </table>
+  </div>
+
+  <div class="card" style="margin-top:16px">
+    <div class="cardTitle">⏭️ 策略風險矩陣</div>
+    <table class="tbl">
+      <tr><th>風險</th><th>影響</th><th>可能性</th><th>緩解措施</th></tr>
+      <tr>
+        <td>美國快餐模式驗證失敗</td>
+        <td class="down">高</td>
+        <td>中</td>
+        <td>以現有複合式模式為主，快餐為測試；德州僅一家試點</td>
+      </tr>
+      <tr>
+        <td>德州工廠再延遲</td>
+        <td class="down">高</td>
+        <td class="warn">中低</td>
+        <td>加州廠可支應 30-50 店，短期緩衝足夠</td>
+      </tr>
+      <tr>
+        <td>香港獲利持續惡化</td>
+        <td>低（佔比 14%）</td>
+        <td class="warn">中高</td>
+        <td>調整高租金門店、聚焦平價品牌</td>
+      </tr>
+      <tr>
+        <td>原物料價格飆漲</td>
+        <td>中</td>
+        <td>中</td>
+        <td>多元採購（丹麥/法國）、契作、自建冷藏庫</td>
+      </tr>
+    </table>
+  </div>
+</div>
+</section>
+
+</main>
+</div>
+
+<script>
+document.querySelectorAll('.navItem').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.navItem').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
+    document.getElementById(btn.dataset.section).classList.add('active');
+  });
+});
+document.addEventListener('keydown', e => {
+  if(e.target.tagName==='INPUT') return;
+  const sections = ['s1','s2','s3','s4','s5','s6','s7'];
+  const active = document.querySelector('section.active');
+  let idx = sections.indexOf(active.id);
+  if(e.key==='ArrowDown'||e.key==='ArrowRight') idx=Math.min(idx+1,6);
+  if(e.key==='ArrowUp'||e.key==='ArrowLeft') idx=Math.max(idx-1,0);
+  if(idx!==sections.indexOf(active.id)){
+    document.querySelectorAll('.navItem').forEach(b=>b.classList.remove('active'));
+    document.querySelector(`.navItem[data-section="${sections[idx]}"]`).classList.add('active');
+    document.querySelectorAll('section').forEach(s=>s.classList.remove('active'));
+    document.getElementById(sections[idx]).classList.add('active');
+  }
+});
+</script>
+</body>
+</html>
