@@ -70,7 +70,7 @@ section.active{display:block}
 <body>
 <div class="topbar">
   <h1>八方雲集 (2753.TW) — 宏觀與產業</h1>
-  <span class="badge">Step 8 / 10 · 2026-06-12 (更新：納入台灣數據)</span>
+  <span class="badge">Step 8 / 10 · 2026-06-12 (v2: +食物類CPI細項)</span>
 </div>
 <div class="layout">
 <nav class="sidebar">
@@ -175,19 +175,54 @@ section.active{display:block}
 </div>
 
 <div class="card">
-  <div class="cardTitle">🍖 食物類 CPI — 資料缺口說明</div>
-  <div style="font-size:12px;color:var(--muted);line-height:1.8">
-    <p>整體 CPI +2.20% 對餐飲業屬 <strong>可控範圍</strong>。但 PPI +14.1% 急升是真正的風險。</p>
-    <br>
-    <p><strong>尚缺細項（需從 nstatdb 取得）：</strong></p>
-    <p>① 食物類 CPI（肉類、蔬菜、穀類、外食費）</p>
-    <p>② 豬肉/高麗菜批發價趨勢</p>
-    <p>③ 餐飲業營業額月增率</p>
-    <br>
-    <p><strong>可推論：</strong>PPI +14.1% 主要來自進口原物料（能源+農產品）。若持續，八方毛利率 Q3-Q4 將面臨 1-2pp 下行壓力。</p>
-    <p style="color:var(--dim);font-size:10px;margin-top:8px">nstatdb 可查詢食物類細項但需專用 browser skill。後續建立 nstatdb skill 後可自動化補齊。</p>
+  <div class="cardTitle">🍖 食物類 CPI 細項 — 115 年 5 月 (2026.05)</div>
+  <p style="color:var(--muted);font-size:10px;margin-bottom:12px">資料來源：DGBAS 物價統計月報 ODS 檔 · 表 1 消費者物價基本分類 · ws.dgbas.gov.tw</p>
+
+  <table class="tbl">
+    <tr><th>項目</th><th>權數</th><th>指數</th><th>月增率</th><th style="color:var(--red)">年增率</th><th style="color:var(--red)">對總指數影響</th></tr>
+    <tr><td><strong>總指數</strong></td><td>1,000.00</td><td>111.43</td><td class="up">+0.19%</td><td class="warn" style="font-weight:700">+2.20%</td><td>2.20</td></tr>
+    <tr style="background:color-mix(in srgb,var(--accent) 10%,var(--card))"><td><strong>一. 食物類</strong></td><td>255.74</td><td>117.85</td><td class="up">+0.59%</td><td class="up" style="font-weight:700;color:var(--green)">+1.36%</td><td>0.36</td></tr>
+    <tr><td style="padding-left:24px">穀類及其製品</td><td>15.01</td><td>116.84</td><td class="up">+0.81%</td><td class="warn">+2.89%</td><td>0.04</td></tr>
+    <tr><td style="padding-left:24px">肉類</td><td>22.21</td><td>122.83</td><td class="up">+0.15%</td><td class="warn">+2.58%</td><td>0.06</td></tr>
+    <tr><td style="padding-left:24px">蔬菜</td><td>15.80</td><td>103.21</td><td class="up">+2.80%</td><td class="down">+9.69%</td><td>0.13</td></tr>
+    <tr><td style="padding-left:24px">水果</td><td>21.19</td><td>119.02</td><td class="up">+1.78%</td><td class="up" style="color:var(--green)">-16.03%</td><td>-0.38</td></tr>
+    <tr style="background:color-mix(in srgb,var(--gold) 10%,var(--card))"><td><strong>🔥 外食費</strong></td><td>105.88</td><td>120.93</td><td class="up">+0.39%</td><td class="warn" style="font-weight:700">+2.99%</td><td>0.32</td></tr>
+    <tr><td>二. 衣著類</td><td>56.66</td><td>104.53</td><td class="down">-1.02%</td><td>+1.01%</td><td>0.06</td></tr>
+    <tr><td>三. 居住類</td><td>227.18</td><td>110.30</td><td class="up">+0.23%</td><td>+2.06%</td><td>0.47</td></tr>
+    <tr><td>四. 交通及通訊類</td><td>146.78</td><td>107.12</td><td class="up">+0.22%</td><td class="warn">+4.00%</td><td>0.57</td></tr>
+    <tr><td>五. 醫藥保健類</td><td>56.02</td><td>109.45</td><td class="down">-0.26%</td><td>+0.70%</td><td>0.04</td></tr>
+    <tr><td>六. 教養娛樂類</td><td>143.96</td><td>109.71</td><td class="up">+0.37%</td><td>+3.03%</td><td>0.43</td></tr>
+    <tr><td>七. 雜項類</td><td>113.66</td><td>111.83</td><td class="down">-0.20%</td><td>+2.44%</td><td>0.28</td></tr>
+    <tr><td><strong>核心 CPI</strong></td><td>925.99</td><td>111.15</td><td class="up">+0.13%</td><td>+2.12%</td><td>1.97</td></tr>
+  </table>
+
+  <div class="callout green">
+    <strong>🟢 食物類 CPI 僅 +1.36% — 遠低於整體 CPI 的 +2.20%。</strong>這是八方雲集最重要的宏觀數據——食材成本通膨壓力<strong>比預期溫和</strong>。外食費 +2.99% 代表餐廳終端價格上漲約 3%，八方有 1.6pp 的潛在定價權（若需轉嫁成本）。<br><br>
+    <strong>⚠️ 但需注意結構性差異：</strong>肉類 +2.58%、穀類 +2.89% 和蔬菜 +9.69% 是八方最敏感的食材（豬肉、麵粉、高麗菜）。PPI +14.1% 的壓力可能尚未完全傳導至 CPI 食物類——這是領先/落後指標的時間差問題。若 PPI 持續在此水位，未來 2-3 個月食物類 CPI 可能補漲。
   </div>
-</div>
+
+  <div class="grid2">
+    <div class="card" style="border-left:3px solid var(--green)">
+      <div style="font-size:12px;line-height:1.7">
+        <strong style="color:var(--green)">✅ 對八方有利：</strong><br>
+        ① 食物類 CPI +1.36% 溫和 → 成本端通膨可控<br>
+        ② 水果 -16.03% 大幅降價 → 部分食材成本下降<br>
+        ③ 外食費 +2.99% → 餐飲終端有漲價空間<br>
+        ④ 整體 CPI +2.20% 可控 → 消費壓力不大
+      </div>
+    </div>
+    <div class="card" style="border-left:3px solid var(--red)">
+      <div style="font-size:12px;line-height:1.7">
+        <strong style="color:var(--red)">⚠️ 需監控：</strong><br>
+        ① 肉類 +2.58% → 豬肉成本仍在上升<br>
+        ② 穀類 +2.89% → 麵粉成本持續攀升<br>
+        ③ 蔬菜 +9.69% → 高麗菜波動劇烈<br>
+        ④ PPI +14.1% 領先 CPI → 食物類可能補漲
+      </div>
+    </div>
+  </div>
+
+  <p style="color:var(--dim);font-size:10px;margin-top:12px">資料取得方法：DGBAS 每月 5 日發布，ODS 檔直接從 ws.dgbas.gov.tw 下載。skill: research/taiwan-cpi-data 提供自動化解析腳本。</p>
 </section>
 
 <section id="s3">
@@ -248,7 +283,7 @@ section.active{display:block}
       <tr><td><strong>週期位置</strong></td><td><strong>台灣：擴張中期</strong>（GDP +14.6%）<br><strong>美國：晚期擴張</strong>（GDP 溫和但信心惡化）</td></tr>
       <tr><td><strong>最大宏觀風險</strong></td><td class="down"><strong>台美 PPI 同步飆升</strong> — 三個月內 PPI 從 +2.5% → +14.1%。若 Q3-Q4 持續，毛利率承壓 1-2pp。無法地域分散</td></tr>
       <tr><td><strong style="color:var(--gold)">市場忽略點</strong></td><td>台灣 GDP +14.6% 被低估——消費者購買力遠強於市場預期。八方若需漲價轉嫁成本，2026 環境比 2023-24 有利得多。<strong>漲價≠銷量崩跌。</strong></td></tr>
-      <tr><td><strong>待補數據</strong></td><td>食物類 CPI 細項 · 台灣消費者信心 · 餐飲業營業額 · 豬肉批發價</td></tr>
+      <tr><td><strong>待補數據</strong></td><td>台灣消費者信心指數 · 餐飲業營業額月增率 · 豬肉/高麗菜批發價。食物類 CPI 已補齊 ✅</td></tr>
     </table>
   </div>
   <div class="card" style="margin-top:16px">
