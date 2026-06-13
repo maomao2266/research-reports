@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>八方雲集 (2753) — 風險分析 | Fundamental Analysis Step 9</title>
+<style>
+:root{
+  --bg:#0a0e14; --surface:#131820; --card:#181f2a;
+  --border:#252d3a; --ink:#e2e8f0; --muted:#7c8aa0; --dim:#4a5568;
+  --accent:#60a5fa; --accent2:#3b82f6;
+  --gold:#f59e0b; --green:#34d399; --red:#f87171;
+  --orange:#fb923c; --purple:#a78bfa;
+  --radius:14px; --radius2:18px;
+  --sans:"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,-apple-system,sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.6}
+.topbar{position:sticky;top:0;z-index:100;background:var(--surface);border-bottom:1px solid var(--border);padding:12px 24px;display:flex;align-items:center;justify-content:space-between}
+.topbar h1{font-size:18px;font-weight:600}
+.topbar .badge{font-size:11px;color:var(--muted);background:var(--card);padding:4px 10px;border-radius:20px}
+.layout{display:flex;min-height:calc(100vh - 53px)}
+.sidebar{width:220px;min-width:220px;background:var(--surface);border-right:1px solid var(--border);padding:16px 0;position:sticky;top:53px;height:calc(100vh - 53px);overflow-y:auto}
+.sidebar .navTitle{font-size:10px;text-transform:uppercase;color:var(--dim);padding:8px 16px;letter-spacing:1px}
+.sidebar .navItem{display:block;padding:8px 16px;color:var(--muted);font-size:13px;cursor:pointer;border:none;background:none;width:100%;text-align:left;transition:all .15s;border-left:3px solid transparent}
+.sidebar .navItem:hover{color:var(--ink);background:var(--card)}
+.sidebar .navItem.active{color:var(--accent);background:var(--card);border-left-color:var(--accent)}
+main{flex:1;padding:24px;max-width:900px}
+section{display:none}
+section.active{display:block}
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px;margin-bottom:20px}
+.cardTitle{font-size:15px;font-weight:600;margin-bottom:12px;color:var(--accent)}
+.callout{border-left:3px solid var(--accent);padding:12px 16px;border-radius:0 var(--radius) var(--radius) 0;margin-bottom:16px;background:color-mix(in srgb,var(--accent) 8%,var(--card))}
+.callout.gold{border-color:var(--gold);background:color-mix(in srgb,var(--gold) 8%,var(--card))}
+.callout.green{border-color:var(--green);background:color-mix(in srgb,var(--green) 8%,var(--card))}
+.callout.red{border-color:var(--red);background:color-mix(in srgb,var(--red) 8%,var(--card))}
+.metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:10px;margin-bottom:16px}
+.metric{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:12px;text-align:center}
+.metric .val{font-size:18px;font-weight:700;color:var(--ink)}
+.metric .lbl{font-size:9px;color:var(--muted);margin-top:2px}
+.metric .sub{font-size:9px;margin-top:2px}
+.tbl{width:100%;border-collapse:collapse;font-size:12px;margin-bottom:16px}
+.tbl th{text-align:left;color:var(--muted);font-weight:500;padding:6px 8px;border-bottom:1px solid var(--border);font-size:10px;text-transform:uppercase}
+.tbl td{padding:6px 8px;border-bottom:1px solid var(--border)}
+.tbl tr:last-child td{border-bottom:none}
+.up{color:var(--green)}.down{color:var(--red)}.warn{color:var(--orange)}
+.pill{font-size:10px;padding:3px 8px;border-radius:10px;font-weight:500;display:inline-block;margin:2px}
+.pill.g{background:color-mix(in srgb,var(--green) 20%,transparent);color:var(--green)}
+.pill.r{background:color-mix(in srgb,var(--red) 20%,transparent);color:var(--red)}
+.pill.o{background:color-mix(in srgb,var(--orange) 20%,transparent);color:var(--orange)}
+.pill.b{background:color-mix(in srgb,var(--accent) 20%,transparent);color:var(--accent)}
+.pill.p{background:color-mix(in srgb,var(--purple) 20%,transparent);color:var(--purple)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.verdict{background:linear-gradient(135deg,color-mix(in srgb,var(--green) 15%,var(--surface)),color-mix(in srgb,var(--accent) 10%,var(--surface)));border:1px solid color-mix(in srgb,var(--green) 30%,var(--border));border-radius:var(--radius2);padding:20px}
+.verdict .vTitle{font-size:16px;font-weight:700;margin-bottom:8px;color:var(--accent)}
+.grade{display:inline-flex;align-items:center;gap:4px;font-weight:700;font-size:16px}
+.grade.B{color:var(--green)}.grade.C{color:var(--gold)}.grade.D{color:var(--red)}
+.risk-box{padding:6px 10px;border-radius:6px;font-size:11px;font-weight:600;display:inline-block;min-width:36px;text-align:center}
+.risk-high{background:color-mix(in srgb,var(--red) 25%,transparent);color:var(--red);border:1px solid color-mix(in srgb,var(--red) 40%,transparent)}
+.risk-mid{background:color-mix(in srgb,var(--orange) 25%,transparent);color:var(--orange);border:1px solid color-mix(in srgb,var(--orange) 40%,transparent)}
+.risk-low{background:color-mix(in srgb,var(--green) 20%,transparent);color:var(--green);border:1px solid color-mix(in srgb,var(--green) 35%,transparent)}
+.heatmap-cell{text-align:center;padding:10px 8px;border-radius:6px;font-size:11px}
+.heat-red{background:color-mix(in srgb,var(--red) 35%,var(--surface));border:1px solid var(--red)}
+.heat-orange{background:color-mix(in srgb,var(--orange) 30%,var(--surface));border:1px solid var(--orange)}
+.heat-yellow{background:color-mix(in srgb,var(--gold) 25%,var(--surface));border:1px solid var(--gold)}
+.heat-green{background:color-mix(in srgb,var(--green) 20%,var(--surface));border:1px solid var(--green)}
+.source{font-size:9px;color:var(--dim);margin-top:4px}
+@media(max-width:768px){
+  .sidebar{display:none}
+  .layout{flex-direction:column}
+  main{padding:16px}
+  .grid2{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <h1>八方雲集 (2753.TW) — 風險分析</h1>
+  <span class="badge">Step 9 / 10 · 2026-06-12 · FRM Framework</span>
+</div>
+<div class="layout">
+<nav class="sidebar">
+  <div class="navTitle">大綱</div>
+  <button class="navItem active" data-section="s1">🏛️ 風險分類學</button>
+  <button class="navItem" data-section="s2">🎯 P×I 風險矩陣</button>
+  <button class="navItem" data-section="s3">🌪️ 情境壓力測試</button>
+  <button class="navItem" data-section="s4">⚖️ 風險調整後論證</button>
+  <button class="navItem" data-section="s5">🛡️ 風險緩解策略</button>
+  <button class="navItem" data-section="s6">📋 最終風險判決</button>
+</nav>
+<main>
+
+<!-- ==================== Section 1: Risk Taxonomy ==================== -->
+<section id="s1" class="active">
+<div class="card">
+  <div class="cardTitle">⚡ 風險 vs 不確定性：先決區分</div>
+  <table class="tbl">
+    <tr><th>概念</th><th>定義</th><th>八方雲集的例子</th></tr>
+    <tr><td><strong>不確定性</strong></td><td>未知或存疑的事物，本身無害</td><td>未來豬肉價格走勢 → 沒有人能預測，但它本身不構成風險</td></tr>
+    <tr><td><strong style="color:var(--red)">風險</strong></td><td>資本投入後，不確定結果導致的虧損可能</td><td>在 PPI +14% 的環境下買入八方 → 成本壓力可能壓縮獲利 → 這就是風險</td></tr>
+  </table>
+  <div class="callout gold">
+    <strong>核心原則（Sonkin & Johnson, 2017）：</strong>風險永遠是「買入價格」的函數——不是業務不確定性的函數。一個更可預測的業務（如八方雲集的成熟餐飲模式）可能比一個更不確定的業務承擔<strong>更高</strong>的投資風險——只要買入價格高於內在價值。目前 P/E ~15x、ROE 20.8% — 風險取決於這個價格是否合理。
+  </div>
+</div>
+
+<div class="card">
+  <div class="cardTitle">🏛️ 五支柱風險分類法（FRM 適配）</div>
+  <p style="color:var(--muted);font-size:10px;margin-bottom:16px">改編自 FRM 風險分類學：市場風險、營運風險、信用+流動性風險、事件風險、評價風險</p>
+
+  <!-- Pillar 1: Market Risk -->
+  <div class="card" style="border-left:3px solid var(--red)">
+    <div class="cardTitle" style="font-size:14px;color:var(--red)">🔴 支柱一：市場風險（Market Risk）</div>
+    <table class="tbl">
+      <tr><th style="width:140px">風險因子</th><th>曝險說明</th><th>嚴重度</th></tr>
+      <tr>
+        <td><strong>原物料價格</strong></td>
+        <td>豬肉、麵粉、食用油、高麗菜 — 佔 COGS 60-80%。台灣 PPI +14.1%、美國 +13.1%，雙重壓力。<br><span class="down">⚠️ 三個月內 PPI 從 +2.53% 急升至 +14.11% — 加速惡化中</span></td>
+        <td><span class="risk-box risk-high">HIGH</span></td>
+      </tr>
+      <tr>
+        <td><strong>消費需求</strong></td>
+        <td>美國消費信心 49.8（歷史低點），若從「悲觀但消費」轉為「悲觀且縮手」將衝擊美國 13 家店營收。台灣內需強勁（GDP +14.6%）提供了緩衝</td>
+        <td><span class="risk-box risk-mid">MID</span></td>
+      </tr>
+      <tr>
+        <td><strong>利率</strong></td>
+        <td>Fed 降息中（3.63%），對八方是利多（美國融資成本降低）。台灣利率穩定。淨影響：正面</td>
+        <td><span class="risk-box risk-low">LOW</span></td>
+      </tr>
+      <tr>
+        <td><strong>匯率 (TWD/USD)</strong></td>
+        <td>兩地均當地採購，無明顯匯率曝險。美國營收僅 7.2%，匯兌影響微小</td>
+        <td><span class="risk-box risk-low">LOW</span></td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- Pillar 2: Business Risk -->
+  <div class="card" style="border-left:3px solid var(--orange);margin-top:12px">
+    <div class="cardTitle" style="font-size:14px;color:var(--orange)">🟠 支柱二：營運風險（Business Risk）</div>
+    <table class="tbl">
+      <tr><th style="width:140px">風險因子</th><th>曝險說明</th><th>嚴重度</th></tr>
+      <tr>
+        <td><strong>美國擴張執行</strong></td>
+        <td>從 13 家店擴張到 50-100 家，跨文化管理、供應鏈在地化、人才招募都是巨大挑戰。麥當勞花了 30 年才在亞洲站穩——八方只有 2 年。失敗成本：單店投入約 50-80 萬 USD</td>
+        <td><span class="risk-box risk-high">HIGH</span></td>
+      </tr>
+      <tr>
+        <td><strong>加盟主品質管控</strong></td>
+        <td>1,250+ 加盟店的管理一致性。食品安全事件（如 2023 年八方雲集某加盟店的衛生問題）可快速擴散為品牌危機。加盟模式的優勢（輕資產）也是劣勢（品控難）</td>
+        <td><span class="risk-box risk-high">HIGH</span></td>
+      </tr>
+      <tr>
+        <td><strong>競爭加劇</strong></td>
+        <td>超商鮮食（7-11/全家便當品質提升）、外送平台（Uber Eats/foodpanda 改變消費習慣）、新進平價品牌。八方市佔雖高但餐飲業進入門檻低</td>
+        <td><span class="risk-box risk-mid">MID</span></td>
+      </tr>
+      <tr>
+        <td><strong>香港市場萎縮</strong></td>
+        <td>港人北上深圳消費趨勢持續，香港門市獲利持續萎縮。香港佔營收約 8-10%，若惡化可能拖累整體獲利</td>
+        <td><span class="risk-box risk-mid">MID</span></td>
+      </tr>
+      <tr>
+        <td><strong>展店飽和</strong></td>
+        <td>台灣八方雲集門市 ~1,000 家，密度已高。剩餘展店空間有限，新增門市可能蠶食既有門市（cannibalization）。梁社漢排骨為第二成長曲線但規模尚小</td>
+        <td><span class="risk-box risk-mid">MID</span></td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- Pillar 3: Financial Risk -->
+  <div class="card" style="border-left:3px solid var(--green);margin-top:12px">
+    <div class="cardTitle" style="font-size:14px;color:var(--green)">🟢 支柱三：財務風險（Financial Risk）</div>
+    <table class="tbl">
+      <tr><th style="width:140px">風險因子</th><th>曝險說明</th><th>嚴重度</th></tr>
+      <tr>
+        <td><strong>營運槓桿雙刃</strong></td>
+        <td>DOL 2.22x — 營收 +10% → 營益 +22%，但營收 -10% → 營益 -22%。下行加速同樣凌厲</td>
+        <td><span class="risk-box risk-mid">MID</span></td>
+      </tr>
+      <tr>
+        <td><strong>租賃負債</strong></td>
+        <td>租賃負債 1,228M（2025），佔負債總額 30%。IFRS 16 下這些是 off-balance-sheet 轉 on-balance-sheet 的租金義務。若關店潮可能觸發提前解約成本</td>
+        <td><span class="risk-box risk-mid">MID</span></td>
+      </tr>
+      <tr>
+        <td><strong>負債/流動性</strong></td>
+        <td>D/E 0.98x 看似偏高，但淨現金部位（現金 1,518M > 短期借款 110M + 租賃 1,228M = 淨現金 ~180M）。短期借款僅 110M — 流動性風險極低</td>
+        <td><span class="risk-box risk-low">LOW</span></td>
+      </tr>
+      <tr>
+        <td><strong>存貨風險</strong></td>
+        <td>存貨 446M — 主要是食材。食材價格波動可能導致存貨價值減損。但八方中央工廠的庫存周轉快（約 7-10 天），曝險時間短</td>
+        <td><span class="risk-box risk-low">LOW</span></td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- Pillar 4: Event Risk -->
+  <div class="card" style="border-left:3px solid var(--orange);margin-top:12px">
+    <div class="cardTitle" style="font-size:14px;color:var(--orange)">🟠 支柱四：事件風險（Event Risk）</div>
+    <table class="tbl">
+      <tr><th style="width:140px">風險因子</th><th>曝險說明</th><th>嚴重度</th></tr>
+      <tr>
+        <td><strong>食品安全事件</strong></td>
+        <td>餐飲業最大的單一事件風險。一次重大食安事件可使股價下跌 30-50%（案例：王品 2014 年食安 -40%、瓦城 2023 -25%）</td>
+        <td><span class="risk-box risk-high">HIGH</span></td>
+      </tr>
+      <tr>
+        <td><strong>關鍵人風險</strong></td>
+        <td>創始人長期掌舵，接班人計劃不明。若創始人突然離開，策略連續性可能中斷</td>
+        <td><span class="risk-box risk-mid">MID</span></td>
+      </tr>
+      <tr>
+        <td><strong>法規/監管</strong></td>
+        <td>食安法規趨嚴、勞動法規（一例一休影響人力成本）、美國 FDA 食品安全規範。合規成本上升</td>
+        <td><span class="risk-box risk-mid">MID</span></td>
+      </tr>
+      <tr>
+        <td><strong>地緣政治</strong></td>
+        <td>台海緊張可能影響供應鏈和消費信心。但八方以內需為主，地緣政治直接影響有限</td>
+        <td><span class="risk-box risk-low">LOW</span></td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- Pillar 5: Valuation Risk -->
+  <div class="card" style="border-left:3px solid var(--purple);margin-top:12px">
+    <div class="cardTitle" style="font-size:14px;color:var(--purple)">🟣 支柱五：評價風險（Valuation Risk）</div>
+    <table class="tbl">
+      <tr><th style="width:140px">風險因子</th><th>曝險說明</th><th>嚴重度</th></tr>
+      <tr>
+        <td><strong>多重壓縮</strong></td>
+        <td>目前 P/E ~15x。若市場重新評價為「成熟餐飲股」，P/E 可能壓縮至 12-13x（如王品、瓦城區間）→ 即使 EPS 不變，股價下跌 13-20%</td>
+        <td><span class="risk-box risk-mid">MID</span></td>
+      </tr>
+      <tr>
+        <td><strong>敘事破裂</strong></td>
+        <td>當前的「美國成長故事」支撐估值溢價。若美國擴張不如預期（關店、虧損擴大），市場可能將八方重新定價為「成熟台灣餐飲股」</td>
+        <td><span class="risk-box risk-high">HIGH</span></td>
+      </tr>
+      <tr>
+        <td><strong>EPS 預期下修</strong></td>
+        <td>若 PPI 成本壓力迫使毛利率下修 1-2pp → EPS 可能下降 8-15%。分析師共識 EPS 約 13-14（2026E），下修風險來自成本端</td>
+        <td><span class="risk-box risk-mid">MID</span></td>
+      </tr>
+    </table>
+  </div>
+</div>
+</section>
+
+<!-- ==================== Section 2: P×I Matrix ==================== -->
+<section id="s2">
+<div class="card">
+  <div class="cardTitle">🎯 機率×衝擊矩陣（Probability × Impact）</div>
+  <p style="color:var(--muted);font-size:10px;margin-bottom:12px">評分：機率 1-5（1=&lt;5%, 5=&gt;50%）· 衝擊 1-5（1=&lt;5% drawdown, 5=&gt;50% drawdown）</p>
+
+  <table class="tbl">
+    <tr><th>風險</th><th>支柱</th><th>機率</th><th>衝擊</th><th style="color:var(--red)">P×I</th><th>早期預警信號</th><th>緩解</th></tr>
+    <tr>
+      <td><strong>PPI 成本擠壓</strong></td>
+      <td>市場</td>
+      <td><span class="risk-box risk-high">4</span></td>
+      <td><span class="risk-box risk-high">4</span></td>
+      <td class="heatmap-cell heat-red" style="font-size:16px;font-weight:700">16</td>
+      <td>月營收公告中毛利率隱含趨勢；台灣 PPI 月增率</td>
+      <td>垂直整合（自建裁切廠）；多元供應商；選擇性漲價</td>
+    </tr>
+    <tr>
+      <td><strong>美國擴張失敗</strong></td>
+      <td>營運</td>
+      <td><span class="risk-box risk-mid">3</span></td>
+      <td><span class="risk-box risk-high">4</span></td>
+      <td class="heatmap-cell heat-orange" style="font-size:16px;font-weight:700">12</td>
+      <td>美國同店銷售下滑；關店數增加；虧損擴大</td>
+      <td>控制展店節奏；先驗證模型再擴張</td>
+    </tr>
+    <tr>
+      <td><strong>食品安全事件</strong></td>
+      <td>事件</td>
+      <td><span class="risk-box risk-mid">2</span></td>
+      <td><span class="risk-box risk-high">5</span></td>
+      <td class="heatmap-cell heat-orange" style="font-size:16px;font-weight:700">10</td>
+      <td>衛生局稽查不合格；社群媒體負面爆料</td>
+      <td>中央工廠品管；加盟主教育訓練；危機處理 SOP</td>
+    </tr>
+    <tr>
+      <td><strong>敘事破裂</strong></td>
+      <td>評價</td>
+      <td><span class="risk-box risk-mid">3</span></td>
+      <td><span class="risk-box risk-mid">3</span></td>
+      <td class="heatmap-cell heat-yellow">9</td>
+      <td>分析師降評；媒體負面報導美國業務</td>
+      <td>保持溝通透明；用數據說話</td>
+    </tr>
+    <tr>
+      <td><strong>加盟品控失靈</strong></td>
+      <td>營運</td>
+      <td><span class="risk-box risk-mid">3</span></td>
+      <td><span class="risk-box risk-mid">3</span></td>
+      <td class="heatmap-cell heat-yellow">9</td>
+      <td>客訴增加；神秘客評分下降；加盟主流失率上升</td>
+      <td>定期巡檢；神秘客制度；加盟主汰換機制</td>
+    </tr>
+    <tr>
+      <td><strong>展店飽和</strong></td>
+      <td>營運</td>
+      <td><span class="risk-box risk-mid">3</span></td>
+      <td><span class="risk-box risk-mid">2</span></td>
+      <td class="heatmap-cell heat-green">6</td>
+      <td>新店開幕數下降；同店銷售 YoY 轉負</td>
+      <td>梁社漢第二曲線；海外擴張分散地理風險</td>
+    </tr>
+    <tr>
+      <td><strong>多重壓縮</strong></td>
+      <td>評價</td>
+      <td><span class="risk-box risk-mid">2</span></td>
+      <td><span class="risk-box risk-mid">3</span></td>
+      <td class="heatmap-cell heat-green">6</td>
+      <td>同業 P/E 下降；市場轉向價值股</td>
+      <td>EPS 成長可抵消 P/E 壓縮</td>
+    </tr>
+    <tr>
+      <td><strong>消費需求萎縮</strong></td>
+      <td>市場</td>
+      <td><span class="risk-box risk-low">2</span></td>
+      <td><span class="risk-box risk-mid">3</span></td>
+      <td class="heatmap-cell heat-green">6</td>
+      <td>餐飲業營業額月增率轉負；八方月營收 YoY 轉負</td>
+      <td>平價定位本身具防禦性</td>
+    </tr>
+  </table>
+
+  <div class="callout red">
+    <strong>🚨 三大風險因子佔總風險預算 78%（38/49 分）：</strong><br>
+    ① PPI 成本擠壓（16/25）— 正在發生，非假設性風險<br>
+    ② 美國擴張失敗（12/25）— 低機率但高衝擊<br>
+    ③ 食品安全事件（10/25）— 低機率但極高衝擊<br>
+    <br>
+    這三個風險是投資論證的核心變數。若第一項惡化 + 第二或第三項同時發生，論證將崩塌。
+  </div>
+</div>
+</section>
+
+<!-- ==================== Section 3: Scenario Stress Testing ==================== -->
+<section id="s3">
+<div class="card">
+  <div class="cardTitle">🌪️ 情境壓力測試 — 量化風險影響</div>
+  <p style="color:var(--muted);font-size:10px;margin-bottom:12px">以 2025 年度為基期：營收 8,791M、營益 1,078M、EPS 12.84、股價 ~190.5</p>
+
+  <table class="tbl">
+    <tr><th></th><th style="color:var(--green)">基本情境</th><th style="color:var(--gold)">熊市情境</th><th style="color:var(--red)">尾部情境</th></tr>
+    <tr>
+      <td><strong>觸發條件</strong></td>
+      <td>展店正常 + PPI 回落 Q3</td>
+      <td>PPI 續升 + 美國同店下滑</td>
+      <td>食安事件 + PPI 飆升 + 消費萎縮 三重打擊</td>
+    </tr>
+    <tr><td><strong>營收成長</strong></td><td class="up">+8% → 9,494M</td><td class="warn">+3% → 9,055M</td><td class="down">-8% → 8,088M</td></tr>
+    <tr><td><strong>毛利率</strong></td><td class="up">36.0% (持平+)</td><td class="down">33.5% (-2.5pp)</td><td class="down">31.0% (-5pp)</td></tr>
+    <tr><td><strong>營業利益</strong></td><td class="up">~1,282M (+19%)</td><td class="down">~815M (-24%)</td><td class="down">~485M (-55%)</td></tr>
+    <tr><td><strong>營益率</strong></td><td class="up">13.5%</td><td class="down">9.0%</td><td class="down">6.0%</td></tr>
+    <tr><td><strong>EPS</strong></td><td class="up">~15.0</td><td class="down">~9.5</td><td class="down">~5.5</td></tr>
+    <tr><td><strong>隱含 P/E (15x)</strong></td><td class="up">225</td><td class="down">143</td><td class="down">83</td></tr>
+    <tr><td><strong style="color:var(--red)">vs 現價跌幅</strong></td><td class="up">+18%</td><td class="down" style="font-weight:700">-25%</td><td class="down" style="font-weight:700">-57%</td></tr>
+    <tr><td><strong>損益兩平</strong></td><td>安全</td><td>安全（BP ~4,820M vs 營收 9,055M）</td><td>安全（BP ~4,820M vs 營收 8,088M）</td></tr>
+  </table>
+
+  <div style="margin-top:12px">
+    <div class="grid2">
+      <div class="card" style="border-left:3px solid var(--gold)">
+        <div class="cardTitle" style="font-size:13px;color:var(--gold)">🐻 熊市情境詳解</div>
+        <div style="font-size:11px;color:var(--muted);line-height:1.6">
+          <strong>情境邏輯：</strong><br>
+          ① 台灣 PPI 持續在 +10-12% 高位，豬肉/麵粉成本上升 → 毛利率從 36% 降至 33.5%<br>
+          ② 八方 2026 年選擇部分漲價（3-5%），但漲價後同店客流 -3%<br>
+          ③ 美國擴張維持 13 家，但同店銷售成長放緩至 +5%（不再驚豔）<br>
+          ④ 香港市場繼續萎縮<br><br>
+          <strong>機率：</strong>~25-30%（PPI 持續高位是最可能的路徑）<br>
+          <strong>EPS -26% vs 2025：</strong>EPS 9.5 · P/E 15x = 143（-25%）<br>
+          <strong>關鍵緩衝：</strong>淨現金部位 + 損益兩平點遠低於營收 → 不會出現財務危機
+        </div>
+      </div>
+      <div class="card" style="border-left:3px solid var(--red)">
+        <div class="cardTitle" style="font-size:13px;color:var(--red)">💀 尾部情境詳解</div>
+        <div style="font-size:11px;color:var(--muted);line-height:1.6">
+          <strong>情境邏輯：</strong><br>
+          ① 台灣發生重大食安事件（如某加盟店食材汙染致多人住院）<br>
+          ② 品牌信任崩潰 → 同店銷售 -20%（參考王品 2014 年 -25%）<br>
+          ③ 同時 PPI 維持 +14% 高位，毛利率降至 31%<br>
+          ④ 美國消費信心崩跌致實際消費萎縮<br><br>
+          <strong>機率：</strong>~5%（多重打擊同時發生機率低）<br>
+          <strong>EPS -57% vs 2025：</strong>EPS 5.5 · P/E 15x = 83（-57%）<br>
+          <strong>唯一安慰：</strong>仍高於損益兩平點，現金充足可撐過危機
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout" style="margin-top:12px">
+    <strong>情境分析總結：</strong>八方雲集的加盟模式 + 淨現金財務體質提供了極強的下檔保護。即使在最極端的尾部情境（三重打擊），公司仍不會虧損。真正的風險不是「會不會倒」——而是「獲利萎縮導致的股價下跌」。熊市情境（-25%）是合理的下檔預期，尾部情境（-57%）需要多重罕見事件同時發生。
+  </div>
+</div>
+</section>
+
+<!-- ==================== Section 4: Risk-Adjusted Thesis ==================== -->
+<section id="s4">
+<div class="card">
+  <div class="cardTitle">⚖️ 風險調整後論證校準</div>
+
+  <table class="tbl">
+    <tr><th style="width:200px">問題</th><th>評估</th></tr>
+    <tr>
+      <td><strong>市場已定價的風險</strong></td>
+      <td>✅ PPI 成本壓力（部分）— P/E 15x 低於歷史均值 18-20x，反映市場對成本壓力的擔憂<br>
+      ✅ 香港市場萎縮 — 已在股價中反映（營收佔比小且持續下滑）</td>
+    </tr>
+    <tr>
+      <td><strong style="color:var(--gold)">市場忽略的風險</strong></td>
+      <td class="warn">⚠️ <strong>PPI 加速惡化</strong> — 三個月內 +2.5% → +14.1%，市場可能低估了這個速度<br>
+      ⚠️ <strong>美國敘事破裂的估值衝擊</strong> — 若美國故事不再，P/E 可能從 15x 壓至 12x（Pure Taiwan comp）<br>
+      ⚠️ <strong>營運槓桿下行風險</strong> — DOL 2.22x，營收若因成本轉嫁失敗而下滑，EPS 加速下跌</td>
+    </tr>
+    <tr>
+      <td><strong>安全邊際</strong></td>
+      <td>以 2025 EPS 12.84、P/E 15x = 190.5 為基準<br>
+      🐻 熊市下檔：EPS 9.5 × P/E 15x = 143（<strong class="down">-25%</strong>）<br>
+      🐻 熊市 + P/E 壓縮至 12x：114（<strong class="down">-40%</strong>）<br>
+      💀 尾部：EPS 5.5 × P/E 10x = 55（<strong class="down">-71%</strong>）</td>
+    </tr>
+    <tr>
+      <td><strong>熊市情境存活能力</strong></td>
+      <td class="up"><strong>存活</strong> — 淨現金部位 + 損益兩平點低（4,820M）確保財務安全。加盟模式的固定成本由加盟主承擔，總部獲利雖降但不會虧損。</td>
+    </tr>
+    <tr>
+      <td><strong style="color:var(--red)">論證終結條件</strong></td>
+      <td class="down"><strong>三項同時觸發將終結論證：</strong><br>
+      ① 食安事件造成品牌不可逆損害<br>
+      ② PPI 持續 >15% 且八方無法轉嫁成本（毛利率跌破 30%）<br>
+      ③ 美國擴張明確失敗（連續兩季關店多於開店）<br><br>
+      單一事件觸發不終結論證，但 PPI >15% + 任一件同時發生則需重新評估。</td>
+    </tr>
+    <tr>
+      <td><strong>不對稱報酬</strong></td>
+      <td>Upside（基本情境 EPS 15 × P/E 15x = 225）：<strong class="up">+18%</strong><br>
+      Downside（熊市 EPS 9.5 × P/E 15x = 143）：<strong class="down">-25%</strong><br>
+      <strong>Upside/Downside = 0.72:1</strong> — 不對稱性偏向下行<br><br>
+      <span class="warn">⚠️ 但若 P/E 擴張至 18x（市場重新評價成長潛力）：Upside = 270（+42%），U/D = 1.68:1</span></td>
+    </tr>
+  </table>
+
+  <div class="callout gold">
+    <strong>核心判斷：</strong>以目前 P/E 15x 買入，上漲空間（+18%）略小於下跌空間（-25%），不對稱性偏向下行。但這取決於 PPI 走勢——若 PPI Q3 見頂回落，基本情境實現機率將大幅上升，U/D 轉正。當前是「等 PPI 確認見頂」的觀望窗口。<br><br>
+    <strong>雙重風險觀點（FRM）：</strong>對專業投資人而言，除資本損失風險外，還有<strong>績效落後風險</strong>。若等 PPI 見頂再進場，可能錯過最肥美的一段。這需要根據投資人對 tracking error 的容忍度來決定。
+  </div>
+</div>
+</section>
+
+<!-- ==================== Section 5: Risk Mitigation ==================== -->
+<section id="s5">
+<div class="card">
+  <div class="cardTitle">🛡️ 風險緩解策略</div>
+
+  <table class="tbl">
+    <tr><th>策略</th><th>描述</th><th>成本</th><th>適用性</th></tr>
+    <tr>
+      <td><strong>部位控制</strong></td>
+      <td>基於 P×I 風險評分 49/125，建議單一持股上限 8-12%</td>
+      <td>機會成本（限制上行）</td>
+      <td class="up">✓ 優先採用</td>
+    </tr>
+    <tr>
+      <td><strong>分批進場</strong></td>
+      <td>初始部位 50% → 等待 PPI 月增率確認轉向 → 再加碼 50%</td>
+      <td>可能錯過部分漲幅</td>
+      <td class="up">✓ 強烈建議</td>
+    </tr>
+    <tr>
+      <td><strong>追蹤停損</strong></td>
+      <td>若月營收 YoY 轉負 2 個月、或毛利率跌破 33%（QoQ -2pp）、或美國連續關店 → 檢討部位</td>
+      <td>可能被短暫波動洗出</td>
+      <td class="up">✓ 建議</td>
+    </tr>
+    <tr>
+      <td><strong>監控儀表板</strong></td>
+      <td>每月 10 日：月營收公告（Mom/YoY）<br>每季：毛利率、營益率、美國門市數、同店銷售<br>隨時：豬肉/高麗菜批發價、PPI 月增率<br>事件：食品安全新聞</td>
+      <td>注意力成本</td>
+      <td class="up">✓ 基本配備</td>
+    </tr>
+    <tr>
+      <td><strong>避險</strong></td>
+      <td>買入台指選擇權 Put 作為尾部風險保護（食安事件通常引發整體餐飲股下跌）</td>
+      <td>權利金成本 ~2-3% p.a.</td>
+      <td>△ 視部位大小</td>
+    </tr>
+  </table>
+</div>
+</section>
+
+<!-- ==================== Section 6: Verdict ==================== -->
+<section id="s6">
+<div class="card">
+  <div class="cardTitle">📋 最終風險判決</div>
+
+  <div class="verdict">
+    <div class="vTitle">📋 風險判決</div>
+    <table class="tbl" style="margin-top:8px">
+      <tr><td style="width:180px"><strong>風險等級</strong></td><td><span class="grade C">C (Moderate-High)</span> — 品牌穩固但面臨多重可量化風險，尤其 PPI 正在加速惡化</td></tr>
+      <tr><td><strong>風險預算</strong></td><td>熊市情境下約 <strong class="down">25-40%</strong> 部位面臨風險（視 P/E 是否同時壓縮）。尾部情境 -57-71% 但機率極低（~5%）</td></tr>
+      <tr><td><strong>不對稱報酬</strong></td><td><strong>U/D = 0.72:1（以 15x P/E 計）</strong> — 偏向下行。但若 P/E 擴張至 18x，U/D = 1.68:1。敏感性極高</td></tr>
+      <tr><td><strong>論證終結條件</strong></td><td class="down">① 食安事件造成品牌不可逆損害 ② PPI 持續 >15% + 毛利率跌破 30% ③ 美國連續關店。任一條件觸發 → 立即檢討。兩條件同時觸發 → 出場</td></tr>
+      <tr><td><strong style="color:var(--gold)">市場忽略點</strong></td><td>① <strong>PPI 加速未被充分定價</strong> — 三個月內 +2.5% → +14.1%，市場共識 EPS 尚未反映這速度<br>② <strong>營運槓桿的下行風險</strong> — DOL 2.22x 被市場視為利多，但下行加速同樣凌厲<br>③ <strong>香港是慢速失血而非急性危機</strong> — 市場把它當成已解決的問題，但其實仍在持續惡化</td></tr>
+      <tr><td><strong style="color:var(--green)">最大的風險緩衝</strong></td><td>① 淨現金財務體質（現金 1,518M > 負債）— 不會倒<br>② 加盟模式的固定成本隔離 — 總部不會虧損<br>③ 台灣 GDP +14.6% — 消費基礎極強，提供了成本轉嫁空間<br>④ 平價定位的防禦性 — 消費降級的最後一哩</td></tr>
+      <tr><td><strong>投資人行動建議</strong></td><td class="warn"><strong>觀望但準備好。</strong>當前 PPI 加速環境下，立即大量買入的風險/報酬不對稱性不利。等待 PPI 月增率出現見頂信號（連續 2 個月下降）後分批進場，是風險調整後的最佳策略。<br><br>但若相信台灣 GDP +14.6% 的強勁內需將讓八方成功轉嫁成本 → 現在買入可能捕捉最大的 mispricing。</td></tr>
+    </table>
+  </div>
+
+  <div class="card" style="margin-top:16px">
+    <div class="cardTitle">🔗 跨步驟連結</div>
+    <div style="font-size:12px;color:var(--muted);line-height:1.8">
+      <p><strong>← Step 8 (Macro/Sector)：</strong>PPI +14.1% 是風險矩陣中最高分因子的來源。台灣 GDP 強勁是最大的下行緩衝。</p>
+      <p><strong>← Step 7 (Catalysts)：</strong>不對稱比率從 Step 7 的 2.8:1 降為風險調整後的 0.72:1。Step 7 的不對稱性基於催化劑情境（最佳可能），Step 9 納入風險後更保守。兩者差距來自 PPI 的不確定性。</p>
+      <p><strong>→ Step 10 (Valuation)：</strong>DCF 估值需建立多情境（基本/熊/尾部），terminal growth rate 受 GDP +14.6% 支撐但 PPI 風險需以較高 WACC 或較低 margin 假設來反映。</p>
+    </div>
+  </div>
+</div>
+</section>
+
+</main>
+</div>
+
+<script>
+document.querySelectorAll('.navItem').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.navItem').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
+    document.getElementById(btn.dataset.section).classList.add('active');
+  });
+});
+document.addEventListener('keydown', e => {
+  if(e.target.tagName==='INPUT') return;
+  const s=['s1','s2','s3','s4','s5','s6'];
+  const a=document.querySelector('section.active');let i=s.indexOf(a.id);
+  if(e.key==='ArrowDown'||e.key==='ArrowRight') i=Math.min(i+1,s.length-1);
+  if(e.key==='ArrowUp'||e.key==='ArrowLeft') i=Math.max(i-1,0);
+  if(i!==s.indexOf(a.id)){
+    document.querySelectorAll('.navItem').forEach(b=>b.classList.remove('active'));
+    document.querySelector(`.navItem[data-section="${s[i]}"]`).classList.add('active');
+    document.querySelectorAll('section').forEach(x=>x.classList.remove('active'));
+    document.getElementById(s[i]).classList.add('active');
+  }
+});
+</script>
+</body>
+</html>
