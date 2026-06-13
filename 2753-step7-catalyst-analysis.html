@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>八方雲集 (2753) — 催化劑 | Fundamental Analysis Step 7</title>
+<style>
+:root{
+  --bg:#0a0e14; --surface:#131820; --card:#181f2a;
+  --border:#252d3a; --ink:#e2e8f0; --muted:#7c8aa0; --dim:#4a5568;
+  --accent:#60a5fa; --accent2:#3b82f6;
+  --gold:#f59e0b; --green:#34d399; --red:#f87171;
+  --orange:#fb923c; --purple:#a78bfa;
+  --radius:14px; --radius2:18px;
+  --sans:"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,-apple-system,sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.6}
+.topbar{position:sticky;top:0;z-index:100;background:var(--surface);border-bottom:1px solid var(--border);padding:12px 24px;display:flex;align-items:center;justify-content:space-between}
+.topbar h1{font-size:18px;font-weight:600}
+.topbar .badge{font-size:11px;color:var(--muted);background:var(--card);padding:4px 10px;border-radius:20px}
+.layout{display:flex;min-height:calc(100vh - 53px)}
+.sidebar{width:220px;min-width:220px;background:var(--surface);border-right:1px solid var(--border);padding:16px 0;position:sticky;top:53px;height:calc(100vh - 53px);overflow-y:auto}
+.sidebar .navTitle{font-size:10px;text-transform:uppercase;color:var(--dim);padding:8px 16px;letter-spacing:1px}
+.sidebar .navItem{display:block;padding:8px 16px;color:var(--muted);font-size:13px;cursor:pointer;border:none;background:none;width:100%;text-align:left;transition:all .15s;border-left:3px solid transparent}
+.sidebar .navItem:hover{color:var(--ink);background:var(--card)}
+.sidebar .navItem.active{color:var(--accent);background:var(--card);border-left-color:var(--accent)}
+main{flex:1;padding:24px;max-width:900px}
+section{display:none}
+section.active{display:block}
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px;margin-bottom:20px}
+.cardTitle{font-size:15px;font-weight:600;margin-bottom:12px;color:var(--accent)}
+.callout{border-left:3px solid var(--accent);padding:12px 16px;border-radius:0 var(--radius) var(--radius) 0;margin-bottom:16px;background:color-mix(in srgb,var(--accent) 8%,var(--card))}
+.callout.gold{border-color:var(--gold);background:color-mix(in srgb,var(--gold) 8%,var(--card))}
+.callout.green{border-color:var(--green);background:color-mix(in srgb,var(--green) 8%,var(--card))}
+.callout.red{border-color:var(--red);background:color-mix(in srgb,var(--red) 8%,var(--card))}
+.metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:12px;margin-bottom:20px}
+.metric{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:14px;text-align:center}
+.metric .val{font-size:22px;font-weight:700;color:var(--ink)}
+.metric .lbl{font-size:10px;color:var(--muted);margin-top:4px}
+.tbl{width:100%;border-collapse:collapse;font-size:12px;margin-bottom:16px}
+.tbl th{text-align:left;color:var(--muted);font-weight:500;padding:7px 10px;border-bottom:1px solid var(--border);font-size:10px;text-transform:uppercase}
+.tbl td{padding:7px 10px;border-bottom:1px solid var(--border)}
+.tbl tr:last-child td{border-bottom:none}
+.up{color:var(--green)}.down{color:var(--red)}.warn{color:var(--orange)}
+.pillRow{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px}
+.pill{font-size:11px;padding:3px 10px;border-radius:12px;font-weight:500}
+.pill.g{background:color-mix(in srgb,var(--green) 20%,transparent);color:var(--green)}
+.pill.r{background:color-mix(in srgb,var(--red) 20%,transparent);color:var(--red)}
+.pill.o{background:color-mix(in srgb,var(--orange) 20%,transparent);color:var(--orange)}
+.pill.b{background:color-mix(in srgb,var(--accent) 20%,transparent);color:var(--accent)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.verdict{background:linear-gradient(135deg,color-mix(in srgb,var(--green) 15%,var(--surface)),color-mix(in srgb,var(--accent) 10%,var(--surface)));border:1px solid color-mix(in srgb,var(--green) 30%,var(--border));border-radius:var(--radius2);padding:20px}
+.verdict .vTitle{font-size:16px;font-weight:700;margin-bottom:8px;color:var(--green)}
+.timeline{position:relative;padding:0 0 0 20px;border-left:2px solid var(--border);margin:16px 0}
+.ti-item{position:relative;margin-bottom:20px;padding:12px 16px;background:var(--surface);border-radius:var(--radius);border:1px solid var(--border)}
+.ti-item::before{content:'';position:absolute;left:-28px;top:16px;width:14px;height:14px;border-radius:50%;border:2px solid var(--surface)}
+.ti-item.now::before{background:var(--green);box-shadow:0 0 8px var(--green)}
+.ti-item.near::before{background:var(--accent)}
+.ti-item.mid::before{background:var(--gold)}
+.ti-item .ti-date{font-size:10px;color:var(--muted);margin-bottom:4px}
+.ti-item .ti-title{font-size:13px;font-weight:600;margin-bottom:4px}
+.ti-item .ti-desc{font-size:11px;color:var(--muted)}
+.ti-item .ti-impact{font-size:10px;margin-top:6px}
+.grade{display:inline-flex;align-items:center;gap:4px;font-weight:700;font-size:16px}
+.grade.A{color:var(--green)}.grade.B{color:var(--green)}
+.source{font-size:10px;color:var(--dim);margin-top:4px}
+.cat-score{display:inline-flex;align-items:center;gap:2px}
+.cat-dot{width:8px;height:8px;border-radius:50%;display:inline-block}
+@media(max-width:768px){
+  .sidebar{display:none}
+  .layout{flex-direction:column}
+  main{padding:16px}
+  .grid2{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <h1>八方雲集 (2753.TW) — 催化劑分析</h1>
+  <span class="badge">Step 7 / 10 · 2026-06-12</span>
+</div>
+<div class="layout">
+<nav class="sidebar">
+  <div class="navTitle">大綱</div>
+  <button class="navItem active" data-section="s1">⏱️ 催化劑時間線</button>
+  <button class="navItem" data-section="s2">📊 催化劑量化</button>
+  <button class="navItem" data-section="s3">🎯 共識差距</button>
+  <button class="navItem" data-section="s4">⚖️ 不對稱回報</button>
+  <button class="navItem" data-section="s5">📋 綜合判斷</button>
+</nav>
+<main>
+
+<section id="s1" class="active">
+<div class="card">
+  <div class="cardTitle">⏱️ 催化劑時間線 (2026 H2 – 2027 H1)</div>
+  <p style="color:var(--muted);font-size:11px;margin-bottom:16px">以 2026 年 6 月為基準點，往前看 12 個月的主要事件</p>
+
+  <div class="timeline">
+    <div class="ti-item now">
+      <div class="ti-date">NOW · 2026 年 6 月</div>
+      <div class="ti-title">🟢 基準點</div>
+      <div class="ti-desc">股價 190.5 · 2025 全年 EPS 12.84 · P/E ~15x · ROE 20.8% 回升中。2026 年前 5 月月營收持續 YoY 正成長（+6.6% YTD）</div>
+    </div>
+    <div class="ti-item near">
+      <div class="ti-date">2026 年 7 月 · T+1 月</div>
+      <div class="ti-title">🔵 6 月營收公告</div>
+      <div class="ti-desc">每月 10 日前公告。2025 年 6 月基期 ~706M。若維持 +5-10% YoY 趨勢，預期 740-780M。</div>
+      <div class="ti-impact"><span class="up">常規催化 · 影響：低</span></div>
+    </div>
+    <div class="ti-item near">
+      <div class="ti-date">2026 年 8 月 · T+2 月</div>
+      <div class="ti-title">🔵 Q2 2026 財報</div>
+      <div class="ti-desc"><strong>最關鍵的定期催化劑。</strong>Q1 2025 EPS 2.93 創單季新高。若 2026 H1 營收維持 +8-10% YoY，搭配營運槓桿（增量利潤率 ~40%），EPS 有望大幅超出低基期。</div>
+      <div class="ti-impact"><span class="up">重大催化 · 影響：中高</span></div>
+    </div>
+    <div class="ti-item near">
+      <div class="ti-date">2026 年 7-8 月 · T+1-2 月</div>
+      <div class="ti-title">🔵 H1 股利宣告</div>
+      <div class="ti-desc">2024 年 H1 配 4 元（配發率 68.8%），H2 配 6 元。若 2026 年維持 ~80% 配發率，H1 股利可能在 5 元左右。</div>
+      <div class="ti-impact"><span class="up">常規催化 · 影響：低中</span></div>
+    </div>
+    <div class="ti-item mid">
+      <div class="ti-date">2026 年 Q3-Q4 · T+3-6 月</div>
+      <div class="ti-title">🟡 豬肉裁切廠投產 + 效益顯現</div>
+      <div class="ti-desc">自建裁切廠預計 2025 H2 完工，2026 年下半年可觀察成本效益。垂直整合降低豬肉加工成本，直接改善毛利率。</div>
+      <div class="ti-impact"><span class="up">結構性催化 · 影響：中</span></div>
+    </div>
+    <div class="ti-item mid">
+      <div class="ti-date">2026 年 Q4 · T+6 月</div>
+      <div class="ti-title">🟡 德州工廠營運滿半年</div>
+      <div class="ti-desc">2026 年 4 月啟用，到 Q4 滿兩個季度。市場將聚焦：① 產能利用率？② 對美國展店的拉動效果？③ 折舊對損益的影響是否如預期（前期虧損）？</div>
+      <div class="ti-impact"><span class="up">重大催化 · 影響：高</span></div>
+    </div>
+    <div class="ti-item mid">
+      <div class="ti-date">2026 年 12 月 · T+6 月</div>
+      <div class="ti-title">🟡 下半年法說會</div>
+      <div class="ti-desc">預期內容：① 德州工廠營運更新 ② 美國快餐模式（Tarleton 店）初步數據 ③ 2027 展望 ④ 股利政策。這是全年最重要的資訊釋放事件。</div>
+      <div class="ti-impact"><span class="up">重大催化 · 影響：高</span></div>
+    </div>
+    <div class="ti-item" style="border-color:var(--purple)">
+      <div class="ti-date">2027 年 H1 · T+6-12 月</div>
+      <div class="ti-title">🟣 美國展店加速訊號</div>
+      <div class="ti-desc">德州工廠運作順暢後，美國展店速度可能從每年 2-4 家加速到 5-10 家。這將是市場重估八方雲集估值（從台灣餐飲股 → 國際連鎖品牌）的轉折點。</div>
+      <div class="ti-impact"><span class="up">長線催化 · 影響：極高</span></div>
+    </div>
+  </div>
+</div>
+</section>
+
+<section id="s2">
+<div class="card">
+  <div class="cardTitle">📊 催化劑量化評分</div>
+
+  <table class="tbl">
+    <tr><th>催化劑</th><th>時間窗口</th><th>機率</th><th>影響幅度</th><th>催化劑分數</th><th>信心度</th></tr>
+    <tr style="background:color-mix(in srgb,var(--green) 5%,transparent)">
+      <td><strong>🇺🇸 德州工廠營運數據</strong></td>
+      <td>2026 Q4</td>
+      <td class="up">85%</td>
+      <td class="up">+8-15%</td>
+      <td class="up"><strong>10.2</strong></td>
+      <td class="up">高</td>
+    </tr>
+    <tr>
+      <td><strong>📊 Q2/Q3 2026 財報</strong></td>
+      <td>2026 年 8/11 月</td>
+      <td class="up">90%</td>
+      <td>+3-8%</td>
+      <td><strong>5.4</strong></td>
+      <td>中高</td>
+    </tr>
+    <tr>
+      <td><strong>🏪 美國展店加速</strong></td>
+      <td>2027 H1</td>
+      <td>55%</td>
+      <td class="up">+15-25%</td>
+      <td class="up"><strong>11.0</strong></td>
+      <td class="warn">中</td>
+    </tr>
+    <tr>
+      <td><strong>🥩 豬肉裁切廠效益</strong></td>
+      <td>2026 H2</td>
+      <td>70%</td>
+      <td>+2-5%</td>
+      <td><strong>2.5</strong></td>
+      <td>中</td>
+    </tr>
+    <tr>
+      <td><strong>🎤 下半年法說會</strong></td>
+      <td>2026 年 12 月</td>
+      <td class="up">95%</td>
+      <td>+3-10%</td>
+      <td><strong>6.2</strong></td>
+      <td class="up">高</td>
+    </tr>
+    <tr>
+      <td><strong>🍜 調理包通路突破</strong></td>
+      <td>2026-2027</td>
+      <td>40%</td>
+      <td>+5-10%</td>
+      <td><strong>3.0</strong></td>
+      <td class="warn">低</td>
+    </tr>
+    <tr style="background:color-mix(in srgb,var(--red) 3%,transparent)">
+      <td><strong>⚠️ 德州工廠再延遲</strong></td>
+      <td>2026 年</td>
+      <td>15%</td>
+      <td class="down">−5-10%</td>
+      <td class="down"><strong>−1.1</strong></td>
+      <td class="warn">低</td>
+    </tr>
+  </table>
+  <div style="font-size:10px;color:var(--dim)">催化劑分數 = 機率 × 影響幅度（中位數）。正數 = 上行，負數 = 下行。</div>
+
+  <div class="callout green" style="margin-top:12px">
+    <strong>最高的兩個催化劑都與美國有關：</strong>美國展店加速（11.0）和德州工廠數據（10.2）——這兩個都是「資訊釋放」型催化劑，將讓市場看到目前尚未定價的價值。Q2/Q3 財報雖然影響較小，但頻率高、確定性強，是累積複利的來源。
+  </div>
+</div>
+</section>
+
+<section id="s3">
+<div class="card">
+  <div class="cardTitle">🎯 共識差距 — 市場錯了什麼？</div>
+
+  <div class="callout gold">
+    <strong>核心變異認知 (Variant Perception)：</strong>市場以 15x P/E 定價八方雲集，隱含假設是「低成長的台灣餐飲股」。但催化劑將揭示的事實是：「營運槓桿正在放大獲利（增量利潤率 46.7%）+ 美國市場已過轉折點（加州單月獲利）」。
+  </div>
+
+  <table class="tbl">
+    <tr><th>指標</th><th>市場隱含</th><th>我的估計</th><th>Delta</th><th>催化劑</th></tr>
+    <tr>
+      <td><strong>2026 營收成長</strong></td>
+      <td>~5-7%</td>
+      <td class="up">8-10%</td>
+      <td class="up">+3-5pp</td>
+      <td>月營收連續 YoY 成長、美國展店</td>
+    </tr>
+    <tr>
+      <td><strong>2026 EPS</strong></td>
+      <td>~13-14</td>
+      <td class="up">14-15</td>
+      <td class="up">+7-15%</td>
+      <td>營運槓桿放大利潤、毛利率回升</td>
+    </tr>
+    <tr>
+      <td><strong>美國營收佔比 (2027)</strong></td>
+      <td>~10%</td>
+      <td class="up">12-15%</td>
+      <td class="up">+2-5pp</td>
+      <td>德州工廠啟用後展店加速</td>
+    </tr>
+    <tr>
+      <td><strong>2026 股利</strong></td>
+      <td>~10</td>
+      <td class="up">10-11</td>
+      <td class="up">+0-10%</td>
+      <td>EPS 成長 → 股利跟隨（配發率 80%）</td>
+    </tr>
+    <tr>
+      <td><strong>長期成長率</strong></td>
+      <td>3-5%</td>
+      <td class="up">8-10% (含美國)</td>
+      <td class="up">+5pp</td>
+      <td>美國 3-5 年 20-30% 營收佔比目標</td>
+    </tr>
+  </table>
+
+  <div class="callout green">
+    <strong>最大的 Delta 在長期成長率：</strong>市場以「成熟市場低成長」框架定價（3-5%），但八方雲集正處於「美國市場從 0 到 1」的拐點。即使只給美國 30% 的成功機率，期望值也足以支撐更高的估值倍數。這是典型 Sonkin & Johnson 所說的「顏色盲疫苗」——催化劑（德州工廠數據、美國展店加速）將讓市場看到「數字 12」。
+  </div>
+</div>
+</section>
+
+<section id="s4">
+<div class="card">
+  <div class="cardTitle">⚖️ 不對稱回報分析</div>
+
+  <div class="grid2">
+    <div class="card" style="border-left:3px solid var(--green)">
+      <div style="font-size:13px;font-weight:600;margin-bottom:8px;color:var(--green)">🟢 上行情境（機率 55%）</div>
+      <table class="tbl" style="font-size:11px">
+        <tr><td>美國展店加速 + 營運槓桿釋放</td><td class="up">+25-40%</td></tr>
+        <tr><td>德州工廠順利、快餐模式驗證</td><td></td></tr>
+        <tr><td>市場重估為「國際成長股」</td><td></td></tr>
+        <tr><td>P/E 從 15x → 18-20x</td><td></td></tr>
+        <tr><td style="color:var(--green);font-weight:600">目標價 240–265</td><td></td></tr>
+      </table>
+    </div>
+    <div class="card" style="border-left:3px solid var(--gold)">
+      <div style="font-size:13px;font-weight:600;margin-bottom:8px;color:var(--gold)">🟡 基本情境（機率 30%）</div>
+      <table class="tbl" style="font-size:11px">
+        <tr><td>台灣穩定 + 美國緩步</td><td>+5-15%</td></tr>
+        <tr><td>德州工廠如期但初期虧損</td><td></td></tr>
+        <tr><td>市場維持現有評價</td><td></td></tr>
+        <tr><td>P/E 維持 14-16x</td><td></td></tr>
+        <tr><td style="color:var(--gold);font-weight:600">目標價 200–220</td><td></td></tr>
+      </table>
+    </div>
+    <div class="card" style="border-left:3px solid var(--red)">
+      <div style="font-size:13px;font-weight:600;margin-bottom:8px;color:var(--red)">🔴 下行情境（機率 15%）</div>
+      <table class="tbl" style="font-size:11px">
+        <tr><td>美國失敗 + 原物料飆漲</td><td class="down">−15-25%</td></tr>
+        <tr><td>德州工廠嚴重延遲或停工</td><td></td></tr>
+        <tr><td>市場降評為「價值陷阱」</td><td></td></tr>
+        <tr><td>P/E 從 15x → 11-13x</td><td></td></tr>
+        <tr><td style="color:var(--red);font-weight:600">目標價 145–160</td><td></td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="metrics" style="margin-top:8px">
+    <div class="metric" style="border:1px solid var(--green)">
+      <div class="val" style="color:var(--green)">~232</div>
+      <div class="lbl">機率加權目標價</div>
+    </div>
+    <div class="metric">
+      <div class="val" style="color:var(--green)">+22%</div>
+      <div class="lbl">vs 現價 190.5</div>
+    </div>
+    <div class="metric" style="border:1px solid var(--green)">
+      <div class="val" style="color:var(--green)">2.8:1</div>
+      <div class="lbl">不對稱比率</div>
+    </div>
+  </div>
+
+  <div class="callout green">
+    <strong>不對稱比率 2.8:1</strong>（上行 25% × 55% vs 下行 17.5% × 15%，再加基本情境）。上行空間遠大於下行風險——① 45% 安全邊際提供下檔保護，② 8 元股利（殖利率 4.2%）提供持有回報，③ 美國期權基本上是免費的（市場未定價）。這符合「heads I win, tails I don't lose much」的不對稱結構。
+  </div>
+</div>
+</section>
+
+<section id="s5">
+<div class="card">
+  <div class="cardTitle">📋 綜合判斷 — Catalyst Verdict</div>
+  
+  <div class="verdict">
+    <div class="vTitle">📋 結論</div>
+    <table class="tbl" style="margin-top:8px">
+      <tr><td style="width:140px"><strong>最關鍵催化劑</strong></td><td><strong>2026 年 12 月法說會</strong> — 德州工廠營運數據 + 美國展店展望將是市場重估的「顏色盲疫苗」</td></tr>
+      <tr><td><strong>催化劑時間窗</strong></td><td><strong>2026 Q3-Q4（8 月財報 → 12 月法說會）</strong> — 這 4 個月是資訊密度最高的時期</td></tr>
+      <tr><td><strong>最大共識差距</strong></td><td>市場以「成熟低成長餐飲股」定價（3-5% LTG），但催化劑將揭示「營運槓桿釋放 + 美國拐點」的現實</td></tr>
+      <tr><td><strong>不對稱回報</strong></td><td><strong>2.8:1</strong> — 機率加權目標價 ~232（+22%）。4.2% 殖利率提供等待成本回收</td></tr>
+      <tr><td><strong>失效時間線</strong></td><td>若 2026 年 12 月法說會仍無美國展店加速訊號（或德州工廠再延遲），美國 thesis 需大幅下修</td></tr>
+      <tr><td><strong style="color:var(--gold)">市場忽略的關鍵</strong></td><td>催化劑不是單一事件——八方雲集未來 12 個月有 <strong>5 個以上的資訊釋放點</strong>（月營收 ×12 + 季報 ×2 + 法說會 ×2 + 股利宣告），每個都是讓市場修正定價錯誤的機會。這種高頻率的催化劑密度降低了「正確但市場不理你」的風險</td></tr>
+    </table>
+  </div>
+</div>
+</section>
+
+</main>
+</div>
+
+<script>
+document.querySelectorAll('.navItem').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.navItem').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
+    document.getElementById(btn.dataset.section).classList.add('active');
+  });
+});
+document.addEventListener('keydown', e => {
+  if(e.target.tagName==='INPUT') return;
+  const s=['s1','s2','s3','s4','s5'];
+  const a=document.querySelector('section.active');let i=s.indexOf(a.id);
+  if(e.key==='ArrowDown'||e.key==='ArrowRight') i=Math.min(i+1,4);
+  if(e.key==='ArrowUp'||e.key==='ArrowLeft') i=Math.max(i-1,0);
+  if(i!==s.indexOf(a.id)){
+    document.querySelectorAll('.navItem').forEach(b=>b.classList.remove('active'));
+    document.querySelector(`.navItem[data-section="${s[i]}"]`).classList.add('active');
+    document.querySelectorAll('section').forEach(x=>x.classList.remove('active'));
+    document.getElementById(s[i]).classList.add('active');
+  }
+});
+</script>
+</body>
+</html>
