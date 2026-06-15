@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>信用市場觀察框架 — 固收市場信號對權益投資的映射</title>
+<style>
+:root{
+  --bg:#0a0e14; --surface:#131820; --card:#181f2a;
+  --border:#252d3a; --ink:#e2e8f0; --muted:#7c8aa0; --dim:#4a5568;
+  --accent:#60a5fa; --accent2:#3b82f6;
+  --gold:#f59e0b; --green:#34d399; --red:#f87171;
+  --orange:#fb923c; --purple:#a78bfa;
+  --radius:14px; --radius2:18px;
+  --sans:"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,-apple-system,sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.7}
+a{color:var(--accent);text-decoration:none}a:hover{text-decoration:underline}
+.topbar{
+  position:sticky;top:0;z-index:100;background:var(--surface);
+  border-bottom:1px solid var(--border);padding:12px 24px;
+  display:flex;align-items:center;gap:16px;backdrop-filter:blur(12px);
+}
+.topbar .logo{font-size:18px;font-weight:700;color:var(--accent)}
+.topbar .sub{font-size:13px;color:var(--muted)}
+.layout{display:flex;min-height:calc(100vh - 57px)}
+.sidebar{
+  width:260px;flex-shrink:0;background:var(--surface);
+  border-right:1px solid var(--border);padding:20px 0;
+  position:sticky;top:57px;height:calc(100vh - 57px);overflow-y:auto;
+}
+.sidebar .navTitle{font-size:11px;text-transform:uppercase;color:var(--dim);padding:8px 20px;letter-spacing:1px}
+.navItem{
+  display:block;padding:8px 20px;font-size:13px;color:var(--muted);
+  border-left:2px solid transparent;transition:all .15s;cursor:pointer;
+}
+.navItem:hover{color:var(--ink);background:rgba(96,165,250,.05)}
+.navItem.active{color:var(--accent);border-left-color:var(--accent);background:rgba(96,165,250,.08)}
+.content{flex:1;padding:32px 40px;max-width:960px}
+section{display:none;animation:fadeIn .3s ease}
+section.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+h1{font-size:28px;font-weight:700;margin-bottom:8px}
+h2{font-size:22px;font-weight:700;margin:32px 0 16px;padding-bottom:8px;border-bottom:1px solid var(--border)}
+h3{font-size:17px;font-weight:600;margin:24px 0 12px;color:var(--accent)}
+h4{font-size:15px;font-weight:600;margin:16px 0 8px}
+p{margin:10px 0;font-size:15px}
+.card{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:var(--radius);padding:20px 24px;margin:16px 0;
+}
+.cardTitle{font-size:15px;font-weight:700;color:var(--accent);margin-bottom:12px}
+.tbl{width:100%;border-collapse:collapse;margin:12px 0;font-size:14px}
+.tbl th{text-align:left;padding:8px 12px;border-bottom:2px solid var(--border);color:var(--muted);font-size:12px;text-transform:uppercase}
+.tbl td{padding:8px 12px;border-bottom:1px solid var(--border)}
+.tbl tr:last-child td{border-bottom:none}
+.up{color:var(--green)}.down{color:var(--red)}.warn{color:var(--orange)}
+.callout{
+  border-left:3px solid var(--accent);padding:14px 18px;margin:16px 0;
+  background:var(--surface);border-radius:0 var(--radius) var(--radius) 0;font-size:14px;
+}
+.callout.red{border-color:var(--red)}.callout.gold{border-color:var(--gold)}
+.callout.green{border-color:var(--green)}.callout.purple{border-color:var(--purple)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:16px 0}
+.metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin:16px 0}
+.metric{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:16px;text-align:center}
+.metric .val{font-size:20px;font-weight:700;color:var(--accent)}
+.metric .lbl{font-size:12px;color:var(--muted);margin-top:4px}
+.pillRow{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0}
+.pill{padding:4px 12px;border-radius:20px;font-size:12px;font-weight:600}
+.pill.g{background:rgba(52,211,153,.15);color:var(--green)}
+.pill.r{background:rgba(248,113,113,.15);color:var(--red)}
+.pill.o{background:rgba(251,146,60,.15);color:var(--orange)}
+.pill.b{background:rgba(96,165,250,.15);color:var(--accent)}
+.verdict{
+  background:var(--surface);border:1px solid var(--accent);
+  border-radius:var(--radius2);padding:24px;margin:24px 0;
+}
+.verdict .vTitle{font-size:18px;font-weight:700;color:var(--accent);margin-bottom:12px}
+.signalRow{display:flex;align-items:center;gap:12px;margin:8px 0;font-size:14px}
+.signalRow .sig{width:12px;height:12px;border-radius:50%;flex-shrink:0}
+.signalRow .sig.gr{background:var(--green)}.signalRow .sig.rd{background:var(--red)}
+.signalRow .sig.yl{background:var(--gold)}.signalRow .sig.bl{background:var(--accent)}
+.mobileNav{display:none}
+@media(max-width:768px){
+  .sidebar{display:none}.content{padding:16px}.layout{display:block}
+  .mobileNav{display:flex;gap:4px;overflow-x:auto;padding:8px 0;
+    -webkit-overflow-scrolling:touch;scrollbar-width:none;
+    border-bottom:1px solid var(--border);margin-bottom:16px}
+  .mobileNav::-webkit-scrollbar{display:none}
+  .mobileNav .navItem{flex-shrink:0;white-space:nowrap;font-size:11px;padding:6px 10px;border-left:none;border-radius:8px}
+  .mobileNav .navItem.active{background:rgba(96,165,250,.12)}
+  .grid2{grid-template-columns:1fr}h1{font-size:22px}
+}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <span class="logo">信用市場觀察框架</span>
+  <span class="sub">固收市場信號 → 權益投資決策</span>
+</div>
+<div class="layout">
+<nav class="sidebar">
+  <div class="navTitle">總覽</div>
+  <span class="navItem active" data-section="s0">📋 框架總覽</span>
+  <span class="navItem" data-section="smap">🗺️ 信號映射圖</span>
+  <div class="navTitle">宏觀經濟</div>
+  <span class="navItem" data-section="s1">🇺🇸 美國經濟</span>
+  <div class="navTitle">利率市場</div>
+  <span class="navItem" data-section="s2">📈 債券市場</span>
+  <div class="navTitle">結構化信用</div>
+  <span class="navItem" data-section="s3">🏠 MBS</span>
+  <span class="navItem" data-section="s4">🏢 CMBS</span>
+  <span class="navItem" data-section="s5">🚗 ABS</span>
+  <div class="navTitle">公司債</div>
+  <span class="navItem" data-section="s6">🏦 IG Credit</span>
+  <span class="navItem" data-section="s7">⚠️ High Yield</span>
+  <div class="navTitle">國際</div>
+  <span class="navItem" data-section="s8">🌍 EM Debt</span>
+  <div class="navTitle">市政債</div>
+  <span class="navItem" data-section="s9">🏛️ Taxable Muni</span>
+  <span class="navItem" data-section="s10">📜 Tax-Exempt Muni</span>
+  <div class="navTitle">實戰</div>
+  <span class="navItem" data-section="sint">🔗 信號整合</span>
+</nav>
+
+<nav class="mobileNav">
+  <span class="navItem active" data-section="s0">總覽</span>
+  <span class="navItem" data-section="smap">映射</span>
+  <span class="navItem" data-section="s1">經濟</span>
+  <span class="navItem" data-section="s2">債券</span>
+  <span class="navItem" data-section="s3">MBS</span>
+  <span class="navItem" data-section="s4">CMBS</span>
+  <span class="navItem" data-section="s5">ABS</span>
+  <span class="navItem" data-section="s6">IG</span>
+  <span class="navItem" data-section="s7">HY</span>
+  <span class="navItem" data-section="s8">EM</span>
+  <span class="navItem" data-section="s9">Muni</span>
+  <span class="navItem" data-section="s10">TE Muni</span>
+  <span class="navItem" data-section="sint">整合</span>
+</nav>
+
+<main class="content">
+
+<!-- SECTION 0: Overview -->
+<section id="s0" class="active">
+<h1>信用市場觀察框架</h1>
+<h3>固收市場信號 → 權益投資決策的系統化映射</h3>
+
+<div class="callout gold">
+  <strong>🎯 核心命題：</strong>信用市場是總體經濟的「內線交易者」。債券投資人比股票投資人更早看到風險 —— 因為他們對下行風險更敏感、對現金流更依賴。系統性觀察固收市場的十個維度，可以提前捕捉經濟週期轉折、信用條件變化、和產業輪動信號。
+</div>
+
+<div class="metrics">
+  <div class="metric"><div class="val">10</div><div class="lbl">觀察區塊</div></div>
+  <div class="metric"><div class="val">3 層</div><div class="lbl">宏觀→信用→產業</div></div>
+  <div class="metric"><div class="val">30+</div><div class="lbl">核心指標</div></div>
+  <div class="metric"><div class="val">4 象限</div><div class="lbl">週期定位</div></div>
+</div>
+
+<div class="card">
+  <div class="cardTitle">🏗️ 框架三層結構</div>
+  <div style="font-size:14px;line-height:2">
+    <p><strong>Layer 1 — 宏觀經濟錨點</strong>（美國經濟）<br>
+    → 回答「現在經濟週期在哪個位置？」</p>
+    <p><strong>Layer 2 — 信用條件訊號</strong>（利率 + 結構化信用 + 公司債 + EM + Muni）<br>
+    → 回答「信用是擴張還是收縮？資金往哪裡流？」</p>
+    <p><strong>Layer 3 — 產業映射</strong>（各區塊信號 → 對應的權益產業）<br>
+    → 回答「這些信號對台股哪些產業有意義？」</p>
+  </div>
+</div>
+</section>
+
+<!-- SECTION: Signal Map -->
+<section id="smap">
+<h1>信號 → 產業 映射總圖</h1>
+
+<div class="card">
+  <div class="cardTitle">🗺️ 十區塊信號全景</div>
+  <table class="tbl">
+    <tr><th>區塊</th><th>告訴你什麼</th><th>關鍵指標</th><th>對應台股產業</th></tr>
+    <tr>
+      <td>🇺🇸 美國經濟</td><td>總體週期位階</td>
+      <td>失業率、核心CPI/PCE</td>
+      <td>全市場方向性判斷</td>
+    </tr>
+    <tr>
+      <td>📈 債券市場</td><td>利率預期 + 衰退機率</td>
+      <td>殖利率曲線、5Y/30Y利差</td>
+      <td>金融、營建、高股息</td>
+    </tr>
+    <tr>
+      <td>🏠 MBS</td><td>房貸市場健康度</td>
+      <td>MBS spread</td>
+      <td>營建、家居、銀行房貸</td>
+    </tr>
+    <tr>
+      <td>🏢 CMBS</td><td>商用不動產信心</td>
+      <td>CMBS發行量、capital stack</td>
+      <td>商辦REITs、建設</td>
+    </tr>
+    <tr>
+      <td>🚗 ABS</td><td>消費信貸健康度</td>
+      <td>AAA ABS spread、發行量</td>
+      <td>汽車、消費金融、零售</td>
+    </tr>
+    <tr>
+      <td>🏦 IG Credit</td><td>藍籌企業融資環境</td>
+      <td>發行量、超額報酬 by sector</td>
+      <td>大型權值股、公用事業</td>
+    </tr>
+    <tr>
+      <td>⚠️ High Yield</td><td>風險偏好溫度計</td>
+      <td>HY vs IG 價差、資金流向</td>
+      <td>中小型股、景氣循環股</td>
+    </tr>
+    <tr>
+      <td>🌍 EM Debt</td><td>全球風險情緒</td>
+      <td>EM回報、國家權重</td>
+      <td>出口導向、原物料</td>
+    </tr>
+    <tr>
+      <td>🏛️ Taxable Muni</td><td>地方政府信用</td>
+      <td>OAS vs US long credit</td>
+      <td>公用事業、基礎建設</td>
+    </tr>
+    <tr>
+      <td>📜 Tax-Exempt Muni</td><td>免稅需求 + 地方財政</td>
+      <td>muni vs HY muni、發行量 YoY</td>
+      <td>防禦型資產配置信號</td>
+    </tr>
+  </table>
+</div>
+</section>
+
+<!-- SECTION 1: US Economy -->
+<section id="s1">
+<h1>Layer 1：美國經濟 — 總體週期錨點</h1>
+
+<div class="card">
+  <div class="cardTitle">📊 核心指標</div>
+  <table class="tbl">
+    <tr><th>指標</th><th>觀察重點</th><th>擴張信號</th><th>收縮信號</th></tr>
+    <tr>
+      <td><strong>失業率</strong></td>
+      <td>薩姆規則（Sahm Rule）：3個月移動均值較前12月低點上升 0.5% = 衰退</td>
+      <td class="up">&lt; 4.5%</td>
+      <td class="red">&gt; 5% 且上升中</td>
+    </tr>
+    <tr>
+      <td><strong>核心 CPI</strong></td>
+      <td>年增率趨勢。關注「最後一哩」僵固性（住房、服務）</td>
+      <td class="up">回落至 2-2.5%</td>
+      <td class="red">&gt; 3.5% 且無回落</td>
+    </tr>
+    <tr>
+      <td><strong>核心 PCE</strong></td>
+      <td>Fed 首選通膨指標。與 CPI 的差距 = 住房權重差異</td>
+      <td class="up">接近 2% 目標</td>
+      <td class="red">&gt; 3%</td>
+    </tr>
+    <tr>
+      <td><strong>Fed 通膨目標</strong></td>
+      <td>點陣圖 + SEP 的 PCE 預測中位數。市場定價 vs Fed 指引的分歧</td>
+      <td class="up">Fed 轉鴿</td>
+      <td class="red">Fed 轉鷹</td>
+    </tr>
+  </table>
+</div>
+
+<div class="callout gold">
+  <strong>🔑 對台股的意義：</strong>美國經濟週期是台股方向性的最大單一驅動因子。出口導向的台灣對美國終端需求高度敏感。失業率上升 → 消費降溫 → 科技供應鏈砍單。核心 CPI 僵固 → Fed 不降息 → 台幣貶值壓力 + 外資流出。
+</div>
+
+<div class="card">
+  <div class="cardTitle">🔄 四象限週期定位</div>
+  <table class="tbl">
+    <tr><th>象限</th><th>通膨↓</th><th>通膨↑</th></tr>
+    <tr>
+      <td><strong>成長↑</strong></td>
+      <td class="up">🟢 Goldilocks<br>最佳情境：買成長股、半導體</td>
+      <td class="warn">🟡 Overheat<br>原物料、能源、金融</td>
+    </tr>
+    <tr>
+      <td><strong>成長↓</strong></td>
+      <td class="warn">🟡 Disinflation<br>防禦型：公用事業、電信</td>
+      <td class="red">🔴 Stagflation<br>最差情境：現金為王</td>
+    </tr>
+  </table>
+</div>
+</section>
+
+<!-- SECTION 2: Rates -->
+<section id="s2">
+<h1>Layer 2a：債券市場 — 利率結構信號</h1>
+
+<div class="card">
+  <div class="cardTitle">📊 核心指標</div>
+  <table class="tbl">
+    <tr><th>指標</th><th>觀察重點</th><th>風險-On</th><th>風險-Off</th></tr>
+    <tr>
+      <td><strong>殖利率曲線位移</strong></td>
+      <td>平行移動 vs 扭轉（twist）。短端 vs 長端的相對移動方向</td>
+      <td class="up">牛陡（bull steepener）<br>短端降 > 長端降</td>
+      <td class="red">熊平（bear flattener）<br>短端升 > 長端升</td>
+    </tr>
+    <tr>
+      <td><strong>5Y/30Y 國債利差</strong></td>
+      <td>曲線斜率。倒掛 = 衰退預期。重新陡峭化 = 復甦初期</td>
+      <td class="up">陡峭化（steepening）<br>&gt; 50bps</td>
+      <td class="red">倒掛（inversion）<br>&lt; 0bps</td>
+    </tr>
+  </table>
+</div>
+
+<div class="callout">
+  <strong>💡 殖利率曲線形態速查：</strong><br>
+  <strong>牛陡（Bull Steepener）：</strong>短端利率降得快 → Fed 降息預期升溫 → 利好成長股、科技股<br>
+  <strong>牛平（Bull Flattener）：</strong>長端利率降得快 → 衰退擔憂 → 利好防禦型、長天期債券<br>
+  <strong>熊陡（Bear Steepener）：</strong>長端利率升得快 → 通膨預期上升 → 利好原物料、銀行<br>
+  <strong>熊平（Bear Flattener）：</strong>短端利率升得快 → Fed 升息 → 全體股市承壓
+</div>
+</section>
+
+<!-- SECTION 3: MBS -->
+<section id="s3">
+<h1>Layer 2b：MBS — 房貸市場信號</h1>
+
+<div class="card">
+  <div class="cardTitle">📊 核心指標</div>
+  <table class="tbl">
+    <tr><th>指標</th><th>觀察重點</th><th>信用擴張</th><th>信用收縮</th></tr>
+    <tr>
+      <td><strong>Production Coupon MBS Spread</strong></td>
+      <td>新生產 MBS 與國債的利差。反映房貸市場的流動性與信用風險定價</td>
+      <td class="up">利差收窄<br>房貸市場流動性充裕</td>
+      <td class="red">利差擴大<br>房貸信用風險上升</td>
+    </tr>
+    <tr>
+      <td><strong>Cumulative MBS Basis Performance (2~6.5)</strong></td>
+      <td>指定息票率區間 MBS 的累積基差表現。反映不同利率環境下不同 coupon 的相對價值</td>
+      <td class="up">正向累積基差<br>prepayment 風險可控</td>
+      <td class="red">負向累積基差<br>duration 風險或 prepay 風險</td>
+    </tr>
+  </table>
+</div>
+
+<div class="callout">
+  <strong>🏠 對台股的映射：</strong>MBS spread 擴大 → 美國房貸成本上升 → 美國房市降溫 → 台灣營建股（外銷建材）、家居生活（家具出口）需關注。MBS 也是銀行體系重要的流動性來源，MBS 市場凍結 = 系統性風險信號。
+</div>
+</section>
+
+<!-- SECTION 4: CMBS -->
+<section id="s4">
+<h1>Layer 2c：CMBS — 商用不動產信號</h1>
+
+<div class="card">
+  <div class="cardTitle">📊 核心指標</div>
+  <table class="tbl">
+    <tr><th>指標</th><th>觀察重點</th><th>信用擴張</th><th>信用收縮</th></tr>
+    <tr>
+      <td><strong>2026 YTD CMBS Issuance</strong></td>
+      <td>商用不動產抵押貸款證券的發行量。反映商業房地產市場的融資管道暢通度</td>
+      <td class="up">發行量 YoY 成長<br>商辦融資活躍</td>
+      <td class="red">發行量急凍<br>商辦信用緊縮</td>
+    </tr>
+    <tr>
+      <td><strong>CMBS Capital Stack</strong></td>
+      <td>資本結構中各層級（senior/mezz/equity）的比例。subordination level 的變化反映風險偏好</td>
+      <td class="up">senior 比例降低<br>更多次順位資金進場</td>
+      <td class="red">senior 比例升高<br>只願意做最安全的部分</td>
+    </tr>
+  </table>
+</div>
+
+<div class="callout red">
+  <strong>⚠️ 2026 年關注點：</strong>遠端辦公趨勢 + 高利率環境下，美國商辦空置率持續攀升。CMBS 中 office 貸款的違約率是系統性風險的領先指標。CMBS 發行量急凍 = 商用不動產信用危機 = 可能外溢至銀行體系。
+</div>
+</section>
+
+<!-- SECTION 5: ABS -->
+<section id="s5">
+<h1>Layer 2d：ABS — 消費信貸信號</h1>
+
+<div class="card">
+  <div class="cardTitle">📊 核心指標</div>
+  <table class="tbl">
+    <tr><th>指標</th><th>觀察重點</th><th>信用擴張</th><th>信用收縮</th></tr>
+    <tr>
+      <td><strong>ABS Spread<br>(Generic 3yr Fix Rate AAA vs Treasuries)</strong></td>
+      <td>AAA 級 ABS 對國債的利差。ABS 利差是消費信貸市場的「礦坑金絲雀」</td>
+      <td class="up">利差收窄<br>消費信貸市場健康</td>
+      <td class="red">利差擴大<br>消費違約風險上升</td>
+    </tr>
+    <tr>
+      <td><strong>2026 YTD ABS Issuance<br>(stacked histogram by type)</strong></td>
+      <td>各類型 ABS 的累積發行量：汽車貸款、信用卡、學生貸款、設備租賃等</td>
+      <td class="up">發行量成長<br>消費融資需求旺盛</td>
+      <td class="red">特定類型發行量驟降<br>該消費領域信用緊縮</td>
+    </tr>
+  </table>
+</div>
+
+<div class="callout">
+  <strong>🚗 對台股的映射：</strong>汽車貸款 ABS 發行量 + 利差 → 反映美國汽車銷售的融資環境 → 對台灣汽車零組件（帝寶、東陽、和大等）有領先意義。信用卡 ABS 利差擴大 → 美國消費降溫 → 台灣出口導向的消費電子需求下降。
+</div>
+</section>
+
+<!-- SECTION 6: IG Credit -->
+<section id="s6">
+<h1>Layer 2e：IG Credit — 投資級公司債</h1>
+
+<div class="card">
+  <div class="cardTitle">📊 核心指標</div>
+  <table class="tbl">
+    <tr><th>指標</th><th>觀察重點</th><th>信用擴張</th><th>信用收縮</th></tr>
+    <tr>
+      <td><strong>IG Corporate Bond<br>Gross vs Net Issuance</strong></td>
+      <td>總發行量 vs 淨發行量（扣除到期償還）。淨發行量 = 企業真正的融資需求</td>
+      <td class="up">淨發行量正成長<br>企業積極擴張</td>
+      <td class="red">淨發行量轉負<br>企業去槓桿/保守</td>
+    </tr>
+    <tr>
+      <td><strong>Excess Return by Sector<br>(US Credit Index components)</strong></td>
+      <td>各產業超額報酬：Industrial / Utility / Finance / Non-Corp。哪個產業的信用在改善/惡化</td>
+      <td class="up">超額報酬為正<br>信用品質改善中</td>
+      <td class="red">超額報酬為負<br>信用品質惡化中</td>
+    </tr>
+  </table>
+</div>
+
+<div class="callout gold">
+  <strong>🔑 產業輪動信號：</strong>這是整個信用框架中最直接對應「產業選擇」的指標。IG Credit 的 excess return by sector 直接告訴你債券投資人對不同產業的信用看法 —— 這是比股票分析師更早的產業信號。<br><br>
+  <strong>Industrial 報酬改善 →</strong> 景氣循環股轉強<br>
+  <strong>Utility 報酬改善 →</strong> 防禦型轉強（避險需求）<br>
+  <strong>Finance 報酬改善 →</strong> 銀行、保險轉強（利差擴大 + 信用成本降）
+</div>
+</section>
+
+<!-- SECTION 7: HY -->
+<section id="s7">
+<h1>Layer 2f：High Yield — 風險偏好溫度計</h1>
+
+<div class="card">
+  <div class="cardTitle">📊 核心指標</div>
+  <table class="tbl">
+    <tr><th>指標</th><th>觀察重點</th><th>風險-On</th><th>風險-Off</th></tr>
+    <tr>
+      <td><strong>Multiple Quality Bond<br>Performance Comparison</strong></td>
+      <td>不同信評等級（BB/B/CCC）的相對績效。低評級 outperformance = 追求風險</td>
+      <td class="up">CCC 領漲<br>最投機的債券表現最好</td>
+      <td class="red">BB 領跌最少<br>資金逃向高品質</td>
+    </tr>
+    <tr>
+      <td><strong>HY Fund<br>Monthly Flows</strong></td>
+      <td>高收益債基金每月資金流入/流出。散戶 + 機構的風險偏好即時指標</td>
+      <td class="up">資金淨流入<br>追逐殖利率</td>
+      <td class="red">資金淨流出<br>Risk-off 恐慌</td>
+    </tr>
+  </table>
+</div>
+
+<div class="callout red">
+  <strong>⚠️ 領先指標特性：</strong>HY fund flows 是極佳的轉折點指標。持續性的大額流出通常發生在股市大跌的<strong>前半段</strong>—— 信貸投資人比股票投資人更早恐慌。大量流出後 4-8 週，股市通常出現顯著修正。
+</div>
+
+<div class="card">
+  <div class="cardTitle">📐 HY Spread 作為估值參考</div>
+  <p style="font-size:14px">HY OAS（選擇權調整利差）水準對應市場狀態：</p>
+  <table class="tbl">
+    <tr><th>HY OAS 區間</th><th>市場狀態</th><th>台股策略</th></tr>
+    <tr><td>&lt; 300bps</td><td class="up">極度樂觀</td><td>注意過熱，逐步減碼</td></tr>
+    <tr><td>300–500bps</td><td class="up">正常</td><td>正常配置</td></tr>
+    <tr><td>500–800bps</td><td class="warn">信用壓力</td><td>減碼景氣循環股</td></tr>
+    <tr><td>&gt; 800bps</td><td class="red">信用危機 / 衰退</td><td>防禦型配置，等待買點</td></tr>
+  </table>
+</div>
+</section>
+
+<!-- SECTION 8: EM Debt -->
+<section id="s8">
+<h1>Layer 2g：EM Debt — 全球風險偏好</h1>
+
+<div class="card">
+  <div class="cardTitle">📊 核心指標</div>
+  <table class="tbl">
+    <tr><th>指標</th><th>觀察重點</th><th>風險-On</th><th>風險-Off</th></tr>
+    <tr>
+      <td><strong>5yr EM Debt Returns</strong></td>
+      <td>新興市場債券 5 年滾動回報。反映長期資金對 EM 的配置意願</td>
+      <td class="up">正回報 + 上升趨勢<br>資金持續流入 EM</td>
+      <td class="red">負回報或下降趨勢<br>資金撤出 EM</td>
+    </tr>
+    <tr>
+      <td><strong>External Debt Total Returns<br>by Country Weight in Index</strong></td>
+      <td>各國在指數中的權重 × 該國回報。識別哪些國家在驅動 EM 報酬</td>
+      <td class="up">回報分散（多國正貢獻）<br>廣泛的風險偏好</td>
+      <td class="red">回報集中（少數國家驅動）<br>選擇性風險偏好</td>
+    </tr>
+  </table>
+</div>
+
+<div class="callout">
+  <strong>🌏 對台股的映射：</strong>EM debt 資金流向是外資對台灣股市態度的領先指標。當 EM debt 出現持續性資金流入 → 外資對整體新興市場風險偏好上升 → 台股（EM 中權重最高之一）通常受惠。EM 中中國的表現也會影響台股（區域外溢效應）。
+</div>
+</section>
+
+<!-- SECTION 9: Taxable Muni -->
+<section id="s9">
+<h1>Layer 2h：Taxable Municipal — 地方信用</h1>
+
+<div class="card">
+  <div class="cardTitle">📊 核心指標</div>
+  <table class="tbl">
+    <tr><th>指標</th><th>觀察重點</th><th>信用改善</th><th>信用惡化</th></tr>
+    <tr>
+      <td><strong>Taxable Municipal Debt<br>vs US Long Credit (OAS, bps)</strong></td>
+      <td>應稅市政債與長天期公司債的利差比較。反映地方政府 vs 企業的相對信用品質</td>
+      <td class="up">Muni OAS 收窄<br>地方政府信用改善</td>
+      <td class="red">Muni OAS 擴大<br>地方財政壓力</td>
+    </tr>
+  </table>
+</div>
+
+<div class="callout">
+  <strong>🏛️ 投資意義：</strong>Taxable muni 利差擴大通常預示地方財政壓力（稅收不足、基建支出增加），這可能觸發聯邦轉移支付增加 → 國債供給增加 → 長端利率上行壓力。對台股的影響較間接但可作為美國財政政策的輔助判斷。
+</div>
+</section>
+
+<!-- SECTION 10: TE Muni -->
+<section id="s10">
+<h1>Layer 2i：Tax-Exempt Muni — 免稅需求</h1>
+
+<div class="card">
+  <div class="cardTitle">📊 核心指標</div>
+  <table class="tbl">
+    <tr><th>指標</th><th>觀察重點</th><th>需求強勁</th><th>需求疲弱</th></tr>
+    <tr>
+      <td><strong>Relative Performance<br>(Muni vs HY Muni vs others)</strong></td>
+      <td>不同類型市政債的相對績效。高品質 muni outperformance = flight to quality</td>
+      <td class="up">傳統 muni 領漲<br>資金追逐安全資產</td>
+      <td class="red">HY muni 領跌<br>信用風險定價上升</td>
+    </tr>
+    <tr>
+      <td><strong>Issuance YoY / MoM</strong></td>
+      <td>免稅市政債的發行量趨勢。反映地方政府融資需求和市場接受度</td>
+      <td class="up">發行量溫和成長<br>市場吸收順暢</td>
+      <td class="red">發行量驟降<br>市場拒接新債</td>
+    </tr>
+  </table>
+</div>
+
+<div class="callout">
+  <strong>📜 獨特信號價值：</strong>Tax-exempt muni 市場受所得稅率預期影響極大。如果市場預期未來稅率上升 → 免稅 muni 的需求會提前上升 → 使 muni 表現優於 taxable bonds。可作為財政政策預期的輔助判斷。
+</div>
+</section>
+
+<!-- SECTION INT: Integration -->
+<section id="sint">
+<h1>信號整合：從信用市場到權益決策</h1>
+
+<div class="card">
+  <div class="cardTitle">🎯 三層信號疊加決策框架</div>
+  <pre style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:16px;font-size:13px;line-height:1.8">
+
+Layer 1: 總體週期判斷（美國經濟）
+  ├─ 失業率 + 核心 CPI → 四象限定位
+  └─ 輸出：現在是 Goldilocks / Overheat / Disinflation / Stagflation？
+
+Layer 2: 信用條件綜合判斷（匯總信用指標）
+  ├─ 殖利率曲線形狀 → 利率方向
+  ├─ HY spread + fund flows → 風險偏好
+  ├─ IG excess return by sector → 產業信用優劣
+  ├─ ABS/MBS/CMBS spread → 消費/房貸/商辦健康度
+  └─ 輸出：信用在擴張還是收縮？哪些產業信用在改善？
+
+Layer 3: 台股策略映射
+  ├─ Goldilocks + 信用擴張 → 全力做多成長股、半導體
+  ├─ Overheat + 信用擴張 → 原物料、金融、景氣循環
+  ├─ Disinflation + 信用收縮 → 防禦型（公用事業、電信、高股息）
+  └─ Stagflation + 信用危機 → 現金為王，等待 HY spread > 800bps 買點
+  </pre>
+</div>
+
+<div class="card">
+  <div class="cardTitle">📊 月度觀察儀表板</div>
+  <table class="tbl">
+    <tr><th>區塊</th><th>本月信號</th><th>上月信號</th><th>趨勢</th></tr>
+    <tr><td>🇺🇸 失業率</td><td>—</td><td>—</td><td>—</td></tr>
+    <tr><td>🇺🇸 核心 CPI</td><td>—</td><td>—</td><td>—</td></tr>
+    <tr><td>📈 5Y/30Y 利差</td><td>—</td><td>—</td><td>—</td></tr>
+    <tr><td>🏠 MBS Spread</td><td>—</td><td>—</td><td>—</td></tr>
+    <tr><td>🏢 CMBS Issuance</td><td>—</td><td>—</td><td>—</td></tr>
+    <tr><td>🚗 ABS Spread</td><td>—</td><td>—</td><td>—</td></tr>
+    <tr><td>🏦 IG Net Issuance</td><td>—</td><td>—</td><td>—</td></tr>
+    <tr><td>⚠️ HY Fund Flows</td><td>—</td><td>—</td><td>—</td></tr>
+    <tr><td>🌍 EM Debt Returns</td><td>—</td><td>—</td><td>—</td></tr>
+    <tr><td>🏛️ Taxable Muni OAS</td><td>—</td><td>—</td><td>—</td></tr>
+    <tr><td>📜 TE Muni Issuance</td><td>—</td><td>—</td><td>—</td></tr>
+  </table>
+</div>
+
+<div class="verdict">
+  <div class="vTitle">📋 框架定位</div>
+  <p>信用市場觀察框架是 Top-Down 投資體系的 <strong>Layer 1（宏觀）與 Layer 3（產業）之間的橋樑</strong>。它不直接選股，但提供兩個關鍵判斷：</p>
+  <p style="margin-top:12px"><strong>1. 現在應該積極還是防禦？</strong>（信用條件方向）</p>
+  <p><strong>2. 哪些產業在信用層面正在改善？</strong>（IG excess return by sector）</p>
+</div>
+</section>
+
+</main>
+</div>
+
+<script>
+document.querySelectorAll('.navItem').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const section = btn.dataset.section;
+    document.querySelectorAll('.navItem').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll(`.navItem[data-section="${section}"]`).forEach(b => b.classList.add('active'));
+    document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
+    const target = document.getElementById(section);
+    if (target) target.classList.add('active');
+    if (window.innerWidth <= 768) {
+      btn.scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'});
+    }
+  });
+});
+document.addEventListener('keydown', e => {
+  const sections = ['s0','smap','s1','s2','s3','s4','s5','s6','s7','s8','s9','s10','sint'];
+  const current = sections.findIndex(s => {
+    const el = document.getElementById(s);
+    return el && el.classList.contains('active');
+  });
+  if (e.key === 'ArrowDown' || e.key === 'ArrowRight') {
+    e.preventDefault();
+    const next = Math.min(current + 1, sections.length - 1);
+    document.querySelector(`.navItem[data-section="${sections[next]}"]`).click();
+  }
+  if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
+    e.preventDefault();
+    const prev = Math.max(current - 1, 0);
+    document.querySelector(`.navItem[data-section="${sections[prev]}"]`).click();
+  }
+});
+</script>
+</body>
+</html>
