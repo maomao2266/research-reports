@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>技術演進分析框架 — 產業技術深度剖析方法論</title>
+<style>
+:root{
+  --bg:#0a0e14; --surface:#131820; --card:#181f2a;
+  --border:#252d3a; --ink:#e2e8f0; --muted:#7c8aa0; --dim:#4a5568;
+  --accent:#60a5fa; --accent2:#3b82f6;
+  --gold:#f59e0b; --green:#34d399; --red:#f87171;
+  --orange:#fb923c; --purple:#a78bfa;
+  --radius:14px; --radius2:18px;
+  --sans:"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,-apple-system,sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.7}
+a{color:var(--accent);text-decoration:none}
+a:hover{text-decoration:underline}
+
+.topbar{
+  position:sticky;top:0;z-index:100;
+  background:var(--surface);border-bottom:1px solid var(--border);
+  padding:12px 24px;display:flex;align-items:center;gap:16px;
+  backdrop-filter:blur(12px);
+}
+.topbar .logo{font-size:18px;font-weight:700;color:var(--accent)}
+.topbar .sub{font-size:13px;color:var(--muted)}
+.layout{display:flex;min-height:calc(100vh - 57px)}
+.sidebar{
+  width:240px;flex-shrink:0;background:var(--surface);
+  border-right:1px solid var(--border);padding:20px 0;
+  position:sticky;top:57px;height:calc(100vh - 57px);overflow-y:auto;
+}
+.sidebar .navTitle{font-size:11px;text-transform:uppercase;color:var(--dim);padding:8px 20px;letter-spacing:1px}
+.navItem{
+  display:block;padding:8px 20px;font-size:13px;color:var(--muted);
+  border-left:2px solid transparent;transition:all .15s;cursor:pointer;
+}
+.navItem:hover{color:var(--ink);background:rgba(96,165,250,.05)}
+.navItem.active{color:var(--accent);border-left-color:var(--accent);background:rgba(96,165,250,.08)}
+.content{flex:1;padding:32px 40px;max-width:960px}
+section{display:none;animation:fadeIn .3s ease}
+section.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+h1{font-size:28px;font-weight:700;margin-bottom:8px}
+h2{font-size:22px;font-weight:700;margin:32px 0 16px;padding-bottom:8px;border-bottom:1px solid var(--border)}
+h3{font-size:17px;font-weight:600;margin:24px 0 12px;color:var(--accent)}
+h4{font-size:15px;font-weight:600;margin:16px 0 8px}
+p{margin:10px 0;font-size:15px}
+.card{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:var(--radius);padding:20px 24px;margin:16px 0;
+}
+.cardTitle{font-size:15px;font-weight:700;color:var(--accent);margin-bottom:12px}
+.tbl{width:100%;border-collapse:collapse;margin:12px 0;font-size:14px}
+.tbl th{text-align:left;padding:8px 12px;border-bottom:2px solid var(--border);color:var(--muted);font-size:12px;text-transform:uppercase}
+.tbl td{padding:8px 12px;border-bottom:1px solid var(--border)}
+.tbl tr:last-child td{border-bottom:none}
+.up{color:var(--green)} .down{color:var(--red)} .warn{color:var(--orange)}
+.callout{
+  border-left:3px solid var(--accent);padding:14px 18px;margin:16px 0;
+  background:var(--surface);border-radius:0 var(--radius) var(--radius) 0;font-size:14px;
+}
+.callout.red{border-color:var(--red)} .callout.gold{border-color:var(--gold)}
+.callout.green{border-color:var(--green)} .callout.purple{border-color:var(--purple)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:16px 0}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:16px 0}
+.metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin:16px 0}
+.metric{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:16px;text-align:center}
+.metric .val{font-size:24px;font-weight:700;color:var(--accent)}
+.metric .lbl{font-size:12px;color:var(--muted);margin-top:4px}
+.pillRow{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0}
+.pill{padding:4px 12px;border-radius:20px;font-size:12px;font-weight:600}
+.pill.g{background:rgba(52,211,153,.15);color:var(--green)}
+.pill.r{background:rgba(248,113,113,.15);color:var(--red)}
+.pill.o{background:rgba(251,146,60,.15);color:var(--orange)}
+.pill.b{background:rgba(96,165,250,.15);color:var(--accent)}
+.verdict{
+  background:var(--surface);border:1px solid var(--accent);
+  border-radius:var(--radius2);padding:24px;margin:24px 0;
+}
+.verdict .vTitle{font-size:18px;font-weight:700;color:var(--accent);margin-bottom:12px}
+
+/* Phase diagram */
+.phaseBox{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--radius2);padding:24px;margin:20px 0;overflow-x:auto;
+}
+.phaseBox h3{text-align:center;color:var(--gold);margin-bottom:16px}
+.phaseFlow{display:flex;gap:4px;justify-content:center;flex-wrap:wrap}
+.phase{flex:1;min-width:180px;padding:16px;border-radius:var(--radius);text-align:center;font-size:13px}
+.phase.f{background:rgba(96,165,250,.1);border:1px solid rgba(96,165,250,.3)}
+.phase.t{background:rgba(251,146,60,.1);border:1px solid rgba(251,146,60,.3)}
+.phase.s{background:rgba(167,139,250,.1);border:1px solid rgba(167,139,250,.3)}
+.phase .phTitle{font-size:16px;font-weight:700;margin-bottom:8px}
+.phase.f .phTitle{color:var(--accent)}
+.phase.t .phTitle{color:var(--orange)}
+.phase.s .phTitle{color:var(--purple)}
+.phase .phBar{margin:4px 0;font-size:11px}
+.arrow{font-size:24px;color:var(--dim);display:flex;align-items:center;padding:0 8px}
+
+/* Pre / code for framework */
+pre{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
+  padding:16px;overflow-x:auto;font-size:13px;line-height:1.6;margin:12px 0}
+code{font-family:"Fira Code","JetBrains Mono",monospace;font-size:13px}
+
+.mobileNav{display:none}
+@media(max-width:768px){
+  .sidebar{display:none}
+  .content{padding:16px}
+  .layout{display:block}
+  .mobileNav{display:flex;gap:4px;overflow-x:auto;padding:8px 0;
+    -webkit-overflow-scrolling:touch;scrollbar-width:none;
+    border-bottom:1px solid var(--border);margin-bottom:16px}
+  .mobileNav::-webkit-scrollbar{display:none}
+  .mobileNav .navItem{flex-shrink:0;white-space:nowrap;font-size:11px;padding:6px 10px;border-left:none;border-radius:8px}
+  .mobileNav .navItem.active{background:rgba(96,165,250,.12)}
+  .grid2{grid-template-columns:1fr}
+  .grid4{grid-template-columns:1fr 1fr}
+  h1{font-size:22px}
+  .phaseFlow{flex-direction:column}
+  .arrow{transform:rotate(90deg);justify-content:center}
+}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <span class="logo">技術演進分析框架</span>
+  <span class="sub">Utterback × Christensen 整合方法論</span>
+</div>
+
+<div class="layout">
+<nav class="sidebar">
+  <div class="navTitle">總覽</div>
+  <span class="navItem active" data-section="s0">📋 框架總覽</span>
+  <div class="navTitle">Utterback</div>
+  <span class="navItem" data-section="s1">🏭 三階段模型</span>
+  <span class="navItem" data-section="s2">🎯 主導設計</span>
+  <span class="navItem" data-section="s3">⚡ 技術斷裂與入侵</span>
+  <div class="navTitle">Christensen</div>
+  <span class="navItem" data-section="s4">💥 破壞式創新</span>
+  <span class="navItem" data-section="s5">🎮 破壞策略</span>
+  <span class="navItem" data-section="s6">🔗 價值鏈演化</span>
+  <div class="navTitle">實戰</div>
+  <span class="navItem" data-section="s7">🔬 投資分析流程</span>
+  <span class="navItem" data-section="s8">📡 EUV 光刻案例</span>
+  <div class="navTitle">來源</div>
+  <span class="navItem" data-section="s9">📚 參考書目</span>
+</nav>
+
+<nav class="mobileNav">
+  <span class="navItem active" data-section="s0">總覽</span>
+  <span class="navItem" data-section="s1">三階段</span>
+  <span class="navItem" data-section="s2">主導設計</span>
+  <span class="navItem" data-section="s3">技術斷裂</span>
+  <span class="navItem" data-section="s4">破壞創新</span>
+  <span class="navItem" data-section="s5">破壞策略</span>
+  <span class="navItem" data-section="s6">價值鏈</span>
+  <span class="navItem" data-section="s7">分析流程</span>
+  <span class="navItem" data-section="s8">EUV案例</span>
+  <span class="navItem" data-section="s9">書目</span>
+</nav>
+
+<main class="content">
+
+<!-- SECTION 0: Overview -->
+<section id="s0" class="active">
+<h1>技術演進分析框架</h1>
+<h3>Utterback × Christensen 整合方法論</h3>
+
+<p>傳統的 equity research framework 教你分析「這家公司賺不賺錢」（Porter 五力、財報分析、DCF 估值）。但當你要回答 —— <strong>「ASML 為什麼贏了 Nikon？」「EUV 之後下一世代是什麼？」「這家設備商在技術週期的哪個位置？」</strong> —— 你需要的是 <strong>技術演進分析框架</strong>。</p>
+
+<p>這個框架整合了兩位學者的核心理論：</p>
+
+<div class="grid2">
+  <div class="card">
+    <div class="cardTitle">James Utterback (MIT)</div>
+    <p style="font-size:14px;color:var(--muted)"><em>Mastering the Dynamics of Innovation</em> (1994)</p>
+    <p style="font-size:14px">產業技術演化的<strong>三階段模型</strong>：從流動期、過渡期到特定期。解釋了為什麼產業成熟後創新從產品轉向製程，以及主導設計如何重塑競爭格局。</p>
+  </div>
+  <div class="card">
+    <div class="cardTitle">Clayton Christensen (HBS)</div>
+    <p style="font-size:14px;color:var(--muted)"><em>The Innovator's Dilemma / Solution</em> (1997/2003)</p>
+    <p style="font-size:14px"><strong>破壞式創新理論</strong>：為什麼好公司會被新技術殺死？持續性創新 vs 破壞式創新的判斷框架。不對稱動機如何讓在位者「自願」放棄市場。</p>
+  </div>
+</div>
+
+<div class="callout gold">
+  <strong>🔑 核心洞察：</strong>Utterback 告訴你「產業現在在哪個階段」，Christensen 告訴你「下一波破壞會從哪裡來」。兩者結合 = 完整的技術投資判斷體系。
+</div>
+
+<div class="metrics">
+  <div class="metric"><div class="val">Utterback</div><div class="lbl">技術位階判斷</div></div>
+  <div class="metric"><div class="val">Christensen</div><div class="lbl">破壞威脅評估</div></div>
+  <div class="metric"><div class="val">整合</div><div class="lbl">利潤池遷移追蹤</div></div>
+  <div class="metric"><div class="val">估值校準</div><div class="lbl">位階對應定價</div></div>
+</div>
+</section>
+
+<!-- SECTION 1: Three-Phase Model -->
+<section id="s1">
+<h1>Utterback：三階段產業演化模型</h1>
+<h3>Abernathy-Utterback 動態創新模型</h3>
+
+<p>每個產業的技術發展都經歷三個階段。這不是理論推測，而是基於 150 年美國工業史的真實觀察：打字機、汽車、電燈、電視、電腦、半導體……</p>
+
+<div class="phaseBox">
+<h3>🔬 產業技術演化三階段</h3>
+<div class="phaseFlow">
+  <div class="phase f">
+    <div class="phTitle">Fluid Phase<br>流動期</div>
+    <div class="phBar" style="color:var(--accent)">產品創新 ██████████</div>
+    <div class="phBar" style="color:var(--dim)">製程創新 ██</div>
+    <div style="margin-top:12px;font-size:12px;color:var(--muted)">
+    百家爭鳴<br>
+    功能/多樣性競爭<br>
+    有機式組織<br>
+    上百家廠商
+    </div>
+  </div>
+  <div class="arrow">→</div>
+  <div class="phase t">
+    <div class="phTitle">Transitional<br>過渡期</div>
+    <div class="phBar" style="color:var(--orange)">產品創新 ████</div>
+    <div class="phBar" style="color:var(--orange)">製程創新 ██████████</div>
+    <div style="margin-top:12px;font-size:12px;color:var(--muted)">
+    主導設計出現<br>
+    差異化 → 價格競爭<br>
+    快速淘汰<br>
+    寡佔形成中
+    </div>
+  </div>
+  <div class="arrow">→</div>
+  <div class="phase s">
+    <div class="phTitle">Specific Phase<br>特定期</div>
+    <div class="phBar" style="color:var(--purple)">產品創新 ██</div>
+    <div class="phBar" style="color:var(--purple)">製程創新 ████</div>
+    <div style="margin-top:12px;font-size:12px;color:var(--muted)">
+    漸進式創新<br>
+    成本/產能/品質<br>
+    機械式組織<br>
+    寡佔穩定
+    </div>
+  </div>
+</div>
+</div>
+
+<div class="card">
+  <div class="cardTitle">📊 三階段對比</div>
+  <table class="tbl">
+    <tr><th>維度</th><th>Fluid Phase</th><th>Transitional</th><th>Specific Phase</th></tr>
+    <tr><td>產品創新</td><td class="up">極高（實驗性）</td><td>下降（收斂）</td><td class="down">低（漸進）</td></tr>
+    <tr><td>製程創新</td><td class="down">低</td><td class="up">急升</td><td>中（漸進）</td></tr>
+    <tr><td>競爭基礎</td><td>功能 / 多樣性</td><td>差異化 → 價格</td><td>成本、產能、品質</td></tr>
+    <tr><td>廠商數量</td><td>數十至上百</td><td>快速萎縮</td><td>寡佔</td></tr>
+    <tr><td>組織型態</td><td>有機式（彈性）</td><td>過渡</td><td>機械式（階層）</td></tr>
+    <tr><td>進入障礙</td><td class="up">低</td><td class="warn">上升中</td><td class="down">極高</td></tr>
+    <tr><td>估值方法</td><td>選擇權思維</td><td>PEG / PS</td><td>PE / PB / DCF</td></tr>
+  </table>
+</div>
+
+<div class="callout">
+  <strong>💡 投資意義：</strong>在 Transitional 階段抓到擁有主導設計的公司，是最大的超額報酬來源。因為市場往往低估了「標準化」之後的規模效應和利潤集中度。
+</div>
+</section>
+
+<!-- SECTION 2: Dominant Design -->
+<section id="s2">
+<h1>主導設計（Dominant Design）</h1>
+<h3>整個框架最關鍵的概念</h3>
+
+<div class="callout gold">
+  <strong>🎯 定義：</strong>主導設計是一個被市場和技術社群廣泛接受的產品架構或標準。它不是「最好的技術」，而是「最早被市場鎖定的技術」。
+</div>
+
+<div class="card">
+  <div class="cardTitle">🏛️ 歷史案例</div>
+  <table class="tbl">
+    <tr><th>產業</th><th>主導設計</th><th>出現年份</th><th>贏家</th><th>消亡者</th></tr>
+    <tr><td>打字機</td><td>Underwood Model 5（QWERTY 鍵盤）</td><td>1899</td><td>Underwood</td><td>數十家早期廠商</td></tr>
+    <tr><td>汽車</td><td>Ford Model T（內燃機 + 閉合車身）</td><td>1908</td><td>Ford</td><td>蒸氣/電動車廠</td></tr>
+    <tr><td>個人電腦</td><td>IBM PC（x86 + DOS）</td><td>1981</td><td>IBM / Intel / Microsoft</td><td>Apple II, Commodore</td></tr>
+    <tr><td>智慧手機</td><td>iPhone（全觸控 + App Store）</td><td>2007</td><td>Apple</td><td>Nokia, BlackBerry</td></tr>
+    <tr><td>搜尋引擎</td><td>Google（PageRank）</td><td>1998</td><td>Google</td><td>Yahoo, AltaVista</td></tr>
+  </table>
+</div>
+
+<div class="card">
+  <div class="cardTitle">🔍 辨認主導設計正在形成的五個信號</div>
+  <ol style="padding-left:20px;font-size:14px">
+    <li style="margin:8px 0"><strong>產品設計收斂</strong> — 不再有大幅變異的產品架構出現</li>
+    <li style="margin:8px 0"><strong>競爭者開始模仿</strong> — 某個特定設計被廣泛複製</li>
+    <li style="margin:8px 0"><strong>行銷語言轉變</strong> — 從「功能創新」轉向「價格/可靠性」</li>
+    <li style="margin:8px 0"><strong>專利訴訟頻繁</strong> — 標準爭奪戰白熱化</li>
+    <li style="margin:8px 0"><strong>製程專利增加</strong> — R&D 預算從產品轉向製程</li>
+  </ol>
+</div>
+
+<div class="callout red">
+  <strong>⚠️ 主導設計出現後的淘汰率：</strong>Utterback 的研究顯示，主導設計出現時存在的公司中，<strong>80-90% 會在接下來的產業整合中消失</strong>。這也是為什麼 Transitional Phase 是投資最關鍵的時期。
+</div>
+</section>
+
+<!-- SECTION 3: Discontinuity -->
+<section id="s3">
+<h1>技術斷裂與產業入侵</h1>
+<h3>當穩定產業被新技術顛覆時</h3>
+
+<div class="callout red">
+  <strong>🚨 Utterback 的核心發現：</strong>激進的產品創新<strong>幾乎總是來自產業外部</strong>，而非現有領導者。這不是偶然，而是結構性必然。
+</div>
+
+<div class="card">
+  <div class="cardTitle">🧠 為什麼現有領導者會失敗？</div>
+  <div class="grid2">
+    <div>
+      <h4>1. 沉沒成本陷阱</h4>
+      <p style="font-size:14px">既有製程設備、技術人才、供應鏈都圍繞舊技術。轉換成本不只是錢，而是整個組織的慣性。</p>
+    </div>
+    <div>
+      <h4>2. 客戶鎖定效應</h4>
+      <p style="font-size:14px">現有客戶不想要新技術（暫時）。但新技術會先從邊緣市場長大，等主流客戶也想要的時候，已經來不及了。</p>
+    </div>
+    <div>
+      <h4>3. 組織慣性</h4>
+      <p style="font-size:14px">成功的公司從有機組織變成機械組織。激進創新在機械組織中會被系統性地扼殺。</p>
+    </div>
+    <div>
+      <h4>4. 財務邏輯悖論</h4>
+      <p style="font-size:14px">新技術的初期市場太小、利潤太低。對大公司來說，「理性決策」就是不要投資。</p>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="cardTitle">📖 Utterback 書中的經典案例：一波波技術入侵</div>
+  <table class="tbl">
+    <tr><th>產業</th><th>技術波次</th><th>每一波的入侵者</th></tr>
+    <tr><td>打字機</td><td>手動 → 電動 → 文字處理機 → PC</td><td>每波都是新公司</td></tr>
+    <tr><td>照明</td><td>煤氣 → 碳絲白熾 → 金屬絲 → 螢光 → LED</td><td>每波都是新公司</td></tr>
+    <tr><td>製冰</td><td>天然冰 → 機械冰 → 電冰箱</td><td>每波都是新公司</td></tr>
+    <tr><td>硬碟</td><td>14" → 8" → 5.25" → 3.5"</td><td>每波都是新公司</td></tr>
+    <tr><td>光刻</td><td>乾式 → 浸潤式 → EUV</td><td>ASML 從浸潤式崛起</td></tr>
+  </table>
+</div>
+</section>
+
+<!-- SECTION 4: Disruptive Innovation -->
+<section id="s4">
+<h1>Christensen：破壞式創新理論</h1>
+<h3>The Innovator's Dilemma 核心機制</h3>
+
+<div class="card">
+  <div class="cardTitle">⚔️ 持續性創新 vs 破壞式創新</div>
+  <table class="tbl">
+    <tr><th>維度</th><th>持續性創新 (Sustaining)</th><th>破壞式創新 (Disruptive)</th></tr>
+    <tr><td>目標客戶</td><td>現有高端客戶</td><td>新客戶 / 低端客戶</td></tr>
+    <tr><td>產品特性</td><td>更好、更貴</td><td>更簡單、更便宜、更方便</td></tr>
+    <tr><td>利潤率</td><td class="up">更高</td><td class="down">更低（初期）</td></tr>
+    <tr><td style="color:var(--gold);font-weight:700">誰會贏</td><td class="up" style="font-weight:700">現有領導者</td><td class="red" style="font-weight:700">新進入者</td></tr>
+    <tr><td>在位者反應</td><td>積極投資</td><td>視而不見 → 逃跑</td></tr>
+  </table>
+</div>
+
+<div class="card">
+  <div class="cardTitle">🔄 The Innovator's Dilemma — 六步死亡螺旋</div>
+  <div style="font-size:14px">
+    <p><strong>①</strong> 新技術出現 → 性能不如現有產品</p>
+    <p><strong>②</strong> 現有客戶不想要 → 公司「理性地」不投資</p>
+    <p><strong>③</strong> 新技術在邊緣市場成長、性能持續提升</p>
+    <p><strong>④</strong> 新技術的性能追上主流市場需求</p>
+    <p><strong>⑤</strong> 主流客戶瞬間轉向</p>
+    <p><strong>⑥</strong> 現有公司來不及反應 → <span class="down">死亡</span></p>
+  </div>
+</div>
+
+<div class="callout gold">
+  <strong>🔑 關鍵概念 — 不對稱動機（Asymmetric Motivation）：</strong><br>
+  在位者永遠想往上走（追求更高利潤的客戶），破壞者從下方進攻（更低成本的客戶）。在位者「樂於放棄」低端市場 —— 直到破壞者長大到吃掉他們的高端市場為止。
+</div>
+
+<div class="card">
+  <div class="cardTitle">📐 技術進步 vs 市場需求軌跡</div>
+  <p style="font-size:14px">技術進步的速度<strong>永遠</strong>快過人類能吸收的速度。當技術性能超過市場需求上限時，就出現「性能過剩」— 這是破壞式創新的溫床。</p>
+  <pre style="font-size:12px">
+性能 ↑                                ╱ 技術進步速度
+     │         ╱╲                     ╱
+     │        ╱  ╲                   ╱
+     │       ╱    ╲── 需求上限 ─────╱──────
+     │      ╱ 破壞  ╲              ╱
+     │     ╱  創新  ╲            ╱ 持續性創新
+     │    ╱         ╲          ╱  在此競爭
+     │   ╱           ╲        ╱
+     │  ╱             ╲──────╱
+     └──────────────────────────────→ 時間
+
+    關鍵洞察：性能過剩 = 破壞式創新的信號
+    當客戶說「夠好了」，就是新進入者的機會
+  </pre>
+</div>
+</section>
+
+<!-- SECTION 5: Disruption Strategy -->
+<section id="s5">
+<h1>破壞策略：如何成為破壞者</h1>
+<h3>The Innovator's Solution — 從被破壞到主動破壞</h3>
+
+<div class="card">
+  <div class="cardTitle">🛤️ 兩種破壞路徑</div>
+  <table class="tbl">
+    <tr><th>類型</th><th>機制</th><th>經典案例</th></tr>
+    <tr>
+      <td><strong>低端破壞</strong><br><span style="font-size:12px;color:var(--muted)">Low-End Disruption</span></td>
+      <td>從現有市場最低端切入<br>用更低成本搶走「沒人要的客戶」<br>逐步往上攻</td>
+      <td>小鋼廠搶鋼筋 → 結構鋼 → 鋼板<br>韓系記憶體 → 台系晶圓代工</td>
+    </tr>
+    <tr>
+      <td><strong>新市場破壞</strong><br><span style="font-size:12px;color:var(--muted)">New-Market Disruption</span></td>
+      <td>創造以前不存在的市場<br>讓「非消費者」變成消費者</td>
+      <td>PC（相對於大型主機）<br>智慧手機（相對於功能機）</td>
+    </tr>
+  </table>
+</div>
+
+<div class="card">
+  <div class="cardTitle">🎯 Jobs-to-be-Done 框架</div>
+  <p style="font-size:14px">Christensen 的核心洞見：客戶不是買產品，而是<strong>「僱用」產品來完成某個工作</strong>。</p>
+  <div style="font-size:14px">
+    <p><strong>分析四問：</strong></p>
+    <p>① 什麼<strong>情境</strong>下客戶需要這個產品？</p>
+    <p>② 客戶想要完成的<strong>功能工作、情感工作、社會工作</strong>是什麼？</p>
+    <p>③ 現在的<strong>替代方案</strong>是什麼？（包括「什麼都不做」）</p>
+    <p>④ 什麼<strong>阻礙</strong>了客戶採用？（習慣、預算、技術門檻）</p>
+  </div>
+</div>
+
+<div class="callout green">
+  <strong>✅ 在位者如何自救：</strong>Christensen 發現，唯一成功對抗破壞的方式是<strong>成立完全獨立的組織</strong>，給予獨立的商業模式。IBM 用獨立部門做 PC、HP 用獨立部門做噴墨印表機、Intel 用 Celeron 晶片守住低端 —— 全部是獨立運作。
+</div>
+</section>
+
+<!-- SECTION 6: Value Chain -->
+<section id="s6">
+<h1>價值鏈演化法則</h1>
+<h3>利潤在哪裡移動？</h3>
+
+<div class="phaseBox">
+<h3>🔗 模組化 → 商品化 → 利潤遷移</h3>
+<div class="phaseFlow">
+  <div class="phase f">
+    <div class="phTitle">整合式架構</div>
+    <div style="font-size:12px;color:var(--muted);margin-top:8px">
+    所有零件綁在一起<br>
+    利潤在系統整合者<br>
+    <span style="color:var(--accent)">IBM 全盛期</span><br>
+    <span style="color:var(--accent)">Apple iPhone</span>
+    </div>
+  </div>
+  <div class="arrow">→</div>
+  <div class="phase t">
+    <div class="phTitle">模組化架構</div>
+    <div style="font-size:12px;color:var(--muted);margin-top:8px">
+    標準介面出現<br>
+    利潤移到瓶頸零件<br>
+    <span style="color:var(--orange)">Dell/HP 組裝時代</span><br>
+    <span style="color:var(--orange)">Android 陣營</span>
+    </div>
+  </div>
+  <div class="arrow">→</div>
+  <div class="phase s">
+    <div class="phTitle">商品化</div>
+    <div style="font-size:12px;color:var(--muted);margin-top:8px">
+    利潤消失於該環節<br>
+    移到相鄰整合環節<br>
+    <span style="color:var(--purple)">PC 利潤 → Intel/MS</span><br>
+    <span style="color:var(--purple)">手機利潤 → Apple</span>
+    </div>
+  </div>
+</div>
+</div>
+
+<div class="callout gold">
+  <strong>🔑 利潤追蹤法則：</strong><br>
+  當一個環節被模組化後，利潤就移到<strong>相鄰的、尚未被模組化的整合環節</strong>。<br>
+  策略：找出下一個會被整合（= 產生生態系鎖定）的環節，提前佈局。
+</div>
+
+<div class="card">
+  <div class="cardTitle">📡 以半導體設備為例</div>
+  <table class="tbl">
+    <tr><th>世代</th><th>架構</th><th>利潤集中處</th><th>誰贏了</th></tr>
+    <tr><td>乾式光刻</td><td>模組化（各家都能做）</td><td>設計公司</td><td>Nikon, Canon, ASML 三分天下</td></tr>
+    <tr><td>浸潤式光刻</td><td>整合瓶頸（光源+鏡頭+平台）</td><td class="up">光刻機製造商</td><td>ASML 獨大</td></tr>
+    <tr><td>EUV</td><td>極度整合（只有一家能做）</td><td class="up">ASML 獨佔</td><td>ASML + 其供應鏈</td></tr>
+    <tr><td>High-NA EUV</td><td>下一波整合瓶頸？</td><td class="warn">光罩？檢測？材料？</td><td>待觀察</td></tr>
+  </table>
+</div>
+</section>
+
+<!-- SECTION 7: Investment Workflow -->
+<section id="s7">
+<h1>整合分析流程：四步判斷法</h1>
+<h3>將理論轉化為投資決策</h3>
+
+<div class="card">
+  <div class="cardTitle">Step 1：判斷產業技術位階 (Utterback)</div>
+  <div class="pillRow">
+    <span class="pill b">Fluid</span>
+    <span class="pill o">Transitional</span>
+    <span class="pill g">Specific</span>
+  </div>
+  <table class="tbl" style="margin-top:12px">
+    <tr><th>位階</th><th>判斷要點</th><th>投資策略</th></tr>
+    <tr><td>Fluid</td><td>誰在試新設計？專利佈局如何？</td><td>不宜重押，用選擇權思維</td></tr>
+    <tr><td>Transitional</td><td>主導設計出現了嗎？誰擁有它？</td><td class="up" style="font-weight:700">🎯 關鍵買點</td></tr>
+    <tr><td>Specific</td><td>誰有製程優勢？毛利持續擴大的是誰？</td><td>買成本領導者</td></tr>
+  </table>
+</div>
+
+<div class="card">
+  <div class="cardTitle">Step 2：判斷破壞威脅 (Christensen Dilemma)</div>
+  <table class="tbl">
+    <tr><th>檢查點</th><th>YES →</th><th>NO →</th></tr>
+    <tr><td>邊緣市場有替代技術？</td><td class="red">現有領導者危險</td><td>安全</td></tr>
+    <tr><td>在位者被客戶綁架？</td><td class="red">無法回應破壞</td><td>可以防禦</td></tr>
+    <tr><td>技術進步超過市場需求？</td><td class="red">性能過剩 = 破壞溫床</td><td>持續性創新主導</td></tr>
+    <tr><td>新技術利潤低於現有業務？</td><td class="red">不對稱動機觸發</td><td>在位者會投資</td></tr>
+  </table>
+</div>
+
+<div class="card">
+  <div class="cardTitle">Step 3：判斷利潤池移動 (Christensen Solution)</div>
+  <div style="font-size:14px">
+    <p>🔍 供應鏈中哪個環節<strong>尚未被模組化</strong>？</p>
+    <p>🔍 下一波整合會發生在哪裡？</p>
+    <p>🔍 誰掌握了<strong>尚未被商品化的瓶頸</strong>？</p>
+  </div>
+</div>
+
+<div class="card">
+  <div class="cardTitle">Step 4：對應到估值</div>
+  <table class="tbl">
+    <tr><th>技術位階</th><th>估值方法</th><th>風險溢價</th></tr>
+    <tr><td>Fluid</td><td>選擇權思維，看技術路徑</td><td class="red">極高</td></tr>
+    <tr><td>Transitional</td><td>PEG / PS，成長溢價合理</td><td class="warn">中高</td></tr>
+    <tr><td>Specific</td><td>PE / PB / DCF，穩定可預測</td><td class="up">低</td></tr>
+    <tr><td>面臨破壞</td><td>需大幅折價（即使現在數字漂亮）</td><td class="red">估值陷阱</td></tr>
+  </table>
+</div>
+
+<div class="verdict">
+  <div class="vTitle">📋 完整分析框架圖</div>
+  <pre style="font-size:12px;line-height:1.8;background:transparent;border:none">
+┌─ Step 1: Utterback ───→ 產業在哪個技術階段？
+│                           Fluid / Transitional / Specific
+│
+├─ Step 2: Christensen ──→ 有破壞威脅嗎？
+│   Dilemma                 持續性 vs 破壞式？在位者能回應嗎？
+│
+├─ Step 3: Christensen ──→ 利潤池往哪移動？
+│   Solution                哪個環節尚未被商品化？
+│
+└─ Step 4: 估值校準 ────→ 位階對應的定價方法
+                            為破壞風險折價
+  </pre>
+</div>
+</section>
+
+<!-- SECTION 8: EUV Case -->
+<section id="s8">
+<h1>案例應用：EUV 光刻技術</h1>
+<h3>用完整框架分析半導體設備產業</h3>
+
+<div class="card">
+  <div class="cardTitle">🔬 光刻產業技術位階判斷</div>
+  <p style="font-size:14px">光刻產業已進入 <strong style="color:var(--purple)">Specific Phase</strong>：主導設計 = EUV，ASML 獨佔。競爭焦點從產品創新轉向製程效率（良率、產能、下一代 High-NA）。</p>
+</div>
+
+<div class="card">
+  <div class="cardTitle">💥 破壞威脅評估</div>
+  <table class="tbl">
+    <tr><th>潛在破壞技術</th><th>目前狀態</th><th>威脅等級</th><th>時間框架</th></tr>
+    <tr><td>奈米壓印 (Canon)</td><td>Fluid Phase，性能不夠</td><td class="warn">中低</td><td>5-10 年</td></tr>
+    <tr><td>DSA 定向自組裝</td><td>Fluid Phase，實驗室階段</td><td class="down">低</td><td>10+ 年</td></tr>
+    <tr><td>High-NA EUV</td><td>持續性創新（非破壞）</td><td class="up">無威脅</td><td>ASML 主導</td></tr>
+  </table>
+  <p style="font-size:14px;margin-top:8px">結論：ASML 短期安全（3-5 年），但奈米壓印值得長期追蹤。</p>
+</div>
+
+<div class="card">
+  <div class="cardTitle">🔗 利潤池移動分析</div>
+  <table class="tbl">
+    <tr><th>環節</th><th>模組化程度</th><th>利潤集中度</th><th>投資意義</th></tr>
+    <tr><td>光刻機整機</td><td>極度整合</td><td class="up">ASML 獨佔</td><td>核心持股</td></tr>
+    <tr><td>EUV 光源</td><td>已被 ASML 整合（收購 Cymer）</td><td class="up">已捕獲</td><td>已無獨立投資機會</td></tr>
+    <tr><td>光罩 (Mask)</td><td class="warn">下一波瓶頸</td><td class="warn">上升中</td><td>尋找光罩相關受益者</td></tr>
+    <tr><td>光阻材料</td><td>半模組化</td><td>中等</td><td>JSR, TOK 等</td></tr>
+    <tr><td>檢測設備</td><td>整合瓶頸</td><td class="up">KLA 等寡佔</td><td>製程複雜度提升 = 檢測需求增加</td></tr>
+  </table>
+</div>
+
+<div class="card">
+  <div class="cardTitle">💰 估值校準</div>
+  <table class="tbl">
+    <tr><th>因素</th><th>判斷</th><th>估值影響</th></tr>
+    <tr><td>技術位階</td><td>Specific Phase</td><td class="up">PE / DCF 可行，穩定可預測</td></tr>
+    <tr><td>破壞風險</td><td>3-5 年低風險</td><td class="up">不需大幅折價</td></tr>
+    <tr><td>長期破壞</td><td>5-10 年有奈米壓印風險</td><td class="warn">終端價值需保守假設</td></tr>
+    <tr><td>利潤池位置</td><td>獨佔整合瓶頸</td><td class="up">享有壟斷溢價</td></tr>
+  </table>
+</div>
+
+<div class="verdict">
+  <div class="vTitle">📋 EUV 案例結論</div>
+  <p>ASML 處於 Specific Phase 的壟斷位置，短期無破壞威脅。估值可用傳統 DCF，但長期終端價值需為奈米壓印等替代技術折價。光罩環節是下一個結構性受益點。</p>
+  <p style="color:var(--muted);font-size:13px;margin-top:8px">（註：此為框架示範，非投資建議。實際投資決策需搭配完整數據分析。）</p>
+</div>
+</section>
+
+<!-- SECTION 9: References -->
+<section id="s9">
+<h1>參考書目與來源</h1>
+
+<div class="card">
+  <div class="cardTitle">📚 核心文獻</div>
+  <table class="tbl">
+    <tr><th>#</th><th>書名</th><th>作者</th><th>年份</th><th>核心貢獻</th></tr>
+    <tr><td>1</td><td>Mastering the Dynamics of Innovation</td><td>James M. Utterback</td><td>1994</td><td>三階段模型、主導設計、技術斷裂</td></tr>
+    <tr><td>2</td><td>The Innovator's Dilemma</td><td>Clayton M. Christensen</td><td>1997</td><td>破壞式創新理論、不對稱動機</td></tr>
+    <tr><td>3</td><td>The Innovator's Solution</td><td>Christensen &amp; Raynor</td><td>2003</td><td>破壞策略、價值鏈演化、JTBD</td></tr>
+  </table>
+</div>
+
+<div class="card">
+  <div class="cardTitle">🔗 關聯技能</div>
+  <table class="tbl">
+    <tr><th>Hermes Skill</th><th>用途</th></tr>
+    <tr><td><code>equity-research-framework</code></td><td>個股 10-step 基本面分析（本框架為其補充）</td></tr>
+    <tr><td><code>competitive-positioning</code></td><td>Porter 五力分析（產業結構層面）</td></tr>
+    <tr><td><code>deep-moat-analysis</code></td><td>護城河評估（技術面護城河對應）</td></tr>
+    <tr><td><code>top-down-framework</code></td><td>宏觀 → 產業 → 個股選擇（技術位階為產業選擇層輸入）</td></tr>
+  </table>
+</div>
+
+<div class="callout">
+  <strong>📖 所有原文書籍已下載至：</strong><br>
+  <code>/opt/data/research_materials/welib/</code><br>
+  包括 Utterback (1996)、Christensen Dilemma (1997)、Christensen Solution (2021)、Marcus 技術的潛能 (2017)、Fleisher Business &amp; Competitive Analysis (2007)
+</div>
+
+<div class="callout" style="margin-top:24px;border-color:var(--dim)">
+  <p style="font-size:13px;color:var(--muted)">最後更新：2026-06-15<br>
+  由 Hermes Agent (Nous Research) 從原文書籍提取並整合<br>
+  喵布林研究系統 — 技術演進分析模組</p>
+</div>
+</section>
+
+</main>
+</div>
+
+<script>
+// Navigation sync (desktop sidebar + mobile tabs)
+document.querySelectorAll('.navItem').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const section = btn.dataset.section;
+    document.querySelectorAll('.navItem').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll(`.navItem[data-section="${section}"]`).forEach(b => b.classList.add('active'));
+    document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
+    const target = document.getElementById(section);
+    if (target) target.classList.add('active');
+    if (window.innerWidth <= 768) {
+      btn.scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'});
+    }
+  });
+});
+
+// Keyboard navigation
+document.addEventListener('keydown', e => {
+  const sections = ['s0','s1','s2','s3','s4','s5','s6','s7','s8','s9'];
+  const current = sections.findIndex(s => document.getElementById(s).classList.contains('active'));
+  if (e.key === 'ArrowDown' || e.key === 'ArrowRight') {
+    e.preventDefault();
+    const next = Math.min(current + 1, sections.length - 1);
+    document.querySelector(`.navItem[data-section="${sections[next]}"]`).click();
+  }
+  if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
+    e.preventDefault();
+    const prev = Math.max(current - 1, 0);
+    document.querySelector(`.navItem[data-section="${sections[prev]}"]`).click();
+  }
+});
+</script>
+</body>
+</html>
