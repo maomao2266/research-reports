@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>ASML — 護城河分析 | Step 6</title>
+<style>
+:root{--bg:#0a0e14;--surface:#131820;--card:#181f2a;--border:#252d3a;--ink:#e2e8f0;--muted:#7c8aa0;--dim:#4a5568;--accent:#60a5fa;--gold:#f59e0b;--green:#34d399;--red:#f87171;--orange:#fb923c;--purple:#a78bfa;--radius:14px;--sans:"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.7}
+.topbar{background:var(--surface);border-bottom:1px solid var(--border);padding:14px 24px;display:flex;align-items:center;gap:16px;position:sticky;top:0;z-index:100}
+.topbar .logo{font-size:18px;font-weight:700;color:var(--accent)}
+.topbar .badge{font-size:11px;background:var(--card);color:var(--muted);padding:4px 10px;border-radius:20px}
+.layout{display:flex;min-height:calc(100vh-57px)}
+.sidebar{width:220px;background:var(--surface);border-right:1px solid var(--border);padding:16px 0;position:sticky;top:57px;height:calc(100vh-57px);overflow-y:auto;flex-shrink:0}
+.navItem{display:block;width:100%;padding:10px 20px;font-size:13px;color:var(--muted);background:none;border:none;text-align:left;cursor:pointer;font-family:var(--sans);transition:all .15s;border-left:3px solid transparent}
+.navItem:hover{color:var(--ink);background:var(--card)}
+.navItem.active{color:var(--accent);background:rgba(96,165,250,.08);border-left-color:var(--accent);font-weight:600}
+.content{flex:1;padding:32px;max-width:960px}
+section{display:none} section.active{display:block}
+h2{font-size:22px;margin-bottom:8px} h3{font-size:16px;color:var(--accent);margin:20px 0 10px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px 24px;margin-bottom:16px}
+.cardTitle{font-size:15px;font-weight:600;margin-bottom:12px}
+.tbl{width:100%;border-collapse:collapse;margin:12px 0;font-size:13px}
+.tbl th{text-align:left;color:var(--muted);font-size:11px;text-transform:uppercase;padding:8px 12px;border-bottom:1px solid var(--border)}
+.tbl td{padding:10px 12px;border-bottom:1px solid var(--border);color:var(--ink)}
+.tbl tr:last-child td{border-bottom:none}
+.up{color:var(--green)} .down{color:var(--red)} .warn{color:var(--orange)}
+.metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin:16px 0}
+.metric{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px;text-align:center}
+.metric .val{font-size:22px;font-weight:700;color:var(--ink)}
+.metric .val.g{color:var(--green)}
+.metric .lbl{font-size:11px;color:var(--muted);margin-top:4px}
+.callout{border-left:3px solid;border-radius:0 var(--radius) var(--radius) 0;padding:14px 18px;margin:16px 0;background:var(--surface);font-size:13px}
+.callout.red{border-color:var(--red)} .callout.gold{border-color:var(--gold)} .callout.green{border-color:var(--green)} .callout.purple{border-color:var(--purple)}
+.pillRow{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0}
+.pill{font-size:11px;padding:4px 10px;border-radius:20px;font-weight:600}
+.pill.g{background:rgba(52,211,153,.15);color:var(--green)} .pill.r{background:rgba(248,113,113,.15);color:var(--red)}
+.pill.b{background:rgba(96,165,250,.15);color:var(--accent)} .pill.o{background:rgba(251,146,60,.15);color:var(--orange)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.verdict{background:linear-gradient(135deg,rgba(52,211,153,.08),rgba(96,165,250,.06));border:1px solid rgba(52,211,153,.2);border-radius:var(--radius);padding:24px;margin-top:24px}
+.verdict h2{color:var(--green);margin-bottom:12px}
+.verdict td{padding:8px 12px;font-size:14px;color:var(--ink)}
+.verdict td:first-child{color:var(--muted);font-size:12px;width:160px}
+</style>
+</head>
+<body>
+<div class="topbar"><span class="logo">🔬 ASML</span><span class="badge">STEP 6 · 護城河分析</span></div>
+<div class="layout">
+<nav class="sidebar">
+  <button class="navItem active" data-section="s1">📌 FSA 定位</button>
+  <button class="navItem" data-section="s2">🏛️ VECTOR 制度化</button>
+  <button class="navItem" data-section="s3">🔬 VRIN 耐久性</button>
+  <button class="navItem" data-section="s4">💰 ROIC 量化</button>
+  <button class="navItem" data-section="s5">🔄 SST 動態能力</button>
+  <button class="navItem" data-section="s6">📈 護城河軌跡</button>
+  <button class="navItem" data-section="s7">📋 Verdict</button>
+</nav>
+<main class="content">
+
+<section id="s1" class="active">
+<h2>📌 Layer 1: FSA 定位 — 價值鏈視角</h2>
+<p style="color:var(--muted);margin-bottom:20px">框架：Porter (1985); Grant Ch.5,7; IB7018 W4</p>
+
+<div class="card">
+  <div class="cardTitle">FSA 精確定位</div>
+  <p><strong>FSA 所在：營運（Operations）— EUV 系統整合能力</strong></p>
+  <p style="margin-top:12px">ASML 的核心 FSA 不是「有 EUV 技術」，而是<strong>全球唯一能整合光源（Trumpf）、光學（Zeiss）、真空系統、精密機械、和軟體控制成為可量產 EUV 光刻機的能力</strong>。零組件來自數百家供應商，但只有 ASML 能把這些整合成一台 €3.5 億、精度達原子級別的設備。</p>
+</div>
+
+<div class="card">
+  <div class="cardTitle">三道隔離機制 — 為什麼無法複製？</div>
+  <table class="tbl">
+    <tr><th>機制</th><th>定義</th><th>ASML 證據</th></tr>
+    <tr><td><strong>路徑依賴</strong></td><td>歷史選擇創造不可逆優勢</td><td>1997 年 EUV 研發啟動時的技術路線選擇；2012 年客戶共投計畫綁定 TSMC/Intel/Samsung；30 年與 Zeiss 的共生關係 — 這些歷史節點無法重現</td></tr>
+    <tr><td><strong>社會複雜性</strong></td><td>關係、信任、文化</td><td>ASML-Zeiss 關係不只是合約，而是數十年工程師層級的深度協作；ASML 工程師駐廠 Zeiss，共同解決光學難題。金錢買不到這種信任</td></tr>
+    <tr><td><strong>因果模糊性</strong></td><td>競爭者搞不清為何你贏</td><td>外界知道 ASML 有 EUV，但<strong>不知道系統整合的具體 know-how</strong> — 哪些參數需要如何調校、光源與光學的交互作用如何優化。這些甚至 ASML 內部也難以完全書面化</td></tr>
+  </table>
+</div>
+
+<div class="callout green">
+  <strong>🔑 W4 Strategy Memo 格式：</strong>ASML 的 FSA 存在於<strong>營運（EUV 系統整合）</strong>，受<strong>路徑依賴（30 年 Zeiss 共生 + 客戶共投鎖定）</strong>保護。因為 EUV 整合的 know-how 是累積數十年的隱性知識，即使有無限資金也無法在 10 年內重建。
+</div>
+</section>
+
+<section id="s2">
+<h2>🏛️ Layer 2: VECTOR 制度化評估</h2>
+<p style="color:var(--muted);margin-bottom:20px">框架：Hatam et al. (2023), McKinsey; IB7018 W4</p>
+
+<div class="card">
+  <div class="cardTitle">六維度制度化評分（1-5，5=制度化等級）</div>
+  <table class="tbl">
+    <tr><th>維度</th><th>分數</th><th>證據</th></tr>
+    <tr><td><strong>V</strong>ision</td><td class="up">5</td><td>2030 年營收 €44-60B、GM 56-60% 清晰目標；歷任 CEO 策略連續性極高</td></tr>
+    <tr><td><strong>E</strong>mployees</td><td class="up">5</td><td>39,000 員工中高比例 PhD/工程師；CTO 內部晉升（25 年資歷）；Eindhoven 人才聚落</td></tr>
+    <tr><td><strong>C</strong>ulture</td><td class="up">4</td><td>「做不到就別承諾」的荷蘭工程文化；法說會坦承不確定性而非美化</td></tr>
+    <tr><td><strong>T</strong>echnology</td><td class="up">5</td><td>EUV 全球唯一供應商；R&D €4.7B/年；High NA EUV 已出貨；Zeiss 獨家光學</td></tr>
+    <tr><td><strong>O</strong>rganization</td><td class="up">4</td><td>EUV/DUV/服務三大事業部清晰；新任 CEO 從 EUV 內部晉升確保連續性</td></tr>
+    <tr><td><strong>R</strong>outines</td><td class="up">5</td><td>每季法說會透明更新進度；EUV 生產流程已標準化至 220-230 wph；High NA 成熟度追蹤制度化</td></tr>
+  </table>
+</div>
+
+<div class="metrics">
+  <div class="metric"><div class="val g">28</div><div class="lbl">VECTOR 總分 (滿分 30)</div></div>
+  <div class="metric"><div class="val g">制度化</div><div class="lbl">等級判定</div></div>
+</div>
+
+<div class="callout green">
+  <strong>✅ VECTOR 28/30 = 高度制度化。</strong>ASML 的 EUV 能力已嵌入組織而非依賴個人。即使核心工程師離職，製程 know-how 已透過 Routines（標準化流程、品質系統）和 Technology（專利+設備）制度化。競爭者無法「買」到這個能力 — 必須花 30 年重建。
+</div>
+</section>
+
+<section id="s3">
+<h2>🔬 Layer 3: VRIN 耐久性 + 隔離機制</h2>
+<p style="color:var(--muted);margin-bottom:20px">框架：Barney (1991); Grant Ch.5; IB7018 W4</p>
+
+<div class="card">
+  <div class="cardTitle">VRIN 五項測試</div>
+  <table class="tbl">
+    <tr><th>測試</th><th>判斷</th><th>關鍵證據 + 隔離機制</th></tr>
+    <tr><td><strong>V</strong>aluable</td><td class="up">✓ 是</td><td>EUV 是 7nm 以下晶片製造的必要條件。€32.7B 營收 + 52.8% GM 證明價值。</td></tr>
+    <tr><td><strong>R</strong>are</td><td class="up">✓ 極稀有</td><td><strong>全球唯一供應商。</strong>Nikon/Canon 退出 EUV 競賽。無第二名存在。</td></tr>
+    <tr><td><strong>I</strong>nimitable</td><td class="up">✓ 極難模仿</td><td><strong>路徑依賴：</strong>30 年研發無法壓縮。<strong>社會複雜性：</strong>Zeiss 共生關係。<strong>時間壓縮不經濟：</strong>10x 資金無法加速學習曲線。</td></tr>
+    <tr><td><strong>N</strong>on-substitutable</td><td class="up">✓ 無替代</td><td>奈米壓印僅限 NAND 特定層；Chiplet 可降低但不消除 EUV 需求；無技術可達 EUV 解析度</td></tr>
+    <tr><td><strong>O</strong>rganized</td><td class="up">✓ 是</td><td>組織結構清晰（EUV/DUV/服務）；激勵機制（R&D 投資 + 客戶共投）；FCF €11.1B 支援持續投資</td></tr>
+  </table>
+</div>
+
+<div class="card">
+  <div class="cardTitle">六道隔離機制 — 為何模仿不可能</div>
+  <table class="tbl">
+    <tr><th>機制</th><th>ASML 具體表現</th></tr>
+    <tr><td><strong>因果模糊</strong></td><td>EUV 系統整合的參數調校 know-how 無法從成品逆向工程。外界甚至 ASML 內部也難以完全書面化</td></tr>
+    <tr><td><strong>社會複雜</strong></td><td>ASML-Zeiss 工程師層級深度協作 30 年；客戶共投計畫建立的信任關係（TSMC/Intel/Samsung）</td></tr>
+    <tr><td><strong>路徑依賴</strong></td><td>1997 EUV 研發啟動 → 2012 客戶共投 → 2018 首台量產，每個歷史節點無法重現</td></tr>
+    <tr><td><strong>隱性知識</strong></td><td>數萬工程師人年的 EUV know-how，存在於人的腦中而非手冊</td></tr>
+    <tr><td><strong>時間壓縮不經濟</strong></td><td>即使投入 €500 億也無法在 10 年內重建 EUV 能力 — 學習曲線無法用金錢加速</td></tr>
+    <tr><td><strong>智財保護</strong></td><td>雖基礎 EUV 專利已過期，但製程 trade secret + 荷蘭/美國出口管制提供額外保護</td></tr>
+  </table>
+</div>
+
+<div class="card">
+  <div class="cardTitle">Sonkin & Johnson 可持續性條件</div>
+  <table class="tbl">
+    <tr><th>條件</th><th>ASML 證據</th></tr>
+    <tr><td><strong>客戶端優勢</strong></td><td class="up">✓ 搜尋成本極高（無替代供應商）+ 轉換成本極高（認證 3-5 年）+ 品牌等同 EUV</td></tr>
+    <tr><td><strong>規模優勢</strong></td><td class="up">✓ R&D €4.7B 分攤至 50+ EUV 台/年，任何潛在競爭者無法匹敵</td></tr>
+    <tr><td><strong>互相強化</strong></td><td class="up">✓ 更多 EUV 裝機 → 更多服務收入 → 更多 R&D 資金 → 技術差距擴大 → 更多客戶鎖定</td></tr>
+  </table>
+  <p style="font-size:12px;color:var(--muted);margin-top:8px">Sonkin & Johnson (2017) Ch3：同時具備客戶端+規模優勢且互相強化 = 可持續競爭優勢。</p>
+</div>
+</section>
+
+<section id="s4">
+<h2>💰 Layer 3a: ROIC 量化 — 護城河的經濟足跡</h2>
+<p style="color:var(--muted);margin-bottom:20px">框架：Sonkin & Johnson (2017) Ch3; IB7018 W4</p>
+
+<div class="card">
+  <div class="cardTitle">超額回報計算</div>
+  <table class="tbl">
+    <tr><th>指標</th><th>FY2024</th><th>FY2025</th></tr>
+    <tr><td>營業利益 (EBIT)</td><td>€9.0B</td><td>€11.3B</td></tr>
+    <tr><td>有效稅率</td><td>18.6%</td><td>17.6%</td></tr>
+    <tr><td><strong>NOPAT</strong></td><td>€7.3B</td><td class="up"><strong>€9.3B</strong></td></tr>
+    <tr><td>股東權益</td><td>€18.5B</td><td>€19.6B</td></tr>
+    <tr><td>長期負債</td><td>€4.7B</td><td>€4.4B</td></tr>
+    <tr><td><strong>投入資本</strong></td><td>€23.2B</td><td>€24.0B</td></tr>
+    <tr><td><strong>ROIC</strong></td><td>31.6%</td><td class="up"><strong>38.8%</strong></td></tr>
+    <tr><td>WACC (估算)</td><td>~9%</td><td>~9%</td></tr>
+    <tr><td><strong>超額回報 (%)</strong></td><td>22.6%</td><td class="up"><strong>29.8%</strong></td></tr>
+    <tr><td><strong>超額回報 (€B)</strong></td><td>€5.2B</td><td class="up"><strong>€7.2B</strong></td></tr>
+  </table>
+</div>
+
+<div class="metrics">
+  <div class="metric"><div class="val g">38.8%</div><div class="lbl">ROIC (2025)</div></div>
+  <div class="metric"><div class="val g">29.8%</div><div class="lbl">超額回報率</div></div>
+  <div class="metric"><div class="val g">€7.2B</div><div class="lbl">超額回報 (€)</div></div>
+</div>
+
+<div class="callout green">
+  <strong>🏆 ROIC 38.8%，超額回報 29.8%。</strong>這在全球上市公司中名列前茅。根據 Sonkin & Johnson 七情境架構，ASML 處於 Scenario 7 — <strong>成長創造價值</strong>（ROIC > WACC + 持續成長）。每增加 €1 投入資本，創造 €0.30+ 超額回報。
+</div>
+</section>
+
+<section id="s5">
+<h2>🔄 Layer 4: SST 動態能力</h2>
+<p style="color:var(--muted);margin-bottom:20px">框架：Teece (2007), SMJ; IB7018 W6</p>
+
+<div class="card">
+  <div class="cardTitle">ASML 能否在競爭者追上之前自我革新？</div>
+  <table class="tbl">
+    <tr><th>能力</th><th>定義</th><th>ASML 證據</th><th>評分</th></tr>
+    <tr><td><strong>Sensing</strong></td><td>感知新威脅/機會</td><td>Mistral AI 投資（€1.3B）預判 AI 對光刻的影響；XT:260 抓住 3D 整合趨勢；20-F 風險因素中新增 AI 風險類別</td><td class="up">4</td></tr>
+    <tr><td><strong>Seizing</strong></td><td>動員資源抓住機會</td><td>High NA EUV 從研發到 Intel 首台量產機僅數年；XT:260 從概念到出貨首台系統快速</td><td class="up">4</td></tr>
+    <tr><td><strong>Transforming</strong></td><td>重新配置資產/組織</td><td>CEO 平穩過渡（Wennink→Fouquet）；CTO 內部晉升；組織調整伴隨技術世代演進</td><td class="up">4</td></tr>
+  </table>
+</div>
+
+<div class="callout purple">
+  <strong>🔮 SST 總評：</strong>ASML 的動態能力中上（12/15）。最大優勢是 Sensing（能提前數年佈局下一代技術），最大考驗是 Transforming — 當 EUV 不再是唯一增長引擎時（可能 2035+），組織能否順利轉型？目前尚無答案，但也有 10 年緩衝。
+</div>
+</section>
+
+<section id="s6">
+<h2>📈 Layer 5: 護城河軌跡</h2>
+
+<div class="card">
+  <div class="cardTitle">軌跡判斷：Widening 🟢</div>
+  <table class="tbl">
+    <tr><th>指標</th><th>方向</th><th>證據</th></tr>
+    <tr><td>市場份額</td><td class="up">擴大</td><td>EUV 零競爭；High NA 進一步拉開差距；Nikon/Canon 萎縮</td></tr>
+    <tr><td>技術差距</td><td class="up">擴大</td><td>High NA EUV 出貨，下一代 Hyper NA 研發中；競爭者無 EUV 路線圖</td></tr>
+    <tr><td>ROIC 趨勢</td><td class="up">改善</td><td>31.6% → 38.8%，超額回報從 €5.2B → €7.2B</td></tr>
+    <tr><td>客戶鎖定</td><td class="up">深化</td><td>安裝基礎 €8.2B 服務收入持續增長；EUV 裝機量擴大鎖定未來服務流</td></tr>
+    <tr><td>競爭者動向</td><td class="up">撤退</td><td>Nikon/Canon 退出 EUV 競賽；中國自主光刻機落後 10-15 年</td></tr>
+  </table>
+</div>
+
+<div class="callout green">
+  <strong>🟢 護城河正在擴大，非靜止。</strong>每一年過去，ASML 的 EUV 裝機量增加 → 服務收入擴大 → R&D 預算增加 → 下一代技術差距拉大 → 客戶更難離開。這是教科書級的複利式護城河強化。
+</div>
+</section>
+
+<section id="s7">
+<h2>📋 Verdict：護城河評估結論</h2>
+
+<div class="verdict">
+  <table>
+    <tr><td style="width:180px">護城河等級</td><td style="color:var(--green);font-size:18px"><strong>A（堡壘級 Fortress）</strong></td></tr>
+    <tr><td>耐久性</td><td class="up"><strong>15+ 年</strong> — 短期無任何已知威脅可撼動 EUV 壟斷</td></tr>
+    <tr><td>ROIC</td><td class="up"><strong>38.8%</strong> — 超額回報 29.8%（€7.2B/年）</td></tr>
+    <tr><td>VECTOR 制度化</td><td class="up"><strong>28/30</strong> — 能力已嵌入組織，非依賴個人</td></tr>
+    <tr><td>VRIN</td><td class="up"><strong>五項全通過</strong>，六道隔離機制同時作用</td></tr>
+    <tr><td>SST 動態能力</td><td class="up"><strong>12/15</strong> — 能感知並抓住下一波機會</td></tr>
+    <tr><td>軌跡</td><td class="up"><strong>Widening 🟢</strong> — 護城河正在擴大</td></tr>
+    <tr><td>最大脆弱點</td><td class="warn">Zeiss 供應鏈單點故障風險 — ASML 不擁有光學系統製造能力</td></tr>
+    <tr><td>市場可能忽略的</td><td>ASML 護城河不是「有 EUV 而已」，而是<strong>30 年形成的複合式隔離體系</strong>— 路徑依賴 × 社會複雜 × 隱性知識 × 客戶鎖定 × 規模經濟 — 五道機制同時作用，任何單一機制的失效都不會摧毀護城河</td></tr>
+  </table>
+</div>
+
+<div class="grid2" style="margin-top:16px">
+  <div class="callout green">
+    <strong>✅ 護城河優勢</strong>
+    <ul style="margin-top:8px;font-size:13px">
+      <li>ROIC 38.8% 全球頂級</li>
+      <li>VECTOR 28/30 高度制度化</li>
+      <li>六道隔離機制同時作用</li>
+      <li>護城河呈複利式擴大</li>
+    </ul>
+  </div>
+  <div class="callout gold">
+    <strong>⚠️ 脆弱點</strong>
+    <ul style="margin-top:8px;font-size:13px">
+      <li>Zeiss 光學獨家依賴</li>
+      <li>10+ 年後技術 discontinuities</li>
+      <li>地緣政治（台海）黑天鵝</li>
+    </ul>
+  </div>
+</div>
+</section>
+
+</main>
+</div>
+<script>
+document.querySelectorAll('.navItem').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('.navItem').forEach(b=>b.classList.remove('active'));
+    document.querySelectorAll('.navItem[data-section="'+btn.dataset.section+'"]').forEach(b=>b.classList.add('active'));
+    document.querySelectorAll('section').forEach(s=>s.classList.remove('active'));
+    document.getElementById(btn.dataset.section).classList.add('active');
+  });
+});
+</script>
+</body>
+</html>
