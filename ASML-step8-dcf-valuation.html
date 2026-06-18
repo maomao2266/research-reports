@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ASML Step 8 — DCF 估值 | 2026-06-18</title>
+<title>ASML Step 8 — DCF 估值 | 2026-06-18 (更新市價)</title>
 <style>
   :root {
     --bg: #0d1117; --card: #161b22; --border: #30363d;
@@ -190,7 +190,7 @@
         <div style="margin-top:0.8rem; padding:0.5rem; background:rgba(248,81,73,0.1); border-radius:4px; text-align:center;">
           <div style="font-size:1.4rem; font-weight:700; color:var(--red);">€379</div>
           <div style="font-size:0.75rem; color:var(--muted);">本益比 15.2x</div>
-          <div style="font-size:0.7rem; color:var(--red);">−44% vs 市價</div>
+          <div style="font-size:0.7rem; color:var(--red);">−77% vs 市價 €1,682</div>
         </div>
       </div>
     </div>
@@ -204,7 +204,7 @@
         <div style="margin-top:0.8rem; padding:0.5rem; background:rgba(88,166,255,0.1); border-radius:4px; text-align:center;">
           <div style="font-size:1.4rem; font-weight:700; color:var(--accent);">€608</div>
           <div style="font-size:0.75rem; color:var(--muted);">本益比 24.3x</div>
-          <div style="font-size:0.7rem; color:var(--orange);">−11% vs 市價</div>
+          <div style="font-size:0.7rem; color:var(--red);">−64% vs 市價 €1,682</div>
         </div>
       </div>
     </div>
@@ -218,7 +218,7 @@
         <div style="margin-top:0.8rem; padding:0.5rem; background:rgba(63,185,80,0.1); border-radius:4px; text-align:center;">
           <div style="font-size:1.4rem; font-weight:700; color:var(--green);">€846</div>
           <div style="font-size:0.75rem; color:var(--muted);">本益比 33.8x</div>
-          <div style="font-size:0.7rem; color:var(--green);">+24% vs 市價</div>
+          <div style="font-size:0.7rem; color:var(--red);">−50% vs 市價 €1,682</div>
         </div>
       </div>
     </div>
@@ -228,30 +228,30 @@
 <!-- ====== 敏感度分析 ====== -->
 <h2>敏感度分析：WACC × 終端成長率</h2>
 <div class="card">
-  <p style="margin-bottom:1rem;">使用<strong>基本情境</strong>的營收／利潤率軌跡。數值為<strong>每股歐元</strong>。<span class="up">綠色</span> = 高於市價，<span class="down">紅色</span> = 低於市價。<span style="color:var(--orange);">橘色標記</span> = 最接近目前市價（€680）。</p>
+  <p style="margin-bottom:1rem;">使用<strong>基本情境</strong>的營收／利潤率軌跡。數值為<strong>每股歐元</strong>。<span class="up">綠色</span> = 高於市價，<span class="down">紅色</span> = 低於市價。<strong>目前市價 €1,682</strong>（2026-06-18 Euronext Amsterdam）——全表皆為紅色，無一格點接近。</p>
   <div class="sens-grid">
     <table>
       <tr><th>WACC ↓ / g →</th><th>2.0%</th><th>2.5%</th><th>3.0%</th><th>3.5%</th></tr>
       <tr>
         <td><strong>7.0%</strong></td>
-        <td class="above">€691</td>
-        <td class="above">€755</td>
-        <td class="above">€835</td>
-        <td class="above">€938</td>
+        <td class="below">€691</td>
+        <td class="below">€755</td>
+        <td class="below">€835</td>
+        <td class="below">€938</td>
       </tr>
       <tr>
         <td><strong>7.5%</strong></td>
         <td class="below">€628</td>
-        <td class="at-market">€680</td>
-        <td class="above">€743</td>
-        <td class="above">€821</td>
+        <td class="below">€680</td>
+        <td class="below">€743</td>
+        <td class="below">€821</td>
       </tr>
       <tr>
         <td><strong>8.0%</strong></td>
         <td class="below">€576</td>
         <td class="below">€618</td>
         <td class="below">€668</td>
-        <td class="above">€730</td>
+        <td class="below">€730</td>
       </tr>
       <tr>
         <td><strong>8.5% ⬤</strong></td>
@@ -280,10 +280,10 @@
   <h3 style="margin-top:1.5rem;">矩陣特徵</h3>
   <div class="grid-2">
     <div style="padding:0.8rem; background:#1c2128; border-radius:6px;">
-      <strong>對稱性：</strong>10/24 高於市價，14/24 低於市價——<span class="warn">略微偏空</span>（基本假設下）。健康的分佈；並非全部為綠色（若全為綠色則表示模型有誤）。
+      <strong>對稱性：</strong>0/24 高於市價，24/24 低於市價——<span class="down">極端偏離。</span>即使是 WACC 7.0% + g 3.5% 的最樂觀方格（€938）也僅達市價的 56%。市價 €1,682 落在敏感度矩陣之外。
     </div>
     <div style="padding:0.8rem; background:#1c2128; border-radius:6px;">
-      <strong>市場隱含 WACC：</strong>在 g = 2.5% 時，市價 €680 隱含 WACC 約 <strong>7.5%</strong>——與 ASML 護城河降低系統性風險的觀點一致。
+      <strong>市價完全脫離 DCF：</strong>全表最高值 €938，距市價仍有 44% 差距。需要 WACC 低於 5% 或終端成長超過 5% 才能觸及 €1,682——這些假設無經濟學基礎。
     </div>
   </div>
 </div>
@@ -364,6 +364,33 @@
   </div>
 </div>
 
+<!-- ====== DCF 反推 ====== -->
+<h2>DCF 反推：市價 €1,682 隱含什麼？</h2>
+<div class="card">
+  <p>當 DCF 全表低於市價時，我們反向計算：<strong>市價需要什麼假設才能成立？</strong></p>
+  <table>
+    <tr><th>WACC</th><th>終端成長</th><th>所需 2030E 營收</th><th>隱含 CAGR</th><th>合理性</th></tr>
+    <tr style="background:rgba(248,81,73,0.05);">
+      <td>8.5%</td><td>3.0%</td><td><strong>€1,780 億</strong></td><td><span class="down">40%</span></td><td><span class="down">❌ 不可能</span></td>
+    </tr>
+    <tr style="background:rgba(248,81,73,0.05);">
+      <td>7.5%</td><td>3.5%</td><td><strong>€1,270 億</strong></td><td><span class="down">31%</span></td><td><span class="down">❌ 極不可能</span></td>
+    </tr>
+    <tr style="background:rgba(248,81,73,0.05);">
+      <td>6.5%</td><td>3.5%</td><td><strong>€1,030 億</strong></td><td><span class="down">26%</span></td><td><span class="down">❌ 幾乎不可能</span></td>
+    </tr>
+    <tr style="background:rgba(210,153,29,0.05);">
+      <td>5.5%</td><td>3.5%</td><td><strong>€890 億</strong></td><td><span class="warn">22%</span></td><td><span class="warn">⚠ 不切實際</span></td>
+    </tr>
+  </table>
+  <p style="margin-top:0.8rem; font-size:0.85rem;">
+    <strong>參考：</strong>2025 年全球半導體設備市場約 <strong>€1,000 億</strong>。ASML 市佔約 30%。要做到 €1,030-1,780 億營收，ASML 必須吃掉整個 WFE 市場甚至更多——這在產業結構上不可能。
+  </p>
+  <p style="margin-top:0.5rem; font-size:0.85rem; color:var(--muted);">
+    即使採用不合理的超低 WACC（5.5%）和偏高終端成長（3.5%），也需要 22% CAGR 到 €890 億——意味著 ASML 在五年內從 30% 市佔躍升至 ~80%。這需要 Nikon/Canon 退出市場、中國國產微影失敗、且所有先進節點只用 ASML 設備。
+  </p>
+</div>
+
 <!-- ====== 健全性檢查 ====== -->
 <h2>健全性檢查</h2>
 <div class="card">
@@ -372,14 +399,14 @@
     <tr>
       <td>① 市價校準</td>
       <td>市價 ±30% 範圍內</td>
-      <td>€608 vs €680（−11%）</td>
-      <td><span class="up">✓ 通過</span></td>
+      <td>€608 vs €1,682（−64%）</td>
+      <td><span class="down">✗ 嚴重偏離</span></td>
     </tr>
     <tr>
       <td>② 敏感度矩陣對稱性</td>
       <td>40-60% 在上，40-60% 在下</td>
-      <td>42% 在上，58% 在下</td>
-      <td><span class="up">✓ 通過</span></td>
+      <td>全表低於市價 44-77%</td>
+      <td><span class="down">✗ 市價在矩陣之外</span></td>
     </tr>
     <tr>
       <td>③ TV/EV 比率</td>
@@ -390,8 +417,8 @@
     <tr>
       <td>④ 隱含本益比 vs 同業</td>
       <td>同業中位數 ±50% 範圍內</td>
-      <td>24.3x vs 22x 半導體設備</td>
-      <td><span class="up">✓ 通過</span></td>
+      <td>24.3x vs 市場 67x</td>
+      <td><span class="down">✗ 市場本益比異常</span></td>
     </tr>
     <tr>
       <td>⑤ 終端成長率 vs GDP</td>
@@ -407,33 +434,35 @@
     </tr>
   </table>
   <p style="margin-top:0.8rem; font-size:0.85rem; color:var(--muted);">
-    ⚠ <strong>TV/EV 達 80.2%</strong> 處於可接受範圍的上限。這對高品質、寬護城河的複合成長股而言屬常見現象——近期 FCF 相對終端價值較小，因為公司為了成長而大量再投資。若將預測期延長至 10 年，此比率將會降低。
+    🔴 <strong>Hooke 的市價校準規則：</strong>若 DCF 與市價差距超過 ±30%，應優先懷疑假設錯誤。但經過完整驗證（見上方反推表），所有合理假設範圍內的結果都遠低於市價——市價需要無法在經濟上成立的假設才能支撐。這是<strong>市場過熱的強烈信號</strong>，而非模型錯誤。
   </p>
 </div>
 
 <!-- ====== 估值裁決 ====== -->
 <h2>DCF 估值裁決</h2>
 
-<div class="verdict verdict-neutral">
-  <h3 style="color:var(--accent); margin-top:0;">內在價值區間：€379 – €846（基本：€608）</h3>
-  <p style="margin-top:0.8rem;"><strong>市價：~€680</strong>——略高於基本情境，與市場採用 WACC ~7.5%、終端成長 ~2.5% 的假設一致。</p>
-  <p style="margin-top:0.5rem;">目前估值<strong>合理但不算便宜</strong>。在 €680 的價位，ASML 交易於 FY2025 本益比約 27 倍——護城河（Step 5/6）可以支撐此溢價，但在基本假設下的安全邊際有限。</p>
-  <p style="margin-top:0.5rem;">樂觀情境（€846，+24%）的實現需要：(a) CMD 給出樂觀的 2030 目標，或 (b) 市場將 ASML 從週期股重新評價為複合成長股。兩者均為可信的催化劑（見 Step 7）。</p>
+<div class="verdict verdict-bearish">
+  <h3 style="color:var(--red); margin-top:0;">🔴 嚴重高估 — 內在價值區間：€379 – €846（基本：€608）</h3>
+  <p style="margin-top:0.8rem;"><strong>目前市價：€1,682</strong>（2026-06-18 Euronext Amsterdam）——本益比 <strong>67x</strong> FY2025 EPS。</p>
+  <p style="margin-top:0.5rem;">即使在最樂觀的合理假設下（WACC 7.5%、2030 營收 €580 億、營益率 38%），DCF 也僅給出 <strong>€846</strong>——仍比市價低 <strong>50%</strong>。</p>
+  <p style="margin-top:0.5rem;">要支撐 €1,682，需要市場假設 ASML 在 2030 年營收達到 €890-1,780 億（目前整個半導體設備市場不過 €1,000 億）。這不是「樂觀」，是「不可能」。</p>
 
   <div class="grid-2" style="margin-top:1rem;">
     <div>
-      <strong>上行至樂觀：</strong><span class="up">+24%（€846）</span><br>
-      <strong>下行至悲觀：</strong><span class="down">−44%（€379）</span><br>
-      <strong>不對稱比率：</strong><span class="warn">0.55:1</span>（目前價位不具優勢）
+      <strong>DCF 基本：</strong><span class="down">€608（−64% vs 市價）</span><br>
+      <strong>DCF 樂觀：</strong><span class="down">€846（−50% vs 市價）</span><br>
+      <strong>DCF 悲觀：</strong><span class="down">€379（−77% vs 市價）</span>
     </div>
     <div>
-      <strong>機率加權：</strong><br>
-      40% 樂觀 × €846 = €338<br>
-      35% 基本 × €608 = €213<br>
-      25% 悲觀 × €379 = €95<br>
-      <strong>加權價值：€646</strong>（vs 市價 €680）
+      <strong>機率加權價值：€646</strong><br>
+      <strong>vs 市價 €1,682：</strong><span class="down">−62% 下行</span><br>
+      <strong>市場隱含情境：</strong><span class="down">無法在合理假設內達成</span>
     </div>
   </div>
+
+  <p style="margin-top:1rem; padding:0.8rem; background:rgba(248,81,73,0.08); border-radius:6px; border:1px solid rgba(248,81,73,0.2);">
+    <strong>⚠️ 估值警示：</strong>ASML 是我們分析過護城河最寬、品質最高的企業之一（Step 5/6），但再好的公司買在錯的價格就是錯的投資。目前市價已完全脫離基本面支撐，屬於<strong>純動能／情緒驅動</strong>的定價。本報告無法合理化目前市價。
+  </p>
 </div>
 
 <!-- ====== 已認知陷阱 ====== -->
@@ -533,15 +562,15 @@ function updateDCF() {
   const el = document.getElementById('dcf-result');
   el.textContent = '€' + perShare;
   const deltaEl = document.getElementById('dcf-delta');
-  const delta = Math.round((perShare / 680 - 1) * 100);
+  const delta = Math.round((perShare / 1682 - 1) * 100);
   if (delta > 0) {
-    deltaEl.innerHTML = '<span class="up">+' + delta + '% vs 市價（€680）</span>';
+    deltaEl.innerHTML = '<span class="up">+' + delta + '% vs 市價（€1,682）</span>';
     el.style.color = 'var(--green)';
   } else if (delta < 0) {
-    deltaEl.innerHTML = '<span class="down">' + delta + '% vs 市價（€680）</span>';
+    deltaEl.innerHTML = '<span class="down">' + delta + '% vs 市價（€1,682）</span>';
     el.style.color = 'var(--red)';
   } else {
-    deltaEl.innerHTML = '<span class="neutral">等於市價（€680）</span>';
+    deltaEl.innerHTML = '<span class="neutral">等於市價（€1,682）</span>';
     el.style.color = 'var(--accent)';
   }
   document.getElementById('tv-pct').textContent = 'TV/EV：' + tvPct + '%';
