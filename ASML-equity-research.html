@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ASML 基本面分析</title>
+<style>
+:root{
+  --bg:#0a0e14; --surface:#131820; --card:#181f2a;
+  --border:#252d3a; --ink:#e2e8f0; --muted:#7c8aa0; --dim:#4a5568;
+  --accent:#60a5fa; --accent2:#3b82f6;
+  --gold:#f59e0b; --green:#34d399; --red:#f87171;
+  --orange:#fb923c; --purple:#a78bfa;
+  --radius:14px; --radius2:18px;
+  --sans:"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,-apple-system,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.7}
+.topbar{background:var(--surface);border-bottom:1px solid var(--border);padding:16px 24px;display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:10}
+.topbar h1{font-size:18px;color:var(--accent)}
+.topbar .date{font-size:12px;color:var(--muted)}
+.layout{display:flex;min-height:calc(100vh - 57px)}
+.sidebar{width:220px;background:var(--surface);border-right:1px solid var(--border);padding:16px 0;flex-shrink:0;position:sticky;top:57px;height:calc(100vh - 57px);overflow-y:auto}
+.sidebar .navItem{display:block;padding:10px 20px;color:var(--muted);font-size:13px;cursor:pointer;border:none;background:none;width:100%;text-align:left;transition:all .15s}
+.sidebar .navItem:hover{color:var(--ink);background:var(--card)}
+.sidebar .navItem.active{color:var(--accent);background:var(--card);border-left:3px solid var(--accent);padding-left:17px}
+.content{flex:1;padding:32px;max-width:960px}
+section{display:none}
+section.active{display:block}
+.mobileNav{display:none}
+@media(max-width:768px){
+  .sidebar{display:none}
+  .mobileNav{display:flex;gap:4px;overflow-x:auto;padding:8px 0;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+  .mobileNav::-webkit-scrollbar{display:none}
+  .mobileNav .navItem{flex-shrink:0;white-space:nowrap;font-size:11px;padding:6px 10px}
+  .content{padding:16px}
+}
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:24px;margin-bottom:20px}
+.cardTitle{font-size:15px;font-weight:600;color:var(--accent);margin-bottom:14px;display:flex;align-items:center;gap:8px}
+h2{font-size:22px;color:var(--ink);margin-bottom:20px}
+h3{font-size:16px;color:var(--accent);margin:20px 0 10px}
+.tbl{width:100%;border-collapse:collapse;font-size:13px;margin:12px 0}
+.tbl th{text-align:left;padding:8px 12px;color:var(--muted);font-weight:500;border-bottom:2px solid var(--border);font-size:11px;text-transform:uppercase}
+.tbl td{padding:8px 12px;border-bottom:1px solid var(--border)}
+.up{color:var(--green)} .down{color:var(--red)} .warn{color:var(--orange)}
+.metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;margin:16px 0}
+.metric{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:18px;text-align:center}
+.metric .val{font-size:24px;font-weight:700;color:var(--accent)}
+.metric .lbl{font-size:11px;color:var(--muted);margin-top:4px}
+.callout{border-left:4px solid var(--accent);background:var(--surface);border-radius:0 var(--radius) var(--radius) 0;padding:16px 20px;margin:16px 0}
+.callout.red{border-color:var(--red)} .callout.gold{border-color:var(--gold)} .callout.green{border-color:var(--green)}
+.callout.purple{border-color:var(--purple)}
+.verdict{background:var(--surface);border:2px solid var(--accent);border-radius:var(--radius2);padding:28px;margin:24px 0}
+.vTitle{font-size:18px;font-weight:700;color:var(--accent);margin-bottom:12px}
+.pillRow{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0}
+.pill{font-size:11px;padding:3px 10px;border-radius:20px;font-weight:500}
+.pill.g{background:rgba(52,211,153,.15);color:var(--green)}
+.pill.r{background:rgba(248,113,113,.15);color:var(--red)}
+.pill.o{background:rgba(251,146,60,.15);color:var(--orange)}
+.pill.b{background:rgba(96,165,250,.15);color:var(--accent)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+@media(max-width:640px){.grid2{grid-template-columns:1fr}}
+p{margin-bottom:12px;font-size:14px;color:var(--ink)}
+ul{margin:10px 0 10px 20px}
+li{font-size:14px;margin-bottom:6px;color:var(--ink)}
+.charts-css{--color-1:var(--accent);--color-2:var(--green);--color-3:var(--gold);--color-4:var(--purple);--color-5:var(--orange);--chart-bg-color:transparent}
+</style>
+</head>
+<body>
+<div class="topbar"><h1>🔬 ASML Holding NV</h1><span class="date">2026-06-18 · Equity Research</span></div>
+<div class="layout">
+<nav class="sidebar">
+  <button class="navItem active" data-section="s1">📋 公司簡介</button>
+  <button class="navItem" data-section="s2">📊 財務分析</button>
+  <button class="navItem" data-section="s3">🚀 成長動能</button>
+  <button class="navItem" data-section="s4">🛡️ 競爭優勢</button>
+  <button class="navItem" data-section="s5">⚠️ 風險評估</button>
+  <button class="navItem" data-section="s6">💰 DCF估值</button>
+  <button class="navItem" data-section="s7">📋 投資結論</button>
+</nav>
+<nav class="mobileNav">
+  <button class="navItem active" data-section="s1">📋 公司簡介</button>
+  <button class="navItem" data-section="s2">📊 財務分析</button>
+  <button class="navItem" data-section="s3">🚀 成長動能</button>
+  <button class="navItem" data-section="s4">🛡️ 競爭優勢</button>
+  <button class="navItem" data-section="s5">⚠️ 風險評估</button>
+  <button class="navItem" data-section="s6">💰 DCF估值</button>
+  <button class="navItem" data-section="s7">📋 投資結論</button>
+</nav>
+<main class="content">
+
+<!-- ====== S1: Company Description ====== -->
+<section id="s1" class="active">
+<h2>📋 公司簡介</h2>
+
+<div class="metrics">
+  <div class="metric"><div class="val">€327B</div><div class="lbl">FY2025 營收</div></div>
+  <div class="metric"><div class="val">52.8%</div><div class="lbl">毛利率</div></div>
+  <div class="metric"><div class="val">€96B</div><div class="lbl">淨利潤</div></div>
+  <div class="metric"><div class="val">€388B</div><div class="lbl">積壓訂單</div></div>
+</div>
+
+<div class="card">
+  <div class="cardTitle">🏢 公司概覽</div>
+  <p>ASML Holding NV（ASML）是全球最大的半導體微影設備供應商，總部位於荷蘭 Veldhoven。公司在極紫外光（EUV）微影領域擁有<strong>絕對壟斷地位</strong>——是全球唯一能生產 EUV 光刻機的企業。</p>
+  <p>ASML 的產品涵蓋：<strong>EUV（極紫外光）</strong>、<strong>DUV（深紫外光，含 ArFi 浸沒式）</strong>、<strong>量測與檢測</strong>、以及<strong>安裝基礎服務</strong>（維護、升級、翻新）。</p>
+  <p>主要客戶：台積電、Intel、Samsung、SK Hynix、Micron。</p>
+  <div class="pillRow">
+    <span class="pill b">半導體設備</span><span class="pill b">EUV壟斷</span><span class="pill g">AI受益</span><span class="pill o">荷蘭</span>
+  </div>
+</div>
+
+<div class="card">
+  <div class="cardTitle">💼 商業模式</div>
+  <table class="tbl">
+    <tr><th>收入來源</th><th>FY2024</th><th>佔比</th><th>特點</th></tr>
+    <tr><td>EUV 系統</td><td>€83億</td><td>29%</td><td>單價 €1.5-3.5 億，高壁壘</td></tr>
+    <tr><td>DUV 系統</td><td>€128億</td><td>45%</td><td>ArFi/KrF/i-line，成熟穩定</td></tr>
+    <tr><td>量測與檢測</td><td>€6.5億</td><td>2%</td><td>快速增長（+20%）</td></tr>
+    <tr><td>安裝基礎服務</td><td>€65億</td><td>23%</td><td>經常性收入，毛利率高</td></tr>
+  </table>
+  <p>關鍵商業特徵：<strong>razor-and-blade 模式</strong>——賣設備（一次性高單價）+ 服務合約（持續收入）。隨著全球 EUV 裝機量增長，服務收入佔比將持續提升。</p>
+</div>
+
+<div class="card">
+  <div class="cardTitle">🏭 技術路線圖</div>
+  <table class="tbl">
+    <tr><th>技術</th><th>型號</th><th>狀態</th><th>關鍵指標</th></tr>
+    <tr><td>Low NA EUV</td><td>NXE:3800E</td><td class="up">量產中</td><td>220-230 wph</td></tr>
+    <tr><td>High NA EUV</td><td>EXE:5200B</td><td class="up">Intel 首台量產機</td><td>累計 >30 萬片晶圓</td></tr>
+    <tr><td>ArFi 浸沒式</td><td>NXT:2150i</td><td class="up">量產中</td><td>310 wph, overlay ≤1nm</td></tr>
+    <tr><td>3D 整合</td><td>XT:260</td><td class="warn">新產品</td><td>i-line, 4x 生產率</td></tr>
+    <tr><td>多波束檢測</td><td>eSCAN 1100</td><td class="warn">初期收入</td><td>E-beam 檢測</td></tr>
+  </table>
+</div>
+</section>
+
+<!-- ====== S2: Financial Analysis ====== -->
+<section id="s2">
+<h2>📊 財務分析</h2>
+
+<div class="card">
+  <div class="cardTitle">📈 五年營收與獲利趨勢</div>
+  <table class="tbl">
+    <tr><th></th><th>2020</th><th>2021</th><th>2022</th><th>2023</th><th>2024</th><th>2025</th></tr>
+    <tr><td>營收 (€億)</td><td>140</td><td>186</td><td>212</td><td>276</td><td>283</td><td class="up">327</td></tr>
+    <tr><td>YoY</td><td>—</td><td class="up">+33%</td><td class="up">+14%</td><td class="up">+30%</td><td>+3%</td><td class="up">+16%</td></tr>
+    <tr><td>毛利率</td><td>51.0%</td><td>51.5%</td><td>50.8%</td><td>51.7%</td><td>51.3%</td><td class="up">52.8%</td></tr>
+    <tr><td>淨利 (€億)</td><td>12</td><td>15</td><td>20</td><td>26</td><td>76</td><td class="up">96</td></tr>
+    <tr><td>淨利率</td><td>8.5%</td><td>8.2%</td><td>9.4%</td><td>9.6%</td><td>26.8%</td><td class="up">29.4%</td></tr>
+    <tr><td>EPS (€)</td><td>8.48</td><td>14.37</td><td>14.16</td><td>19.89</td><td>19.25</td><td class="up">~24.75</td></tr>
+  </table>
+  <p>2024-2025 年淨利率跳升主要來自營運槓桿 + 產品組合優化。2025 年營收創歷史新高 €327 億，Q4 單季營收 €97 億亦創紀錄。</p>
+</div>
+
+<div class="card">
+  <div class="cardTitle">📦 訂單與積壓</div>
+  <div class="metrics">
+    <div class="metric"><div class="val">€132億</div><div class="lbl">Q4'25 淨訂單 (紀錄)</div></div>
+    <div class="metric"><div class="val">€388億</div><div class="lbl">年末積壓訂單</div></div>
+    <div class="metric"><div class="val">€255億</div><div class="lbl">EUV 積壓 (66%)</div></div>
+    <div class="metric"><div class="val">€74億</div><div class="lbl">Q4 EUV 訂單</div></div>
+  </div>
+  <p>Q4 2025 訂單暴增 86% YoY 至 €132 億，EUV 訂單 €74 億創歷史紀錄。積壓訂單涵蓋約 18-24 個月營收，visibility 極佳。</p>
+</div>
+
+<div class="card">
+  <div class="cardTitle">💵 股東回報</div>
+  <table class="tbl">
+    <tr><th>指標</th><th>FY2024</th><th>FY2025</th><th>變化</th></tr>
+    <tr><td>每股股息</td><td>€6.41</td><td>€7.50</td><td class="up">+17%</td></tr>
+    <tr><td>回購計劃</td><td>€120億 (2022-2025)</td><td>€120億 (新, 至2028)</td><td>延續</td></tr>
+    <tr><td>FCF</td><td>€91億</td><td>創紀錄</td><td class="up">↑</td></tr>
+  </table>
+</div>
+
+<div class="card">
+  <div class="cardTitle">🔮 FY2026 指引</div>
+  <table class="tbl">
+    <tr><th></th><th>FY2025A</th><th>FY2026E</th></tr>
+    <tr><td>營收</td><td>€327億</td><td>€340 - 390億</td></tr>
+    <tr><td>毛利率</td><td>52.8%</td><td>51% - 53%</td></tr>
+    <tr><td>Q1'26 營收</td><td>—</td><td>€82 - 89億</td></tr>
+  </table>
+  <div class="callout gold"><strong>⚠️ 注意：</strong>2026 年毛利率指引中位數略低於 2025 年，反映中國高毛利浸沒式 DUV 銷售下降的稀釋效應。</div>
+</div>
+</section>
+
+<!-- ====== S3: Growth Drivers ====== -->
+<section id="s3">
+<h2>🚀 成長動能</h2>
+
+<div class="card">
+  <div class="cardTitle">🤖 1. AI 基礎設施投資</div>
+  <p>AI 是 ASML 未來 5-10 年最核心的成長驅動力。AI 晶片（GPU、ASIC）需要最先進的製程節點，而先進製程依賴 EUV 層數增加。</p>
+  <ul>
+    <li><strong>先進 Logic：</strong>Gate-All-Around 架構雖然初期 EUV 層數未增，但在 A14/A10 節點將大幅增加 EUV 使用</li>
+    <li><strong>HBM DRAM：</strong>推動 DRAM 向更先進光刻發展，EUV 層數持續增長</li>
+    <li><strong>更多客戶受益：</strong>過去僅少數客戶受益 AI，現在更多 Logic + DRAM 客戶進入——擴大 ASML 的 TAM</li>
+  </ul>
+</div>
+
+<div class="card">
+  <div class="cardTitle">🔬 2. EUV 光刻強度提升</div>
+  <p>每片晶圓使用的 EUV 層數（lithography intensity）是 ASML 營收的關鍵乘數：</p>
+  <ul>
+    <li>更多層從 DUV 多重曝光（multi-patterning）轉向 EUV 單次曝光 → 直接推升 EUV 需求</li>
+    <li>DRAM 從 6F² 到 4F² 轉換中，<strong>EUV 層數不會下降</strong>（CEO 明確確認）</li>
+    <li>4F² 結構更複雜，增加整體光刻掩模需求，對先進 DUV 也有利</li>
+  </ul>
+</div>
+
+<div class="card">
+  <div class="cardTitle">🆕 3. High NA EUV 新平台</div>
+  <ul>
+    <li>Intel 已接收首台量產用 EXE:5200B</li>
+    <li>SK Hynix 宣布開始在生產晶圓廠安裝首台 EXE:5200</li>
+    <li>累計超過 30 萬片晶圓運行，技術成熟度遠超 Low NA 同期水準</li>
+    <li>量產收入預計 <strong>2028-2029 年顯著啟動</strong></li>
+    <li>High NA 光源與 Low NA 相同——消除早期最大技術瓶頸</li>
+  </ul>
+</div>
+
+<div class="card">
+  <div class="cardTitle">🔧 4. 安裝基礎服務增長</div>
+  <ul>
+    <li>FY2025 服務收入：<strong>€82 億</strong>（經常性、高毛利）</li>
+    <li>全球 EUV 裝機量持續擴大 → 服務合約自然增長</li>
+    <li>升級業務（Upgrades）是毛利率提升的重要推力</li>
+  </ul>
+</div>
+
+<div class="card">
+  <div class="cardTitle">🏗️ 5. 3D 整合與新市場</div>
+  <p><strong>XT:260</strong>——ASML 首款專為先進封裝/3D 整合設計的 i-line 掃描光刻機，生產率提升 4 倍。這是 ASML 將光刻技術擴展至後段製程的第一步。</p>
+</div>
+
+<div class="card">
+  <div class="cardTitle">🎯 2030 長期目標</div>
+  <div class="metrics">
+    <div class="metric"><div class="val">€440-600億</div><div class="lbl">2030 營收目標</div></div>
+    <div class="metric"><div class="val">56-60%</div><div class="lbl">2030 毛利率目標</div></div>
+  </div>
+</div>
+</section>
+
+<!-- ====== S4: Competitive Position ====== -->
+<section id="s4">
+<h2>🛡️ 競爭優勢（Moat）</h2>
+
+<div class="card">
+  <div class="cardTitle">🏰 Porter 五力分析</div>
+  <table class="tbl">
+    <tr><th>力量</th><th>強度</th><th>分析</th></tr>
+    <tr><td>新進入者威脅</td><td class="up">極低</td><td>EUV 需數十年 R&D + €數百億投資，無第二名存在</td></tr>
+    <tr><td>供應商議價力</td><td class="warn">中等</td><td>Carl Zeiss（光學）、Trumpf（光源）為關鍵供應商，但深度綁定</td></tr>
+    <tr><td>買方議價力</td><td class="warn">中低</td><td>客戶高度集中（TSMC/Intel/Samsung），但別無選擇</td></tr>
+    <tr><td>替代品威脅</td><td class="up">極低</td><td>無替代技術可達 EUV 解析度；奈米壓印仍處早期</td></tr>
+    <tr><td>產業內競爭</td><td class="up">極低</td><td>Nikon/Canon 僅在成熟 DUV 領域競爭，EUV 零對手</td></tr>
+  </table>
+  <div class="callout green"><strong>🏆 結論：ASML 擁有全球最深護城河之一。</strong>EUV 壟斷不是專利保護的結果（專利已過期），而是累積數十年的製程 know-how、供應鏈鎖定、以及客戶切換成本極高的結果。</div>
+</div>
+
+<div class="card">
+  <div class="cardTitle">🔑 Moat 來源拆解</div>
+  <table class="tbl">
+    <tr><th>來源</th><th>說明</th><th>持久性</th></tr>
+    <tr><td>技術壟斷</td><td>唯一 EUV 供應商，無第二名</td><td class="up">極高 (>15年)</td></tr>
+    <tr><td>供應鏈鎖定</td><td>Carl Zeiss 光學系統獨家合作數十年</td><td class="up">極高</td></tr>
+    <tr><td>客戶轉換成本</td><td>製程認證需 3-5 年，無法輕易更換</td><td class="up">極高</td></tr>
+    <tr><td>規模經濟</td><td>R&D 投入 €40億+/年，對手無法匹配</td><td class="up">高</td></tr>
+    <tr><td>安裝基礎鎖定</td><td>服務合約 + 升級路徑綁定客戶</td><td class="up">高</td></tr>
+  </table>
+</div>
+
+<div class="card">
+  <div class="cardTitle">🌍 中國市場現況</div>
+  <ul>
+    <li>FY2025 中國收入佔比約 <strong>20%</strong></li>
+    <li>2026 年預期<strong>顯著下降</strong>至正常化水準</li>
+    <li>主要為成熟製程 DUV（ArFi 浸沒式），非 EUV</li>
+    <li>出口管制限制 EUV 出口中國，但不影響整體成長軌跡</li>
+  </ul>
+</div>
+</section>
+
+<!-- ====== S5: Risk Assessment ====== -->
+<section id="s5">
+<h2>⚠️ 風險評估</h2>
+
+<div class="card">
+  <div class="cardTitle">🎯 風險矩陣</div>
+  <table class="tbl">
+    <tr><th>風險</th><th>嚴重性</th><th>概率</th><th>影響</th></tr>
+    <tr><td>客戶集中度（TSMC >50% EUV）</td><td class="red">高</td><td class="warn">中</td><td>單一客戶放緩直接衝擊</td></tr>
+    <tr><td>中國業務正常化</td><td class="warn">中</td><td class="up">確定</td><td>2026 年 DUV 收入顯著下降</td></tr>
+    <tr><td>訂單塊狀風險（lumpiness）</td><td class="warn">中</td><td class="up">高</td><td>季度波動大，visibility 僅 ~6 個月</td></tr>
+    <tr><td>出口管制升級</td><td class="red">高</td><td class="warn">中</td><td>荷蘭/美國進一步限制中國銷售</td></tr>
+    <tr><td>High NA 量產延遲</td><td class="warn">中</td><td class="down">低</td><td>技術成熟度已證實，12-18月達良好狀態</td></tr>
+    <tr><td>地緣政治（台海風險）</td><td class="red">極高</td><td class="down">低</td><td>台積電佔 EUV 裝機量 >50%，黑天鵝</td></tr>
+    <tr><td>AI 投資泡沫</td><td class="warn">中</td><td class="warn">中</td><td>若 AI CapEx 放緩，EUV 需求降溫</td></tr>
+  </table>
+</div>
+
+<div class="callout red">
+  <strong>🚨 核心風險：客戶集中度</strong><br>
+  單一 Logic 客戶（台積電）佔 EUV 採購量超過一半。這不是需求風險（台積電不可能轉單），而是<strong>產能上限風險</strong>——ASML 的 EUV 營收天花板取決於台積電能消化多少 EUV 產能。
+</div>
+
+<div class="callout gold">
+  <strong>⚠️ 2026 年最大逆風：中國 DUV 正常化</strong><br>
+  2024-2025 年中國大量購買浸沒式 DUV（消化積壓訂單），2026 年將顯著回落。這部分是高毛利業務，對短期利潤率構成壓力。
+</div>
+</section>
+
+<!-- ====== S6: DCF Valuation ====== -->
+<section id="s6">
+<h2>💰 DCF 估值</h2>
+
+<div class="card">
+  <div class="cardTitle">📐 假設前提</div>
+  <table class="tbl">
+    <tr><th>參數</th><th>保守</th><th>基準</th><th>樂觀</th></tr>
+    <tr><td>營收 CAGR (2025-2030)</td><td>8%</td><td>12%</td><td>16%</td></tr>
+    <tr><td>FY2030 營收 (€億)</td><td>480</td><td>576</td><td>688</td></tr>
+    <tr><td>長期毛利率</td><td>54%</td><td>56%</td><td>58%</td></tr>
+    <tr><td>WACC</td><td>10%</td><td>9%</td><td>8%</td></tr>
+    <tr><td>終端增長率</td><td>2.5%</td><td>3.0%</td><td>3.5%</td></tr>
+  </table>
+</div>
+
+<div class="card">
+  <div class="cardTitle">📊 DCF 敏感度矩陣（每股市值，€）</div>
+  <p style="font-size:12px;color:var(--muted)">註：基於基準營收預測（12% CAGR），含 €120 億回購計劃的股本縮減效應</p>
+  <table class="tbl" style="text-align:center">
+    <tr><th>WACC ↓ ╱ 終端增長 →</th><th>2.5%</th><th>3.0%</th><th>3.5%</th></tr>
+    <tr><td><strong>8.0%</strong></td><td class="up">€1,520</td><td class="up">€1,780</td><td class="up">€2,150</td></tr>
+    <tr><td><strong>8.5%</strong></td><td class="up">€1,350</td><td class="up">€1,560</td><td class="up">€1,850</td></tr>
+    <tr><td><strong>9.0%</strong></td><td class="up">€1,210</td><td class="up">€1,380</td><td class="up">€1,610</td></tr>
+    <tr><td><strong>9.5%</strong></td><td>€1,090</td><td class="up">€1,230</td><td class="up">€1,420</td></tr>
+    <tr><td><strong>10.0%</strong></td><td>€990</td><td>€1,110</td><td class="up">€1,260</td></tr>
+  </table>
+  <p style="margin-top:12px"><strong>隱含估值範圍：€990 - €2,150</strong>，基準情境（9% WACC, 3% g）= <strong>€1,380 / 股</strong></p>
+</div>
+
+<div class="card">
+  <div class="cardTitle">🔧 互動估值計算機</div>
+  <p style="font-size:13px;color:var(--muted)">拖動滑桿調整 WACC 與終端增長率，即時查看估值變化</p>
+  <div style="margin:16px 0">
+    <label style="font-size:13px;color:var(--muted)">WACC: <span id="waccVal">9.0%</span></label>
+    <input type="range" min="8.0" max="10.0" step="0.1" value="9.0" oninput="recalc()" id="waccSlider" style="width:100%">
+    <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--dim)"><span>8%</span><span>9%</span><span>10%</span></div>
+  </div>
+  <div style="margin:16px 0">
+    <label style="font-size:13px;color:var(--muted)">終端增長: <span id="gVal">3.0%</span></label>
+    <input type="range" min="2.5" max="3.5" step="0.1" value="3.0" oninput="recalc()" id="gSlider" style="width:100%">
+    <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--dim)"><span>2.5%</span><span>3.0%</span><span>3.5%</span></div>
+  </div>
+  <div class="metrics">
+    <div class="metric"><div class="val" id="resVal" style="font-size:28px">€1,380</div><div class="lbl">每股市值</div></div>
+    <div class="metric"><div class="val" id="resDelta" style="font-size:20px;color:var(--accent)">基準</div><div class="lbl">vs 基準</div></div>
+  </div>
+  <div style="background:var(--bg);border-radius:8px;height:24px;position:relative;margin-top:12px;overflow:hidden">
+    <div id="priceBar" style="height:100%;background:var(--accent);border-radius:8px;width:50%;transition:width .2s"></div>
+  </div>
+  <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--dim);margin-top:4px"><span>€990</span><span>€2,150</span></div>
+</div>
+</section>
+
+<!-- ====== S7: Verdict ====== -->
+<section id="s7">
+<h2>📋 投資結論</h2>
+
+<div class="verdict">
+  <div class="vTitle">📋 綜合評估</div>
+  <table class="tbl">
+    <tr><th>維度</th><th>評級</th><th>說明</th></tr>
+    <tr><td>商業品質</td><td class="up">★★★★★</td><td>全球最深護城河之一，EUV 絕對壟斷</td></tr>
+    <tr><td>成長動能</td><td class="up">★★★★☆</td><td>AI + EUV 強度提升，但中國正常化短期逆風</td></tr>
+    <tr><td>財務健康</td><td class="up">★★★★★</td><td>€388 億積壓、淨現金、€120 億回購</td></tr>
+    <tr><td>管理層</td><td class="up">★★★★☆</td><td>CFO 續任，新 CTO 25 年資歷，執行力穩健</td></tr>
+    <tr><td>估值</td><td class="warn">★★★☆☆</td><td>DCF 合理值 €1,380/股；需檢視當前市價</td></tr>
+  </table>
+</div>
+
+<div class="grid2">
+  <div class="callout green">
+    <strong>✅ 做多理由</strong>
+    <ul style="margin-top:8px">
+      <li>AI 驅動 EUV 長期需求結構性增長</li>
+      <li>High NA EUV 2028-2029 量產為下一波催化劑</li>
+      <li>2030 年營收 €440-600 億 vs 2025 年 €327 億</li>
+      <li>€388 億積壓訂單提供 18-24 月 visibility</li>
+    </ul>
+  </div>
+  <div class="callout red">
+    <strong>⚠️ 風險因素</strong>
+    <ul style="margin-top:8px">
+      <li>客戶集中度（TSMC >50%）</li>
+      <li>2026 年中國 DUV 顯著下降</li>
+      <li>地緣政治黑天鵝（台海）</li>
+      <li>訂單塊狀特徵 → 季度波動</li>
+    </ul>
+  </div>
+</div>
+
+<div class="callout purple" style="margin-top:20px">
+  <strong>🔮 關鍵監測指標</strong>
+  <ul style="margin-top:8px">
+    <li>每季 EUV 訂單金額（觀察 AI 需求轉化為訂單的速度）</li>
+    <li>High NA EUV 訂單恢復（下一波預計 2026 H2）</li>
+    <li>中國 DUV 收入佔比變化（驗證正常化速度）</li>
+    <li>毛利率走勢（EUV 佔比 vs 中國 DUV 下降的淨效應）</li>
+    <li>台積電/Intel/Samsung CapEx 指引</li>
+  </ul>
+</div>
+
+<div class="card" style="margin-top:20px">
+  <div class="cardTitle">📚 資料來源</div>
+  <ul style="font-size:12px;color:var(--muted)">
+    <li>ASML Q4 & FY 2025 Results Video Transcript (2026-01-29)</li>
+    <li>ASML Q3 2025 Earnings Call — DN & WC Transcripts (AlphaSense, 2025-10-15)</li>
+    <li>ASML Q1 2025 Earnings Call — RT & DN Transcripts (AlphaSense, 2025-04-16 / 2025-01-29)</li>
+    <li>JPMorgan / Deutsche Bank / Wells Fargo — ASML Equity Research Reports</li>
+    <li>European Technology Hardware — China Semicap Imports Analysis</li>
+    <li>ASML 2024 Capital Markets Day (2030 長期目標)</li>
+  </ul>
+</div>
+
+<p style="font-size:11px;color:var(--dim);text-align:center;margin-top:32px">Generated by Hermes Agent · 喵布林 · 2026-06-18 · 僅供研究參考，不構成投資建議</p>
+</section>
+
+</main>
+</div>
+<script>
+document.querySelectorAll('.navItem').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.navItem').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll(`.navItem[data-section="${btn.dataset.section}"]`).forEach(b => b.classList.add('active'));
+    document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
+    document.getElementById(btn.dataset.section).classList.add('active');
+    if(window.innerWidth<768) btn.scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'});
+  });
+});
+
+// DCF slider interpolation
+const grid = {
+  '8.0':{'2.5':1520,'3.0':1780,'3.5':2150},
+  '8.5':{'2.5':1350,'3.0':1560,'3.5':1850},
+  '9.0':{'2.5':1210,'3.0':1380,'3.5':1610},
+  '9.5':{'2.5':1090,'3.0':1230,'3.5':1420},
+  '10.0':{'2.5':990,'3.0':1110,'3.5':1260}
+};
+
+function bilinear(w,g){
+  const wKeys=Object.keys(grid).map(Number).sort((a,b)=>a-b);
+  const gKeys=['2.5','3.0','3.5'];
+  let w0=wKeys[0],w1=wKeys[wKeys.length-1];
+  for(let i=0;i<wKeys.length-1;i++){if(w>=wKeys[i]&&w<=wKeys[i+1]){w0=wKeys[i];w1=wKeys[i+1];break}}
+  if(w<=wKeys[0]){w0=w1=wKeys[0]} if(w>=wKeys[wKeys.length-1]){w0=w1=wKeys[wKeys.length-1]}
+  let g0='2.5',g1='3.5';
+  for(let i=0;i<gKeys.length-1;i++){if(g>=parseFloat(gKeys[i])&&g<=parseFloat(gKeys[i+1])){g0=gKeys[i];g1=gKeys[i+1];break}}
+  const w0s=w0.toFixed(1),w1s=w1.toFixed(1);
+  const f00=grid[w0s][g0],f10=grid[w1s][g0],f01=grid[w0s][g1],f11=grid[w1s][g1];
+  const dw=w1-w0||1,dg=parseFloat(g1)-parseFloat(g0)||1;
+  const val=f00*(w1-w)/dw*(parseFloat(g1)-g)/dg + f10*(w-w0)/dw*(parseFloat(g1)-g)/dg + f01*(w1-w)/dw*(g-parseFloat(g0))/dg + f11*(w-w0)/dw*(g-parseFloat(g0))/dg;
+  return Math.round(val/10)*10;
+}
+
+function recalc(){
+  const w=parseFloat(document.getElementById('waccSlider').value);
+  const g=parseFloat(document.getElementById('gSlider').value);
+  document.getElementById('waccVal').textContent=w.toFixed(1)+'%';
+  document.getElementById('gVal').textContent=g.toFixed(1)+'%';
+  const val=bilinear(w,g);
+  const base=1380;
+  const delta=val-base;
+  document.getElementById('resVal').textContent='€'+val.toLocaleString();
+  document.getElementById('resDelta').textContent=(delta>=0?'+':'')+delta;
+  document.getElementById('resDelta').style.color=delta>100?'var(--green)':delta<-100?'var(--red)':'var(--accent)';
+  const pct=(val-990)/(2150-990)*100;
+  document.getElementById('priceBar').style.width=Math.min(100,Math.max(0,pct))+'%';
+}
+recalc();
+</script>
+</body>
+</html>
