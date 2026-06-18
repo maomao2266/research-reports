@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ASML Step 8 — DCF Valuation | 2026-06-18</title>
+<title>ASML Step 8 — DCF 估值 | 2026-06-18</title>
 <style>
   :root {
     --bg: #0d1117; --card: #161b22; --border: #30363d;
@@ -42,205 +42,193 @@
   sup { font-size: 0.7em; color: var(--muted); }
   footer { margin-top: 2.5rem; padding-top: 1rem; border-top: 1px solid var(--border); color: var(--muted); font-size: 0.8rem; text-align: center; }
 
-  /* Sensitivity Grid Styles */
   .sens-grid { overflow-x: auto; }
   .sens-grid table { min-width: 500px; }
   .sens-grid td { text-align: center; font-weight: 600; font-size: 0.85rem; padding: 0.6rem 0.5rem; }
-  .sens-grid .highlight { background: rgba(63,185,80,0.12); border: 1px solid rgba(63,185,80,0.4); border-radius: 4px; }
-  .sens-grid .below { color: var(--red); }
   .sens-grid .above { color: var(--green); }
+  .sens-grid .below { color: var(--red); }
   .sens-grid .at-market { background: rgba(210,153,29,0.12); border-radius: 4px; }
 
-  /* Scenario cards */
   .scenario { padding: 1rem; border-radius: 8px; border: 1px solid; }
   .scenario-bear { border-color: rgba(248,81,73,0.3); background: rgba(248,81,73,0.04); }
   .scenario-base { border-color: rgba(88,166,255,0.3); background: rgba(88,166,255,0.04); }
   .scenario-bull { border-color: rgba(63,185,80,0.3); background: rgba(63,185,80,0.04); }
 
-  /* Value decomposition bar */
   .bar-container { height: 20px; border-radius: 4px; overflow: hidden; display: flex; margin: 0.5rem 0; }
   .bar-capital { background: #30363d; }
   .bar-advantage { background: var(--accent); }
   .bar-growth { background: var(--green); }
   .bar-label { font-size: 0.7rem; color: var(--muted); margin-top: 0.2rem; }
 
-  .range-bar { position: relative; height: 32px; background: linear-gradient(to right, var(--red), var(--orange), var(--green)); border-radius: 6px; margin: 0.8rem 0; }
-  .range-marker { position: absolute; top: -4px; width: 3px; height: 40px; background: #fff; border-radius: 2px; }
-  .range-label { font-size: 0.75rem; color: var(--muted); margin-top: 0.3rem; display: flex; justify-content: space-between; }
-
-  /* Slider styles */
   .slider-group { margin: 1rem 0; }
   .slider-group label { display: block; font-size: 0.85rem; color: var(--muted); margin-bottom: 0.3rem; }
   .slider-group input[type=range] { width: 100%; accent-color: var(--accent); }
   .slider-value { display: inline-block; min-width: 3rem; text-align: right; font-weight: 600; }
   .slider-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
-
-  /* Live DCF output */
   #dcf-result { font-size: 1.6rem; font-weight: 700; text-align: center; padding: 1rem; }
   #dcf-delta { font-size: 1rem; margin-top: 0.3rem; }
   #tv-pct { font-size: 0.8rem; color: var(--muted); margin-top: 0.2rem; }
-
   .interactive-card { border: 1px solid rgba(163,113,247,0.3); background: rgba(163,113,247,0.04); }
 </style>
 </head>
 <body>
 
-<h1>💰 ASML Step 8 — DCF Valuation</h1>
-<div class="meta">Maobolin Research | 2026-06-18 | 資料來源: ASML 20-F FY2025, SEC EDGAR | 方法論: WSP DCF Modeling, Sonkin & Johnson (2017)</div>
+<h1>💰 ASML Step 8 — DCF 估值</h1>
+<div class="meta">Maobolin Research | 2026-06-18 | 資料來源：ASML 20-F FY2025、SEC EDGAR | 方法論：WSP DCF Modeling、Sonkin & Johnson (2017)</div>
 
-<!-- ====== FRAMEWORK ====== -->
-<h2>Valuation Framework</h2>
+<!-- ====== 估值框架 ====== -->
+<h2>估值框架</h2>
 <div class="card">
-  <p>Following <strong>Sonkin & Johnson (2017)</strong>: intrinsic value is a <strong>range, not a point</strong>. We present three scenarios with a sensitivity grid. The DCF is one input — not the sole decision tool (per Hooke, 2010).</p>
+  <p>遵循 <strong>Sonkin & Johnson（2017）</strong>：內在價值是一個<strong>區間，不是一個點</strong>。我們呈現三種情境加上敏感度矩陣。DCF 是其中一個輸入——而非唯一的決策工具（Hooke, 2010）。</p>
   <p style="margin-top:0.5rem;">
-    <strong>Approach:</strong> Unlevered DCF → Enterprise Value → Bridge to Equity Value<br>
-    <strong>UFCF = EBIT × (1 − t) + D&A − CapEx − ΔNWC</strong> (simplified: EBIT × 0.82 − 2% Revenue reinvestment)<br>
-    <strong>WACC via CAPM:</strong> Rf (2.8%) + β (1.15) × ERP (5.0%) = 8.55% → rounded 8.5% base
+    <strong>方法：</strong>無槓桿 DCF → 企業價值 → 橋接至股權價值<br>
+    <strong>UFCF = EBIT × (1 − t) + D&A − CapEx − ΔNWC</strong>（簡化：EBIT × 0.82 − 營收的 2% 再投資）<br>
+    <strong>WACC（CAPM）：</strong>Rf（2.8%）+ β（1.15）× ERP（5.0%）= 8.55% → 取整 8.5% 為基本情境
   </p>
-  <span class="framework-ref">Sources: WSP DCF Modeling; Damodaran (ERP); Hooke (2010) Ch.12-15</span>
+  <span class="framework-ref">資料來源：WSP DCF Modeling；Damodaran（ERP）；Hooke (2010) Ch.12-15</span>
 </div>
 
-<!-- ====== KEY ASSUMPTIONS ====== -->
-<h2>Key Assumptions</h2>
+<!-- ====== 關鍵假設 ====== -->
+<h2>關鍵假設</h2>
 <div class="card">
   <div class="grid-3" style="margin-bottom:0.8rem;">
     <div style="padding:0.8rem; background:#1c2128; border-radius:6px; text-align:center;">
-      <div style="font-size:0.75rem; color:var(--muted);">Risk-Free Rate</div>
+      <div style="font-size:0.75rem; color:var(--muted);">無風險利率</div>
       <div style="font-size:1.2rem; font-weight:700;">2.8%</div>
-      <div style="font-size:0.7rem; color:var(--muted);">NL 10Y Govt Bond</div>
+      <div style="font-size:0.7rem; color:var(--muted);">荷蘭 10 年期公債</div>
     </div>
     <div style="padding:0.8rem; background:#1c2128; border-radius:6px; text-align:center;">
-      <div style="font-size:0.75rem; color:var(--muted);">Equity Risk Premium</div>
+      <div style="font-size:0.75rem; color:var(--muted);">股權風險溢酬</div>
       <div style="font-size:1.2rem; font-weight:700;">5.0%</div>
-      <div style="font-size:0.7rem; color:var(--muted);">Damodaran Netherlands</div>
+      <div style="font-size:0.7rem; color:var(--muted);">Damodaran 荷蘭</div>
     </div>
     <div style="padding:0.8rem; background:#1c2128; border-radius:6px; text-align:center;">
       <div style="font-size:0.75rem; color:var(--muted);">Beta</div>
       <div style="font-size:1.2rem; font-weight:700;">1.15</div>
-      <div style="font-size:0.7rem; color:var(--muted);">5Y Monthly vs AEX</div>
+      <div style="font-size:0.7rem; color:var(--muted);">5 年月度 vs AEX</div>
     </div>
   </div>
   <table>
-    <tr><th>Parameter</th><th>Bear</th><th>Base</th><th>Bull</th><th>Source</th></tr>
-    <tr><td><strong>WACC</strong></td><td class="down">9.5%</td><td class="neutral">8.5%</td><td class="up">7.5%</td><td>CAPM: Rf + β × ERP ± adjustment</td></tr>
-    <tr><td><strong>Terminal Growth</strong></td><td>2.5%</td><td>3.0%</td><td>3.0%</td><td>Long-term nominal GDP growth</td></tr>
-    <tr><td><strong>Tax Rate</strong></td><td>18%</td><td>18%</td><td>18%</td><td>FY2025 effective rate (IP Box)</td></tr>
-    <tr><td><strong>Reinvestment Rate</strong></td><td>2.0% Rev</td><td>2.0% Rev</td><td>2.0% Rev</td><td>CapEx-D&A+ΔNWC, normalized</td></tr>
-    <tr><td><strong>Share Count</strong></td><td>389M</td><td>389M</td><td>389M</td><td>FY2025 diluted, declining ~1%/yr</td></tr>
-    <tr><td><strong>Net Cash</strong></td><td colspan="3" style="text-align:center;">€8.5B (Cash €12.9B − Debt €4.4B)</td><td>Dec 2025 Balance Sheet</td></tr>
+    <tr><th>參數</th><th>悲觀</th><th>基本</th><th>樂觀</th><th>來源</th></tr>
+    <tr><td><strong>WACC</strong></td><td class="down">9.5%</td><td class="neutral">8.5%</td><td class="up">7.5%</td><td>CAPM：Rf + β × ERP ± 調整</td></tr>
+    <tr><td><strong>終端成長率</strong></td><td>2.5%</td><td>3.0%</td><td>3.0%</td><td>長期名目 GDP 成長</td></tr>
+    <tr><td><strong>稅率</strong></td><td>18%</td><td>18%</td><td>18%</td><td>FY2025 有效稅率（創新盒）</td></tr>
+    <tr><td><strong>再投資率</strong></td><td>營收 2.0%</td><td>營收 2.0%</td><td>營收 2.0%</td><td>CapEx−D&A+ΔNWC，標準化</td></tr>
+    <tr><td><strong>股數</strong></td><td>3.89 億</td><td>3.89 億</td><td>3.89 億</td><td>FY2025 稀釋後，每年遞減 ~1%</td></tr>
+    <tr><td><strong>淨現金</strong></td><td colspan="3" style="text-align:center;">€85 億（現金 €129 億 − 負債 €44 億）</td><td>2025 年 12 月資產負債表</td></tr>
   </table>
 </div>
 
-<!-- ====== PROJECTIONS ====== -->
-<h2>Revenue & Cash Flow Projections</h2>
+<!-- ====== 預測 ====== -->
+<h2>營收與現金流預測</h2>
 <div class="card">
-  <h3>Base Case: Moderate Growth | WACC 8.5% | Terminal g 3.0%</h3>
+  <h3>基本情境：溫和成長 | WACC 8.5% | 終端成長 3.0%</h3>
   <table>
     <tr><th></th><th>FY2025A</th><th>FY2026E</th><th>FY2027E</th><th>FY2028E</th><th>FY2029E</th><th>FY2030E</th></tr>
     <tr>
-      <td><strong>Revenue (€B)</strong></td>
+      <td><strong>營收（€ 十億）</strong></td>
       <td>32.7</td><td>34.3</td><td>37.7</td><td>42.3</td><td>47.3</td><td>52.5</td>
     </tr>
     <tr>
-      <td><em>Growth</em></td>
+      <td><em>成長率</em></td>
       <td>—</td><td>+5.0%</td><td>+10.0%</td><td>+12.0%</td><td>+12.0%</td><td>+11.0%</td>
     </tr>
     <tr>
-      <td><strong>Operating Margin</strong></td>
+      <td><strong>營業利益率</strong></td>
       <td>34.6%</td><td>34.5%</td><td>35.0%</td><td>35.5%</td><td>36.0%</td><td>36.5%</td>
     </tr>
     <tr>
-      <td><strong>EBIT (€B)</strong></td>
+      <td><strong>EBIT（€ 十億）</strong></td>
       <td>11.3</td><td>11.8</td><td>13.2</td><td>15.0</td><td>17.0</td><td>19.2</td>
     </tr>
     <tr>
-      <td>EBIT × (1−18%)</td>
+      <td>EBIT ×（1−18%）</td>
       <td>—</td><td>9.7</td><td>10.8</td><td>12.3</td><td>14.0</td><td>15.7</td>
     </tr>
     <tr>
-      <td>− Reinvestment (2% Rev)</td>
+      <td>− 再投資（營收 2%）</td>
       <td>—</td><td>−0.7</td><td>−0.8</td><td>−0.8</td><td>−0.9</td><td>−1.1</td>
     </tr>
     <tr style="font-weight:700; border-top:2px solid var(--accent);">
-      <td><strong>UFCF (€B)</strong></td>
+      <td><strong>UFCF（€ 十億）</strong></td>
       <td>13.1<sup>*</sup></td>
       <td>9.0</td><td>10.1</td><td>11.5</td><td>13.0</td><td>14.7</td>
     </tr>
     <tr>
-      <td>Discount Factor (8.5%)</td>
+      <td>折現因子（8.5%）</td>
       <td>—</td><td>0.922</td><td>0.849</td><td>0.783</td><td>0.722</td><td>0.665</td>
     </tr>
     <tr>
-      <td><strong>PV of UFCF</strong></td>
+      <td><strong>UFCF 現值</strong></td>
       <td>—</td><td>8.3</td><td>8.5</td><td>9.0</td><td>9.4</td><td>9.8</td>
     </tr>
   </table>
   <p style="font-size:0.8rem; color:var(--muted); margin-top:0.5rem;">
-    <sup>*</sup> FY2025A UFCF inflated by €4.3B negative ΔNWC (customer prepayments). Normalized for projections.
+    <sup>*</sup> FY2025A UFCF 因 €43 億負 ΔNWC（客戶預付款）而膨脹。預測中已標準化。
   </p>
 
   <div style="margin-top:1rem; padding:0.8rem; background:#1c2128; border-radius:6px;">
-    <strong>Sum of PV of Projected UFCF:</strong> €45.0B<br>
-    <strong>Terminal Value:</strong> UFCF<sub>2030</sub> × (1.03) ÷ (0.085 − 0.03) = €274.5B<br>
-    <strong>PV of Terminal Value:</strong> €274.5B × 0.665 = <strong>€182.6B</strong><br>
-    <strong>Enterprise Value:</strong> €45.0B + €182.6B = <strong>€227.7B</strong><br>
-    <strong>+ Net Cash:</strong> €8.5B → <strong>Equity Value: €236.3B → €608/share</strong>
+    <strong>預測期 UFCF 現值總和：</strong>€450 億<br>
+    <strong>終端價值：</strong>UFCF<sub>2030</sub> ×（1.03）÷（0.085 − 0.03）= €2,745 億<br>
+    <strong>終端價值現值：</strong>€2,745 億 × 0.665 = <strong>€1,826 億</strong><br>
+    <strong>企業價值：</strong>€450 億 + €1,826 億 = <strong>€2,277 億</strong><br>
+    <strong>+ 淨現金：</strong>€85 億 → <strong>股權價值：€2,363 億 → 每股 €608</strong>
   </div>
 </div>
 
-<!-- ====== THREE SCENARIOS ====== -->
-<h2>Three Scenarios</h2>
+<!-- ====== 三情境 ====== -->
+<h2>三種情境</h2>
 <div class="card">
   <div class="grid-3">
     <div class="scenario scenario-bear">
-      <h3 style="color:var(--red); margin-top:0;">🔴 Bear</h3>
-      <p style="font-size:0.85rem; color:var(--muted);">China service ban + AI capex slowdown + High-NA delayed</p>
+      <h3 style="color:var(--red); margin-top:0;">🔴 悲觀</h3>
+      <p style="font-size:0.85rem; color:var(--muted);">中國服務禁令 + AI 資本支出放緩 + High-NA 延遲</p>
       <div style="margin-top:0.8rem;">
-        <div><strong>2030E Revenue:</strong> €42.4B</div>
-        <div><strong>Op Margin:</strong> 34.0% flat</div>
-        <div><strong>WACC:</strong> 9.5%</div>
+        <div><strong>2030E 營收：</strong>€424 億</div>
+        <div><strong>營業利益率：</strong>34.0%（持平）</div>
+        <div><strong>WACC：</strong>9.5%</div>
         <div style="margin-top:0.8rem; padding:0.5rem; background:rgba(248,81,73,0.1); border-radius:4px; text-align:center;">
           <div style="font-size:1.4rem; font-weight:700; color:var(--red);">€379</div>
-          <div style="font-size:0.75rem; color:var(--muted);">PE 15.2x</div>
-          <div style="font-size:0.7rem; color:var(--red);">−44% vs Market</div>
+          <div style="font-size:0.75rem; color:var(--muted);">本益比 15.2x</div>
+          <div style="font-size:0.7rem; color:var(--red);">−44% vs 市價</div>
         </div>
       </div>
     </div>
     <div class="scenario scenario-base">
-      <h3 style="color:var(--accent); margin-top:0;">🔵 Base</h3>
-      <p style="font-size:0.85rem; color:var(--muted);">Moderate growth, CMD targets €50-55B, gradual margin expansion</p>
+      <h3 style="color:var(--accent); margin-top:0;">🔵 基本</h3>
+      <p style="font-size:0.85rem; color:var(--muted);">溫和成長，CMD 目標 €500-550 億，毛利率逐步擴張</p>
       <div style="margin-top:0.8rem;">
-        <div><strong>2030E Revenue:</strong> €52.5B</div>
-        <div><strong>Op Margin:</strong> 34.5→36.5%</div>
-        <div><strong>WACC:</strong> 8.5%</div>
+        <div><strong>2030E 營收：</strong>€525 億</div>
+        <div><strong>營業利益率：</strong>34.5→36.5%</div>
+        <div><strong>WACC：</strong>8.5%</div>
         <div style="margin-top:0.8rem; padding:0.5rem; background:rgba(88,166,255,0.1); border-radius:4px; text-align:center;">
           <div style="font-size:1.4rem; font-weight:700; color:var(--accent);">€608</div>
-          <div style="font-size:0.75rem; color:var(--muted);">PE 24.3x</div>
-          <div style="font-size:0.7rem; color:var(--orange);">−11% vs Market</div>
+          <div style="font-size:0.75rem; color:var(--muted);">本益比 24.3x</div>
+          <div style="font-size:0.7rem; color:var(--orange);">−11% vs 市價</div>
         </div>
       </div>
     </div>
     <div class="scenario scenario-bull">
-      <h3 style="color:var(--green); margin-top:0;">🟢 Bull</h3>
-      <p style="font-size:0.85rem; color:var(--muted);">AI supercycle + TSMC N2 ramp + CMD targets €55-65B</p>
+      <h3 style="color:var(--green); margin-top:0;">🟢 樂觀</h3>
+      <p style="font-size:0.85rem; color:var(--muted);">AI 超級週期 + 台積電 N2 量產 + CMD 目標 €550-650 億</p>
       <div style="margin-top:0.8rem;">
-        <div><strong>2030E Revenue:</strong> €58.0B</div>
-        <div><strong>Op Margin:</strong> 35.0→38.0%</div>
-        <div><strong>WACC:</strong> 7.5%</div>
+        <div><strong>2030E 營收：</strong>€580 億</div>
+        <div><strong>營業利益率：</strong>35.0→38.0%</div>
+        <div><strong>WACC：</strong>7.5%</div>
         <div style="margin-top:0.8rem; padding:0.5rem; background:rgba(63,185,80,0.1); border-radius:4px; text-align:center;">
           <div style="font-size:1.4rem; font-weight:700; color:var(--green);">€846</div>
-          <div style="font-size:0.75rem; color:var(--muted);">PE 33.8x</div>
-          <div style="font-size:0.7rem; color:var(--green);">+24% vs Market</div>
+          <div style="font-size:0.75rem; color:var(--muted);">本益比 33.8x</div>
+          <div style="font-size:0.7rem; color:var(--green);">+24% vs 市價</div>
         </div>
       </div>
     </div>
   </div>
 </div>
 
-<!-- ====== SENSITIVITY GRID ====== -->
-<h2>Sensitivity Analysis: WACC × Terminal Growth</h2>
+<!-- ====== 敏感度分析 ====== -->
+<h2>敏感度分析：WACC × 終端成長率</h2>
 <div class="card">
-  <p style="margin-bottom:1rem;">Using <strong>Base Case</strong> revenue/margin trajectory. Values are <strong>€/share</strong>. <span class="up">Green</span> = above market, <span class="down">Red</span> = below market. <span style="color:var(--orange);">Orange highlight</span> = nearest to current market (€680).</p>
+  <p style="margin-bottom:1rem;">使用<strong>基本情境</strong>的營收／利潤率軌跡。數值為<strong>每股歐元</strong>。<span class="up">綠色</span> = 高於市價，<span class="down">紅色</span> = 低於市價。<span style="color:var(--orange);">橘色標記</span> = 最接近目前市價（€680）。</p>
   <div class="sens-grid">
     <table>
       <tr><th>WACC ↓ / g →</th><th>2.0%</th><th>2.5%</th><th>3.0%</th><th>3.5%</th></tr>
@@ -289,179 +277,179 @@
     </table>
   </div>
 
-  <h3 style="margin-top:1.5rem;">Grid Characteristics</h3>
+  <h3 style="margin-top:1.5rem;">矩陣特徵</h3>
   <div class="grid-2">
     <div style="padding:0.8rem; background:#1c2128; border-radius:6px;">
-      <strong>Grid Symmetry:</strong> 10/24 above market, 14/24 below — <span class="warn">slightly bearish skew</span> at base assumptions. Healthy mix; not all-green (which would signal model error).
+      <strong>對稱性：</strong>10/24 高於市價，14/24 低於市價——<span class="warn">略微偏空</span>（基本假設下）。健康的分佈；並非全部為綠色（若全為綠色則表示模型有誤）。
     </div>
     <div style="padding:0.8rem; background:#1c2128; border-radius:6px;">
-      <strong>Market-Implied WACC:</strong> At g = 2.5%, the market price of €680 implies a WACC of <strong>~7.5%</strong> — consistent with ASML's moat reducing systematic risk.
+      <strong>市場隱含 WACC：</strong>在 g = 2.5% 時，市價 €680 隱含 WACC 約 <strong>7.5%</strong>——與 ASML 護城河降低系統性風險的觀點一致。
     </div>
   </div>
 </div>
 
-<!-- ====== THREE-LAYER VALUE DECOMPOSITION ====== -->
-<h2>Three-Layer Value Decomposition</h2>
+<!-- ====== 三層價值分解 ====== -->
+<h2>三層價值分解</h2>
 <div class="card">
-  <p>Following <strong>Sonkin & Johnson (2017, Ch.3):</strong> Enterprise Value decomposes into three layers. Which portion comes from moat vs. growth?</p>
+  <p>遵循 <strong>Sonkin & Johnson（2017, Ch.3）：</strong>企業價值可分解為三個層次。護城河與成長各自貢獻多少？</p>
 
   <table>
-    <tr><th>Layer</th><th>What It Represents</th><th>Value (€B)</th><th>% of EV</th><th>Condition</th></tr>
+    <tr><th>層次</th><th>代表含義</th><th>價值（€ 十億）</th><th>佔 EV %</th><th>條件</th></tr>
     <tr>
-      <td><strong>❶ Invested Capital</strong></td>
-      <td>PV of capital charges. No-advantage baseline.</td>
-      <td style="text-align:right;">€19.6B</td>
+      <td><strong>❶ 投入資本</strong></td>
+      <td>資本費用的現值。無優勢的基線。</td>
+      <td style="text-align:right;">€196 億</td>
       <td style="text-align:right;">8.6%</td>
-      <td><span class="neutral">Always = Book Equity</span></td>
+      <td><span class="neutral">恆等於帳面權益</span></td>
     </tr>
     <tr>
-      <td><strong>❷ Competitive Advantage</strong></td>
-      <td>PV of excess returns (ROIC − WACC) × IC</td>
-      <td style="text-align:right;">€90.8B</td>
+      <td><strong>❷ 競爭優勢</strong></td>
+      <td>來自現有護城河的超額回報現值 (ROIC − WACC) × IC</td>
+      <td style="text-align:right;">€908 億</td>
       <td style="text-align:right;">39.9%</td>
       <td><span class="up">✓ ROIC 38.8% > WACC 8.5%</span></td>
     </tr>
     <tr>
-      <td><strong>❸ Growth Value</strong></td>
-      <td>PV of excess returns from NEW investment</td>
-      <td style="text-align:right;">€117.3B</td>
+      <td><strong>❸ 成長價值</strong></td>
+      <td>來自新投資的超額回報現值</td>
+      <td style="text-align:right;">€1,173 億</td>
       <td style="text-align:right;">51.5%</td>
       <td><span class="up">✓ ROIIC 25%+ > WACC 8.5%</span></td>
     </tr>
   </table>
 
   <div class="bar-container" style="margin-top:1rem;">
-    <div class="bar-capital" style="width:8.6%;" title="Invested Capital: 8.6%"></div>
-    <div class="bar-advantage" style="width:39.9%;" title="Competitive Advantage: 39.9%"></div>
-    <div class="bar-growth" style="width:51.5%;" title="Growth Value: 51.5%"></div>
+    <div class="bar-capital" style="width:8.6%;" title="投入資本：8.6%"></div>
+    <div class="bar-advantage" style="width:39.9%;" title="競爭優勢：39.9%"></div>
+    <div class="bar-growth" style="width:51.5%;" title="成長價值：51.5%"></div>
   </div>
   <div class="bar-label" style="display:flex;">
-    <span style="width:8.6%;">Capital 8.6%</span>
-    <span style="width:39.9%;">Moat 39.9%</span>
-    <span style="width:51.5%; text-align:right;">Growth 51.5%</span>
+    <span style="width:8.6%;">資本 8.6%</span>
+    <span style="width:39.9%;">護城河 39.9%</span>
+    <span style="width:51.5%; text-align:right;">成長 51.5%</span>
   </div>
 
   <p style="margin-top:1rem; padding:0.8rem; background:#1c2128; border-radius:6px;">
-    <strong>Key Insight:</strong> <strong>91.4%</strong> of ASML's enterprise value comes from competitive advantage + growth. Only 8.6% from invested capital. This is consistent with a <strong>wide-moat compounder</strong> — the market is not paying for assets; it's paying for the excess returns those assets generate.
+    <strong>關鍵洞察：</strong><strong>91.4%</strong> 的 ASML 企業價值來自競爭優勢 + 成長。僅 8.6% 來自投入資本。這與<strong>寬護城河複合成長股</strong>的特徵一致——市場支付的不是資產本身，而是這些資產所產生的超額回報。
   </p>
-  <span class="framework-ref">Source: Sonkin & Johnson (2017), Ch.3-4; Step 6 ROIC 38.8%</span>
+  <span class="framework-ref">資料來源：Sonkin & Johnson (2017), Ch.3-4；Step 6 ROIC 38.8%</span>
 </div>
 
-<!-- ====== INTERACTIVE DCF ====== -->
-<h2>Interactive DCF Calculator</h2>
+<!-- ====== 互動式 DCF ====== -->
+<h2>互動式 DCF 計算器</h2>
 <div class="card interactive-card">
-  <p style="font-size:0.85rem; color:var(--muted); margin-bottom:1rem;">Adjust assumptions to see how they affect intrinsic value. All values in €.</p>
+  <p style="font-size:0.85rem; color:var(--muted); margin-bottom:1rem;">調整假設來觀察內在價值如何變化。所有數值以歐元計。</p>
   <div class="slider-grid">
     <div class="slider-group">
-      <label>WACC: <span class="slider-value" id="wacc-val">8.5%</span></label>
+      <label>WACC：<span class="slider-value" id="wacc-val">8.5%</span></label>
       <input type="range" id="wacc-slider" min="6.5" max="10.5" step="0.1" value="8.5" oninput="updateDCF()">
     </div>
     <div class="slider-group">
-      <label>Terminal Growth: <span class="slider-value" id="tg-val">3.0%</span></label>
+      <label>終端成長率：<span class="slider-value" id="tg-val">3.0%</span></label>
       <input type="range" id="tg-slider" min="1.5" max="4.0" step="0.1" value="3.0" oninput="updateDCF()">
     </div>
     <div class="slider-group">
-      <label>2030E Revenue (€B): <span class="slider-value" id="rev-val">52.5</span></label>
+      <label>2030E 營收（€ 十億）：<span class="slider-value" id="rev-val">52.5</span></label>
       <input type="range" id="rev-slider" min="40" max="65" step="0.5" value="52.5" oninput="updateDCF()">
     </div>
     <div class="slider-group">
-      <label>Terminal Op Margin: <span class="slider-value" id="mar-val">36.5%</span></label>
+      <label>終端營業利益率：<span class="slider-value" id="mar-val">36.5%</span></label>
       <input type="range" id="mar-slider" min="32" max="40" step="0.5" value="36.5" oninput="updateDCF()">
     </div>
   </div>
   <div style="text-align:center; margin-top:1.5rem;">
     <div id="dcf-result" style="color:var(--accent);">€608</div>
     <div id="dcf-delta"></div>
-    <div id="tv-pct">TV/EV: 80.2%</div>
+    <div id="tv-pct">TV/EV：80.2%</div>
   </div>
 </div>
 
-<!-- ====== SANITY CHECKS ====== -->
-<h2>Sanity Checks</h2>
+<!-- ====== 健全性檢查 ====== -->
+<h2>健全性檢查</h2>
 <div class="card">
   <table>
-    <tr><th>Check</th><th>Threshold</th><th>Base Case</th><th>Status</th></tr>
+    <tr><th>檢查項目</th><th>閾值</th><th>基本情境</th><th>狀態</th></tr>
     <tr>
-      <td>① Market Price Calibration</td>
-      <td>Within ±30% of market</td>
-      <td>€608 vs €680 (−11%)</td>
-      <td><span class="up">✓ Pass</span></td>
+      <td>① 市價校準</td>
+      <td>市價 ±30% 範圍內</td>
+      <td>€608 vs €680（−11%）</td>
+      <td><span class="up">✓ 通過</span></td>
     </tr>
     <tr>
-      <td>② Sensitivity Grid Symmetry</td>
-      <td>40-60% above, 40-60% below</td>
-      <td>42% above, 58% below</td>
-      <td><span class="up">✓ Pass</span></td>
+      <td>② 敏感度矩陣對稱性</td>
+      <td>40-60% 在上，40-60% 在下</td>
+      <td>42% 在上，58% 在下</td>
+      <td><span class="up">✓ 通過</span></td>
     </tr>
     <tr>
-      <td>③ TV/EV Ratio</td>
-      <td>50-80% of EV</td>
+      <td>③ TV/EV 比率</td>
+      <td>佔 EV 的 50-80%</td>
       <td>80.2%</td>
-      <td><span class="warn">⚠ Borderline</span></td>
+      <td><span class="warn">⚠ 邊界值</span></td>
     </tr>
     <tr>
-      <td>④ Implied P/E vs Sector</td>
-      <td>Within ±50% of sector median</td>
-      <td>24.3x vs 22x semi equip</td>
-      <td><span class="up">✓ Pass</span></td>
+      <td>④ 隱含本益比 vs 同業</td>
+      <td>同業中位數 ±50% 範圍內</td>
+      <td>24.3x vs 22x 半導體設備</td>
+      <td><span class="up">✓ 通過</span></td>
     </tr>
     <tr>
-      <td>⑤ Terminal Growth vs GDP</td>
-      <td>≤ Long-term nominal GDP</td>
+      <td>⑤ 終端成長率 vs GDP</td>
+      <td>≤ 長期名目 GDP</td>
       <td>3.0% vs ~3.0%</td>
-      <td><span class="up">✓ Pass</span></td>
+      <td><span class="up">✓ 通過</span></td>
     </tr>
     <tr>
-      <td>⑥ IFRS 16 Contamination</td>
-      <td>FCF/Rev ≤ 30% for equipment</td>
-      <td>~27-28% projected</td>
-      <td><span class="up">✓ Pass</span></td>
+      <td>⑥ IFRS 16 污染</td>
+      <td>設備業 FCF/營收 ≤ 30%</td>
+      <td>預測 ~27-28%</td>
+      <td><span class="up">✓ 通過</span></td>
     </tr>
   </table>
   <p style="margin-top:0.8rem; font-size:0.85rem; color:var(--muted);">
-    ⚠ <strong>TV/EV at 80.2%</strong> is at the upper bound of acceptable range. This is common for high-quality compounders with wide moats — near-term FCF is small relative to terminal value because the business reinvests heavily for growth. Extending the projection period to 10 years would reduce this ratio.
+    ⚠ <strong>TV/EV 達 80.2%</strong> 處於可接受範圍的上限。這對高品質、寬護城河的複合成長股而言屬常見現象——近期 FCF 相對終端價值較小，因為公司為了成長而大量再投資。若將預測期延長至 10 年，此比率將會降低。
   </p>
 </div>
 
-<!-- ====== VERDICT ====== -->
-<h2>DCF Verdict</h2>
+<!-- ====== 估值裁決 ====== -->
+<h2>DCF 估值裁決</h2>
 
 <div class="verdict verdict-neutral">
-  <h3 style="color:var(--accent); margin-top:0;">Intrinsic Value Range: €379 – €846 (Base: €608)</h3>
-  <p style="margin-top:0.8rem;"><strong>Market Price: ~€680</strong> — slightly above base case, consistent with market applying WACC ~7.5% and terminal growth ~2.5%.</p>
-  <p style="margin-top:0.5rem;">The market valuation is <strong>reasonable but not cheap</strong>. At €680, ASML trades at ~27x FY2025 earnings — a premium justified by its moat (Step 5/6) but offering limited margin of safety at base case assumptions.</p>
-  <p style="margin-top:0.5rem;">The bull case (€846, +24%) requires either (a) CMD delivering a bullish 2030 target, or (b) market re-rating ASML as a compounder rather than cyclical. Both are credible catalysts (see Step 7).</p>
+  <h3 style="color:var(--accent); margin-top:0;">內在價值區間：€379 – €846（基本：€608）</h3>
+  <p style="margin-top:0.8rem;"><strong>市價：~€680</strong>——略高於基本情境，與市場採用 WACC ~7.5%、終端成長 ~2.5% 的假設一致。</p>
+  <p style="margin-top:0.5rem;">目前估值<strong>合理但不算便宜</strong>。在 €680 的價位，ASML 交易於 FY2025 本益比約 27 倍——護城河（Step 5/6）可以支撐此溢價，但在基本假設下的安全邊際有限。</p>
+  <p style="margin-top:0.5rem;">樂觀情境（€846，+24%）的實現需要：(a) CMD 給出樂觀的 2030 目標，或 (b) 市場將 ASML 從週期股重新評價為複合成長股。兩者均為可信的催化劑（見 Step 7）。</p>
 
   <div class="grid-2" style="margin-top:1rem;">
     <div>
-      <strong>Upside to Bull:</strong> <span class="up">+24% (€846)</span><br>
-      <strong>Downside to Bear:</strong> <span class="down">−44% (€379)</span><br>
-      <strong>Asymmetric Ratio:</strong> <span class="warn">0.55:1</span> (unfavorable at current price)
+      <strong>上行至樂觀：</strong><span class="up">+24%（€846）</span><br>
+      <strong>下行至悲觀：</strong><span class="down">−44%（€379）</span><br>
+      <strong>不對稱比率：</strong><span class="warn">0.55:1</span>（目前價位不具優勢）
     </div>
     <div>
-      <strong>Probability-Weighted:</strong><br>
-      40% Bull × €846 = €338<br>
-      35% Base × €608 = €213<br>
-      25% Bear × €379 = €95<br>
-      <strong>Weighted Value: €646</strong> (vs Market €680)
+      <strong>機率加權：</strong><br>
+      40% 樂觀 × €846 = €338<br>
+      35% 基本 × €608 = €213<br>
+      25% 悲觀 × €379 = €95<br>
+      <strong>加權價值：€646</strong>（vs 市價 €680）
     </div>
   </div>
 </div>
 
-<!-- ====== PITFALLS ACKNOWLEDGED ====== -->
-<h2>Pitfalls Acknowledged</h2>
+<!-- ====== 已認知陷阱 ====== -->
+<h2>已認知的陷阱</h2>
 <div class="card">
   <ol style="padding-left:1.2rem; color:var(--muted); font-size:0.9rem;">
-    <li><strong>DCF is one input:</strong> Per Hooke (2010), Wall Street weights DCF at only ~20% in final valuation decisions. Comps, precedent transactions, and market-implied growth are equally important.</li>
-    <li><strong>Forecast fragility:</strong> Even 1-year EBIT forecasts have 25-30% mean error. 5-year projections are inherently uncertain.</li>
-    <li><strong>Terminal value dominance:</strong> 80% of EV lives in terminal value. A 0.5% change in terminal growth shifts per-share value by ~€40.</li>
-    <li><strong>Tax rate uncertainty:</strong> ASML's IP Box regime is under EU review. A shift from 18% to 25% effective tax rate would reduce per-share value by ~15%.</li>
-    <li><strong>Customer concentration risk:</strong> €608 base case assumes TSMC/Intel/Samsung continue ordering. Any single customer capex cut creates a 5-10% earnings hole not captured in the smooth projection.</li>
+    <li><strong>DCF 只是其中一個輸入：</strong>根據 Hooke（2010），華爾街在最終估值決策中僅給予 DCF 約 20% 的權重。同業比較法、先例交易、以及市場隱含成長率同樣重要。</li>
+    <li><strong>預測的脆弱性：</strong>即使是一年期的 EBIT 預測，平均誤差也高達 25-30%。五年期的預測本質上充滿不確定性。</li>
+    <li><strong>終端價值主導：</strong>80% 的企業價值存在於終端價值中。終端成長率 0.5% 的變動會使每股價值變動約 €40。</li>
+    <li><strong>稅率不確定性：</strong>ASML 的創新盒制度正面臨歐盟審查。有效稅率從 18% 升至 25% 將使每股價值下降約 15%。</li>
+    <li><strong>客戶集中風險：</strong>基本情境 €608 假設台積電／Intel／三星持續下單。任一主要客戶削減資本支出將造成 5-10% 的盈利缺口，而平滑的預測無法捕捉此風險。</li>
   </ol>
-  <span class="framework-ref">Source: Hooke (2010), Ch.12-15</span>
+  <span class="framework-ref">資料來源：Hooke (2010), Ch.12-15</span>
 </div>
 
-<!-- ====== STEP NAV ====== -->
+<!-- ====== 步驟導航 ====== -->
 <div style="display:flex; justify-content:center; gap:0.5rem; margin:1.5rem 0; flex-wrap:wrap;">
   <span style="background:#1c2128; padding:0.3rem 0.8rem; border-radius:4px; font-size:0.8rem;">Step 1 ✓</span>
   <span style="background:#1c2128; padding:0.3rem 0.8rem; border-radius:4px; font-size:0.8rem;">Step 2 ✓</span>
@@ -478,12 +466,11 @@
 <footer>Generated by Maobolin (Hermes Agent) · Nous Research · Step 8 of 10 · ASML Fundamental Equity Research</footer>
 
 <script>
-// Simple DCF recalculation on slider change
-const baseRev = [34.3, 37.7, 42.3, 47.3, 52.5];  // Base case trajectory
+const baseRev = [34.3, 37.7, 42.3, 47.3, 52.5];
 const baseMargin = [0.345, 0.350, 0.355, 0.360, 0.365];
 const taxRate = 0.18;
-const shares = 0.389; // B shares
-const netCash = 8.5251; // €B
+const shares = 0.389;
+const netCash = 8.5251;
 
 function findScale(defaultGrowth, target) {
   let lo = 0.001, hi = 5.0;
@@ -508,18 +495,11 @@ function updateDCF() {
   document.getElementById('rev-val').textContent = targetRev.toFixed(1);
   document.getElementById('mar-val').textContent = (termMargin*100).toFixed(1) + '%';
 
-  // Scale revenue trajectory to hit target 2030E
   const baseGrowth = [0.05, 0.10, 0.12, 0.12, 0.11];
   const startRev = 32.6673;
   const targetCAGR = Math.pow(targetRev / startRev, 1/5);
   const scale = findScale(baseGrowth, Math.pow(1 + targetCAGR - 1, 5));
   
-  let rev = [startRev];
-  for (let g of baseGrowth) {
-    rev.push(rev[rev.length-1] * (1 + scale * (g - 0) > 0 ? 1 : 0));
-  }
-  
-  // Simpler: linear scale of growth rates
   let rev2 = [startRev];
   for (let g of baseGrowth) {
     let adj = Math.max(0.01, 1 + scale * (g - 0));
@@ -527,25 +507,22 @@ function updateDCF() {
   }
   rev2 = rev2.slice(1);
 
-  // Scale margins linearly to terminal margin
   const startMargin = 0.346;
   const margins = [];
   for (let i = 0; i < 5; i++) {
     margins.push(startMargin + (termMargin - startMargin) * ((i+1) / 5));
   }
 
-  // Compute UFCF
-  let sumPV = 0;
+  let sumPV = 0, lastUFCF = 0;
   for (let i = 0; i < 5; i++) {
     const ebit = rev2[i] * margins[i];
     const ebiat = ebit * (1 - taxRate);
     const ufcf = ebiat - rev2[i] * 0.02;
     const pv = ufcf / Math.pow(1 + wacc, i + 1);
     sumPV += pv;
-    if (i === 4) var lastUFCF = ufcf;
+    if (i === 4) lastUFCF = ufcf;
   }
 
-  // Terminal value
   const tv = lastUFCF * (1 + tg) / (wacc - tg);
   const pvTV = tv / Math.pow(1 + wacc, 5);
   const ev = sumPV + pvTV;
@@ -553,25 +530,23 @@ function updateDCF() {
   const perShare = Math.round(equity / shares);
   const tvPct = Math.round(pvTV / ev * 1000) / 10;
 
-  // Display
   const el = document.getElementById('dcf-result');
   el.textContent = '€' + perShare;
   const deltaEl = document.getElementById('dcf-delta');
   const delta = Math.round((perShare / 680 - 1) * 100);
   if (delta > 0) {
-    deltaEl.innerHTML = '<span class="up">+' + delta + '% vs Market (€680)</span>';
+    deltaEl.innerHTML = '<span class="up">+' + delta + '% vs 市價（€680）</span>';
     el.style.color = 'var(--green)';
   } else if (delta < 0) {
-    deltaEl.innerHTML = '<span class="down">' + delta + '% vs Market (€680)</span>';
+    deltaEl.innerHTML = '<span class="down">' + delta + '% vs 市價（€680）</span>';
     el.style.color = 'var(--red)';
   } else {
-    deltaEl.innerHTML = '<span class="neutral">At Market (€680)</span>';
+    deltaEl.innerHTML = '<span class="neutral">等於市價（€680）</span>';
     el.style.color = 'var(--accent)';
   }
-  document.getElementById('tv-pct').textContent = 'TV/EV: ' + tvPct + '%';
+  document.getElementById('tv-pct').textContent = 'TV/EV：' + tvPct + '%';
 }
 
-// Initial call
 updateDCF();
 </script>
 
