@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>ASML — 公司策略 | Step 3</title>
+<style>
+:root{--bg:#0a0e14;--surface:#131820;--card:#181f2a;--border:#252d3a;--ink:#e2e8f0;--muted:#7c8aa0;--dim:#4a5568;--accent:#60a5fa;--gold:#f59e0b;--green:#34d399;--red:#f87171;--orange:#fb923c;--purple:#a78bfa;--radius:14px;--sans:"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.7}
+.topbar{background:var(--surface);border-bottom:1px solid var(--border);padding:14px 24px;display:flex;align-items:center;gap:16px;position:sticky;top:0;z-index:100}
+.topbar .logo{font-size:18px;font-weight:700;color:var(--accent)}
+.topbar .badge{font-size:11px;background:var(--card);color:var(--muted);padding:4px 10px;border-radius:20px}
+.layout{display:flex;min-height:calc(100vh-57px)}
+.sidebar{width:220px;background:var(--surface);border-right:1px solid var(--border);padding:16px 0;position:sticky;top:57px;height:calc(100vh-57px);overflow-y:auto;flex-shrink:0}
+.navItem{display:block;width:100%;padding:10px 20px;font-size:13px;color:var(--muted);background:none;border:none;text-align:left;cursor:pointer;font-family:var(--sans);transition:all .15s;border-left:3px solid transparent}
+.navItem:hover{color:var(--ink);background:var(--card)}
+.navItem.active{color:var(--accent);background:rgba(96,165,250,.08);border-left-color:var(--accent);font-weight:600}
+.content{flex:1;padding:32px;max-width:960px}
+section{display:none} section.active{display:block}
+h2{font-size:22px;margin-bottom:8px} h3{font-size:16px;color:var(--accent);margin:20px 0 10px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px 24px;margin-bottom:16px}
+.cardTitle{font-size:15px;font-weight:600;margin-bottom:12px;color:var(--ink)}
+.tbl{width:100%;border-collapse:collapse;margin:12px 0;font-size:13px}
+.tbl th{text-align:left;color:var(--muted);font-size:11px;text-transform:uppercase;padding:8px 12px;border-bottom:1px solid var(--border)}
+.tbl td{padding:10px 12px;border-bottom:1px solid var(--border);color:var(--ink)}
+.tbl tr:last-child td{border-bottom:none}
+.up{color:var(--green)} .down{color:var(--red)} .warn{color:var(--orange)}
+.metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin:16px 0}
+.metric{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px;text-align:center}
+.metric .val{font-size:22px;font-weight:700;color:var(--ink)}
+.metric .lbl{font-size:11px;color:var(--muted);margin-top:4px}
+.callout{border-left:3px solid;border-radius:0 var(--radius) var(--radius) 0;padding:14px 18px;margin:16px 0;background:var(--surface);font-size:13px}
+.callout.red{border-color:var(--red)} .callout.gold{border-color:var(--gold)} .callout.green{border-color:var(--green)} .callout.purple{border-color:var(--purple)}
+.pillRow{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0}
+.pill{font-size:11px;padding:4px 10px;border-radius:20px;font-weight:600}
+.pill.g{background:rgba(52,211,153,.15);color:var(--green)} .pill.r{background:rgba(248,113,113,.15);color:var(--red)}
+.pill.b{background:rgba(96,165,250,.15);color:var(--accent)} .pill.o{background:rgba(251,146,60,.15);color:var(--orange)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.verdict{background:linear-gradient(135deg,rgba(52,211,153,.08),rgba(96,165,250,.06));border:1px solid rgba(52,211,153,.2);border-radius:var(--radius);padding:24px;margin-top:24px}
+.verdict h2{color:var(--green);margin-bottom:12px}
+.verdict td{padding:8px 12px;font-size:14px;color:var(--ink)}
+.verdict td:first-child{color:var(--muted);font-size:12px;width:160px}
+.matrix-table{font-size:13px}
+.matrix-table td{border:1px solid var(--border);padding:12px 14px;text-align:center;vertical-align:top}
+.matrix-table .mat-head{background:var(--surface);color:var(--muted);font-size:11px;text-transform:uppercase}
+.matrix-table .mat-label{background:var(--surface);color:var(--muted);text-align:left;font-weight:600}
+</style>
+</head>
+<body>
+<div class="topbar"><span class="logo">🔬 ASML</span><span class="badge">STEP 3 · 公司策略</span></div>
+<div class="layout">
+<nav class="sidebar">
+  <button class="navItem active" data-section="s1">👤 CEO 願景</button>
+  <button class="navItem" data-section="s2">📈 成長策略</button>
+  <button class="navItem" data-section="s3">🏗️ 三層成長架構</button>
+  <button class="navItem" data-section="s4">🔬 核心能力</button>
+  <button class="navItem" data-section="s5">🤖 AI 策略</button>
+  <button class="navItem" data-section="s6">💰 成本策略</button>
+  <button class="navItem" data-section="s7">📋 Verdict</button>
+</nav>
+<main class="content">
+
+<section id="s1" class="active">
+<h2>👤 CEO 願景與管理層</h2>
+<p style="color:var(--muted);margin-bottom:20px">來源：ASML 20-F FY2025, Q4 FY2025 Results Transcript</p>
+
+<div class="card">
+  <div class="cardTitle">CEO 背景</div>
+  <table class="tbl">
+    <tr><th>項目</th><th>內容</th></tr>
+    <tr><td>現任 CEO</td><td><strong>Christophe Fouquet</strong>（2024 年接任）</td></tr>
+    <tr><td>前任 CEO</td><td>Peter Wennink（2013-2024，11 年任期）</td></tr>
+    <tr><td>CEO 背景</td><td>法國籍，半導體設備業資深；接任前為 ASML EUV 事業負責人</td></tr>
+    <tr><td>內部提拔</td><td class="up">✓ 是（EUV 事業部前負責人）— 策略延續性高</td></tr>
+    <tr><td>CTO 新任</td><td>Marco Pieters，ASML 25 年資歷，2026 年 4 月上任</td></tr>
+    <tr><td>CFO 穩定性</td><td>Roger Dassen 獲董事會重新任命，任期延續</td></tr>
+  </table>
+</div>
+
+<div class="card">
+  <div class="cardTitle">CEO 願景關鍵言論</div>
+  <table class="tbl">
+    <tr><th>場合</th><th>發言</th><th>策略含義</th></tr>
+    <tr><td>Q4 FY2025</td><td>"AI 是我們這個時代最重要的技術趨勢"</td><td class="up">堅定押注 AI 驅動需求</td></tr>
+    <tr><td>Q3 2025</td><td>"光刻強度持續提升，EUV 層數不會下降"</td><td class="up">對 DRAM 4F² 轉換有信心</td></tr>
+    <tr><td>Q4 FY2025</td><td>"High NA 已準備好進入高量產階段"</td><td class="up">下一代技術按計劃推進</td></tr>
+    <tr><td>Q3 2025</td><td>"3D 整合是推動摩爾定律的另一條路徑"</td><td>新市場擴張（XT:260）</td></tr>
+    <tr><td>Q4 FY2025</td><td>"我們的長期機會從未如此清晰"</td><td class="up">2030 年 €44-60B 目標信心</td></tr>
+  </table>
+</div>
+
+<div class="callout green">
+  <strong>✅ 新任 CEO 策略延續性極高。</strong>Fouquet 從 EUV 事業部內部晉升，非空降。Wennink 時代的 2030 目標、資本配置方針（股息+回購）、技術路線圖全部維持不變。這類平穩過渡降低策略執行風險。
+</div>
+</section>
+
+<section id="s2">
+<h2>📈 成長策略：Ansoff 矩陣</h2>
+<p style="color:var(--muted);margin-bottom:20px">框架：Ansoff (1957); IB7018</p>
+
+<table class="tbl matrix-table" style="width:100%">
+  <tr><th></th><th class="mat-head" style="width:45%">現有產品</th><th class="mat-head" style="width:45%">新產品</th></tr>
+  <tr>
+    <td class="mat-label">現有市場</td>
+    <td>
+      <strong>市場滲透</strong><br>
+      • Low NA EUV 對 Logic (TSMC/Intel)<br>
+      • EUV 層數增加（DUV 多重曝光→EUV 單次）<br>
+      • 安裝服務升級合約<br>
+      <span class="pill g" style="margin-top:8px">核心引擎</span>
+    </td>
+    <td>
+      <strong>產品開發</strong><br>
+      • High NA EUV (EXE:5200B)<br>
+      • XT:260（3D 整合 i-line）<br>
+      • eSCAN 1100（多波束檢測）<br>
+      <span class="pill b" style="margin-top:8px">下一代</span>
+    </td>
+  </tr>
+  <tr>
+    <td class="mat-label">新市場</td>
+    <td>
+      <strong>市場開發</strong><br>
+      • EUV 進入 DRAM (HBM)<br>
+      • SK Hynix/Micron EUV 量產<br>
+      • 中國成熟製程 DUV<br>
+      <span class="pill o" style="margin-top:8px">擴張中</span>
+    </td>
+    <td>
+      <strong>多角化</strong><br>
+      • 3D 整合設備（先進封裝）<br>
+      • Hyper NA EUV（2030+）<br>
+      • Mistral AI 策略合作<br>
+      <span class="pill r" style="margin-top:8px">未來選項</span>
+    </td>
+  </tr>
+</table>
+
+<div class="card" style="margin-top:16px">
+  <div class="cardTitle">擴張策略分析</div>
+  <table class="tbl">
+    <tr><th>項目</th><th>評估</th></tr>
+    <tr><td><strong>有機成長</strong></td><td class="up">★★★★★ — R&D €47 億/年，High NA / XT:260 全自主研發</td></tr>
+    <tr><td><strong>M&A</strong></td><td>★★☆☆☆ — 極少收購。Mistral AI 是策略投資（€13 億、11% 股權），非併購整合</td></tr>
+    <tr><td><strong>合作夥伴</strong></td><td class="up">★★★★★ — Carl Zeiss（獨家光學）、Trumpf（光源）、2012 客戶共投計畫</td></tr>
+    <tr><td><strong>國際擴張</strong></td><td>已全球化佈局。中國佔 29.1% 是短期高峰，將回落</td></tr>
+  </table>
+</div>
+
+<div class="callout green">
+  <strong>✅ 成長策略清晰且聚焦。</strong>Ansoff 矩陣四象限都有明確安排，且重心高度集中在市場滲透（現有 EUV 給現有 Logic 客戶），這是風險最低、回報最確定的成長路徑。
+</div>
+</section>
+
+<section id="s3">
+<h2>🏗️ 三層成長架構</h2>
+<p style="color:var(--muted);margin-bottom:20px">框架：McKinsey Three Horizons (Baghai et al., 1999); IB7018</p>
+
+<div class="card">
+  <div class="cardTitle">Horizon 佈局</div>
+  <table class="tbl">
+    <tr><th>層級</th><th>定義</th><th>ASML 對應</th><th>營收佔比</th><th>狀態</th></tr>
+    <tr><td><strong>H1: 防守與延伸</strong></td><td>核心本業</td><td>Low NA EUV + DUV 系統銷售 + 安裝服務</td><td>~90%</td><td class="up">強勁</td></tr>
+    <tr><td><strong>H2: 建設新興業務</strong></td><td>成長引擎</td><td>High NA EUV、XT:260、eSCAN 檢測</td><td>~10%</td><td class="up">孵化中</td></tr>
+    <tr><td><strong>H3: 創造未來選項</strong></td><td>長期押注</td><td>Hyper NA EUV、3D 整合生態系、AI 嵌入式光刻</td><td>0%</td><td class="warn">種子階段</td></tr>
+  </table>
+</div>
+
+<div class="callout gold">
+  <strong>⚠️ 關鍵觀察：ASML 的 H1 極強，但 H2→H3 的轉換速度是最大變數。</strong>High NA EUV 量產收入要 2028-2029 才顯著貢獻。在 H1 引擎運轉良好的當下，這不是問題；但若 EUV 需求週期性放緩（非 AI 相關 Logic），H2 能否及時接棒是關鍵。
+</div>
+</section>
+
+<section id="s4">
+<h2>🔬 核心能力評估</h2>
+<p style="color:var(--muted);margin-bottom:20px">框架：Prahalad & Hamel (1990); IB7018 W4</p>
+
+<div class="card">
+  <div class="cardTitle">Core Competence 三項測試</div>
+  <table class="tbl">
+    <tr><th>測試</th><th>問題</th><th>ASML 評估</th></tr>
+    <tr><td><strong>市場通路</strong></td><td>是否提供進入多種市場的通道？</td><td class="up">✓ Logic + DRAM + NAND + 先進封裝</td></tr>
+    <tr><td><strong>客戶利益</strong></td><td>是否對客戶感知價值有重大貢獻？</td><td class="up">✓ EUV 是 7nm 以下不可或缺的設備</td></tr>
+    <tr><td><strong>模仿難度</strong></td><td>競爭對手是否難以模仿？</td><td class="up">✓ 數十年累積 + Zeiss 獨家供應鏈鎖定</td></tr>
+  </table>
+</div>
+
+<div class="card">
+  <div class="cardTitle">護城河的真正來源</div>
+  <p>ASML 的 EUV 壟斷<strong>不是</strong>專利保護（基礎專利已過期）。真正的護城河來自：</p>
+  <ol style="margin:12px 0 0 20px;font-size:13px;color:var(--ink)">
+    <li><strong>累積 know-how：</strong>30+ 年 EUV 研發，數萬工程師人年的隱性知識</li>
+    <li><strong>供應鏈綁定：</strong>Carl Zeiss SMT 是<strong>全球唯一</strong>能製造 EUV 光學系統的供應商，ASML 是其最大客戶且深度共生</li>
+    <li><strong>客戶轉換成本：</strong>一條 EUV 產線的認證需 3-5 年，晶圓廠無法輕易更換設備商</li>
+    <li><strong>規模經濟：</strong>年 R&D €47 億，任何潛在競爭者都無法匹敵</li>
+  </ol>
+</div>
+</section>
+
+<section id="s5">
+<h2>🤖 AI 策略評估</h2>
+
+<div class="card">
+  <div class="cardTitle">Mistral AI 策略投資</div>
+  <table class="tbl">
+    <tr><th>項目</th><th>內容</th></tr>
+    <tr><td>投資金額</td><td><strong>€13 億</strong>，C 輪融資領投</td></tr>
+    <tr><td>持股比例</td><td>約 <strong>11%</strong></td></tr>
+    <tr><td>董事席位</td><td>ASML 在 Mistral 戰略委員會佔一席</td></tr>
+    <tr><td>合作目的</td><td>將 AI 嵌入光刻產品組合（性能優化、加速創新）</td></tr>
+    <tr><td>Mistral 優勢</td><td>LLM 領域領先，尤其在軟體編碼方面</td></tr>
+  </table>
+</div>
+
+<div class="card">
+  <div class="cardTitle">AI 應用適用性</div>
+  <table class="tbl">
+    <tr><th>維度</th><th>評估</th></tr>
+    <tr><td><strong>AI 與核心業務一致性</strong></td><td class="up">高 — AI 優化光刻參數、加速缺陷檢測、預測維護</td></tr>
+    <tr><td><strong>AI 對營收的影響</strong></td><td>間接 — 提升設備性能，非直接銷售 AI 產品</td></tr>
+    <tr><td><strong>AI 對利潤的影響</strong></td><td class="up">中長期正面 — 降低研發成本、加速產品上市</td></tr>
+    <tr><td><strong>資料是否足夠建 AI</strong></td><td class="up">是 — 全球 EUV 裝機量產生海量運行數據</td></tr>
+    <tr><td><strong>資料是否構成護城河</strong></td><td class="up">輔助性 — 資料增強護城河，但核心護城河仍是設備壟斷</td></tr>
+  </table>
+</div>
+
+<div class="callout purple">
+  <strong>🔮 AI 策略定位：</strong>ASML 的 AI 策略是「嵌入現有產品」而非「賣 AI 產品」。Mistral 投資是明智的槓桿 — 與其自建 AI 團隊，不如策略性持股行業領先者。這符合 ASML 一貫的「不做所有事，只做核心」哲學。
+</div>
+</section>
+
+<section id="s6">
+<h2>💰 成本策略意涵</h2>
+<p style="color:var(--muted);margin-bottom:20px">框架：Managerial Accounting MA_Ch1, MA_Ch5; Porter (1980)</p>
+
+<div class="card">
+  <div class="cardTitle">差異化策略（Differentiation）</div>
+  <p>ASML 是<strong>極致的差異化策略</strong>案例：以遠高於競爭對手的價格，提供無可替代的獨特價值。</p>
+  <table class="tbl">
+    <tr><th>差異化特徵</th><th>ASML 對應</th></tr>
+    <tr><td>產品獨特性</td><td>全球唯一 EUV — 非「較好」，而是「無替代品」</td></tr>
+    <tr><td>R&D 投入</td><td>€47 億/年（14.4% 營收），業界最高</td></tr>
+    <tr><td>定價權</td><td>EUV 單價 €1.5-3.5 億，毛利率 52.8%</td></tr>
+    <tr><td>客製化程度</td><td>每台 EUV 針對客戶製程調整</td></tr>
+  </table>
+</div>
+
+<div class="card">
+  <div class="cardTitle">成本結構分析</div>
+  <table class="tbl">
+    <tr><th>成本類型</th><th>FY2025 (€B)</th><th>佔營收</th><th>性質</th></tr>
+    <tr><td>銷貨成本</td><td>€15.4B</td><td>47.2%</td><td>大部分為變動（材料+直接人工）</td></tr>
+    <tr><td>R&D</td><td>€4.7B</td><td>14.4%</td><td>固定（策略性投資）</td></tr>
+    <tr><td>SG&A</td><td>€1.3B</td><td>3.9%</td><td>半固定</td></tr>
+    <tr><td>D&A</td><td>€1.0B</td><td>3.1%</td><td>固定</td></tr>
+  </table>
+  <p style="font-size:12px;color:var(--muted);margin-top:8px">R&D 佔比極高（14.4%）是差異化策略的典型特徵。這不是「成本」，而是護城河的燃料。</p>
+</div>
+
+<div class="callout green">
+  <strong>✅ 策略與成本結構高度匹配。</strong>ASML 不需要成本領導（差異化溢價遠超額外成本）。關鍵風險不是成本控制，而是 R&D 支出的效率 — €47 億/年能否持續轉化為技術領先。
+</div>
+</section>
+
+<section id="s7">
+<h2>📋 Verdict：策略評估結論</h2>
+
+<div class="verdict">
+  <table>
+    <tr><td style="width:180px">策略等級</td><td style="color:var(--green);font-size:18px"><strong>A（前瞻且可執行）</strong></td></tr>
+    <tr><td>核心策略賭注</td><td><strong>High NA EUV 量產 + AI 驅動 EUV 層數增加</strong> — 這是未來 5 年的單一最重要賭注</td></tr>
+    <tr><td>策略執行落差</td><td class="up">小 — CEO 內部晉升確保延續性，High NA 按計劃推進</td></tr>
+    <tr><td>AI 差異化</td><td>輔助性，非核心護城河來源。ASML 的 AI 策略是務實的槓桿（Mistral 投資），非炒作</td></tr>
+    <tr><td>擴張方式</td><td>有機為主（R&D 驅動），極少 M&A。風險低但速度受限於內部研發週期</td></tr>
+    <tr><td>共識可能忽視的</td><td>3D 整合（XT:260）可能是比 High NA 更快的收入來源 — 先進封裝市場正在爆發</td></tr>
+  </table>
+</div>
+
+<div class="grid2" style="margin-top:16px">
+  <div class="callout green">
+    <strong>✅ 策略優勢</strong>
+    <ul style="margin-top:8px;font-size:13px">
+      <li>策略極度聚焦（不做非核心擴張）</li>
+      <li>CEO 內部晉升，策略連續性高</li>
+      <li>三層成長架構清晰</li>
+      <li>差異化策略與成本結構完美匹配</li>
+    </ul>
+  </div>
+  <div class="callout gold">
+    <strong>⚠️ 策略關注</strong>
+    <ul style="margin-top:8px;font-size:13px">
+      <li>H2→H3 轉換速度依賴單一產品（High NA）</li>
+      <li>AI 策略僅靠一筆投資，非系統性佈局</li>
+      <li>CEO 新任不久，需觀察獨立決策能力</li>
+    </ul>
+  </div>
+</div>
+</section>
+
+</main>
+</div>
+<script>
+document.querySelectorAll('.navItem').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('.navItem').forEach(b=>b.classList.remove('active'));
+    document.querySelectorAll('.navItem[data-section="'+btn.dataset.section+'"]').forEach(b=>b.classList.add('active'));
+    document.querySelectorAll('section').forEach(s=>s.classList.remove('active'));
+    document.getElementById(btn.dataset.section).classList.add('active');
+  });
+});
+</script>
+</body>
+</html>
