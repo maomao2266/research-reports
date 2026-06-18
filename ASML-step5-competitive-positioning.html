@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>ASML — 競爭定位 | Step 5</title>
+<style>
+:root{--bg:#0a0e14;--surface:#131820;--card:#181f2a;--border:#252d3a;--ink:#e2e8f0;--muted:#7c8aa0;--dim:#4a5568;--accent:#60a5fa;--gold:#f59e0b;--green:#34d399;--red:#f87171;--orange:#fb923c;--purple:#a78bfa;--radius:14px;--sans:"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.7}
+.topbar{background:var(--surface);border-bottom:1px solid var(--border);padding:14px 24px;display:flex;align-items:center;gap:16px;position:sticky;top:0;z-index:100}
+.topbar .logo{font-size:18px;font-weight:700;color:var(--accent)}
+.topbar .badge{font-size:11px;background:var(--card);color:var(--muted);padding:4px 10px;border-radius:20px}
+.layout{display:flex;min-height:calc(100vh-57px)}
+.sidebar{width:220px;background:var(--surface);border-right:1px solid var(--border);padding:16px 0;position:sticky;top:57px;height:calc(100vh-57px);overflow-y:auto;flex-shrink:0}
+.navItem{display:block;width:100%;padding:10px 20px;font-size:13px;color:var(--muted);background:none;border:none;text-align:left;cursor:pointer;font-family:var(--sans);transition:all .15s;border-left:3px solid transparent}
+.navItem:hover{color:var(--ink);background:var(--card)}
+.navItem.active{color:var(--accent);background:rgba(96,165,250,.08);border-left-color:var(--accent);font-weight:600}
+.content{flex:1;padding:32px;max-width:960px}
+section{display:none} section.active{display:block}
+h2{font-size:22px;margin-bottom:8px} h3{font-size:16px;color:var(--accent);margin:20px 0 10px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px 24px;margin-bottom:16px}
+.cardTitle{font-size:15px;font-weight:600;margin-bottom:12px}
+.tbl{width:100%;border-collapse:collapse;margin:12px 0;font-size:13px}
+.tbl th{text-align:left;color:var(--muted);font-size:11px;text-transform:uppercase;padding:8px 12px;border-bottom:1px solid var(--border)}
+.tbl td{padding:10px 12px;border-bottom:1px solid var(--border);color:var(--ink)}
+.tbl tr:last-child td{border-bottom:none}
+.up{color:var(--green)} .down{color:var(--red)} .warn{color:var(--orange)}
+.metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin:16px 0}
+.metric{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px;text-align:center}
+.metric .val{font-size:22px;font-weight:700;color:var(--ink)}
+.metric .lbl{font-size:11px;color:var(--muted);margin-top:4px}
+.callout{border-left:3px solid;border-radius:0 var(--radius) var(--radius) 0;padding:14px 18px;margin:16px 0;background:var(--surface);font-size:13px}
+.callout.red{border-color:var(--red)} .callout.gold{border-color:var(--gold)} .callout.green{border-color:var(--green)} .callout.purple{border-color:var(--purple)}
+.pillRow{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0}
+.pill{font-size:11px;padding:4px 10px;border-radius:20px;font-weight:600}
+.pill.g{background:rgba(52,211,153,.15);color:var(--green)} .pill.r{background:rgba(248,113,113,.15);color:var(--red)}
+.pill.b{background:rgba(96,165,250,.15);color:var(--accent)} .pill.o{background:rgba(251,146,60,.15);color:var(--orange)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.verdict{background:linear-gradient(135deg,rgba(52,211,153,.08),rgba(96,165,250,.06));border:1px solid rgba(52,211,153,.2);border-radius:var(--radius);padding:24px;margin-top:24px}
+.verdict h2{color:var(--green);margin-bottom:12px}
+.verdict td{padding:8px 12px;font-size:14px;color:var(--ink)}
+.verdict td:first-child{color:var(--muted);font-size:12px;width:160px}
+.score{display:inline-block;width:24px;height:24px;border-radius:50%;text-align:center;line-height:24px;font-size:12px;font-weight:700}
+.score.s1{background:rgba(52,211,153,.2);color:var(--green)} .score.s2{background:rgba(96,165,250,.2);color:var(--accent)}
+.score.s3{background:rgba(251,146,60,.2);color:var(--orange)} .score.s4{background:rgba(248,113,113,.2);color:var(--red)}
+.score.s5{background:rgba(248,113,113,.3);color:var(--red)}
+</style>
+</head>
+<body>
+<div class="topbar"><span class="logo">🔬 ASML</span><span class="badge">STEP 5 · 競爭定位</span></div>
+<div class="layout">
+<nav class="sidebar">
+  <button class="navItem active" data-section="s1">🏰 Porter 五力</button>
+  <button class="navItem" data-section="s2">🔗 價值鏈 FSA</button>
+  <button class="navItem" data-section="s3">🗺️ 策略群組</button>
+  <button class="navItem" data-section="s4">💰 利潤池</button>
+  <button class="navItem" data-section="s5">🛡️ 競爭優勢分類</button>
+  <button class="navItem" data-section="s6">🔬 技術演進</button>
+  <button class="navItem" data-section="s7">📋 Verdict</button>
+</nav>
+<main class="content">
+
+<section id="s1" class="active">
+<h2>🏰 Porter 五力分析（量化）</h2>
+<p style="color:var(--muted);margin-bottom:20px">框架：Porter (1980); Grant Ch.3; IB7018 W4</p>
+
+<div class="card">
+  <div class="cardTitle">總體力量評分</div>
+  <table class="tbl">
+    <tr><th>力量</th><th>強度</th><th>核心證據</th><th>對獲利影響</th></tr>
+    <tr><td>新進入者威脅</td><td><span class="score s1">1</span> 極低</td><td>EUV 需 30+ 年 R&D + Zeiss 獨家光學</td><td class="up">極正面</td></tr>
+    <tr><td>現有競爭者對抗</td><td><span class="score s1">1</span> 極低</td><td>Nikon/Canon 僅限 DUV，EUV 零對手</td><td class="up">極正面</td></tr>
+    <tr><td>替代品威脅</td><td><span class="score s2">2</span> 低</td><td>奈米壓印 (Canon)、Chiplet 架構</td><td class="up">正面（長期隱憂）</td></tr>
+    <tr><td>買方議價力</td><td><span class="score s3">3</span> 中</td><td>TSMC >50% EUV，但別無選擇</td><td class="warn">中性（產能天花板風險）</td></tr>
+    <tr><td>供應商議價力</td><td><span class="score s3">3</span> 中</td><td>Zeiss SMT 獨家光學，互相依賴</td><td class="warn">中性（共生非對抗）</td></tr>
+  </table>
+</div>
+
+<div class="card">
+  <div class="cardTitle">Force 1: 新進入者威脅 — 壁壘清單</div>
+  <table class="tbl">
+    <tr><th>壁壘</th><th>高度</th><th>ASML 具體情況</th></tr>
+    <tr><td>規模經濟</td><td class="up">極高</td><td>年營收 €32.7B，R&D €4.7B — 任何新進入者需數百億歐元投資</td></tr>
+    <tr><td>資本需求</td><td class="up">極高</td><td>EUV 研發累計投入 >€200 億，單一工廠造價 >€10 億</td></tr>
+    <tr><td>專有技術</td><td class="up">極高</td><td>30+ 年 EUV 研發，數萬工程師人年 know-how</td></tr>
+    <tr><td>分銷通路鎖定</td><td class="up">極高</td><td>客戶認證需 3-5 年，晶圓廠無法輕易換設備</td></tr>
+    <tr><td>政府政策</td><td class="up">高</td><td>荷蘭/美國出口管制保護 EUV 技術不外流</td></tr>
+    <tr><td>報復預期</td><td class="up">高</td><td>ASML 可降價 + 加速技術迭代碾壓任何潛在進入者</td></tr>
+  </table>
+</div>
+
+<div class="card">
+  <div class="cardTitle">Force 3: 替代品 — 長期隱憂</div>
+  <table class="tbl">
+    <tr><th>替代技術</th><th>威脅</th><th>目前狀態</th><th>時間線</th></tr>
+    <tr><td><strong>奈米壓印 (NIL)</strong></td><td class="warn">中低</td><td>Canon 推出，僅限 NAND 特定層，無法取代 EUV 解析度</td><td>5-10 年</td></tr>
+    <tr><td><strong>Chiplet 架構</strong></td><td class="warn">中低</td><td>可能降低對最先進 EUV 節點的依賴，但封裝仍需先進光刻</td><td>進行中</td></tr>
+    <tr><td><strong>中國自主光刻機</strong></td><td class="down">低</td><td>至少落後 10-15 年，僅限成熟 DUV</td><td>10-15 年</td></tr>
+  </table>
+</div>
+
+<div class="callout green">
+  <strong>🏆 五力結論：</strong>ASML 享有可能是全球上市公司中最好的產業結構。五力中三力極低，兩力中等但可控。這反映在 52.8% 毛利率和 34.6% 營業利潤率。
+</div>
+</section>
+
+<section id="s2">
+<h2>🔗 價值鏈 FSA 映射</h2>
+<p style="color:var(--muted);margin-bottom:20px">框架：Porter (1985) Value Chain; Grant Ch.7; IB7018 W4</p>
+
+<div class="card">
+  <div class="cardTitle">FSA = Firm-Specific Advantage（企業特定優勢）</div>
+  <table class="tbl">
+    <tr><th>活動</th><th>FSA 存在？</th><th>類型</th><th>證據</th></tr>
+    <tr><td colspan="4" style="color:var(--accent);font-weight:600">主要活動</td></tr>
+    <tr><td>進料物流</td><td class="warn">部分</td><td>成本+差異化</td><td>與 Zeiss/Trumpf 的獨家供應鏈整合，模組化生產</td></tr>
+    <tr><td><strong>營運（製造）</strong></td><td class="up"><strong>是</strong></td><td><strong>差異化</strong></td><td>全球唯一能整合 EUV 光源+光學+真空+精密機械</td></tr>
+    <tr><td>出貨物流</td><td class="up">是</td><td>差異化</td><td>每台 EUV 需 40 個貨櫃 + 3 架 747 運輸；現場組裝需數月</td></tr>
+    <tr><td>行銷/銷售</td><td class="warn">部分</td><td>差異化</td><td>不需行銷（客戶排隊）；但客戶集中度帶來依賴</td></tr>
+    <tr><td><strong>服務</strong></td><td class="up"><strong>是</strong></td><td><strong>差異化</strong></td><td>安裝服務 €8.2B，EUV 裝機後綁定長期服務合約</td></tr>
+    <tr><td colspan="4" style="color:var(--accent);font-weight:600">支援活動</td></tr>
+    <tr><td><strong>技術開發</strong></td><td class="up"><strong>是</strong></td><td><strong>差異化</strong></td><td>R&D €4.7B/年 = 14.4% 營收，業界最高</td></tr>
+    <tr><td>人力資源</td><td class="up">是</td><td>差異化</td><td>39,000 員工中高比例為 PhD/工程師；荷蘭 Eindhoven 人才聚落</td></tr>
+    <tr><td>採購</td><td class="warn">部分</td><td>成本</td><td>對 Zeiss 的依賴是弱點，但規模採購有議價力</td></tr>
+  </table>
+</div>
+
+<div class="callout purple">
+  <strong>🔍 FSA 核心發現：</strong>ASML 的 FSA 集中在<strong>營運</strong>（系統整合能力）、<strong>技術開發</strong>（R&D 引擎）、和<strong>服務</strong>（安裝基礎鎖定）三者。這三個 FSA 互相強化，形成難以複製的複合優勢。
+</div>
+</section>
+
+<section id="s3">
+<h2>🗺️ 策略群組地圖</h2>
+<p style="color:var(--muted);margin-bottom:20px">框架：Grant Ch.4; IB7018 W4</p>
+
+<div class="card">
+  <div class="cardTitle">微影設備產業策略群組</div>
+  <svg viewBox="0 0 600 320" style="max-width:100%;background:var(--surface);border-radius:var(--radius);padding:24px">
+    <line x1="80" y1="260" x2="560" y2="260" stroke="#252d3a" stroke-width="1"/>
+    <line x1="80" y1="260" x2="80" y2="20" stroke="#252d3a" stroke-width="1"/>
+    <text x="320" y="295" text-anchor="middle" fill="#7c8aa0" font-size="12">技術廣度 →</text>
+    <text x="20" y="145" text-anchor="middle" fill="#7c8aa0" font-size="12" transform="rotate(-90,20,145)">單價 / 毛利率 ↑</text>
+    <text x="160" y="280" text-anchor="middle" fill="#4a5568" font-size="9">單一技術</text>
+    <text x="480" y="280" text-anchor="middle" fill="#4a5568" font-size="9">全光譜</text>
+
+    <!-- ASML -->
+    <circle cx="480" cy="70" r="50" fill="rgba(96,165,250,.1)" stroke="#60a5fa" stroke-width="2"/>
+    <text x="480" y="58" text-anchor="middle" fill="#60a5fa" font-size="13" font-weight="700">ASML</text>
+    <text x="480" y="76" text-anchor="middle" fill="#7c8aa0" font-size="9">EUV+DUV+檢測</text>
+    <text x="480" y="90" text-anchor="middle" fill="#7c8aa0" font-size="9">€32.7B · GM 52.8%</text>
+
+    <!-- Nikon -->
+    <circle cx="200" cy="180" r="35" fill="rgba(124,138,160,.1)" stroke="#7c8aa0" stroke-width="1.5" stroke-dasharray="4,3"/>
+    <text x="200" y="172" text-anchor="middle" fill="#7c8aa0" font-size="11">Nikon</text>
+    <text x="200" y="188" text-anchor="middle" fill="#4a5568" font-size="9">DUV 為主</text>
+    <text x="200" y="202" text-anchor="middle" fill="#4a5568" font-size="9">市佔萎縮中</text>
+
+    <!-- Canon -->
+    <circle cx="140" cy="230" r="30" fill="rgba(124,138,160,.1)" stroke="#4a5568" stroke-width="1" stroke-dasharray="4,3"/>
+    <text x="140" y="224" text-anchor="middle" fill="#4a5568" font-size="10">Canon</text>
+    <text x="140" y="238" text-anchor="middle" fill="#4a5568" font-size="8">DUV+NIL</text>
+
+    <!-- Mobility barrier -->
+    <line x1="280" y1="60" x2="280" y2="260" stroke="#f87171" stroke-width="0.5" stroke-dasharray="6,4"/>
+    <text x="280" y="50" text-anchor="middle" fill="#f87171" font-size="9">EUV 壁壘 (無法跨越)</text>
+
+    <!-- Legend -->
+    <text x="380" y="260" fill="#34d399" font-size="9">● 群組 1: 壟斷者 (ASML)</text>
+    <text x="380" y="278" fill="#7c8aa0" font-size="9">○ 群組 2: DUV 殘存者 (Nikon)</text>
+    <text x="380" y="296" fill="#4a5568" font-size="9">○ 群組 3: 利基玩家 (Canon)</text>
+  </svg>
+  <p style="font-size:12px;color:var(--muted);margin-top:12px">紅色虛線 = 移動障壁。Nikon 和 Canon 無法跨越 EUV 壁壘（技術+資本+供應鏈三重鎖定）。</p>
+</div>
+</section>
+
+<section id="s4">
+<h2>💰 利潤池分析</h2>
+<p style="color:var(--muted);margin-bottom:20px">框架：Gadiesh & Gilbert (1998), HBR</p>
+
+<div class="card">
+  <div class="cardTitle">半導體價值鏈利潤分佈</div>
+  <table class="tbl">
+    <tr><th>價值鏈階段</th><th>代表公司</th><th>營收佔比</th><th>利潤佔比</th><th>利潤率</th><th>趨勢</th></tr>
+    <tr><td>EDA/IP 設計工具</td><td>Synopsys, Cadence</td><td>~3%</td><td>~8%</td><td class="up">30%+</td><td class="up">↑ AI 驅動</td></tr>
+    <tr><td><strong>半導體設備</strong></td><td><strong>ASML, AMAT, LRCX</strong></td><td>~12%</td><td><strong>~25%</strong></td><td class="up"><strong>30-35%</strong></td><td class="up"><strong>↑ 利潤集中</strong></td></tr>
+    <tr><td>晶圓製造</td><td>TSMC, Samsung</td><td>~60%</td><td>~50%</td><td class="up">25-40%</td><td class="up">↑ AI 先進製程</td></tr>
+    <tr><td>封裝測試</td><td>ASE, Amkor</td><td>~15%</td><td>~10%</td><td class="warn">10-15%</td><td>→ 穩定</td></tr>
+    <tr><td>IC 設計</td><td>NVIDIA, AMD</td><td>~10%</td><td>~7%</td><td class="up">20-60%</td><td class="up">↑ AI GPU</td></tr>
+  </table>
+  <p style="font-size:12px;color:var(--muted);margin-top:8px">半導體設備佔產業營收 12%，但佔產業利潤 ~25% — ASML 是利潤池核心受益者。</p>
+</div>
+
+<div class="callout green">
+  <strong>✅ 利潤池遷移方向對 ASML 有利。</strong>AI 驅動的先進製程投資 → EUV 設備需求 → ASML 毛利率結構性上升。設備是「賣鏟子的」，無論 NVIDIA 還是 AMD 贏，都得跟 ASML 買設備。
+</div>
+</section>
+
+<section id="s5">
+<h2>🛡️ 競爭優勢分類</h2>
+<p style="color:var(--muted);margin-bottom:20px">框架：Shallow Dive Template; IB7018 W4</p>
+
+<div class="card">
+  <div class="cardTitle">四大類競爭優勢</div>
+  <table class="tbl">
+    <tr><th>類型</th><th>子類</th><th>ASML 證據</th></tr>
+    <tr><td rowspan="3"><strong>客戶端優勢</strong></td><td>搜尋成本</td><td class="up">極高 — 客戶無替代供應商可搜尋</td></tr>
+    <tr><td>轉換成本</td><td class="up">極高 — EUV 認證 3-5 年，晶圓廠製程綁定</td></tr>
+    <tr><td>習慣/品牌</td><td class="up">高 — ASML = EUV 的同義詞</td></tr>
+    <tr><td rowspan="2"><strong>生產端優勢</strong></td><td>專有製程技術</td><td class="up">極高 — 全球唯一 EUV 系統整合能力</td></tr>
+    <tr><td>較低投入成本</td><td class="warn">中等 — Zeiss 光學為瓶頸，非成本優勢</td></tr>
+    <tr><td rowspan="3"><strong>效率優勢</strong></td><td>學習曲線</td><td class="up">極高 — 30 年 EUV 累積經驗</td></tr>
+    <tr><td>規模經濟</td><td class="up">高 — R&D €4.7B 分攤至 50+ EUV 台/年</td></tr>
+    <tr><td>網絡效應</td><td>不適用 — 非平台型商業模式</td></tr>
+    <tr><td rowspan="2"><strong>政府政策優勢</strong></td><td>專利</td><td class="warn">中等 — 基礎 EUV 專利已過期，但製程 know-how 非專利保護</td></tr>
+    <tr><td>法規/出口管制</td><td class="up">高 — 荷蘭+美國出口管制有效阻止 EUV 技術流向中國</td></tr>
+  </table>
+</div>
+
+<div class="callout green">
+  <strong>🏆 競爭優勢總評：</strong>ASML 在 12 項優勢子類中，8 項為「極高/高」，2 項「中等」，僅網絡效應不適用。這是教科書級的全面競爭優勢組合。
+</div>
+</section>
+
+<section id="s6">
+<h2>🔬 技術演進維度</h2>
+<p style="color:var(--muted);margin-bottom:20px">框架：Utterback (1994) + Christensen (1997/2003)</p>
+
+<div class="card">
+  <div class="cardTitle">Utterback 三階段定位</div>
+  <table class="tbl">
+    <tr><th>階段</th><th>特徵</th><th>半導體微影</th></tr>
+    <tr><td><strong>Fluid（流動）</strong></td><td>多種技術競爭，無主導設計</td><td>1990-2005：DUV vs EUV vs EPL 競爭</td></tr>
+    <tr><td><strong>Transitional（過渡）</strong></td><td>主導設計出現，製程創新加速</td><td>2005-2018：EUV 成為主導設計</td></tr>
+    <tr><td><strong>Specific（特定）</strong></td><td>產品標準化，競爭在成本/品質</td><td class="up"><strong>2018-現在：EUV 主導，ASML 壟斷</strong></td></tr>
+  </table>
+</div>
+
+<div class="card">
+  <div class="cardTitle">Christensen 破壞式創新檢驗</div>
+  <table class="tbl">
+    <tr><th>問題</th><th>評估</th></tr>
+    <tr><td>是否有邊緣替代技術？</td><td class="warn">奈米壓印 (Canon NIL) 僅限 NAND，尚未威脅 EUV</td></tr>
+    <tr><td>技術進步是否超越客戶需求？</td><td class="down">否 — AI 晶片需求持續推動對更高解析度的追求</td></tr>
+    <tr><td>哪段價值鏈仍被整合？</td><td>光學系統（Zeiss）是 ASML 控制但不擁有的關鍵環節</td></tr>
+    <tr><td>是否存在「非對稱動機」？</td><td class="down">否 — ASML 在 EUV 上的經濟利益遠大於任何潛在破壞者</td></tr>
+  </table>
+</div>
+
+<div class="callout gold">
+  <strong>⚠️ 技術演進關鍵觀察：</strong>半導體微影處於 Specific 階段，ASML 是主導設計的壟斷者。目前無明顯的破壞式創新威脅。但需長期關注：1) Chiplet 是否降低對最先進光刻的需求 2) Canon NIL 在 NAND 領域的進展。Utterback 預測「Specific 階段的贏家會在下一波 discontinuity 被推翻」— 但目前尚未看到下一波 discontinuity 的清晰輪廓。
+</div>
+</section>
+
+<section id="s7">
+<h2>📋 Verdict：競爭定位結論</h2>
+
+<div class="verdict">
+  <table>
+    <tr><td>競爭地位</td><td style="color:var(--accent);font-size:18px"><strong>絕對領導者（獨佔）</strong></td></tr>
+    <tr><td>地位趨勢</td><td class="up">改善中 — High NA EUV 進一步拉開差距</td></tr>
+    <tr><td>最關鍵競爭威脅</td><td>無短期競爭威脅。長期隱憂：Chiplet 架構降低 EUV 需求增長斜率</td></tr>
+    <tr><td>定價力評估</td><td class="up"><strong>極強</strong> — EUV 單價 €1.5-3.5 億，毛利率 52.8% 且上升中</td></tr>
+    <tr><td>利潤池位置</td><td class="up">半導體設備利潤池核心 — 佔設備 25% 利潤，趨勢增強</td></tr>
+    <tr><td>共識可能忽視</td><td>ASML 真正的護城河不是 EUV 專利（已過期），而是<strong>供應鏈不可複製性</strong> — Zeiss 光學系統的 know-how 累積深度遠超外界認知</td></tr>
+  </table>
+</div>
+</section>
+
+</main>
+</div>
+<script>
+document.querySelectorAll('.navItem').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('.navItem').forEach(b=>b.classList.remove('active'));
+    document.querySelectorAll('.navItem[data-section="'+btn.dataset.section+'"]').forEach(b=>b.classList.add('active'));
+    document.querySelectorAll('section').forEach(s=>s.classList.remove('active'));
+    document.getElementById(btn.dataset.section).classList.add('active');
+  });
+});
+</script>
+</body>
+</html>
