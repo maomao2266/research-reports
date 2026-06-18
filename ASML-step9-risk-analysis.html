@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ASML Step 9 — 風險分析 | 2026-06-18</title>
+<style>
+  :root {
+    --bg: #0d1117; --card: #161b22; --border: #30363d;
+    --text: #c9d1d9; --muted: #8b949e; --accent: #58a6ff;
+    --green: #3fb950; --red: #f85149; --orange: #d2991d;
+    --purple: #a371f7;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; line-height: 1.6; max-width: 1000px; margin: 0 auto; padding: 2rem 1.5rem; }
+  h1 { font-size: 1.8rem; margin-bottom: 0.3rem; color: #fff; }
+  h2 { font-size: 1.35rem; margin: 2rem 0 0.8rem; color: var(--accent); border-bottom: 1px solid var(--border); padding-bottom: 0.4rem; }
+  h3 { font-size: 1.1rem; margin: 1.2rem 0 0.5rem; color: #e6edf3; }
+  .meta { color: var(--muted); font-size: 0.85rem; margin-bottom: 1.5rem; }
+  .card { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 1.2rem 1.5rem; margin: 1rem 0; }
+  table { width: 100%; border-collapse: collapse; margin: 0.8rem 0; font-size: 0.9rem; }
+  th { background: #1c2128; text-align: left; padding: 0.5rem 0.75rem; border-bottom: 2px solid var(--border); color: var(--muted); font-weight: 600; font-size: 0.8rem; text-transform: uppercase; }
+  td { padding: 0.5rem 0.75rem; border-bottom: 1px solid var(--border); }
+  tr:last-child td { border-bottom: none; }
+  .up { color: var(--green); font-weight: 600; }
+  .down { color: var(--red); font-weight: 600; }
+  .warn { color: var(--orange); }
+  .neutral { color: var(--muted); }
+  .badge { display: inline-block; padding: 0.15em 0.6em; border-radius: 10px; font-size: 0.75rem; font-weight: 600; }
+  .badge-green { background: rgba(63,185,80,0.15); color: var(--green); }
+  .badge-red { background: rgba(248,81,73,0.15); color: var(--red); }
+  .badge-yellow { background: rgba(210,153,29,0.15); color: var(--orange); }
+  .badge-blue { background: rgba(88,166,255,0.15); color: var(--accent); }
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; }
+  @media (max-width: 600px) { .grid-2, .grid-3 { grid-template-columns: 1fr; } }
+  .verdict { padding: 1.2rem 1.5rem; border-radius: 8px; margin: 1.5rem 0; border: 1px solid; }
+  .verdict-bearish { background: rgba(248,81,73,0.08); border-color: rgba(248,81,73,0.3); }
+  .verdict-neutral { background: rgba(88,166,255,0.08); border-color: rgba(88,166,255,0.3); }
+  .framework-ref { font-size: 0.75rem; color: var(--muted); font-style: italic; margin-top: 0.2rem; display: block; }
+  .heatmap td:first-child { font-weight: 600; }
+  .heat-bar { height: 6px; border-radius: 3px; margin-top: 2px; }
+  .bar-critical { background: var(--red); }
+  .bar-high { background: var(--orange); }
+  .bar-medium { background: var(--accent); }
+  .bar-low { background: #30363d; }
+  footer { margin-top: 2.5rem; padding-top: 1rem; border-top: 1px solid var(--border); color: var(--muted); font-size: 0.8rem; text-align: center; }
+</style>
+</head>
+<body>
+
+<h1>⚠️ ASML Step 9 — 風險分析</h1>
+<div class="meta">Maobolin Research | 2026-06-18 | 框架：FRM 風險分類 + Sonkin & Johnson (2017) 風險哲學 | 資料來源：ASML 20-F FY2025、法說會逐字稿、產業報告</div>
+
+<!-- ====== 風險哲學 ====== -->
+<h2>風險哲學：風險 ≠ 不確定性</h2>
+<div class="card">
+  <p>引用 <strong>Sonkin & Johnson（2017, Ch.9）</strong>：「不確定性本身不是風險。風險只在你投入資本後才存在。」</p>
+  <div class="grid-2" style="margin-top:1rem;">
+    <div style="padding:0.8rem; background:#1c2128; border-radius:6px;">
+      <strong>價格-風險悖論</strong>
+      <p style="font-size:0.85rem; margin-top:0.3rem;">股價上漲 → 預期回報降低 → <strong>風險升高</strong><br>股價下跌 → 預期回報升高 → <strong>風險降低</strong></p>
+      <p style="font-size:0.75rem; color:var(--muted);">市價與風險為<strong>正相關</strong>——這違反直覺但至關重要。</p>
+    </div>
+    <div style="padding:0.8rem; background:#1c2128; border-radius:6px;">
+      <strong>對 ASML 的啟示</strong>
+      <p style="font-size:0.85rem; margin-top:0.3rem;">市價 €1,682（本益比 67x）意味著 ASML 目前的<strong>風險遠高於</strong>市價 €680（本益比 27x）時——即使企業基本面完全相同。</p>
+    </div>
+  </div>
+  <span class="framework-ref">來源：Sonkin & Johnson (2017), Ch.9；FRM Ch.1</span>
+</div>
+
+<!-- ====== 風險分類 ====== -->
+<h2>第一步：五柱風險分類</h2>
+<div class="card">
+  <p style="margin-bottom:1rem;">遵循 FRM 風險分類法，將所有風險歸入五根支柱。每個風險以 <strong>P×I（機率 × 影響）</strong> 評分，1-5 級。</p>
+
+  <h3>風險熱力圖（按 P×I 排序）</h3>
+  <table class="heatmap">
+    <tr><th>#</th><th>風險</th><th>類型</th><th>機率</th><th>影響</th><th>P×I</th><th>早期預警信號</th></tr>
+    <tr style="background:rgba(248,81,73,0.06);">
+      <td>1</td>
+      <td><strong>估值回歸</strong>——本益比從 67x 壓縮至 25-35x</td>
+      <td><span class="badge badge-red">估值風險</span></td>
+      <td>5</td>
+      <td>5</td>
+      <td><strong class="down">25</strong></td>
+      <td>半導體設備同業本益比開始收縮；市場情緒轉向</td>
+    </tr>
+    <tr style="background:rgba(248,81,73,0.04);">
+      <td>2</td>
+      <td><strong>中國出口管制升級</strong>——全面服務禁令或 EUV 系統禁令</td>
+      <td><span class="badge badge-red">事件風險</span></td>
+      <td>3</td>
+      <td>4</td>
+      <td><strong class="down">12</strong></td>
+      <td>美國國會提案新制裁法案；荷蘭政府聲明轉強硬</td>
+    </tr>
+    <tr style="background:rgba(210,153,29,0.04);">
+      <td>3</td>
+      <td><strong>AI 資本支出週期轉向</strong>——超大規模客戶削減投資</td>
+      <td><span class="badge badge-yellow">市場風險</span></td>
+      <td>3</td>
+      <td>4</td>
+      <td><strong class="warn">12</strong></td>
+      <td>MSFT/GOOGL/AMZN 資本支出指引下調</td>
+    </tr>
+    <tr style="background:rgba(210,153,29,0.04);">
+      <td>4</td>
+      <td><strong>主要客戶資本支出削減</strong>——TSMC/Intel/Samsung 砍單</td>
+      <td><span class="badge badge-yellow">商業風險</span></td>
+      <td>3</td>
+      <td>4</td>
+      <td><strong class="warn">12</strong></td>
+      <td>任一大客戶 CapEx guidance 下調 >10%</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td><strong>創新盒稅制取消</strong>——有效稅率從 18%→25.8%</td>
+      <td><span class="badge badge-yellow">事件風險</span></td>
+      <td>2</td>
+      <td>3</td>
+      <td><strong>6</strong></td>
+      <td>歐盟委員會正式提案改革 IP Box 制度</td>
+    </tr>
+    <tr>
+      <td>6</td>
+      <td><strong>High-NA EUV 量產延遲</strong>——技術問題推遲 12 個月以上</td>
+      <td><span class="badge badge-yellow">商業風險</span></td>
+      <td>2</td>
+      <td>3</td>
+      <td><strong>6</strong></td>
+      <td>客戶端良率未達標；ASML 下調 High-NA 出貨指引</td>
+    </tr>
+    <tr>
+      <td>7</td>
+      <td><strong>管理層關鍵人風險</strong>——CEO/CTO 離職</td>
+      <td><span class="badge badge-yellow">事件風險</span></td>
+      <td>2</td>
+      <td>2</td>
+      <td><strong>4</strong></td>
+      <td>高層異常離職；無明確繼任計劃</td>
+    </tr>
+    <tr>
+      <td>8</td>
+      <td><strong>歐元升值</strong>——EUR/USD 從 1.15→1.30</td>
+      <td><span class="badge badge-blue">市場風險</span></td>
+      <td>2</td>
+      <td>2</td>
+      <td><strong>4</strong></td>
+      <td>ECB 鷹派信號；EUR/USD 突破 1.20</td>
+    </tr>
+    <tr>
+      <td>9</td>
+      <td><strong>中國國產微影突破</strong>——SMEE 達到 ArFi 水平</td>
+      <td><span class="badge badge-blue">商業風險</span></td>
+      <td>1</td>
+      <td>3</td>
+      <td><strong>3</strong></td>
+      <td>SMEE 宣布 28nm 微影設備商業出貨</td>
+    </tr>
+    <tr>
+      <td>10</td>
+      <td><strong>供應鏈中斷</strong>——Carl Zeiss 光學元件短缺</td>
+      <td><span class="badge badge-blue">商業風險</span></td>
+      <td>1</td>
+      <td>2</td>
+      <td><strong>2</strong></td>
+      <td>Zeiss 產能公告延遲；ASML 引用供應鏈限制</td>
+    </tr>
+  </table>
+</div>
+
+<!-- ====== 估值風險深挖 ====== -->
+<h2>🔴 首要風險深挖：估值回歸</h2>
+<div class="card">
+  <p>這是<strong>壓倒性的第一風險</strong>（P×I = 25），需要獨立展開。</p>
+
+  <h3>估值回歸的數學</h3>
+  <table>
+    <tr><th>情境</th><th>目標本益比</th><th>隱含股價</th><th>跌幅</th><th>觸發條件</th></tr>
+    <tr style="background:rgba(248,81,73,0.05);">
+      <td><strong>泡沫破裂</strong></td>
+      <td>20x（長期歷史中位數）</td>
+      <td>€500</td>
+      <td><span class="down">−70%</span></td>
+      <td>AI 敘事瓦解；半導體週期下行</td>
+    </tr>
+    <tr style="background:rgba(248,81,73,0.04);">
+      <td><strong>估值正常化</strong></td>
+      <td>25x（同業中位數 + 溢價）</td>
+      <td>€625</td>
+      <td><span class="down">−63%</span></td>
+      <td>獲利成長放緩至 10% 以下；市場重新定價</td>
+    </tr>
+    <tr style="background:rgba(210,153,29,0.04);">
+      <td><strong>溫和回歸</strong></td>
+      <td>30x（仍高於歷史，但較目前合理）</td>
+      <td>€750</td>
+      <td><span class="down">−55%</span></td>
+      <td>財測未達標；中國風險實現一半</td>
+    </tr>
+    <tr>
+      <td><strong>目前市價</strong></td>
+      <td>67x</td>
+      <td>€1,682</td>
+      <td>—</td>
+      <td>AI 狂熱 + 完美定價</td>
+    </tr>
+  </table>
+
+  <h3 style="margin-top:1.5rem;">歷史先例：過往 ASML 估值修正</h3>
+  <table>
+    <tr><th>時期</th><th>觸發</th><th>本益比變化</th><th>股價跌幅</th></tr>
+    <tr><td>2000 年網路泡沫</td><td>科技股全面崩盤</td><td>50x → 15x</td><td><span class="down">−70%</span></td></tr>
+    <tr><td>2008 年金融危機</td><td>全球衰退</td><td>20x → 8x</td><td><span class="down">−60%</span></td></tr>
+    <tr><td>2018 年半導體下行</td><td>記憶體供過於求</td><td>25x → 18x</td><td><span class="down">−28%</span></td></tr>
+    <tr><td>2022 年科技股修正</td><td>升息 + 出口管制</td><td>40x → 25x</td><td><span class="down">−38%</span></td></tr>
+  </table>
+  <p style="font-size:0.85rem; color:var(--muted); margin-top:0.5rem;">
+    每次修正都發生在看似「這次不一樣」的敘事中。目前 67x 本益比的「AI 超級週期」論述與 2000 年的「新經濟」論述有令人不安的相似性。
+  </p>
+</div>
+
+<!-- ====== 壓力測試 ====== -->
+<h2>第二步：情境壓力測試</h2>
+<div class="card">
+  <h3>三種不利情境的財務衝擊</h3>
+  <table>
+    <tr><th>情境</th><th>觸發</th><th>營收衝擊</th><th>EPS 衝擊</th><th>隱含估值</th><th>vs 市價</th></tr>
+    <tr style="background:rgba(248,81,73,0.04);">
+      <td><strong>🔴 估值修正</strong></td>
+      <td>AI 資本支出轉向 + 中國管制升級</td>
+      <td>−15%</td>
+      <td>€20 → €14</td>
+      <td>本益比 25x → <strong>€350</strong></td>
+      <td><span class="down">−79%</span></td>
+    </tr>
+    <tr style="background:rgba(210,153,29,0.04);">
+      <td><strong>🟠 中國風險</strong></td>
+      <td>全面 EUV 服務禁令 + 系統出口禁令</td>
+      <td>−25%（中國營收歸零）</td>
+      <td>€20 → €10</td>
+      <td>本益比 30x → <strong>€300</strong></td>
+      <td><span class="down">−82%</span></td>
+    </tr>
+    <tr style="background:rgba(210,153,29,0.03);">
+      <td><strong>🟡 雙重打擊</strong></td>
+      <td>中國禁令 + AI 週期結束（同時發生）</td>
+      <td>−40%</td>
+      <td>€20 → €6</td>
+      <td>本益比 20x → <strong>€120</strong></td>
+      <td><span class="down">−93%</span></td>
+    </tr>
+  </table>
+  <p style="font-size:0.85rem; color:var(--muted); margin-top:0.5rem;">
+    ⚠️ 這些不是「可能發生」的情境——是<strong>如果目前的極端估值回歸均值</strong>時的自然結果。不需要災難性事件；只需要市場情緒正常化。
+  </p>
+</div>
+
+<!-- ====== 風險校正 ====== -->
+<h2>第三步：風險校正後的論點評估</h2>
+<div class="card">
+  <table>
+    <tr><th>問題</th><th>評估</th></tr>
+    <tr>
+      <td><strong>市場已定價的風險</strong></td>
+      <td>中國溫和管制、AI 成長放緩至 15%、毛利率壓力</td>
+    </tr>
+    <tr>
+      <td><strong>市場<em>未</em>定價的風險</strong></td>
+      <td><span class="down">估值回歸均值（67x → 25-30x）、中國全面禁令、AI 資本支出週期結束</span></td>
+    </tr>
+    <tr>
+      <td><strong>安全邊際</strong></td>
+      <td><span class="down">零。DCF 基本情境 €608 比市價低 64%。即使樂觀情境 €846 也低 50%。</span></td>
+    </tr>
+    <tr>
+      <td><strong>論點能在悲觀情境中存活嗎？</strong></td>
+      <td><span class="down">企業可以存活（ASML 不會破產），但投資無法存活（股價可能跌 70-80%）。</span></td>
+    </tr>
+    <tr>
+      <td><strong>什麼會殺死這個論點？</strong></td>
+      <td><span class="down">估值回歸不需要「殺死論點」——目前價位本身就是論點殺手。即使 ASML 完美執行所有計劃，67x 本益比也沒有容錯空間。</span></td>
+    </tr>
+  </table>
+</div>
+
+<!-- ====== 風險緩解 ====== -->
+<h2>第四步：風險緩解策略（如果你想持有）</h2>
+<div class="card">
+  <table>
+    <tr><th>策略</th><th>說明</th><th>成本</th></tr>
+    <tr>
+      <td><strong>部位控制</strong></td>
+      <td>在 67x 本益比下，ASML 不應超過投資組合的 <strong>2-3%</strong></td>
+      <td>機會成本</td>
+    </tr>
+    <tr>
+      <td><strong>停損</strong></td>
+      <td>若本益比跌破 40x（約 €1,000）或 DCF 基本假設任一被推翻，立即退出</td>
+      <td>強制退出風險</td>
+    </tr>
+    <tr>
+      <td><strong>避險</strong></td>
+      <td>買入 SOX 指數賣權（SOXX put）或做空 iShares Semiconductor ETF</td>
+      <td>權利金成本 ~3-5%/年</td>
+    </tr>
+    <tr>
+      <td><strong>分批進場</strong></td>
+      <td><span class="down">不建議在目前價位進場。</span>等待本益比回落至 30-35x 再考慮</td>
+      <td>可能錯過進一步上漲</td>
+    </tr>
+    <tr>
+      <td><strong>監控頻率</strong></td>
+      <td>每週追蹤：TSMC/Intel/Samsung CapEx 指引、中國出口政策新聞、SOX 指數走勢</td>
+      <td>注意力成本</td>
+    </tr>
+  </table>
+</div>
+
+<!-- ====== 裁決 ====== -->
+<h2>第五步：明確的風險裁決</h2>
+
+<div class="verdict verdict-bearish">
+  <h3 style="color:var(--red); margin-top:0;">🔴 風險等級：極高（Extreme）</h3>
+
+  <div class="grid-2" style="margin-top:1rem;">
+    <div>
+      <strong>風險預算：</strong><br>
+      悲觀情境最大回撤：<span class="down">−79%</span><br>
+      雙重打擊情境：<span class="down">−93%</span><br>
+      <strong>不對稱比：</strong><span class="down">極度不利</span>
+    </div>
+    <div>
+      <strong>終止條件（Kill Switch）：</strong><br>
+      若發生以下任一：<br>
+      ① 本益比跌破 40x<br>
+      ② 中國全面 EUV 禁令<br>
+      ③ TSMC CapEx 下調 >15%<br>
+      → <span class="down">立即退出</span>
+    </div>
+  </div>
+
+  <div style="margin-top:1rem; padding:1rem; background:rgba(248,81,73,0.06); border-radius:6px;">
+    <strong>共識忽視的風險：</strong>市場普遍認為 ASML 是「無論如何都會贏」的股票——AI 需要晶片、晶片需要 EUV、EUV 只有 ASML。這是事實，但<strong>好公司 ≠ 好投資</strong>。在 67x 本益比下，ASML 的未來五年完美執行已被完全定價——任何不如預期的發展都是下跌催化劑。
+  </div>
+
+  <p style="margin-top:1rem;">
+    <strong>一句話總結：</strong>ASML 是我們分析過最優秀的企業之一（Step 1-6 證明），但目前的價格使得它成為我們分析過<strong>風險最高的投資標的之一</strong>。風險不來自企業——來自價格。
+  </p>
+</div>
+
+<!-- ====== 步驟導航 ====== -->
+<div style="display:flex; justify-content:center; gap:0.5rem; margin:1.5rem 0; flex-wrap:wrap;">
+  <span style="background:#1c2128; padding:0.3rem 0.8rem; border-radius:4px; font-size:0.8rem;">Step 1 ✓</span>
+  <span style="background:#1c2128; padding:0.3rem 0.8rem; border-radius:4px; font-size:0.8rem;">Step 2 ✓</span>
+  <span style="background:#1c2128; padding:0.3rem 0.8rem; border-radius:4px; font-size:0.8rem;">Step 3 ✓</span>
+  <span style="background:#1c2128; padding:0.3rem 0.8rem; border-radius:4px; font-size:0.8rem;">Step 4 ✓</span>
+  <span style="background:#1c2128; padding:0.3rem 0.8rem; border-radius:4px; font-size:0.8rem;">Step 5 ✓</span>
+  <span style="background:#1c2128; padding:0.3rem 0.8rem; border-radius:4px; font-size:0.8rem;">Step 6 ✓</span>
+  <span style="background:#1c2128; padding:0.3rem 0.8rem; border-radius:4px; font-size:0.8rem;">Step 7 ✓</span>
+  <span style="background:#1c2128; padding:0.3rem 0.8rem; border-radius:4px; font-size:0.8rem;">Step 8 ✓</span>
+  <span style="background:rgba(163,113,247,0.2); padding:0.3rem 0.8rem; border-radius:4px; font-size:0.8rem; font-weight:600; color:var(--purple);">Step 9 ✓</span>
+  <span style="background:#1c2128; padding:0.3rem 0.8rem; border-radius:4px; font-size:0.8rem;">Step 10 ⏳</span>
+</div>
+
+<footer>Generated by Maobolin (Hermes Agent) · Nous Research · Step 9 of 10 · ASML Fundamental Equity Research</footer>
+
+</body>
+</html>
