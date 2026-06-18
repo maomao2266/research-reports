@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ASML — 公司描述 | Step 1</title>
+<style>
+:root{--bg:#0a0e14;--surface:#131820;--card:#181f2a;--border:#252d3a;--ink:#e2e8f0;--muted:#7c8aa0;--dim:#4a5568;--accent:#60a5fa;--gold:#f59e0b;--green:#34d399;--red:#f87171;--orange:#fb923c;--purple:#a78bfa;--radius:14px;--sans:"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.7}
+.topbar{background:var(--surface);border-bottom:1px solid var(--border);padding:14px 24px;display:flex;align-items:center;gap:16px;position:sticky;top:0;z-index:100}
+.topbar .logo{font-size:18px;font-weight:700;color:var(--accent)}
+.topbar .badge{font-size:11px;background:var(--card);color:var(--muted);padding:4px 10px;border-radius:20px}
+.layout{display:flex;min-height:calc(100vh - 57px)}
+.sidebar{width:220px;background:var(--surface);border-right:1px solid var(--border);padding:16px 0;position:sticky;top:57px;height:calc(100vh - 57px);overflow-y:auto;flex-shrink:0}
+.navItem{display:block;width:100%;padding:10px 20px;font-size:13px;color:var(--muted);background:none;border:none;text-align:left;cursor:pointer;font-family:var(--sans);transition:all .15s;border-left:3px solid transparent}
+.navItem:hover{color:var(--ink);background:var(--card)}
+.navItem.active{color:var(--accent);background:rgba(96,165,250,.08);border-left-color:var(--accent);font-weight:600}
+.content{flex:1;padding:32px;max-width:960px}
+section{display:none} section.active{display:block}
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px 24px;margin-bottom:16px}
+.cardTitle{font-size:15px;font-weight:600;margin-bottom:12px;color:var(--ink)}
+.tbl{width:100%;border-collapse:collapse;margin:12px 0;font-size:13px}
+.tbl th{text-align:left;color:var(--muted);font-size:11px;text-transform:uppercase;padding:8px 12px;border-bottom:1px solid var(--border)}
+.tbl td{padding:10px 12px;border-bottom:1px solid var(--border)}
+.tbl tr:last-child td{border-bottom:none}
+.up{color:var(--green)} .down{color:var(--red)} .warn{color:var(--orange)}
+.metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin:16px 0}
+.metric{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px;text-align:center}
+.metric .val{font-size:22px;font-weight:700;color:var(--ink)}
+.metric .lbl{font-size:11px;color:var(--muted);margin-top:4px}
+.callout{border-left:3px solid;border-radius:0 var(--radius) var(--radius) 0;padding:14px 18px;margin:16px 0;background:var(--surface);font-size:13px}
+.callout.red{border-color:var(--red)} .callout.gold{border-color:var(--gold)} .callout.green{border-color:var(--green)} .callout.purple{border-color:var(--purple)}
+.pillRow{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0}
+.pill{font-size:11px;padding:4px 10px;border-radius:20px;font-weight:600}
+.pill.g{background:rgba(52,211,153,.15);color:var(--green)} .pill.r{background:rgba(248,113,113,.15);color:var(--red)}
+.pill.b{background:rgba(96,165,250,.15);color:var(--accent)} .pill.o{background:rgba(251,146,60,.15);color:var(--orange)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.verdict{background:linear-gradient(135deg,rgba(52,211,153,.08),rgba(96,165,250,.06));border:1px solid rgba(52,211,153,.2);border-radius:var(--radius);padding:24px;margin-top:24px}
+.verdict h2{color:var(--green);margin-bottom:12px}
+.verdict table{width:100%;margin-top:12px}
+.verdict td{padding:8px 0;font-size:14px;color:var(--ink)}
+</style>
+</head>
+<body>
+<div class="topbar"><span class="logo">🔬 ASML Holding NV</span><span class="badge">NASDAQ: ASML</span><span class="badge">STEP 1 · 公司描述</span></div>
+<div class="layout">
+<nav class="sidebar">
+  <button class="navItem active" data-section="s1">📋 公司總覽</button>
+  <button class="navItem" data-section="s2">📦 產品與服務</button>
+  <button class="navItem" data-section="s3">🗺️ 定位地圖</button>
+  <button class="navItem" data-section="s4">💼 商業模式</button>
+  <button class="navItem" data-section="s5">👤 CEO/管理層</button>
+  <button class="navItem" data-section="s6">📋 Verdict</button>
+</nav>
+<main class="content">
+
+<section id="s1" class="active">
+<h2 style="font-size:22px;margin-bottom:8px">📋 公司總覽</h2>
+<p style="color:var(--muted);margin-bottom:20px">來源：ASML 20-F FY2025 (SEC EDGAR, 2026-02-25)</p>
+
+<div class="metrics">
+  <div class="metric"><div class="val">1984</div><div class="lbl">成立年份</div></div>
+  <div class="metric"><div class="val">Veldhoven</div><div class="lbl">總部（荷蘭）</div></div>
+  <div class="metric"><div class="val">~39,000</div><div class="lbl">員工人數</div></div>
+  <div class="metric"><div class="val">€5,536億</div><div class="lbl">市值 (FY2025)</div></div>
+</div>
+
+<div class="card">
+  <div class="cardTitle">一句話描述</div>
+  <p style="font-size:16px">ASML 是<strong>全球唯一</strong>能生產極紫外光（EUV）微影設備的公司。沒有 ASML 的 EUV 光刻機，台積電、Intel、Samsung 無法製造 7nm 以下的先進晶片。</p>
+</div>
+
+<div class="card">
+  <div class="cardTitle">歷史拐點</div>
+  <table class="tbl">
+    <tr><th>年份</th><th>事件</th><th>意義</th></tr>
+    <tr><td>1984</td><td>ASM + Philips 合資成立</td><td>承接 Philips 光學技術遺產</td></tr>
+    <tr><td>1995</td><td>IPO（Nasdaq + Euronext）</td><td>獨立上市</td></tr>
+    <tr><td>2012</td><td>客戶共投計畫（Customer Co-Investment）</td><td>Intel/TSMC/Samsung 入股，確保 EUV 研發資金</td></tr>
+    <tr><td>2018</td><td>首台 EUV 量產出貨</td><td>壟斷先進製程設備</td></tr>
+    <tr><td>2025</td><td>High NA EUV (EXE:5200B) 交付 Intel</td><td>下一代技術量產啟動</td></tr>
+  </table>
+</div>
+
+<div class="card">
+  <div class="cardTitle">股權結構</div>
+  <p>無單一控制股東。2012 年客戶共投計畫讓 Intel/TSMC/Samsung 合計持有約 23% 股權（後陸續出售）。現為<strong>廣泛持股的公眾公司</strong>。</p>
+</div>
+</section>
+
+<section id="s2">
+<h2 style="font-size:22px;margin-bottom:8px">📦 產品與服務</h2>
+<p style="color:var(--muted);margin-bottom:20px">來源：ASML 20-F FY2025</p>
+
+<div class="card">
+  <div class="cardTitle">產品線拆解</div>
+  <table class="tbl">
+    <tr><th>產品線</th><th>說明</th><th>FY2025 營收佔比</th><th>成長趨勢</th><th>毛利率</th></tr>
+    <tr><td><strong>EUV 系統</strong></td><td>Low NA + High NA</td><td>~30%</td><td class="up">↑ AI 驅動</td><td>最高</td></tr>
+    <tr><td>DUV 系統</td><td>ArFi 浸沒式 + KrF + i-line</td><td>~40%</td><td class="warn">→ 中國回落中</td><td>高</td></tr>
+    <tr><td>安裝服務</td><td>維護 + 升級 + 翻新</td><td>~25%</td><td class="up">↑ EUV 裝機擴張</td><td>高</td></tr>
+    <tr><td>量測檢測</td><td>eSCAN 多波束檢測</td><td>~2%</td><td class="up">↑ 初期</td><td>低（初期）</td></tr>
+  </table>
+</div>
+
+<div class="card">
+  <div class="cardTitle">核心產品：EUV 光刻機</div>
+  <table class="tbl">
+    <tr><th>型號</th><th>世代</th><th>單價</th><th>產能</th><th>狀態</th></tr>
+    <tr><td>NXE:3800E</td><td>Low NA EUV</td><td>~€1.5-2.0 億</td><td>220-230 wph</td><td class="up">量產中</td></tr>
+    <tr><td>EXE:5000</td><td>High NA EUV (研發)</td><td>~€3.5 億+</td><td>—</td><td class="up">研發機出貨</td></tr>
+    <tr><td>EXE:5200B</td><td>High NA EUV (量產)</td><td>~€3.5 億+</td><td>—</td><td class="up">Intel 首台</td></tr>
+  </table>
+</div>
+
+<div class="callout green"><strong>✅ 你判斷正確：</strong>EUV 是核心利潤引擎。設備賣斷模式，非 razor-and-blade。安裝服務是附帶收入（且隨 EUV 裝機量自然增長），但商業模式本質是「賣一台 €3.5 億的獨家設備」。</div>
+
+<div class="callout gold">
+  <strong>⚠️ 關鍵觀察：</strong>2025 年中國市場佔總營收 <strong>29.1%</strong>（20-F 正式數據），主要是 DUV 浸沒式系統。2026 年將正常化回落，這部分高毛利業務的萎縮是中期逆風。
+</div>
+</section>
+
+<section id="s3">
+<h2 style="font-size:22px;margin-bottom:8px">🗺️ 定位地圖</h2>
+<p style="color:var(--muted);margin-bottom:20px">生態系權力關係分析</p>
+
+<svg viewBox="0 0 700 400" style="max-width:100%;background:var(--surface);border-radius:var(--radius);padding:16px">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#60a5fa"/></marker>
+    <marker id="arrowR" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#f87171"/></marker>
+    <marker id="arrowG" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#34d399"/></marker>
+  </defs>
+
+  <!-- Suppliers -->
+  <rect x="20" y="140" width="140" height="120" rx="10" fill="#181f2a" stroke="#252d3a"/>
+  <text x="90" y="170" text-anchor="middle" fill="#7c8aa0" font-size="11">🔩 上游供應商</text>
+  <text x="90" y="200" text-anchor="middle" fill="#e2e8f0" font-size="10">Carl Zeiss SMT</text>
+  <text x="90" y="218" text-anchor="middle" fill="#e2e8f0" font-size="10">(光學系統 · 獨家)</text>
+  <text x="90" y="242" text-anchor="middle" fill="#e2e8f0" font-size="10">Trumpf (光源)</text>
+
+  <!-- ASML -->
+  <rect x="250" y="100" width="180" height="200" rx="10" fill="#181f2a" stroke="#60a5fa" stroke-width="2"/>
+  <text x="340" y="150" text-anchor="middle" fill="#60a5fa" font-size="14" font-weight="700">ASML</text>
+  <text x="340" y="178" text-anchor="middle" fill="#e2e8f0" font-size="10">EU €</text>
+  <text x="340" y="198" text-anchor="middle" fill="#e2e8f0" font-size="10">EUR 327B (2025)</text>
+  <text x="340" y="220" text-anchor="middle" fill="#7c8aa0" font-size="9">積壓訂單 €388B</text>
+  <text x="340" y="250" text-anchor="middle" fill="#7c8aa0" font-size="9">GM 52.8% | OM 34.6%</text>
+  <text x="340" y="275" text-anchor="middle" fill="#7c8aa0" font-size="9">FCF €111B</text>
+
+  <!-- Customers -->
+  <rect x="530" y="70" width="150" height="120" rx="10" fill="#181f2a" stroke="#252d3a"/>
+  <text x="605" y="100" text-anchor="middle" fill="#7c8aa0" font-size="11">💻 Logic 客戶</text>
+  <text x="605" y="125" text-anchor="middle" fill="#e2e8f0" font-size="10">台積電 TSMC</text>
+  <text x="605" y="143" text-anchor="middle" fill="#e2e8f0" font-size="10">Intel</text>
+  <text x="605" y="161" text-anchor="middle" fill="#e2e8f0" font-size="10">Samsung</text>
+
+  <rect x="530" y="210" width="150" height="90" rx="10" fill="#181f2a" stroke="#252d3a"/>
+  <text x="605" y="240" text-anchor="middle" fill="#7c8aa0" font-size="11">🧠 Memory 客戶</text>
+  <text x="605" y="262" text-anchor="middle" fill="#e2e8f0" font-size="10">SK Hynix</text>
+  <text x="605" y="280" text-anchor="middle" fill="#e2e8f0" font-size="10">Micron</text>
+
+  <!-- Arrows -->
+  <line x1="160" y1="200" x2="245" y2="190" stroke="#60a5fa" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="180" y="185" fill="#7c8aa0" font-size="8">光學/光源</text>
+
+  <line x1="430" y1="170" x2="525" y2="140" stroke="#60a5fa" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="450" y="145" fill="#34d399" font-size="8">EUV 壟斷</text>
+
+  <line x1="430" y1="230" x2="525" y2="250" stroke="#60a5fa" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="450" y="260" fill="#34d399" font-size="8">EUV 壟斷</text>
+
+  <!-- Risk annotation -->
+  <text x="605" y="335" text-anchor="middle" fill="#f87171" font-size="9">⚠ 客戶集中度風險</text>
+  <text x="605" y="350" text-anchor="middle" fill="#f87171" font-size="9">TSMC >50% EUV 裝機</text>
+</svg>
+
+<div class="card" style="margin-top:16px">
+  <div class="cardTitle">權力關係分析</div>
+  <table class="tbl">
+    <tr><th>角色</th><th>對象</th><th>權力動態</th><th>評估</th></tr>
+    <tr><td><strong>供應商</strong></td><td>Carl Zeiss SMT (光學獨家)</td><td>互相綁定：ASML 是 Zeiss 最大客戶，Zeiss 是 ASML 唯一 EUV 光學源</td><td class="warn">互相依賴</td></tr>
+    <tr><td><strong>客戶 (Logic)</strong></td><td>TSMC (佔 EUV >50%)</td><td>TSMC 別無選擇，但單一客戶風險高</td><td class="warn">ASML 有定價權，但天花板取決於 TSMC 產能</td></tr>
+    <tr><td><strong>客戶 (Memory)</strong></td><td>SK Hynix, Micron</td><td>HBM DRAM 推動 EUV 需求，客戶較分散</td><td class="up">健康</td></tr>
+    <tr><td><strong>競爭者</strong></td><td>Nikon, Canon (僅 DUV)</td><td>EUV 市場無第二名存在</td><td class="up">零威脅</td></tr>
+    <tr><td><strong>潛在進入者</strong></td><td>中國自主光刻機</td><td>至少落後 10-15 年，限於成熟 DUV</td><td class="up">短期無威脅</td></tr>
+    <tr><td><strong>替代技術</strong></td><td>奈米壓印、Chiplet 架構</td><td>Chiplet 可能降低對最先進 EUV 的依賴；仍處早期</td><td class="warn">長期隱憂</td></tr>
+  </table>
+</div>
+
+<div class="callout red"><strong>🚨 你判斷正確：客戶集中度是風險。</strong>TSMC 佔 EUV 裝機量超過 50%，但這不是「TSMC 會轉單」的風險（不可能轉），而是 ASML 的 EUV 營收天花板＝TSMC 能消化多少 EUV 產能。</div>
+</section>
+
+<section id="s4">
+<h2 style="font-size:22px;margin-bottom:8px">💼 商業模式</h2>
+<p style="color:var(--muted);margin-bottom:20px">框架來源：Shallow Dive Template §1.4</p>
+
+<div class="card">
+  <div class="cardTitle">商業模式分析</div>
+  <table class="tbl">
+    <tr><th>維度</th><th>描述</th><th>評估</th></tr>
+    <tr><td><strong>收入模式</strong></td><td>設備賣斷（一次性高單價）+ 安裝後服務合約</td><td>設備本質是 Transaction，非 Subscription</td></tr>
+    <tr><td><strong>成本結構</strong></td><td>高固定成本：R&D €47 億/年 + 精密製造</td><td>需大量營收維持 R&D 引擎</td></tr>
+    <tr><td><strong>資本密集度</strong></td><td>中等偏高（CapEx €16 億/年），但 FCF 強勁（€111 億）</td><td class="up">FCF 充沛</td></tr>
+    <tr><td><strong>經常性收入</strong></td><td>服務收入 €82 億/年 (~25%)，隨裝機量自然增長</td><td class="up">附帶但不主導</td></tr>
+    <tr><td><strong>規模化能力</strong></td><td>EUV 產能受限於供應鏈（Zeiss 光學），非純軟體可無限擴張</td><td class="warn">供應鏈是瓶頸</td></tr>
+  </table>
+</div>
+
+<div class="callout green"><strong>✅ 你判斷正確：設備賣斷，非 razor-and-blade。</strong>雖然安裝服務收入 €82 億佔比不低，但這是 EUV 裝機量擴張的自然結果，商業模式本質仍是「賣設備」。</div>
+</section>
+
+<section id="s5">
+<h2 style="font-size:22px;margin-bottom:8px">👤 CEO 與管理層</h2>
+
+<div class="card">
+  <div class="cardTitle">核心管理層</div>
+  <table class="tbl">
+    <tr><th>角色</th><th>姓名</th><th>背景</th></tr>
+    <tr><td>CEO</td><td>Christophe Fouquet</td><td>2024 年接任，前任為 Peter Wennink (2013-2024)；法國籍，半導體業資深</td></tr>
+    <tr><td>CFO</td><td>Roger Dassen</td><td>2026 年董事會重新任命，任期延續</td></tr>
+    <tr><td>CTO</td><td>Marco Pieters（新任命）</td><td>25 年 ASML 資歷，2026 年 4 月正式上任</td></tr>
+  </table>
+</div>
+
+<div class="card">
+  <div class="cardTitle">管理層品質評估</div>
+  <table class="tbl">
+    <tr><th>維度</th><th>觀察</th><th>評分</th></tr>
+    <tr><td>策略清晰度</td><td>2030 年 €440-600 億目標明確，High NA 路線圖清晰</td><td class="up">★★★★★</td></tr>
+    <tr><td>執行力</td><td>FY2025 營收超指引上限、Q4 訂單創紀錄</td><td class="up">★★★★★</td></tr>
+    <tr><td>資本配置</td><td>€120 億回購 + 股息連續增長，FCF 充沛</td><td class="up">★★★★☆</td></tr>
+    <tr><td>透明度</td><td>法說會坦承中國正常化逆風、High NA 初期稀釋毛利率</td><td class="up">★★★★★</td></tr>
+    <tr><td>股東利益一致</td><td>無極端雙層股權；CEO 新任不久，需觀察持股動向</td><td class="warn">★★★☆☆</td></tr>
+  </table>
+</div>
+</section>
+
+<section id="s6">
+<h2 style="font-size:22px;margin-bottom:8px">📋 Verdict：公司描述結論</h2>
+
+<div class="verdict">
+  <table>
+    <tr><td style="width:200px;color:var(--muted)">商業品質</td><td style="color:var(--green);font-size:18px"><strong>A（卓越）</strong></td></tr>
+    <tr><td style="color:var(--muted)">定位強度</td><td>EUV 全球壟斷，供應鏈深鎖，客戶無替代方案</td></tr>
+    <tr><td style="color:var(--muted)">護城河來源</td><td>非專利保護（專利已過期），而是累積數十年的製程 know-how + 供應鏈綁定（Zeiss）+ 客戶轉換成本</td></tr>
+    <tr><td style="color:var(--muted)">管理層</td><td>新任 CEO 策略延續性佳，CFO 穩定，執行力強</td></tr>
+    <tr><td style="color:var(--muted)">最關鍵未知</td><td>High NA EUV 量產爬坡速度（2028-2029 始顯著貢獻）vs 中國 DUV 正常化速度</td></tr>
+  </table>
+</div>
+
+<div class="grid2" style="margin-top:16px">
+  <div class="callout green">
+    <strong>✅ 三大優勢</strong>
+    <ul style="margin-top:8px;font-size:13px">
+      <li>EUV 絕對壟斷（全球唯一）</li>
+      <li>€388 億積壓提供 18-24 月 visibility</li>
+      <li>FCF €111 億支援回購+股息</li>
+    </ul>
+  </div>
+  <div class="callout red">
+    <strong>⚠️ 三大關注</strong>
+    <ul style="margin-top:8px;font-size:13px">
+      <li>TSMC >50% EUV（產能天花板）</li>
+      <li>中國 DUV 正常化（2026 逆風）</li>
+      <li>供應鏈單點故障風險（Zeiss）</li>
+    </ul>
+  </div>
+</div>
+</section>
+
+</main>
+</div>
+<script>
+document.querySelectorAll('.navItem').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('.navItem').forEach(b=>b.classList.remove('active'));
+    document.querySelectorAll('.navItem[data-section="'+btn.dataset.section+'"]').forEach(b=>b.classList.add('active'));
+    document.querySelectorAll('section').forEach(s=>s.classList.remove('active'));
+    document.getElementById(btn.dataset.section).classList.add('active');
+  });
+});
+</script>
+</body>
+</html>
