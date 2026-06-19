@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ASML Trading Comps 同業比較 | 2026-06-19</title>
+<style>
+  :root {
+    --bg: #0d1117; --card: #161b22; --border: #30363d;
+    --text: #c9d1d9; --muted: #8b949e; --accent: #58a6ff;
+    --green: #3fb950; --red: #f85149; --orange: #d2991d;
+    --purple: #a371f7;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; line-height: 1.6; max-width: 1000px; margin: 0 auto; padding: 2rem 1.5rem; }
+  h1 { font-size: 1.8rem; margin-bottom: 0.3rem; color: #fff; }
+  h2 { font-size: 1.35rem; margin: 2rem 0 0.8rem; color: var(--accent); border-bottom: 1px solid var(--border); padding-bottom: 0.4rem; }
+  h3 { font-size: 1.1rem; margin: 1.2rem 0 0.5rem; color: #e6edf3; }
+  .meta { color: var(--muted); font-size: 0.85rem; margin-bottom: 1.5rem; }
+  .card { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 1.2rem 1.5rem; margin: 1rem 0; }
+  table { width: 100%; border-collapse: collapse; margin: 0.8rem 0; font-size: 0.9rem; }
+  th { background: #1c2128; text-align: left; padding: 0.5rem 0.75rem; border-bottom: 2px solid var(--border); color: var(--muted); font-weight: 600; font-size: 0.8rem; text-transform: uppercase; }
+  td { padding: 0.5rem 0.75rem; border-bottom: 1px solid var(--border); }
+  tr:last-child td { border-bottom: none; }
+  .up { color: var(--green); font-weight: 600; }
+  .down { color: var(--red); font-weight: 600; }
+  .warn { color: var(--orange); }
+  .neutral { color: var(--muted); }
+  .badge { display: inline-block; padding: 0.15em 0.6em; border-radius: 10px; font-size: 0.75rem; font-weight: 600; }
+  .badge-green { background: rgba(63,185,80,0.15); color: var(--green); }
+  .badge-red { background: rgba(248,81,73,0.15); color: var(--red); }
+  .badge-yellow { background: rgba(210,153,29,0.15); color: var(--orange); }
+  .badge-blue { background: rgba(88,166,255,0.15); color: var(--accent); }
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  @media (max-width: 600px) { .grid-2 { grid-template-columns: 1fr; } }
+  .verdict { padding: 1.2rem 1.5rem; border-radius: 8px; margin: 1.5rem 0; border: 1px solid; }
+  .verdict-bearish { background: rgba(248,81,73,0.08); border-color: rgba(248,81,73,0.3); }
+  .verdict-neutral { background: rgba(88,166,255,0.08); border-color: rgba(88,166,255,0.3); }
+  .framework-ref { font-size: 0.75rem; color: var(--muted); font-style: italic; margin-top: 0.2rem; display: block; }
+  footer { margin-top: 2.5rem; padding-top: 1rem; border-top: 1px solid var(--border); color: var(--muted); font-size: 0.8rem; text-align: center; }
+  .highlight-row { background: rgba(88,166,255,0.06); }
+</style>
+</head>
+<body>
+
+<h1>📊 Trading Comps — 同業比較分析</h1>
+<div class="meta">Maobolin Research | 2026-06-19 | 方法：WSP Trading Comps | 資料：Yahoo Finance 價格（2026-06-18）</div>
+
+<!-- ====== Peer Selection ====== -->
+<h2>第一步：同業選擇</h2>
+<div class="card">
+  <p>選擇與 ASML 在<strong>半導體設備</strong>領域直接競爭或相鄰的同業。注意：ASML 在 EUV 領域沒有直接競爭者，因此同業比較存在<strong>本質限制</strong>——ASML 的護城河溢價是合理的，問題在於溢價的<em>幅度</em>。</p>
+  <table>
+    <tr><th>公司</th><th>代碼</th><th>市值（USD B）</th><th>核心業務</th><th>可比性</th></tr>
+    <tr class="highlight-row">
+      <td><strong>ASML</strong></td><td>ASML</td><td><strong>~$655B</strong></td><td>微影（EUV/DUV）</td><td>— 目標公司</td>
+    </tr>
+    <tr>
+      <td><strong>Applied Materials</strong></td><td>AMAT</td><td>~$500B</td><td>沉積、蝕刻、檢測</td><td>高度可比（WFE 龍頭）</td>
+    </tr>
+    <tr>
+      <td><strong>Lam Research</strong></td><td>LRCX</td><td>~$165B</td><td>蝕刻、沉積</td><td>高度可比</td>
+    </tr>
+    <tr>
+      <td><strong>KLA</strong></td><td>KLAC</td><td>~$110B</td><td>製程控制、檢測</td><td>高度可比</td>
+    </tr>
+    <tr>
+      <td><strong>Tokyo Electron</strong></td><td>8035.T</td><td>~$120B</td><td>塗佈顯影、蝕刻</td><td>可比（日本會計差異）</td>
+    </tr>
+  </table>
+  <p style="font-size:0.8rem; color:var(--muted);">註：ASML 市值 €654B 以 EUR/USD 1.14 換算約 $745B。部分同業的近期 EPS 數據可能包含非經常性項目，本分析力求標準化。</p>
+</div>
+
+<!-- ====== Multiple Comparison ====== -->
+<h2>第二步：估值倍數比較</h2>
+<div class="card">
+  <h3>本益比（P/E）比較</h3>
+  <table>
+    <tr><th>公司</th><th>股價（USD）</th><th>FY2025 EPS（est.）</th><th>P/E</th><th>vs ASML</th></tr>
+    <tr class="highlight-row">
+      <td><strong>ASML</strong></td><td>$1,868</td><td>€25 ≈ $28.5</td><td><strong class="down">~66x</strong></td><td>—</td>
+    </tr>
+    <tr>
+      <td>Applied Materials</td><td>$617</td><td>~$9.50</td><td>~65x</td><td>≈ 持平</td>
+    </tr>
+    <tr>
+      <td>Lam Research</td><td>$389</td><td>~$4.00</td><td>~97x</td><td class="down">更高</td>
+    </tr>
+    <tr>
+      <td>KLA</td><td>$260</td><td>~$24</td><td>~11x</td><td class="up">遠低於</td>
+    </tr>
+    <tr style="font-weight:600;">
+      <td colspan="2">同業中位數（不含 ASML）</td><td></td><td><strong>~65x</strong></td><td></td>
+    </tr>
+  </table>
+
+  <h3 style="margin-top:1.5rem;">品質調整後本益比</h3>
+  <p style="font-size:0.85rem; color:var(--muted);">單純的 P/E 比較忽略品質差異。ASML 因獨佔 EUV 應享有溢價——但溢價多少才算合理？</p>
+  <table>
+    <tr><th>公司</th><th>P/E</th><th>毛利率</th><th>營業利益率</th><th>ROIC</th><th>護城河</th><th>品質調整後溢價</th></tr>
+    <tr class="highlight-row">
+      <td><strong>ASML</strong></td><td>66x</td><td>52.8%</td><td>34.6%</td><td>38.8%</td><td class="up">極寬</td><td>基準</td>
+    </tr>
+    <tr>
+      <td>AMAT</td><td>65x</td><td>~48%</td><td>~30%</td><td>~35%</td><td class="up">寬</td><td>應折價 10-15%</td>
+    </tr>
+    <tr>
+      <td>LRCX</td><td>97x</td><td>~48%</td><td>~32%</td><td>~40%</td><td class="up">寬</td><td><span class="down">異常高估</span></td>
+    </tr>
+    <tr>
+      <td>KLAC</td><td>11x</td><td>~62%</td><td>~40%</td><td>~50%+</td><td class="up">寬</td><td><span class="up">明顯低估</span></td>
+    </tr>
+  </table>
+</div>
+
+<!-- ====== Key Findings ====== -->
+<h2>關鍵發現</h2>
+<div class="card">
+  <div class="grid-2">
+    <div style="padding:0.8rem; background:#1c2128; border-radius:6px;">
+      <h4 style="color:var(--orange);">⚠️ 整個板塊都貴</h4>
+      <p style="font-size:0.85rem;">ASML 的 66x P/E 並非孤立現象。AMAT 也交易於 65x。整個半導體設備板塊正處於歷史最高估值水準——這是板塊現象，不是 ASML 獨有。</p>
+    </div>
+    <div style="padding:0.8rem; background:#1c2128; border-radius:6px;">
+      <h4 style="color:var(--red);">⚠️ 品質溢價已消失</h4>
+      <p style="font-size:0.85rem;">ASML 的護城河遠超 AMAT（EUV 獨佔 vs 多競爭者的沉積蝕刻），但兩者 P/E 幾乎相同。市場並未給予 ASML 額外的品質溢價——或者說，整個板塊都已被推到無法區分品質的極端估值。</p>
+    </div>
+  </div>
+  <div style="margin-top:1rem; padding:0.8rem; background:rgba(248,81,73,0.05); border-radius:6px; border:1px solid rgba(248,81,73,0.15);">
+    <strong>🔴 板塊估值極端化：</strong>歷史上，半導體設備板塊的平均 P/E 為 15-25x。目前整個板塊交易於 60-100x。這不是「ASML 被高估」——是<strong>整個半導體設備產業正處於估值泡沫</strong>。ASML 因為品質最高而理應最貴，但在板塊全面泡沫化的環境中，這項優勢已被淹沒。
+  </div>
+</div>
+
+<!-- ====== Historical Context ====== -->
+<h2>歷史估值背景</h2>
+<div class="card">
+  <table>
+    <tr><th>時期</th><th>ASML P/E</th><th>板塊 P/E</th><th>溢價／折價</th></tr>
+    <tr><td>2015-2019（正常時期）</td><td>20-30x</td><td>15-20x</td><td class="up">+30-50% 溢價（反映 EUV 獨佔）</td></tr>
+    <tr><td>2020-2021（疫情期間）</td><td>35-50x</td><td>25-35x</td><td class="up">+20-40% 溢價</td></tr>
+    <tr><td>2022（科技股修正）</td><td>22-28x</td><td>15-18x</td><td class="up">+40-50% 溢價</td></tr>
+    <tr style="background:rgba(248,81,73,0.06);">
+      <td><strong>2026 目前</strong></td><td><strong class="down">66x</strong></td><td><strong class="down">60-100x</strong></td><td><strong>≈ 0% 溢價</strong></td>
+    </tr>
+  </table>
+  <p style="margin-top:0.8rem; font-size:0.85rem; color:var(--muted);">
+    關鍵洞察：ASML 歷史上享有 30-50% 的同業溢價（反映 EUV 獨佔）。但目前在板塊全面泡沫化中，這個溢價已消失——不是因為 ASML 變差，而是因為整個板塊被推到極端。當潮水退去時，ASML 因其品質可能跌幅較小，但<strong>不可能在板塊下跌 50% 時獨自上漲</strong>。
+  </p>
+</div>
+
+<!-- ====== Verdict ====== -->
+<div class="verdict verdict-bearish">
+  <h3 style="color:var(--red); margin-top:0;">Comps 裁決：板塊全面高估，ASML 無相對優勢</h3>
+  <p>ASML 的 66x P/E 與 AMAT 的 65x 幾乎相同——但 ASML 的護城河遠超 AMAT。市場目前不區分品質，整個板塊被 AI 狂熱統一推高。這意味著：</p>
+  <ol style="padding-left:1.2rem; margin-top:0.5rem;">
+    <li><strong>ASML 沒有相對估值優勢</strong>——它的溢價沒有比同業更大</li>
+    <li><strong>板塊回調風險極高</strong>——歷史正常 P/E 是 15-25x，目前是 60-100x</li>
+    <li><strong>DCF 仍然是更可靠的估值方法</strong>——因為 comps 本身已失去定錨能力</li>
+  </ol>
+</div>
+
+<footer>Generated by Maobolin (Hermes Agent) · Trading Comps 分析 · 2026-06-19</footer>
+</body>
+</html>
