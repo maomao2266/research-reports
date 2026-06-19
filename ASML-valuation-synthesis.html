@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ASML 估值綜合分析 | 2026-06-19</title>
+<style>
+  :root {
+    --bg: #0d1117; --card: #161b22; --border: #30363d;
+    --text: #c9d1d9; --muted: #8b949e; --accent: #58a6ff;
+    --green: #3fb950; --red: #f85149; --orange: #d2991d;
+    --purple: #a371f7;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; line-height: 1.6; max-width: 1000px; margin: 0 auto; padding: 2rem 1.5rem; }
+  h1 { font-size: 1.8rem; margin-bottom: 0.3rem; color: #fff; }
+  h2 { font-size: 1.35rem; margin: 2rem 0 0.8rem; color: var(--accent); border-bottom: 1px solid var(--border); padding-bottom: 0.4rem; }
+  h3 { font-size: 1.1rem; margin: 1.2rem 0 0.5rem; color: #e6edf3; }
+  .meta { color: var(--muted); font-size: 0.85rem; margin-bottom: 1.5rem; }
+  .card { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 1.2rem 1.5rem; margin: 1rem 0; }
+  table { width: 100%; border-collapse: collapse; margin: 0.8rem 0; font-size: 0.9rem; }
+  th { background: #1c2128; text-align: left; padding: 0.5rem 0.75rem; border-bottom: 2px solid var(--border); color: var(--muted); font-weight: 600; font-size: 0.8rem; text-transform: uppercase; }
+  td { padding: 0.5rem 0.75rem; border-bottom: 1px solid var(--border); }
+  tr:last-child td { border-bottom: none; }
+  .up { color: var(--green); font-weight: 600; }
+  .down { color: var(--red); font-weight: 600; }
+  .warn { color: var(--orange); }
+  .neutral { color: var(--muted); }
+  .badge { display: inline-block; padding: 0.15em 0.6em; border-radius: 10px; font-size: 0.75rem; font-weight: 600; }
+  .badge-green { background: rgba(63,185,80,0.15); color: var(--green); }
+  .badge-red { background: rgba(248,81,73,0.15); color: var(--red); }
+  .badge-yellow { background: rgba(210,153,29,0.15); color: var(--orange); }
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  @media (max-width: 600px) { .grid-2 { grid-template-columns: 1fr; } }
+  .verdict { padding: 1.2rem 1.5rem; border-radius: 8px; margin: 1.5rem 0; border: 1px solid; }
+  .verdict-bearish { background: rgba(248,81,73,0.08); border-color: rgba(248,81,73,0.3); }
+  .framework-ref { font-size: 0.75rem; color: var(--muted); font-style: italic; margin-top: 0.2rem; display: block; }
+  footer { margin-top: 2.5rem; padding-top: 1rem; border-top: 1px solid var(--border); color: var(--muted); font-size: 0.8rem; text-align: center; }
+</style>
+</head>
+<body>
+
+<h1>🔬 估值綜合分析（Valuation Synthesis）</h1>
+<div class="meta">Maobolin Research | 2026-06-19 | 方法：valuation-synthesis skill | 整合 DCF + Trading Comps</div>
+
+<!-- ====== Method Triangulation ====== -->
+<h2>方法三角驗證（Hooke 框架）</h2>
+<div class="card">
+  <p>根據 Hooke (2010)，華爾街實務中估值方法應按以下權重使用：<strong>Comps 60%、DCF 20%、收購價值 20%</strong>。</p>
+  <table>
+    <tr><th>方法</th><th>產出（每股）</th><th>vs 市價 €1,682</th><th>權重</th><th>加權</th></tr>
+    <tr style="background:rgba(248,81,73,0.04);">
+      <td><strong>DCF（內在價值）</strong></td>
+      <td>€379 – €846（基本 €608）</td>
+      <td><span class="down">−64%</span></td>
+      <td>20%</td>
+      <td>€122</td>
+    </tr>
+    <tr style="background:rgba(248,81,73,0.04);">
+      <td><strong>Trading Comps（相對價值）</strong></td>
+      <td>€500 – €900（中位數 25x = €625）</td>
+      <td><span class="down">−63%</span></td>
+      <td>60%</td>
+      <td>€375</td>
+    </tr>
+    <tr style="background:rgba(248,81,73,0.03);">
+      <td><strong>收購價值（LBO）</strong></td>
+      <td>€400 – €700（PE 出價 20-25x EBITDA）</td>
+      <td><span class="down">−58-76%</span></td>
+      <td>20%</td>
+      <td>€110</td>
+    </tr>
+    <tr style="font-weight:700;">
+      <td colspan="2"><strong>加權綜合估值</strong></td>
+      <td colspan="2"><strong class="down">€607（−64% vs 市價）</strong></td>
+    </tr>
+  </table>
+  <p style="font-size:0.85rem; color:var(--muted); margin-top:0.5rem;">
+    ⚠️ Trading Comps 目前失真——整個板塊處於泡沫估值。若使用歷史正常化 P/E（20-25x），comps 估值會更低。目前的 comps 值已包含泡沫溢價。
+  </p>
+</div>
+
+<!-- ====== Market-Implied ====== -->
+<h2>市場已定價什麼？（Reverse DCF）</h2>
+<div class="card">
+  <p>反推目前市價 €1,682 隱含的假設：</p>
+  <table>
+    <tr><th>隱含假設</th><th>市場隱含值</th><th>我們的估計</th><th>差距</th></tr>
+    <tr>
+      <td><strong>2030 年營收</strong></td>
+      <td class="down">€890–1,780 億</td>
+      <td>€525 億</td>
+      <td class="down">市場需要 2-3 倍</td>
+    </tr>
+    <tr>
+      <td><strong>5 年營收 CAGR</strong></td>
+      <td class="down">22-40%</td>
+      <td>10%</td>
+      <td class="down">2-4 倍</td>
+    </tr>
+    <tr>
+      <td><strong>WACC</strong></td>
+      <td class="down"><6%</td>
+      <td>8.5%</td>
+      <td class="down">遠低於 CAPM</td>
+    </tr>
+    <tr>
+      <td><strong>終端營業利益率</strong></td>
+      <td class="down">>45%</td>
+      <td>36.5%</td>
+      <td class="down">10pp+ 差距</td>
+    </tr>
+    <tr>
+      <td><strong>ASML 2030 WFE 市佔</strong></td>
+      <td class="down">60-100%</td>
+      <td>35-40%</td>
+      <td class="down">壟斷級別</td>
+    </tr>
+  </table>
+  <p style="margin-top:0.8rem; padding:0.8rem; background:rgba(248,81,73,0.05); border-radius:6px;">
+    <strong>結論：</strong>市場定價的是一個 ASML 在 2030 年幾乎<strong>壟斷整個半導體設備行業</strong>的未來——這需要 Nikon/Canon 完全退出、中國國產微影徹底失敗、且所有晶片製造商只能向 ASML 採購。這個假設在產業結構上<strong>不可能成立</strong>。
+  </p>
+</div>
+
+<!-- ====== Need-to-Believe ====== -->
+<h2>Need-to-Believe 框架</h2>
+<div class="card">
+  <p>要讓目前市價 €1,682 成立，<strong>你必須相信以下所有條件同時為真：</strong></p>
+  <table>
+    <tr><th>必須相信…</th><th>我們評估的機率</th><th>證據</th></tr>
+    <tr>
+      <td>ASML 營收以 22-40% CAGR 成長五年</td>
+      <td class="down"><10%</td>
+      <td>歷史最高 CAGR 為 30%（2023 單年），五年 40% 無先例</td>
+    </tr>
+    <tr>
+      <td>WFE 市場在 2030 年達到 €2,000 億+</td>
+      <td class="down"><5%</td>
+      <td>目前 €1,000 億。需要在五年內翻倍——即使 AI 也難以驅動</td>
+    </tr>
+    <tr>
+      <td>Nikon/Canon 退出微影市場</td>
+      <td class="down"><10%</td>
+      <td>日本政府視半導體為戰略產業，不會允許退出</td>
+    </tr>
+    <tr>
+      <td>中國 SMEE 十年內無進展</td>
+      <td class="down">30%</td>
+      <td>中國舉全國之力追趕。目前落後 10 年但進步速度不可低估</td>
+    </tr>
+    <tr>
+      <td>AI 資本支出永不週期性回落</td>
+      <td class="down"><5%</td>
+      <td>所有技術投資週期最終都會正常化。歷史無一例外</td>
+    </tr>
+    <tr>
+      <td>WACC 低於 6%（即 ASML 的風險接近公債）</td>
+      <td class="down"><5%</td>
+      <td>即使是最優質的股票，權益風險溢酬也不會為零</td>
+    </tr>
+  </table>
+  <p style="margin-top:0.8rem; font-size:0.85rem; color:var(--muted);">
+    <strong>聯合機率：</strong>即使每項獨立的機率為 30%，六項同時成立的機率為 0.3⁶ ≈ <strong>0.07%</strong>。這不是投資——是賭奇蹟。
+  </p>
+</div>
+
+<!-- ====== Asymmetry ====== -->
+<h2>不對稱回報分析</h2>
+<div class="card">
+  <table>
+    <tr><th>情境</th><th>機率</th><th>目標價</th><th>回報</th><th>加權</th></tr>
+    <tr style="background:rgba(63,185,80,0.03);">
+      <td>🟢 樂觀</td><td>25%</td><td>€846</td><td class="down">−50%</td><td>−12.5%</td>
+    </tr>
+    <tr>
+      <td>🔵 基本</td><td>40%</td><td>€608</td><td class="down">−64%</td><td>−25.6%</td>
+    </tr>
+    <tr style="background:rgba(248,81,73,0.03);">
+      <td>🔴 悲觀</td><td>35%</td><td>€379</td><td class="down">−77%</td><td>−27.0%</td>
+    </tr>
+    <tr style="font-weight:700; border-top:2px solid var(--red);">
+      <td colspan="2">預期回報（機率加權）</td>
+      <td colspan="3"><span class="down">−65.1%</span></td>
+    </tr>
+  </table>
+  <p style="margin-top:0.5rem;"><strong>不對稱比率：上行最大 €846（−50%）vs 下行最大 €379（−77%）。沒有任何情境下目前價位能產生正回報。</strong></p>
+</div>
+
+<!-- ====== Verdict ====== -->
+<div class="verdict verdict-bearish">
+  <h3 style="color:var(--red); margin-top:0;">估值綜合裁決：三種方法一致指向嚴重高估</h3>
+  <table style="margin-top:0.8rem;">
+    <tr><td><strong>估值等級</strong></td><td><span class="down">嚴重高估（Significantly Overvalued）</span></td></tr>
+    <tr><td><strong>加權綜合估值</strong></td><td><strong>€607</strong>（−64% vs 市價 €1,682）</td></tr>
+    <tr><td><strong>市場隱含敘事</strong></td><td>ASML 將壟斷整個半導體設備行業，AI 永不回落，風險等同公債</td></tr>
+    <tr><td><strong>我們的變異認知</strong></td><td>ASML 是偉大的企業，但市場已定價一個不可能發生的未來</td></tr>
+    <tr><td><strong>Need-to-Believe</strong></td><td>需要六項極低機率事件同時發生——聯合機率 <0.1%</td></tr>
+    <tr><td><strong>建議進場價</strong></td><td class="up">€500-625（本益比 20-25x，DCF 基本情境 ±10%）</td></tr>
+    <tr><td><strong>建議賣出價</strong></td><td>任何價位均可賣出——目前沒有合理持有理由</td></tr>
+  </table>
+</div>
+
+<footer>Generated by Maobolin (Hermes Agent) · 估值綜合分析 · 2026-06-19</footer>
+</body>
+</html>
