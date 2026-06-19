@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ASML Step 10 — 投資結論 | 2026-06-18</title>
+<style>
+  :root {
+    --bg: #0d1117; --card: #161b22; --border: #30363d;
+    --text: #c9d1d9; --muted: #8b949e; --accent: #58a6ff;
+    --green: #3fb950; --red: #f85149; --orange: #d2991d;
+    --purple: #a371f7;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; line-height: 1.6; max-width: 960px; margin: 0 auto; padding: 2rem 1.5rem; }
+  h1 { font-size: 1.8rem; margin-bottom: 0.3rem; color: #fff; }
+  h2 { font-size: 1.35rem; margin: 2rem 0 0.8rem; color: var(--accent); border-bottom: 1px solid var(--border); padding-bottom: 0.4rem; }
+  h3 { font-size: 1.1rem; margin: 1.2rem 0 0.5rem; color: #e6edf3; }
+  .meta { color: var(--muted); font-size: 0.85rem; margin-bottom: 1.5rem; }
+  .card { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 1.2rem 1.5rem; margin: 1rem 0; }
+  table { width: 100%; border-collapse: collapse; margin: 0.8rem 0; font-size: 0.9rem; }
+  th { background: #1c2128; text-align: left; padding: 0.5rem 0.75rem; border-bottom: 2px solid var(--border); color: var(--muted); font-weight: 600; font-size: 0.8rem; text-transform: uppercase; }
+  td { padding: 0.5rem 0.75rem; border-bottom: 1px solid var(--border); }
+  tr:last-child td { border-bottom: none; }
+  .up { color: var(--green); font-weight: 600; }
+  .down { color: var(--red); font-weight: 600; }
+  .warn { color: var(--orange); }
+  .neutral { color: var(--muted); }
+  .badge { display: inline-block; padding: 0.15em 0.6em; border-radius: 10px; font-size: 0.75rem; font-weight: 600; }
+  .badge-green { background: rgba(63,185,80,0.15); color: var(--green); }
+  .badge-red { background: rgba(248,81,73,0.15); color: var(--red); }
+  .badge-yellow { background: rgba(210,153,29,0.15); color: var(--orange); }
+  .badge-blue { background: rgba(88,166,255,0.15); color: var(--accent); }
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  @media (max-width: 600px) { .grid-2 { grid-template-columns: 1fr; } }
+  .verdict { padding: 1.5rem; border-radius: 10px; margin: 1.5rem 0; border: 2px solid; }
+  .verdict-sell { background: rgba(248,81,73,0.08); border-color: rgba(248,81,73,0.4); }
+  .framework-ref { font-size: 0.75rem; color: var(--muted); font-style: italic; margin-top: 0.2rem; display: block; }
+
+  /* Scorecard */
+  .scorecard { display: grid; grid-template-columns: repeat(5, 1fr); gap: 0.5rem; margin: 1rem 0; }
+  .sc-item { text-align: center; padding: 0.8rem 0.4rem; background: #1c2128; border-radius: 6px; }
+  .sc-grade { font-size: 1.6rem; font-weight: 700; margin: 0.3rem 0; }
+  .sc-label { font-size: 0.7rem; color: var(--muted); }
+  @media (max-width: 600px) { .scorecard { grid-template-columns: repeat(3, 1fr); } }
+
+  /* Rating box */
+  .rating { text-align: center; padding: 1.5rem; border-radius: 10px; margin: 1rem 0; }
+  .rating-severely-overvalued { background: rgba(248,81,73,0.1); border: 2px solid rgba(248,81,73,0.3); }
+
+  .big-number { font-size: 3rem; font-weight: 800; line-height: 1; }
+  footer { margin-top: 2.5rem; padding-top: 1rem; border-top: 1px solid var(--border); color: var(--muted); font-size: 0.8rem; text-align: center; }
+</style>
+</head>
+<body>
+
+<h1>📋 ASML Step 10 — 投資結論</h1>
+<div class="meta">Maobolin Research | 2026-06-18 | 完整 10 步驟基本面分析 | ASML Holding N.V. (ASML.AS / ASML)</div>
+
+<!-- ====== 總評 ====== -->
+<div class="rating rating-severely-overvalued">
+  <div style="font-size:0.9rem; color:var(--muted); margin-bottom:0.5rem;">投資評級</div>
+  <div class="big-number" style="color:var(--red);">賣出</div>
+  <div style="font-size:1.1rem; color:var(--red); margin-top:0.3rem;">嚴重高估 — 避免進場</div>
+  <div style="font-size:0.85rem; color:var(--muted); margin-top:0.5rem;">
+    市價 €1,682 &nbsp;|&nbsp; DCF 基本 €608（−64%）&nbsp;|&nbsp; 本益比 67x
+  </div>
+</div>
+
+<!-- ====== 一句話 ====== -->
+<div class="card" style="text-align:center; padding:1.5rem;">
+  <p style="font-size:1.15rem; line-height:1.7;">
+    ASML 是我們分析過<strong>最優秀的企業</strong>——獨佔 EUV 微影、護城河無可匹敵、結構性成長確定性極高。<br>
+    但<strong>再好的公司，買在錯的價格就是錯的投資。</strong><br>
+    目前 €1,682（67x 本益比）已將未來五年的完美執行完全定價，<br>
+    安全邊際為零，下行風險極大。
+  </p>
+</div>
+
+<!-- ====== 評分卡 ====== -->
+<h2>10 步驟摘要</h2>
+<div class="card">
+  <table>
+    <tr><th style="width:5%">#</th><th style="width:22%">步驟</th><th style="width:15%">評級</th><th>核心發現</th></tr>
+    <tr>
+      <td>1</td>
+      <td><a href="ASML-step1-company-description.html" style="color:var(--accent);">公司描述</a></td>
+      <td><span class="badge badge-green">A</span></td>
+      <td>獨佔 EUV 微影。全球唯一供應商。營收 €327 億，淨利 €96 億。</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td><a href="ASML-step2-company-guidance.html" style="color:var(--accent);">公司指引</a></td>
+      <td><span class="badge badge-green">A−</span></td>
+      <td>FY2026 營收 €300-350 億，毛利率 51-53%。管理層一貫保守，歷史超標率 100%。</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td><a href="ASML-step3-company-strategy.html" style="color:var(--accent);">公司策略</a></td>
+      <td><span class="badge badge-green">A</span></td>
+      <td>Ansoff 市場滲透 + McKinsey 3H 均衡佈局。AI 策略清晰，成本紀律嚴格。</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td><a href="ASML-step4-growth-drivers.html" style="color:var(--accent);">成長動能</a></td>
+      <td><span class="badge badge-green">A−</span></td>
+      <td>增量利潤率 51.8%，DOL 1.83，安全邊際 66.1%。長期成長因子 +16-22%。</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td><a href="ASML-step5-competitive-positioning.html" style="color:var(--accent);">競爭定位</a></td>
+      <td><span class="badge badge-green">A+</span></td>
+      <td>Porter 五力：三極低兩中等——可能是全球最好的產業結構。絕對領導者。</td>
+    </tr>
+    <tr>
+      <td>6</td>
+      <td><a href="ASML-step6-moat-analysis.html" style="color:var(--accent);">護城河分析</a></td>
+      <td><span class="badge badge-green">A+</span></td>
+      <td>ROIC 38.8%，VECTOR 28/30，VRIN 五項全過。護城河擴大中 🟢。</td>
+    </tr>
+    <tr>
+      <td>7</td>
+      <td><a href="ASML-step7-catalyst-analysis.html" style="color:var(--accent);">催化劑分析</a></td>
+      <td><span class="badge badge-blue">正面</span></td>
+      <td>CMD 2026 是最大催化劑。8 個催化劑，4:1 利多：利空比。預期 6 個月 +8.3%。</td>
+    </tr>
+    <tr>
+      <td>8</td>
+      <td><a href="ASML-step8-dcf-valuation.html" style="color:var(--accent);">DCF 估值</a></td>
+      <td><span class="badge badge-red">嚴重高估</span></td>
+      <td>內在價值 €379-846（基本 €608）。市價 €1,682 = 溢價 177%。<strong>無法以合理假設支撐。</strong></td>
+    </tr>
+    <tr>
+      <td>9</td>
+      <td><a href="ASML-step9-risk-analysis.html" style="color:var(--accent);">風險分析</a></td>
+      <td><span class="badge badge-red">極高</span></td>
+      <td>估值回歸 P×I=25。悲觀情境最大回撤 −79%。安全邊際為零。</td>
+    </tr>
+  </table>
+</div>
+
+<!-- ====== 品質 vs 價格矩陣 ====== -->
+<h2>品質 vs 價格：根本矛盾</h2>
+<div class="card">
+  <div class="grid-2">
+    <div style="padding:1rem; border-left:3px solid var(--green);">
+      <h3 style="color:var(--green); margin-top:0;">企業品質</h3>
+      <table>
+        <tr><td>護城河</td><td><span class="up">Widening 🟢</span></td></tr>
+        <tr><td>ROIC</td><td><span class="up">38.8%</span></td></tr>
+        <tr><td>競爭地位</td><td><span class="up">獨佔</span></td></tr>
+        <tr><td>成長確定性</td><td><span class="up">極高</span></td></tr>
+        <tr><td>管理層</td><td><span class="up">優秀</span></td></tr>
+        <tr><td>資產負債表</td><td><span class="up">淨現金 €85 億</span></td></tr>
+      </table>
+      <p style="margin-top:0.5rem;"><strong>整體企業品質：A+</strong></p>
+    </div>
+    <div style="padding:1rem; border-left:3px solid var(--red);">
+      <h3 style="color:var(--red); margin-top:0;">目前價格</h3>
+      <table>
+        <tr><td>本益比 (FY2025)</td><td><span class="down">67x</span></td></tr>
+        <tr><td>vs DCF 基本</td><td><span class="down">+177% 溢價</span></td></tr>
+        <tr><td>vs DCF 樂觀</td><td><span class="down">+99% 溢價</span></td></tr>
+        <tr><td>安全邊際</td><td><span class="down">零</span></td></tr>
+        <tr><td>隱含 2030 營收</td><td><span class="down">€890-1,780 億（不可能）</span></td></tr>
+        <tr><td>市場定價</td><td><span class="down">已定價 5 年完美執行</span></td></tr>
+      </table>
+      <p style="margin-top:0.5rem;"><strong>價格合理性：F</strong></p>
+    </div>
+  </div>
+  <p style="margin-top:1rem; padding:1rem; background:#1c2128; border-radius:6px; text-align:center;">
+    <strong>這是我們研究過「品質-價格」差距最大的案例。</strong><br>
+    企業品質 A+，價格合理性 F。差距之大在本報告中前所未有。
+  </p>
+</div>
+
+<!-- ====== 買入價位 ====== -->
+<h2>什麼價位值得考慮？</h2>
+<div class="card">
+  <p>如果 ASML 的股價回到合理區間，它將成為極具吸引力的投資標的。以下是不同安全邊際下的目標價：</p>
+  <table>
+    <tr><th>情境</th><th>本益比</th><th>目標價</th><th>vs 目前 €1,682</th><th>說明</th></tr>
+    <tr>
+      <td><strong>極度保守</strong></td>
+      <td>20x</td>
+      <td>€500</td>
+      <td><span class="down">−70%</span></td>
+      <td>歷史低點本益比。只有在市場崩盤時才會出現。</td>
+    </tr>
+    <tr style="background:rgba(63,185,80,0.04);">
+      <td><strong>合理進場（30% 安全邊際）</strong></td>
+      <td>25x</td>
+      <td><strong>€625</strong></td>
+      <td><span class="down">−63%</span></td>
+      <td>DCF 基本情境 ±10%。有安全邊際的合理價位。</td>
+    </tr>
+    <tr style="background:rgba(210,153,29,0.04);">
+      <td><strong>可接受（無安全邊際）</strong></td>
+      <td>30x</td>
+      <td>€750</td>
+      <td><span class="down">−55%</span></td>
+      <td>DCF 樂觀情境附近。需對 AI 超級週期有信心。</td>
+    </tr>
+    <tr>
+      <td><strong>目前市價</strong></td>
+      <td>67x</td>
+      <td>€1,682</td>
+      <td>—</td>
+      <td>無法合理化。任何基本面分析都無法支撐。</td>
+    </tr>
+  </table>
+  <p style="margin-top:0.8rem; padding:0.8rem; background:rgba(63,185,80,0.06); border-radius:6px; border:1px solid rgba(63,185,80,0.15);">
+    <strong>🎯 建議進場區間：€500-625</strong>（本益比 20-25x）<br>
+    在此區間內，ASML 將從「避免」轉變為「強力買入」——因為屆時你買的是 A+ 品質的企業，而不是 67x 本益比的泡沫。
+  </p>
+</div>
+
+<!-- ====== 最終裁決 ====== -->
+<h2>最終投資裁決</h2>
+
+<div class="verdict verdict-sell">
+  <h3 style="color:var(--red); margin-top:0;">🔴 賣出 / 避免進場（SELL / AVOID）</h3>
+
+  <div class="grid-2" style="margin-top:1rem;">
+    <div>
+      <p><strong>企業：ASML Holding N.V.</strong></p>
+      <p>交易所：Euronext Amsterdam / NASDAQ</p>
+      <p>目前市價：<span class="down">€1,682</span></p>
+      <p>DCF 內在價值：<strong>€379-846（基本 €608）</strong></p>
+      <p>估值溢價：<span class="down">+177%</span></p>
+    </div>
+    <div>
+      <p><strong>投資評級：賣出</strong></p>
+      <p>企業品質：<span class="up">A+</span></p>
+      <p>價格合理性：<span class="down">F</span></p>
+      <p>安全邊際：<span class="down">零</span></p>
+      <p>風險等級：<span class="down">極高</span></p>
+    </div>
+  </div>
+
+  <div style="margin-top:1.5rem; padding:1rem; background:rgba(248,81,73,0.06); border-radius:6px;">
+    <h4 style="color:var(--red);">核心理由</h4>
+    <ol style="padding-left:1.2rem; line-height:1.8;">
+      <li><strong>估值無法合理化：</strong>67x 本益比。DCF 在最樂觀的合理假設下僅 €846，市價仍高出 99%。</li>
+      <li><strong>完美已定價：</strong>目前股價隱含 2030 年營收 €890-1,780 億——這需要 ASML 吃掉整個半導體設備市場，在產業結構上不可能。</li>
+      <li><strong>安全邊際為零：</strong>任何不如預期的發展（中國禁令、AI 週期轉向、客戶砍單）都會觸發估值修正——且修正幅度可能達 60-80%。</li>
+      <li><strong>歷史教訓：</strong>ASML 過去四次估值修正平均跌幅 −49%。67x 本益比遠高於過往任何修正前的峰值。</li>
+    </ol>
+  </div>
+
+  <div style="margin-top:1rem; padding:1rem; background:rgba(63,185,80,0.04); border-radius:6px;">
+    <h4 style="color:var(--green);">何時轉為買入</h4>
+    <p>ASML 的企業品質無可挑剔。若股價回落至 <strong>€500-625</strong>（本益比 20-25x），將成為極具吸引力的長期投資——屆時你支付的價格反映的是現實，而非幻想。</p>
+  </div>
+</div>
+
+<!-- ====== 檢核清單 ====== -->
+<h2>投資檢核清單</h2>
+<div class="card">
+  <table>
+    <tr><th>問題</th><th>答案</th></tr>
+    <tr><td>這是一家好公司嗎？</td><td><span class="up">✅ 是。全球最優秀的企業之一。</span></td></tr>
+    <tr><td>護城河在擴大還是縮小？</td><td><span class="up">✅ 擴大中。EUV 壁壘不可跨越。</span></td></tr>
+    <tr><td>成長是結構性的還是週期性的？</td><td><span class="up">✅ 結構性。AI 驅動的運算複雜度增長。</span></td></tr>
+    <tr><td>管理層優秀嗎？</td><td><span class="up">✅ 是。一貫保守指引、超額交付。</span></td></tr>
+    <tr><td>催化劑在未來 6-12 個月內存在嗎？</td><td><span class="up">✅ 是。CMD 2026 為主要催化劑。</span></td></tr>
+    <tr><td>價格合理嗎？</td><td><span class="down">❌ 否。市價比內在價值高 177%。</span></td></tr>
+    <tr><td>有安全邊際嗎？</td><td><span class="down">❌ 零。即使是樂觀情境也低於市價 50%。</span></td></tr>
+    <tr><td>如果錯了會損失多少？</td><td><span class="down">❌ 估值修正情境：−60-80%。</span></td></tr>
+  </table>
+  <p style="margin-top:0.8rem; font-size:0.85rem; color:var(--muted);">
+    8 題中 5 題通過、3 題失敗——但失敗的 3 題恰好是最重要的 3 題（價格、安全邊際、下行風險）。
+  </p>
+</div>
+
+<!-- ====== Graham 框架 ====== -->
+<div class="card" style="text-align:center; padding:1.5rem;">
+  <p style="color:var(--muted); font-style:italic; font-size:1.05rem;">
+    "The intelligent investor is a realist who sells to optimists and buys from pessimists."
+  </p>
+  <p style="color:var(--muted); font-size:0.85rem; margin-top:0.3rem;">— Benjamin Graham, <em>The Intelligent Investor</em> (1949)</p>
+  <p style="margin-top:1rem;">
+    目前 ASML 的買家是<strong>樂觀主義者</strong>——他們相信 AI 超級週期將永久改變半導體需求曲線。<br>
+    智慧型投資者在這個價位<strong>賣給他們</strong>，並等待悲觀時刻再進場。
+  </p>
+</div>
+
+<!-- ====== 完整步驟 ====== -->
+<div style="display:flex; justify-content:center; gap:0.5rem; margin:1.5rem 0; flex-wrap:wrap;">
+  <span style="background:#1c2128; padding:0.3rem 0.8rem; border-radius:4px; font-size:0.8rem;">1 ✓</span>
+  <span style="background:#1c2128; padding:0.3rem 0.8rem; border-radius:4px; font-size:0.8rem;">2 ✓</span>
+  <span style="background:#1c2128; padding:0.3rem 0.8rem; border-radius:4px; font-size:0.8rem;">3 ✓</span>
+  <span style="background:#1c2128; padding:0.3rem 0.8rem; border-radius:4px; font-size:0.8rem;">4 ✓</span>
+  <span style="background:#1c2128; padding:0.3rem 0.8rem; border-radius:4px; font-size:0.8rem;">5 ✓</span>
+  <span style="background:#1c2128; padding:0.3rem 0.8rem; border-radius:4px; font-size:0.8rem;">6 ✓</span>
+  <span style="background:#1c2128; padding:0.3rem 0.8rem; border-radius:4px; font-size:0.8rem;">7 ✓</span>
+  <span style="background:#1c2128; padding:0.3rem 0.8rem; border-radius:4px; font-size:0.8rem;">8 ✓</span>
+  <span style="background:#1c2128; padding:0.3rem 0.8rem; border-radius:4px; font-size:0.8rem;">9 ✓</span>
+  <span style="background:rgba(163,113,247,0.2); padding:0.3rem 0.8rem; border-radius:4px; font-size:0.8rem; font-weight:600; color:var(--purple);">10 ✓</span>
+</div>
+
+<footer>
+  ASML 10 步驟基本面分析 · 完整 · Maobolin Research · 2026-06-18<br>
+  Generated by Maobolin (Hermes Agent) · Nous Research<br>
+  <span style="font-size:0.7rem;">本報告僅供研究參考，不構成投資建議。</span>
+</footer>
+
+</body>
+</html>
