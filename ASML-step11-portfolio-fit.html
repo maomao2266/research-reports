@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ASML Step 11 — 投資組合適配分析 | 2026-06-19</title>
+<style>
+  :root {
+    --bg: #0d1117; --card: #161b22; --border: #30363d;
+    --text: #c9d1d9; --muted: #8b949e; --accent: #58a6ff;
+    --green: #3fb950; --red: #f85149; --orange: #d2991d;
+    --purple: #a371f7;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; line-height: 1.6; max-width: 1000px; margin: 0 auto; padding: 2rem 1.5rem; }
+  h1 { font-size: 1.8rem; margin-bottom: 0.3rem; color: #fff; }
+  h2 { font-size: 1.35rem; margin: 2rem 0 0.8rem; color: var(--accent); border-bottom: 1px solid var(--border); padding-bottom: 0.4rem; }
+  h3 { font-size: 1.1rem; margin: 1.2rem 0 0.5rem; color: #e6edf3; }
+  .meta { color: var(--muted); font-size: 0.85rem; margin-bottom: 1.5rem; }
+  .card { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 1.2rem 1.5rem; margin: 1rem 0; }
+  table { width: 100%; border-collapse: collapse; margin: 0.8rem 0; font-size: 0.9rem; }
+  th { background: #1c2128; text-align: left; padding: 0.5rem 0.75rem; border-bottom: 2px solid var(--border); color: var(--muted); font-weight: 600; font-size: 0.8rem; text-transform: uppercase; }
+  td { padding: 0.5rem 0.75rem; border-bottom: 1px solid var(--border); }
+  tr:last-child td { border-bottom: none; }
+  .up { color: var(--green); font-weight: 600; }
+  .down { color: var(--red); font-weight: 600; }
+  .warn { color: var(--orange); }
+  .neutral { color: var(--muted); }
+  .badge { display: inline-block; padding: 0.15em 0.6em; border-radius: 10px; font-size: 0.75rem; font-weight: 600; }
+  .badge-green { background: rgba(63,185,80,0.15); color: var(--green); }
+  .badge-red { background: rgba(248,81,73,0.15); color: var(--red); }
+  .badge-yellow { background: rgba(210,153,29,0.15); color: var(--orange); }
+  .badge-blue { background: rgba(88,166,255,0.15); color: var(--accent); }
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; }
+  @media (max-width: 600px) { .grid-2, .grid-3 { grid-template-columns: 1fr; } }
+  .verdict { padding: 1.2rem 1.5rem; border-radius: 8px; margin: 1.5rem 0; border: 1px solid; }
+  .verdict-bearish { background: rgba(248,81,73,0.08); border-color: rgba(248,81,73,0.3); }
+  .verdict-bullish { background: rgba(63,185,80,0.08); border-color: rgba(63,185,80,0.3); }
+  .framework-ref { font-size: 0.75rem; color: var(--muted); font-style: italic; margin-top: 0.2rem; display: block; }
+  footer { margin-top: 2.5rem; padding-top: 1rem; border-top: 1px solid var(--border); color: var(--muted); font-size: 0.8rem; text-align: center; }
+</style>
+</head>
+<body>
+
+<h1>📊 ASML Step 11 — 投資組合適配分析</h1>
+<div class="meta">Maobolin Research | 2026-06-19 | 框架：Trade Idea Framework — 部位管理、波動率、進出策略</div>
+
+<!-- ====== Correlation ====== -->
+<h2>相關性分析</h2>
+<div class="card">
+  <h3>ASML 與主要基準的相關性</h3>
+  <table>
+    <tr><th>基準</th><th>相關性（估計）</th><th>β</th><th>含義</th></tr>
+    <tr>
+      <td><strong>SOX（費城半導體）</strong></td>
+      <td class="warn">0.85-0.90</td>
+      <td>~1.15</td>
+      <td>高度聯動——持有 ASML ≈ 持有半導體板塊槓桿</td>
+    </tr>
+    <tr>
+      <td><strong>S&P 500</strong></td>
+      <td>0.65-0.75</td>
+      <td>~1.10</td>
+      <td>中度正相關——市場下跌時 ASML 通常跌幅更大</td>
+    </tr>
+    <tr>
+      <td><strong>NASDAQ-100</strong></td>
+      <td>0.70-0.80</td>
+      <td>~1.05</td>
+      <td>與科技成長股高度同步</td>
+    </tr>
+    <tr>
+      <td><strong>Euro Stoxx 50</strong></td>
+      <td>0.50-0.60</td>
+      <td>~0.80</td>
+      <td>中度相關——歐洲投資者對 ASML 的情緒較溫和</td>
+    </tr>
+    <tr>
+      <td><strong>美國 10Y 公債（反向）</strong></td>
+      <td class="down">−0.30 至 −0.40</td>
+      <td>—</td>
+      <td>利率上升 = ASML 估值壓力（高本益比效應）</td>
+    </tr>
+  </table>
+
+  <div style="margin-top:1rem; padding:0.8rem; background:#1c2128; border-radius:6px;">
+    <strong>分散化價值：低。</strong>ASML 與主要科技指數高度相關。在一個已持有 SOX/S&P 500 的組合中，新增 ASML 不會提供顯著的分散化效益——它只是放大了已有的板塊曝險。
+  </div>
+</div>
+
+<!-- ====== Volatility ====== -->
+<h2>波動率分析</h2>
+<div class="card">
+  <div class="grid-3" style="margin-bottom:0.8rem;">
+    <div style="text-align:center; padding:0.8rem; background:#1c2128; border-radius:6px;">
+      <div style="font-size:0.75rem; color:var(--muted);">歷史波動率（1Y）</div>
+      <div style="font-size:1.3rem; font-weight:700; color:var(--warn);">~35-40%</div>
+      <div style="font-size:0.7rem; color:var(--muted);">高波動（S&P 500 ~15%）</div>
+    </div>
+    <div style="text-align:center; padding:0.8rem; background:#1c2128; border-radius:6px;">
+      <div style="font-size:0.75rem; color:var(--muted);">最大回撤（5Y）</div>
+      <div style="font-size:1.3rem; font-weight:700; color:var(--red);">−55%</div>
+      <div style="font-size:0.7rem; color:var(--muted);">2022 年科技股修正</div>
+    </div>
+    <div style="text-align:center; padding:0.8rem; background:#1c2128; border-radius:6px;">
+      <div style="font-size:0.75rem; color:var(--muted);">VaR（95%, 1 個月）</div>
+      <div style="font-size:1.3rem; font-weight:700; color:var(--red);">−15% 至 −20%</div>
+      <div style="font-size:0.7rem; color:var(--muted);">在目前估值下更極端</div>
+    </div>
+  </div>
+  <p style="font-size:0.85rem; color:var(--muted);">
+    ⚠️ 在 67x 本益比下，ASML 的波動率和最大回撤風險遠高於歷史平均。估值極端時，任何負面消息的價格反應都會被放大——因為缺乏基本面支撐的安全邊際。
+  </p>
+</div>
+
+<!-- ====== Position Sizing ====== -->
+<h2>部位規模分析</h2>
+<div class="card">
+  <h3>基於風險的部位上限</h3>
+  <table>
+    <tr><th>方法</th><th>計算</th><th>建議最大部位</th></tr>
+    <tr>
+      <td><strong>凱利準則（保守）</strong></td>
+      <td>基於預期回報 −65% + 勝率 25%</td>
+      <td class="down"><strong>0%</strong>（負期望值）</td>
+    </tr>
+    <tr>
+      <td><strong>風險平價（1% 組合 VaR）</strong></td>
+      <td>月 VaR ~15%，目標組合 VaR 1%</td>
+      <td class="down"><strong>6-7%</strong>（但需極端風險承受力）</td>
+    </tr>
+    <tr>
+      <td><strong>最大回撤限制（組合 −10%）</strong></td>
+      <td>ASML 可能回撤 60%，組合上限 −10%</td>
+      <td class="down"><strong>~2%</strong></td>
+    </tr>
+    <tr>
+      <td><strong>Graham 安全邊際法則</strong></td>
+      <td>只有在價格低於內在價值 30%+ 時才持有</td>
+      <td class="down"><strong>0%</strong>（目前價格不符合條件）</td>
+    </tr>
+  </table>
+
+  <div style="margin-top:1rem; padding:0.8rem; background:rgba(248,81,73,0.05); border-radius:6px; border:1px solid rgba(248,81,73,0.15);">
+    <strong>🔴 結論：</strong>在目前估值下，沒有任何部位規模方法是合理的。凱利準則和 Graham 法則皆給出 0%。即使是最寬鬆的風險平價法，也需要投資人承受極端波動——而這個波動的預期回報是負的。
+  </div>
+</div>
+
+<!-- ====== Portfolio Role ====== -->
+<h2>組合中的角色定位</h2>
+<div class="card">
+  <div class="grid-2">
+    <div style="padding:0.8rem; background:#1c2128; border-radius:6px;">
+      <h4>ASML 在組合中的理論角色</h4>
+      <ul style="padding-left:1.2rem; font-size:0.85rem;">
+        <li><strong>成長引擎：</strong>長期結構性 AI 驅動成長</li>
+        <li><strong>品質核心：</strong>ROIC 38.8%、寬護城河</li>
+        <li><strong>半導體曝險：</strong>最純粹的半導體上游投資</li>
+        <li><strong>壟斷溢價：</strong>EUV 獨佔的定價權</li>
+      </ul>
+    </div>
+    <div style="padding:0.8rem; background:#1c2128; border-radius:6px;">
+      <h4>目前價位下的實際角色</h4>
+      <ul style="padding-left:1.2rem; font-size:0.85rem;">
+        <li><span class="down">成長引擎 → 泡沫風險源</span></li>
+        <li><span class="down">品質核心 → 品質被價格淹沒</span></li>
+        <li><span class="down">半導體曝險 → 板塊集中風險</span></li>
+        <li><span class="down">壟斷溢價 → 已無溢價空間</span></li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ====== Entry/Exit ====== -->
+<h2>進出策略</h2>
+<div class="card">
+  <h3>目前價位：€1,682 — 不進場</h3>
+
+  <h3 style="margin-top:1.5rem;">進場策略（當價格回落時）</h3>
+  <table>
+    <tr><th>階段</th><th>觸發條件</th><th>部位</th><th>本益比</th><th>目標價</th></tr>
+    <tr style="background:rgba(63,185,80,0.03);">
+      <td><strong>🟢 試探性進場</strong></td>
+      <td>本益比回落至 30-35x</td>
+      <td>1-2%</td>
+      <td>30x</td>
+      <td>€750</td>
+    </tr>
+    <tr style="background:rgba(63,185,80,0.04);">
+      <td><strong>🟢 核心進場</strong></td>
+      <td>本益比回落至 25x + 基本面未惡化</td>
+      <td>3-5%</td>
+      <td>25x</td>
+      <td>€625</td>
+    </tr>
+    <tr style="background:rgba(63,185,80,0.06);">
+      <td><strong>🟢 積極進場</strong></td>
+      <td>本益比回落至 20x（接近 DCF 熊市）</td>
+      <td>5-8%</td>
+      <td>20x</td>
+      <td>€500</td>
+    </tr>
+  </table>
+
+  <h3 style="margin-top:1.5rem;">退出策略</h3>
+  <table>
+    <tr><th>觸發條件</th><th>行動</th></tr>
+    <tr style="background:rgba(248,81,73,0.04);">
+      <td><strong>🔴 論點失效</strong></td>
+      <td>中國全面 EUV 禁令、TSMC CapEx 下調 >15%、High-NA 延遲 >12 個月 → <strong>立即全部退出</strong></td>
+    </tr>
+    <tr>
+      <td><strong>🟡 估值達標</strong></td>
+      <td>本益比回到 35-40x 以上且基本面無改善 → <strong>減持 50%</strong></td>
+    </tr>
+    <tr>
+      <td><strong>🟡 時間止損</strong></td>
+      <td>持有 3 年後仍未實現預期回報 → <strong>重新評估論點</strong></td>
+    </tr>
+    <tr>
+      <td><strong>🟢 分批獲利</strong></td>
+      <td>每上漲 20% 減持 1/3，保留核心部位</td>
+    </tr>
+  </table>
+</div>
+
+<!-- ====== Monitoring ====== -->
+<h2>監控框架</h2>
+<div class="card">
+  <table>
+    <tr><th>指標</th><th>頻率</th><th>正常範圍</th><th>警報觸發</th></tr>
+    <tr>
+      <td><strong>TSMC CapEx 指引</strong></td>
+      <td>每季（1/4/7/10 月）</td>
+      <td>$35-45B</td>
+      <td class="down"><$30B 或下調 >10%</td>
+    </tr>
+    <tr>
+      <td><strong>ASML 訂單／出貨比</strong></td>
+      <td>每季</td>
+      <td>>1.2x</td>
+      <td class="down"><1.0x</td>
+    </tr>
+    <tr>
+      <td><strong>中國出口管制新聞</strong></td>
+      <td>每週</td>
+      <td>現狀維持</td>
+      <td class="down">新制裁法案提案</td>
+    </tr>
+    <tr>
+      <td><strong>SOX 指數 vs 200 MA</strong></td>
+      <td>每週</td>
+      <td>高於 200 MA</td>
+      <td class="down">跌破 200 MA</td>
+    </tr>
+    <tr>
+      <td><strong>ASML 本益比</strong></td>
+      <td>每月</td>
+      <td>25-35x</td>
+      <td class="down"><20x（機會）或 >50x（風險）</td>
+    </tr>
+    <tr>
+      <td><strong>AI Capex 趨勢</strong></td>
+      <td>每季</td>
+      <td>年增 >15%</td>
+      <td class="down">MSFT/GOOGL/AMZN 下調 Capex 指引</td>
+    </tr>
+  </table>
+</div>
+
+<!-- ====== Verdict ====== -->
+<h2>投資組合適配裁決</h2>
+
+<div class="verdict verdict-bearish">
+  <h3 style="color:var(--red); margin-top:0;">目前不適合任何投資組合</h3>
+  <p style="margin-top:0.8rem;">ASML 在 €1,682 的價位下，<strong>所有風險管理框架均給出零部位或接近零部位的建議</strong>。</p>
+  <ul style="padding-left:1.2rem; margin-top:0.5rem; line-height:1.8;">
+    <li><strong>相關性過高：</strong>ASML 與 SOX/S&P 500 高度聯動——不提供分散化</li>
+    <li><strong>波動率過高：</strong>月 VaR 15-20%——超出多數投資人的風險承受力</li>
+    <li><strong>預期回報為負：</strong>機率加權預期回報 −65%</li>
+    <li><strong>安全邊際為零：</strong>Graham 法則不允許進場</li>
+  </ul>
+</div>
+
+<div class="verdict verdict-bullish" style="margin-top:0;">
+  <h3 style="color:var(--green); margin-top:0;">🟢 何時適合進場</h3>
+  <p style="margin-top:0.5rem;"><strong>當 ASML 回落到 €500-750 區間時，它將成為極具吸引力的核心持股：</strong></p>
+  <ul style="padding-left:1.2rem; margin-top:0.3rem;">
+    <li>在 €750（30x PE）：試探性部位 1-2%，開始建立曝險</li>
+    <li>在 €625（25x PE）：核心部位 3-5%，安全邊際充足</li>
+    <li>在 €500（20x PE）：積極部位 5-8%，這是世代級的進場機會</li>
+  </ul>
+  <p style="margin-top:0.5rem; font-size:0.85rem; color:var(--muted);">
+    目前 ASML 的企業品質為 A+，我們對其長期前景極度看好。但在 67x 本益比下，<strong>等待比進場更明智</strong>。
+  </p>
+</div>
+
+<!-- ====== Steps ====== -->
+<div style="display:flex; justify-content:center; gap:0.5rem; margin:1.5rem 0; flex-wrap:wrap;">
+  <span style="background:#1c2128; padding:0.3rem 0.8rem; border-radius:4px; font-size:0.8rem;">1 ✓</span>
+  <span style="background:#1c2128; padding:0.3rem 0.8rem; border-radius:4px; font-size:0.8rem;">2 ✓</span>
+  <span style="background:#1c2128; padding:0.3rem 0.8rem; border-radius:4px; font-size:0.8rem;">3 ✓</span>
+  <span style="background:#1c2128; padding:0.3rem 0.8rem; border-radius:4px; font-size:0.8rem;">4 ✓</span>
+  <span style="background:#1c2128; padding:0.3rem 0.8rem; border-radius:4px; font-size:0.8rem;">5 ✓</span>
+  <span style="background:#1c2128; padding:0.3rem 0.8rem; border-radius:4px; font-size:0.8rem;">6 ✓</span>
+  <span style="background:#1c2128; padding:0.3rem 0.8rem; border-radius:4px; font-size:0.8rem;">7 ✓</span>
+  <span style="background:#1c2128; padding:0.3rem 0.8rem; border-radius:4px; font-size:0.8rem;">8 ✓</span>
+  <span style="background:#1c2128; padding:0.3rem 0.8rem; border-radius:4px; font-size:0.8rem;">9 ✓</span>
+  <span style="background:#1c2128; padding:0.3rem 0.8rem; border-radius:4px; font-size:0.8rem;">10 ✓</span>
+  <span style="background:rgba(163,113,247,0.2); padding:0.3rem 0.8rem; border-radius:4px; font-size:0.8rem; font-weight:600; color:var(--purple);">11 ✓</span>
+</div>
+
+<footer>
+  ASML 11 步驟完整基本面分析 · 全數完成 · Maobolin Research · 2026-06-19<br>
+  Generated by Maobolin (Hermes Agent) · Nous Research
+</footer>
+
+</body>
+</html>
