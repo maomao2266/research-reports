@@ -35,7 +35,7 @@ h2{font-size:1.3em;margin:30px 0 15px;color:#94a3b8;border-bottom:1px solid #1e2
 <body>
 <div class="container">
 <h1>📊 Macro & Credit Dashboard</h1>
-<p class="subtitle">自動更新：2026-06-20 05:26 TW · 資料來源：FRED · <a href="https://github.com/maomao2266/research-reports/blob/main/macro-dashboard.html" style="color:#64748b">GitHub</a></p>
+<p class="subtitle">自動更新：2026-06-20 05:28 TW · 資料來源：FRED · <a href="https://github.com/maomao2266/research-reports/blob/main/macro-dashboard.html" style="color:#64748b">GitHub</a></p>
 
 <!-- Key Metrics Cards -->
 <div class="cards">
@@ -146,7 +146,7 @@ h2{font-size:1.3em;margin:30px 0 15px;color:#94a3b8;border-bottom:1px solid #1e2
 <h2>🧭 總經象限定位</h2>
 <div class="chart-box" style="margin-bottom:20px">
 <div class="quadrant">
-<div class="quadrant-item"><div class="label">核心 PCE (YoY)</div><div class="value" style="color:#f59e0b">129.63%</div></div>
+<div class="quadrant-item"><div class="label">核心 PCE（指數）</div><div class="value" style="color:#f59e0b">129.63</div></div>
 <div class="quadrant-item"><div class="label">失業率</div><div class="value" style="color:#3b82f6">4.3%</div></div>
 <div class="quadrant-item"><div class="label">聯邦基金利率</div><div class="value" style="color:#ef4444">3.63%</div></div>
 <div class="quadrant-item"><div class="label">HY OAS 區間</div><div class="value" style="color:#ef4444">極度樂觀 ⚠️</div></div>
@@ -170,7 +170,7 @@ Object.entries(charts).forEach(([id, cfg]) => {
         maintainAspectRatio: false,
         plugins: { legend: { labels: { color: '#94a3b8', usePointStyle: true } } },
         scales: {
-            x: { type:'time', time:{unit:'month'}, ticks:{color:'#64748b',maxTicksLimit:12}, grid:{color:'#1e293b'} },
+            x: { ticks:{color:'#64748b',maxTicksLimit:12,callback:(v,i,a)=>i%Math.ceil(a.length/12)===0?v:''}, grid:{color:'#1e293b'} },
             y: { ticks:{color:'#64748b',callback:v=>v.toFixed(1)}, grid:{color:'#1e293b'} }
         },
         interaction: { mode:'index', intersect:false }
