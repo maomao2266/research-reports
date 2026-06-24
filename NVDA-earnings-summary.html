@@ -3,54 +3,64 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NVIDIA (NVDA) Q1 FY2027 財報摘要</title>
+<title>NVIDIA (NVDA) 近 8 季財報深度分析</title>
 <style>
-  :root { --bg:#0d1117; --card:#161b22; --border:#30363d; --text:#c9d1d9; --green:#3fb950; --red:#f85149; --blue:#58a6ff; --yellow:#d2991d; --purple:#bc8cff; }
+  :root { --bg:#0d1117; --card:#161b22; --border:#30363d; --text:#c9d1d9; --green:#3fb950; --red:#f85149; --blue:#58a6ff; --yellow:#d2991d; --purple:#bc8cff; --dim:#8b949e; }
   * { margin:0; padding:0; box-sizing:border-box; }
   body { background:var(--bg); color:var(--text); font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif; padding:24px; line-height:1.5; }
-  .container { max-width:1100px; margin:0 auto; }
+  .container { max-width:1200px; margin:0 auto; }
   h1 { font-size:28px; margin-bottom:4px; }
-  h2 { font-size:20px; margin:32px 0 16px; padding-bottom:8px; border-bottom:1px solid var(--border); }
-  h3 { font-size:16px; margin:20px 0 8px; color:var(--blue); }
-  .sub { color:#8b949e; font-size:14px; margin-bottom:24px; }
-  .kpi-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:12px; margin-bottom:24px; }
+  h2 { font-size:20px; margin:36px 0 16px; padding-bottom:8px; border-bottom:1px solid var(--border); }
+  h3 { font-size:16px; margin:24px 0 10px; color:var(--blue); }
+  .sub { color:var(--dim); font-size:14px; margin-bottom:24px; }
+  .kpi-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(210px,1fr)); gap:12px; margin:20px 0; }
   .kpi { background:var(--card); border:1px solid var(--border); border-radius:8px; padding:16px; }
-  .kpi .label { font-size:12px; color:#8b949e; text-transform:uppercase; margin-bottom:4px; }
+  .kpi .label { font-size:12px; color:var(--dim); text-transform:uppercase; margin-bottom:4px; }
   .kpi .value { font-size:24px; font-weight:700; }
   .kpi .delta { font-size:13px; margin-top:4px; }
-  .up { color:var(--green); } .down { color:var(--red); }
-  table { width:100%; border-collapse:collapse; margin:16px 0; font-size:14px; }
-  th, td { padding:10px 14px; text-align:right; border-bottom:1px solid var(--border); }
+  .up { color:var(--green); } .down { color:var(--red); } .dim { color:var(--dim); }
+  table { width:100%; border-collapse:collapse; margin:16px 0; font-size:13px; }
+  th, td { padding:8px 12px; text-align:right; border-bottom:1px solid var(--border); white-space:nowrap; }
   th:first-child, td:first-child { text-align:left; }
-  th { color:#8b949e; font-weight:600; font-size:12px; text-transform:uppercase; }
+  th { color:var(--dim); font-weight:600; font-size:11px; text-transform:uppercase; position:sticky; top:0; background:var(--bg); }
   tr:hover { background:rgba(255,255,255,0.03); }
-  .chart-container { background:var(--card); border:1px solid var(--border); border-radius:8px; padding:20px; margin:16px 0; }
-  .note { font-size:13px; color:#8b949e; margin-top:8px; padding:12px; background:var(--card); border-radius:8px; border-left:3px solid var(--blue); }
-  .warn { border-left-color:var(--yellow); }
+  tr.highlight { background:rgba(63,185,80,0.08); }
+  .chart-box { background:var(--card); border:1px solid var(--border); border-radius:8px; padding:24px 16px 16px; margin:16px 0; overflow-x:auto; }
+  .note { font-size:13px; color:var(--dim); margin:12px 0; padding:12px 16px; background:var(--card); border-radius:8px; border-left:3px solid var(--border); }
+  .note.blue { border-left-color:var(--blue); }
+  .note.yellow { border-left-color:var(--yellow); }
+  .note.green { border-left-color:var(--green); }
+  .scrolly { overflow-x:auto; }
+  .badge { display:inline-block; padding:2px 8px; border-radius:10px; font-size:11px; font-weight:600; margin-left:6px; }
+  .badge-up { background:rgba(63,185,80,0.15); color:var(--green); }
+  .badge-down { background:rgba(248,81,73,0.15); color:var(--red); }
   svg text { fill:var(--text); font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif; }
 </style>
 </head>
 <body>
 <div class="container">
 
-<h1>🟢 NVIDIA Q1 FY2027 財報摘要</h1>
-<div class="sub">財報截止日 2026-04-26 | 股價 $197.80 | 市值 $4.79T | 更新於 2026-06-20</div>
+<h1>🟢 NVIDIA (NVDA) 近 8 季財報深度分析</h1>
+<div class="sub">
+  FY2025 Q1 – FY2027 Q1 | 最新財報 2026-04-26 | 股價 $197.94 | 市值 $4.79T<br>
+  資料來源：Yahoo Finance、SEC EDGAR (10-Q/10-K)、NVIDIA Earnings Releases
+</div>
 
-<!-- KPI cards -->
-<h2>📊 關鍵數字</h2>
+<!-- KPI -->
+<h2>📊 FY2027 Q1 關鍵數字</h2>
 <div class="kpi-grid">
   <div class="kpi">
-    <div class="label">營收 (Q1 FY2027)</div>
+    <div class="label">營收</div>
     <div class="value">$81.6B</div>
     <div class="delta up">▲ YoY +85.2% &nbsp;|&nbsp; ▲ QoQ +19.8%</div>
   </div>
   <div class="kpi">
-    <div class="label">Data Center 營收</div>
+    <div class="label">Data Center</div>
     <div class="value">$75.2B</div>
     <div class="delta up">▲ YoY +92% &nbsp;|&nbsp; ▲ QoQ +21%</div>
   </div>
   <div class="kpi">
-    <div class="label">Net Income</div>
+    <div class="label">GAAP 淨利</div>
     <div class="value">$58.3B</div>
     <div class="delta up">▲ YoY +210.7% &nbsp;|&nbsp; ▲ QoQ +35.8%</div>
   </div>
@@ -60,9 +70,14 @@
     <div class="delta up">▲ YoY +214.5% &nbsp;|&nbsp; ▲ QoQ +35.8%</div>
   </div>
   <div class="kpi">
-    <div class="label">Gross Margin</div>
+    <div class="label">毛利率</div>
     <div class="value">74.9%</div>
     <div class="delta up">▲ YoY +14.4pp &nbsp;|&nbsp; ▬ QoQ -0.1pp</div>
+  </div>
+  <div class="kpi">
+    <div class="label">營業利潤率</div>
+    <div class="value">65.6%</div>
+    <div class="delta up">▲ YoY +16.5pp &nbsp;|&nbsp; ▲ QoQ +0.6pp</div>
   </div>
   <div class="kpi">
     <div class="label">FCF (季度)</div>
@@ -70,166 +85,373 @@
     <div class="delta up">▲ QoQ +39.2%</div>
   </div>
   <div class="kpi">
-    <div class="label">PE (TTM)</div>
-    <div class="value">30.3x</div>
-    <div class="delta" style="color:#8b949e">Forward PE 15.5x | PEG 0.64</div>
-  </div>
-  <div class="kpi">
-    <div class="label">ROE</div>
-    <div class="value">114.3%</div>
-    <div class="delta" style="color:#8b949e">ROA 52.7% | D/E 6.6%</div>
+    <div class="label">Forward PE</div>
+    <div class="value">15.5x</div>
+    <div class="delta dim">PEG 0.64 | PE(TTM) 30.3x</div>
   </div>
 </div>
 
-<!-- Revenue trend chart -->
-<h2>📈 營收與獲利趨勢</h2>
-<div class="chart-container">
-<svg viewBox="0 0 900 340" width="100%" style="max-width:900px">
-  <!-- Revenue bars + net income line -->
-  <!-- Q1FY26 to Q1FY27 -->
-  <rect x="80" y="220" width="100" height="80" fill="#30363d" rx="2"><title>Q1FY26 Rev $44.1B</title></rect>
-  <rect x="230" y="200" width="100" height="100" fill="#30363d" rx="2"><title>Q2FY26 Rev $46.7B</title></rect>
-  <rect x="380" y="165" width="100" height="135" fill="#30363d" rx="2"><title>Q3FY26 Rev $57.0B</title></rect>
-  <rect x="530" y="130" width="100" height="170" fill="#30363d" rx="2"><title>Q4FY26 Rev $68.1B</title></rect>
-  <rect x="680" y="80" width="100" height="220" fill="#2ea043" rx="2"><title>Q1FY27 Rev $81.6B</title></rect>
+<!-- Revenue + NI Chart -->
+<h2>📈 營收 & 淨利 8 季趨勢 (YoY + QoQ)</h2>
+<div class="chart-box">
+<svg viewBox="0 0 960 360" width="100%" style="max-width:960px">
+  <!-- Background grid -->
+  <line x1="60" y1="300" x2="920" y2="300" stroke="#21262d" stroke-width="0.5"/>
+  <line x1="60" y1="220" x2="920" y2="220" stroke="#21262d" stroke-width="0.5"/>
+  <line x1="60" y1="140" x2="920" y2="140" stroke="#21262d" stroke-width="0.5"/>
+  <line x1="60" y1="60" x2="920" y2="60" stroke="#21262d" stroke-width="0.5"/>
+
+  <!-- Revenue bars (scale: 300px = $85B) -->
+  <!-- Q1FY25: $26.0B → 92px, Q2FY25: $30.0B → 106px, Q3FY25: $35.1B → 124px, Q4FY25: $39.3B → 139px -->
+  <!-- Q1FY26: $44.1B → 156px, Q2FY26: $46.7B → 165px, Q3FY26: $57.0B → 201px, Q4FY26: $68.1B → 240px, Q1FY27: $81.6B → 288px -->
+  <rect x="75" y="208" width="64" height="92" fill="#21262d" rx="2"><title>Q1FY25 Rev $26.0B</title></rect>
+  <rect x="175" y="194" width="64" height="106" fill="#21262d" rx="2"><title>Q2FY25 Rev $30.0B</title></rect>
+  <rect x="275" y="176" width="64" height="124" fill="#21262d" rx="2"><title>Q3FY25 Rev $35.1B</title></rect>
+  <rect x="375" y="161" width="64" height="139" fill="#21262d" rx="2"><title>Q4FY25 Rev $39.3B</title></rect>
+  <!-- FY26 -->
+  <rect x="510" y="144" width="64" height="156" fill="#30363d" rx="2"><title>Q1FY26 Rev $44.1B</title></rect>
+  <rect x="610" y="135" width="64" height="165" fill="#30363d" rx="2"><title>Q2FY26 Rev $46.7B</title></rect>
+  <rect x="710" y="99" width="64" height="201" fill="#30363d" rx="2"><title>Q3FY26 Rev $57.0B</title></rect>
+  <rect x="810" y="60" width="64" height="240" fill="#30363d" rx="2"><title>Q4FY26 Rev $68.1B</title></rect>
+  <!-- FY27 Q1 -->
+  <rect x="872" y="12" width="52" height="288" fill="#2ea043" rx="3"><title>Q1FY27 Rev $81.6B</title></rect>
+
   <!-- Revenue labels -->
-  <text x="130" y="212" text-anchor="middle" font-size="10" fill="#8b949e">$44.1B</text>
-  <text x="280" y="192" text-anchor="middle" font-size="10" fill="#8b949e">$46.7B</text>
-  <text x="430" y="157" text-anchor="middle" font-size="10" fill="#8b949e">$57.0B</text>
-  <text x="580" y="122" text-anchor="middle" font-size="10" fill="#8b949e">$68.1B</text>
-  <text x="730" y="72" text-anchor="middle" font-size="10" fill="#3fb950">$81.6B</text>
-  <!-- Net Income line -->
-  <polyline points="130,260 280,238 430,208 580,168 730,118" stroke="#58a6ff" stroke-width="2.5" fill="none" marker-mid="url(#dot)"/>
-  <!-- Net Income dots with labels -->
-  <circle cx="130" cy="260" r="4" fill="#58a6ff"/><text x="130" y="280" text-anchor="middle" font-size="9" fill="#58a6ff">$18.8B</text>
-  <circle cx="280" cy="238" r="4" fill="#58a6ff"/><text x="280" y="255" text-anchor="middle" font-size="9" fill="#58a6ff">$26.4B</text>
-  <circle cx="430" cy="208" r="4" fill="#58a6ff"/><text x="430" y="225" text-anchor="middle" font-size="9" fill="#58a6ff">$31.9B</text>
-  <circle cx="580" cy="168" r="4" fill="#58a6ff"/><text x="580" y="185" text-anchor="middle" font-size="9" fill="#58a6ff">$43.0B</text>
-  <circle cx="730" cy="118" r="4" fill="#58a6ff"/><text x="730" y="110" text-anchor="middle" font-size="9" fill="#58a6ff">$58.3B</text>
-  <!-- X labels -->
-  <text x="130" y="310" text-anchor="middle" font-size="10">Q1FY26</text>
-  <text x="280" y="310" text-anchor="middle" font-size="10">Q2FY26</text>
-  <text x="430" y="310" text-anchor="middle" font-size="10">Q3FY26</text>
-  <text x="580" y="310" text-anchor="middle" font-size="10">Q4FY26</text>
-  <text x="730" y="310" text-anchor="middle" font-size="10" fill="#3fb950">Q1FY27</text>
+  <text x="107" y="202" text-anchor="middle" font-size="9" fill="#8b949e">26.0</text>
+  <text x="207" y="188" text-anchor="middle" font-size="9" fill="#8b949e">30.0</text>
+  <text x="307" y="170" text-anchor="middle" font-size="9" fill="#8b949e">35.1</text>
+  <text x="407" y="155" text-anchor="middle" font-size="9" fill="#8b949e">39.3</text>
+  <text x="542" y="138" text-anchor="middle" font-size="9" fill="#8b949e">44.1</text>
+  <text x="642" y="129" text-anchor="middle" font-size="9" fill="#8b949e">46.7</text>
+  <text x="742" y="93" text-anchor="middle" font-size="9" fill="#8b949e">57.0</text>
+  <text x="842" y="54" text-anchor="middle" font-size="9" fill="#8b949e">68.1</text>
+  <text x="898" y="6" text-anchor="middle" font-size="9" fill="#3fb950" font-weight="bold">81.6</text>
+
+  <!-- Net Income line (same scale: 300px = $85B) -->
+  <!-- Q1FY25: $14.9B→52px, Q2FY25: $16.6B→59px, Q3FY25: $19.3B→68px, Q4FY25: $22.1B→78px -->
+  <!-- Q1FY26: $18.8B→66px, Q2FY26: $26.4B→93px, Q3FY26: $31.9B→113px, Q4FY26: $43.0B→152px, Q1FY27: $58.3B→206px -->
+  <polyline points="107,248 207,241 307,232 407,222 542,234 642,207 742,187 842,148 898,94" 
+    stroke="#58a6ff" stroke-width="2.5" fill="none"/>
+  <circle cx="107" cy="248" r="4" fill="#58a6ff"/><text x="107" y="262" text-anchor="middle" font-size="9" fill="#58a6ff">14.9</text>
+  <circle cx="207" cy="241" r="4" fill="#58a6ff"/><text x="207" y="255" text-anchor="middle" font-size="9" fill="#58a6ff">16.6</text>
+  <circle cx="307" cy="232" r="4" fill="#58a6ff"/><text x="307" y="246" text-anchor="middle" font-size="9" fill="#58a6ff">19.3</text>
+  <circle cx="407" cy="222" r="4" fill="#58a6ff"/><text x="407" y="236" text-anchor="middle" font-size="9" fill="#58a6ff">22.1</text>
+  <circle cx="542" cy="234" r="4" fill="#58a6ff"/><text x="542" y="250" text-anchor="middle" font-size="9" fill="#58a6ff">18.8</text>
+  <circle cx="642" cy="207" r="4" fill="#58a6ff"/><text x="642" y="221" text-anchor="middle" font-size="9" fill="#58a6ff">26.4</text>
+  <circle cx="742" cy="187" r="4" fill="#58a6ff"/><text x="742" y="201" text-anchor="middle" font-size="9" fill="#58a6ff">31.9</text>
+  <circle cx="842" cy="148" r="4" fill="#58a6ff"/><text x="842" y="162" text-anchor="middle" font-size="9" fill="#58a6ff">43.0</text>
+  <circle cx="898" cy="94" r="5" fill="#58a6ff"/><text x="898" y="86" text-anchor="middle" font-size="9" fill="#58a6ff" font-weight="bold">58.3</text>
+
+  <!-- YoY arrows for FY26 vs FY25 -->
+  <!-- Q1FY26(542) vs Q1FY25(107): rev YoY +69.2% -->
+  <line x1="107" y1="315" x2="542" y2="315" stroke="#d2991d" stroke-width="1" stroke-dasharray="4,3"/>
+  <text x="325" y="328" text-anchor="middle" font-size="9" fill="#d2991d">Q1 YoY +69%</text>
+  <!-- Q3FY26(742) vs Q3FY25(307) -->
+  <line x1="307" y1="335" x2="742" y2="335" stroke="#d2991d" stroke-width="1" stroke-dasharray="4,3"/>
+  <text x="525" y="348" text-anchor="middle" font-size="9" fill="#d2991d">Q3 YoY +62%</text>
+
+  <!-- X axis labels -->
+  <text x="107" y="318" text-anchor="middle" font-size="9">Q1FY25</text>
+  <text x="207" y="318" text-anchor="middle" font-size="9">Q2FY25</text>
+  <text x="307" y="318" text-anchor="middle" font-size="9">Q3FY25</text>
+  <text x="407" y="318" text-anchor="middle" font-size="9">Q4FY25</text>
+  <text x="542" y="318" text-anchor="middle" font-size="9">Q1FY26</text>
+  <text x="642" y="318" text-anchor="middle" font-size="9">Q2FY26</text>
+  <text x="742" y="318" text-anchor="middle" font-size="9">Q3FY26</text>
+  <text x="842" y="318" text-anchor="middle" font-size="9">Q4FY26</text>
+  <text x="898" y="318" text-anchor="middle" font-size="9" fill="#3fb950" font-weight="bold">Q1FY27</text>
+
   <!-- Legend -->
-  <rect x="30" y="20" width="12" height="12" fill="#2ea043" rx="2"/><text x="48" y="31" font-size="11">營收 (Revenue)</text>
-  <line x1="130" y1="26" x2="150" y2="26" stroke="#58a6ff" stroke-width="2"/><circle cx="140" cy="26" r="3" fill="#58a6ff"/><text x="155" y="31" font-size="11">淨利 (Net Income)</text>
+  <rect x="20" y="15" width="12" height="12" fill="#2ea043" rx="2"/><text x="36" y="26" font-size="11">營收 ($B)</text>
+  <line x1="100" y1="21" x2="120" y2="21" stroke="#58a6ff" stroke-width="2"/><circle cx="110" cy="21" r="3" fill="#58a6ff"/><text x="125" y="26" font-size="11">淨利 ($B)</text>
+  <line x1="210" y1="21" x2="230" y2="21" stroke="#d2991d" stroke-width="1" stroke-dasharray="4,3"/><text x="235" y="26" font-size="11">YoY 比較</text>
 </svg>
 </div>
 
-<!-- Margin trend -->
-<div class="chart-container">
-<svg viewBox="0 0 900 240" width="100%" style="max-width:900px">
-  <!-- Gross margin bars -->
-  <rect x="80" y="80" width="100" height="120" fill="#30363d" rx="2"/><text x="130" y="72" text-anchor="middle" font-size="10" fill="#8b949e">60.5%</text>
-  <rect x="230" y="55" width="100" height="145" fill="#30363d" rx="2"/><text x="280" y="47" text-anchor="middle" font-size="10" fill="#8b949e">72.4%</text>
-  <rect x="380" y="50" width="100" height="150" fill="#30363d" rx="2"/><text x="430" y="42" text-anchor="middle" font-size="10" fill="#8b949e">73.4%</text>
-  <rect x="530" y="45" width="100" height="155" fill="#30363d" rx="2"/><text x="580" y="37" text-anchor="middle" font-size="10" fill="#8b949e">75.0%</text>
-  <rect x="680" y="48" width="100" height="152" fill="#2ea043" rx="2"/><text x="730" y="40" text-anchor="middle" font-size="10" fill="#3fb950">74.9%</text>
-  <!-- Op margin line -->
-  <polyline points="130,182 280,155 430,147 580,142 730,145" stroke="#d2991d" stroke-width="2" fill="none"/>
-  <circle cx="130" cy="182" r="4" fill="#d2991d"/><text x="130" y="196" text-anchor="middle" font-size="9" fill="#d2991d">49.1%</text>
-  <circle cx="280" cy="155" r="4" fill="#d2991d"/><text x="280" y="169" text-anchor="middle" font-size="9" fill="#d2991d">60.8%</text>
-  <circle cx="430" cy="147" r="4" fill="#d2991d"/><text x="430" y="161" text-anchor="middle" font-size="9" fill="#d2991d">63.2%</text>
-  <circle cx="580" cy="142" r="4" fill="#d2991d"/><text x="580" y="156" text-anchor="middle" font-size="9" fill="#d2991d">65.0%</text>
-  <circle cx="730" cy="145" r="4" fill="#d2991d"/><text x="730" y="136" text-anchor="middle" font-size="9" fill="#d2991d">65.6%</text>
+<!-- Margin Chart -->
+<h2>📐 利潤率走勢</h2>
+<div class="chart-box">
+<svg viewBox="0 0 960 250" width="100%" style="max-width:960px">
+  <!-- Gross margin bars (scale: 250px = 100%) -->
+  <!-- Q1FY25:78.4→196, Q2FY25:75.1→188, Q3FY25:74.6→187, Q4FY25:73.0→183 -->
+  <!-- Q1FY26:60.5→151, Q2FY26:72.4→181, Q3FY26:73.4→184, Q4FY26:75.0→188, Q1FY27:74.9→187 -->
+  <rect x="75" y="54" width="64" height="196" fill="#21262d" rx="2"/><text x="107" y="46" text-anchor="middle" font-size="9" fill="#8b949e">78.4%</text>
+  <rect x="175" y="62" width="64" height="188" fill="#21262d" rx="2"/><text x="207" y="54" text-anchor="middle" font-size="9" fill="#8b949e">75.1%</text>
+  <rect x="275" y="63" width="64" height="187" fill="#21262d" rx="2"/><text x="307" y="55" text-anchor="middle" font-size="9" fill="#8b949e">74.6%</text>
+  <rect x="375" y="67" width="64" height="183" fill="#21262d" rx="2"/><text x="407" y="59" text-anchor="middle" font-size="9" fill="#8b949e">73.0%</text>
+  <rect x="510" y="99" width="64" height="151" fill="#f8514933" rx="2"/><text x="542" y="91" text-anchor="middle" font-size="9" fill="#f85149">60.5%</text>
+  <rect x="610" y="69" width="64" height="181" fill="#30363d" rx="2"/><text x="642" y="61" text-anchor="middle" font-size="9" fill="#8b949e">72.4%</text>
+  <rect x="710" y="66" width="64" height="184" fill="#30363d" rx="2"/><text x="742" y="58" text-anchor="middle" font-size="9" fill="#8b949e">73.4%</text>
+  <rect x="810" y="62" width="64" height="188" fill="#30363d" rx="2"/><text x="842" y="54" text-anchor="middle" font-size="9" fill="#8b949e">75.0%</text>
+  <rect x="872" y="63" width="52" height="187" fill="#2ea043" rx="3"/><text x="898" y="55" text-anchor="middle" font-size="9" fill="#3fb950">74.9%</text>
+
+  <!-- Operating margin line (scale: 250px=100%) -->
+  <!-- Q1FY25:64.9→162, Q2FY25:62.0→155, Q3FY25:62.3→156, Q4FY25:61.1→153 -->
+  <!-- Q1FY26:49.1→123, Q2FY26:60.8→152, Q3FY26:63.2→158, Q4FY26:65.0→163, Q1FY27:65.6→164 -->
+  <polyline points="107,88 207,95 307,94 407,97 542,127 642,98 742,92 842,87 898,86" 
+    stroke="#d2991d" stroke-width="2" fill="none"/>
+  <circle cx="107" cy="88" r="4" fill="#d2991d"/><text x="107" y="80" text-anchor="middle" font-size="9" fill="#d2991d">64.9%</text>
+  <circle cx="207" cy="95" r="4" fill="#d2991d"/><text x="207" y="108" text-anchor="middle" font-size="9" fill="#d2991d">62.0%</text>
+  <circle cx="307" cy="94" r="4" fill="#d2991d"/>
+  <circle cx="407" cy="97" r="4" fill="#d2991d"/>
+  <circle cx="542" cy="127" r="4" fill="#d2991d"/><text x="542" y="140" text-anchor="middle" font-size="9" fill="#d2991d">49.1%</text>
+  <circle cx="642" cy="98" r="4" fill="#d2991d"/>
+  <circle cx="742" cy="92" r="4" fill="#d2991d"/>
+  <circle cx="842" cy="87" r="4" fill="#d2991d"/><text x="842" y="79" text-anchor="middle" font-size="9" fill="#d2991d">65.0%</text>
+  <circle cx="898" cy="86" r="4" fill="#d2991d"/><text x="898" y="78" text-anchor="middle" font-size="9" fill="#d2991d">65.6%</text>
+
+  <!-- Net margin line -->
+  <!-- Q1FY25:57.1→143, Q2FY25:55.3→138, Q3FY25:55.0→138, Q4FY25:56.2→141 -->
+  <!-- Q1FY26:42.6→107, Q2FY26:56.5→141, Q3FY26:56.0→140, Q4FY26:63.1→158, Q1FY27:71.5→179 -->
+  <polyline points="107,143 207,138 307,138 407,141 542,107 642,141 742,140 842,158 898,179" 
+    stroke="#bc8cff" stroke-width="1.5" fill="none" stroke-dasharray="6,3"/>
+  <circle cx="898" cy="179" r="4" fill="#bc8cff"/><text x="898" y="193" text-anchor="middle" font-size="9" fill="#bc8cff">71.5%</text>
+
   <!-- X -->
-  <text x="130" y="220" text-anchor="middle" font-size="10">Q1FY26</text>
-  <text x="280" y="220" text-anchor="middle" font-size="10">Q2FY26</text>
-  <text x="430" y="220" text-anchor="middle" font-size="10">Q3FY26</text>
-  <text x="580" y="220" text-anchor="middle" font-size="10">Q4FY26</text>
-  <text x="730" y="220" text-anchor="middle" font-size="10" fill="#3fb950">Q1FY27</text>
+  <text x="107" y="230" text-anchor="middle" font-size="9">Q1FY25</text>
+  <text x="207" y="230" text-anchor="middle" font-size="9">Q2FY25</text>
+  <text x="307" y="230" text-anchor="middle" font-size="9">Q3FY25</text>
+  <text x="407" y="230" text-anchor="middle" font-size="9">Q4FY25</text>
+  <text x="542" y="230" text-anchor="middle" font-size="9">Q1FY26</text>
+  <text x="642" y="230" text-anchor="middle" font-size="9">Q2FY26</text>
+  <text x="742" y="230" text-anchor="middle" font-size="9">Q3FY26</text>
+  <text x="842" y="230" text-anchor="middle" font-size="9">Q4FY26</text>
+  <text x="898" y="230" text-anchor="middle" font-size="9" fill="#3fb950">Q1FY27</text>
+
   <!-- Legend -->
-  <rect x="30" y="10" width="12" height="12" fill="#2ea043" rx="2"/><text x="48" y="21" font-size="11">Gross Margin</text>
-  <line x1="200" y1="16" x2="220" y2="16" stroke="#d2991d" stroke-width="2"/><circle cx="210" cy="16" r="3" fill="#d2991d"/><text x="225" y="21" font-size="11">Operating Margin</text>
+  <rect x="20" y="10" width="12" height="12" fill="#2ea043" rx="2"/><text x="36" y="21" font-size="11">Gross Margin</text>
+  <line x1="150" y1="16" x2="170" y2="16" stroke="#d2991d" stroke-width="2"/><circle cx="160" cy="16" r="3" fill="#d2991d"/><text x="175" y="21" font-size="11">Op Margin</text>
+  <line x1="270" y1="16" x2="290" y2="16" stroke="#bc8cff" stroke-width="1.5" stroke-dasharray="6,3"/><text x="295" y="21" font-size="11">Net Margin</text>
 </svg>
 </div>
 
-<!-- Detailed P&L Table -->
-<h2>📋 損益表逐季比較</h2>
+<!-- Data Table -->
+<h2>📋 完整 8 季逐季比較（含 YoY / QoQ）</h2>
+<div class="scrolly">
 <table>
 <thead>
-<tr><th>($B)</th><th>Q1 FY26<br>Apr 2025</th><th>Q2 FY26<br>Jul 2025</th><th>Q3 FY26<br>Oct 2025</th><th>Q4 FY26<br>Jan 2026</th><th>Q1 FY27<br>Apr 2026</th><th>YoY</th><th>QoQ</th></tr>
+<tr>
+  <th>($B, 除非標註)</th>
+  <th colspan="4" style="text-align:center;color:var(--yellow)">FY2025</th>
+  <th colspan="4" style="text-align:center;color:var(--blue)">FY2026</th>
+  <th style="text-align:center;color:var(--green)">FY2027<br>Q1</th>
+</tr>
+<tr>
+  <th></th>
+  <th>Q1<br>Apr'24</th><th>Q2<br>Jul'24</th><th>Q3<br>Oct'24</th><th>Q4<br>Jan'25</th>
+  <th>Q1<br>Apr'25</th><th>Q2<br>Jul'25</th><th>Q3<br>Oct'25</th><th>Q4<br>Jan'26</th>
+  <th>Q1<br>Apr'26</th>
+</tr>
 </thead>
 <tbody>
-<tr><td><b>營收</b></td><td>44.1</td><td>46.7</td><td>57.0</td><td>68.1</td><td><b>81.6</b></td><td class="up">+85.2%</td><td class="up">+19.8%</td></tr>
-<tr><td>Data Center</td><td>—</td><td>—</td><td>—</td><td>—</td><td><b>75.2</b></td><td class="up">+92%</td><td class="up">+21%</td></tr>
-<tr><td>Edge / Other</td><td>—</td><td>—</td><td>—</td><td>—</td><td><b>6.4</b></td><td class="up">+29%</td><td class="up">+10%</td></tr>
-<tr><td>成本</td><td>17.4</td><td>12.9</td><td>15.2</td><td>17.0</td><td><b>20.5</b></td><td class="down">+17.6%</td><td class="down">+20.1%</td></tr>
-<tr><td><b>毛利</b></td><td>26.7</td><td>33.9</td><td>41.8</td><td>51.1</td><td><b>61.2</b></td><td class="up">+129.3%</td><td class="up">+19.7%</td></tr>
-<tr><td><i>毛利率</i></td><td><i>60.5%</i></td><td><i>72.4%</i></td><td><i>73.4%</i></td><td><i>75.0%</i></td><td><i><b>74.9%</b></i></td><td class="up"><i>+14.4pp</i></td><td class="down"><i>-0.1pp</i></td></tr>
-<tr><td>R&D</td><td>4.0</td><td>4.3</td><td>4.7</td><td>5.5</td><td><b>6.3</b></td><td class="down">+58.5%</td><td class="down">+14.7%</td></tr>
-<tr><td>SG&A</td><td>1.0</td><td>1.1</td><td>1.1</td><td>1.3</td><td><b>1.3</b></td><td class="down">+24.9%</td><td class="down">+1.4%</td></tr>
-<tr><td><b>營業利潤</b></td><td>21.6</td><td>28.4</td><td>36.0</td><td>44.3</td><td><b>53.5</b></td><td class="up">+147.4%</td><td class="up">+20.9%</td></tr>
-<tr><td><i>營業利潤率</i></td><td><i>49.1%</i></td><td><i>60.8%</i></td><td><i>63.2%</i></td><td><i>65.0%</i></td><td><i><b>65.6%</b></i></td><td class="up"><i>+16.5pp</i></td><td class="up"><i>+0.6pp</i></td></tr>
-<tr><td><b>淨利</b></td><td>18.8</td><td>26.4</td><td>31.9</td><td>43.0</td><td><b>58.3</b></td><td class="up">+210.7%</td><td class="up">+35.8%</td></tr>
-<tr><td><i>淨利率</i></td><td><i>42.6%</i></td><td><i>56.5%</i></td><td><i>56.0%</i></td><td><i>63.1%</i></td><td><i><b>71.5%</b></i></td><td class="up"><i>+28.9pp</i></td><td class="up"><i>+8.4pp</i></td></tr>
-<tr><td><b>Diluted EPS</b></td><td>$0.76</td><td>$1.08</td><td>$1.30</td><td>$1.76</td><td><b>$2.39</b></td><td class="up">+214.5%</td><td class="up">+35.8%</td></tr>
-<tr><td>稀釋股數 (B)</td><td>24.61</td><td>24.53</td><td>24.48</td><td>24.43</td><td><b>24.39</b></td><td class="up">-0.9%</td><td class="up">-0.2%</td></tr>
+
+<!-- Revenue -->
+<tr><td><b>營收</b></td>
+  <td>26.0</td><td>30.0</td><td>35.1</td><td>39.3</td>
+  <td>44.1</td><td>46.7</td><td>57.0</td><td>68.1</td>
+  <td style="background:rgba(63,185,80,0.1)"><b>81.6</b></td></tr>
+<tr style="font-size:11px;color:var(--dim)"><td>　QoQ</td>
+  <td>—</td><td class="up">+15.4%</td><td class="up">+16.8%</td><td class="up">+12.1%</td>
+  <td class="up">+12.0%</td><td class="up">+6.1%</td><td class="up">+22.0%</td><td class="up">+19.5%</td>
+  <td class="up"><b>+19.8%</b></td></tr>
+<tr style="font-size:11px;color:var(--dim)"><td>　YoY</td>
+  <td>—</td><td>—</td><td>—</td><td>—</td>
+  <td class="up">+69.2%</td><td class="up">+55.6%</td><td class="up">+62.5%</td><td class="up">+73.2%</td>
+  <td class="up"><b>+85.2%</b></td></tr>
+
+<!-- Data Center -->
+<tr><td><i>Data Center</i></td>
+  <td>22.6</td><td>26.3</td><td>30.8</td><td>35.6</td>
+  <td>39.5</td><td>42.0</td><td>51.5</td><td>62.1</td>
+  <td style="background:rgba(63,185,80,0.1)"><b>75.2</b></td></tr>
+<tr style="font-size:11px;color:var(--dim)"><td>　YoY</td>
+  <td>—</td><td>—</td><td>—</td><td>—</td>
+  <td class="up">+75%</td><td class="up">+60%</td><td class="up">+67%</td><td class="up">+74%</td>
+  <td class="up"><b>+92%</b></td></tr>
+
+<tr style="height:8px"></tr>
+
+<!-- Gross Profit -->
+<tr><td><b>毛利</b></td>
+  <td>20.4</td><td>22.6</td><td>26.2</td><td>28.7</td>
+  <td>26.7</td><td>33.9</td><td>41.8</td><td>51.1</td>
+  <td style="background:rgba(63,185,80,0.1)"><b>61.2</b></td></tr>
+<tr><td><i>毛利率</i></td>
+  <td>78.4%</td><td>75.1%</td><td>74.6%</td><td>73.0%</td>
+  <td style="color:var(--red)">60.5%</td><td>72.4%</td><td>73.4%</td><td>75.0%</td>
+  <td><b>74.9%</b></td></tr>
+<tr style="font-size:11px;color:var(--dim)"><td>　YoY (GM)</td>
+  <td>—</td><td>—</td><td>—</td><td>—</td>
+  <td class="down">-17.9pp</td><td class="down">-2.7pp</td><td class="down">-1.2pp</td><td class="up">+2.0pp</td>
+  <td class="up"><b>+14.4pp</b></td></tr>
+
+<tr style="height:8px"></tr>
+
+<!-- Operating Income -->
+<tr><td><b>營業利潤</b></td>
+  <td>16.9</td><td>18.6</td><td>21.9</td><td>24.0</td>
+  <td>21.6</td><td>28.4</td><td>36.0</td><td>44.3</td>
+  <td style="background:rgba(63,185,80,0.1)"><b>53.5</b></td></tr>
+<tr><td><i>營業利潤率</i></td>
+  <td>64.9%</td><td>62.0%</td><td>62.3%</td><td>61.1%</td>
+  <td style="color:var(--red)">49.1%</td><td>60.8%</td><td>63.2%</td><td>65.0%</td>
+  <td><b>65.6%</b></td></tr>
+<tr style="font-size:11px;color:var(--dim)"><td>　QoQ</td>
+  <td>—</td><td class="up">+10.3%</td><td class="up">+17.3%</td><td class="up">+9.9%</td>
+  <td class="down">-9.9%</td><td class="up">+31.5%</td><td class="up">+26.6%</td><td class="up">+23.0%</td>
+  <td class="up"><b>+20.9%</b></td></tr>
+<tr style="font-size:11px;color:var(--dim)"><td>　YoY</td>
+  <td>—</td><td>—</td><td>—</td><td>—</td>
+  <td class="up">+28.0%</td><td class="up">+52.5%</td><td class="up">+64.6%</td><td class="up">+84.4%</td>
+  <td class="up"><b>+147.4%</b></td></tr>
+
+<tr style="height:8px"></tr>
+
+<!-- R&D + SG&A -->
+<tr><td>R&D</td>
+  <td>3.1</td><td>3.3</td><td>3.5</td><td>3.8</td>
+  <td>4.0</td><td>4.3</td><td>4.7</td><td>5.5</td>
+  <td><b>6.3</b></td></tr>
+<tr><td>SG&A</td>
+  <td>0.8</td><td>0.8</td><td>0.9</td><td>1.0</td>
+  <td>1.0</td><td>1.1</td><td>1.1</td><td>1.3</td>
+  <td><b>1.3</b></td></tr>
+<tr><td><i>OpEx 合計</i></td>
+  <td>3.9</td><td>4.1</td><td>4.4</td><td>4.8</td>
+  <td>5.0</td><td>5.4</td><td>5.8</td><td>6.8</td>
+  <td><b>7.6</b></td></tr>
+<tr style="font-size:11px;color:var(--dim)"><td>　OpEx / Rev</td>
+  <td>15.0%</td><td>13.7%</td><td>12.5%</td><td>12.2%</td>
+  <td>11.4%</td><td>11.6%</td><td>10.2%</td><td>10.0%</td>
+  <td class="up">9.3%</td></tr>
+
+<tr style="height:8px"></tr>
+
+<!-- Net Income + EPS -->
+<tr><td><b>淨利</b></td>
+  <td>14.9</td><td>16.6</td><td>19.3</td><td>22.1</td>
+  <td>18.8</td><td>26.4</td><td>31.9</td><td>43.0</td>
+  <td style="background:rgba(63,185,80,0.1)"><b>58.3</b></td></tr>
+<tr><td><i>淨利率</i></td>
+  <td>57.1%</td><td>55.3%</td><td>55.0%</td><td>56.2%</td>
+  <td>42.6%</td><td>56.5%</td><td>56.0%</td><td>63.1%</td>
+  <td><b>71.5%</b></td></tr>
+<tr style="font-size:11px;color:var(--dim)"><td>　QoQ</td>
+  <td>—</td><td class="up">+11.6%</td><td class="up">+16.3%</td><td class="up">+14.4%</td>
+  <td class="down">-15.0%</td><td class="up">+40.8%</td><td class="up">+20.8%</td><td class="up">+34.6%</td>
+  <td class="up"><b>+35.8%</b></td></tr>
+<tr style="font-size:11px;color:var(--dim)"><td>　YoY</td>
+  <td>—</td><td>—</td><td>—</td><td>—</td>
+  <td class="up">+26.2%</td><td class="up">+59.2%</td><td class="up">+65.3%</td><td class="up">+94.5%</td>
+  <td class="up"><b>+210.7%</b></td></tr>
+
+<tr><td><b>Diluted EPS</b></td>
+  <td>$0.60</td><td>$0.67</td><td>$0.78</td><td>$0.89</td>
+  <td>$0.76</td><td>$1.08</td><td>$1.30</td><td>$1.76</td>
+  <td style="background:rgba(63,185,80,0.1)"><b>$2.39</b></td></tr>
+<tr style="font-size:11px;color:var(--dim)"><td>　YoY</td>
+  <td>—</td><td>—</td><td>—</td><td>—</td>
+  <td class="up">+26.7%</td><td class="up">+61.2%</td><td class="up">+66.7%</td><td class="up">+97.8%</td>
+  <td class="up"><b>+214.5%</b></td></tr>
+<tr><td>稀釋股數 (B)</td>
+  <td>24.9</td><td>24.8</td><td>24.7</td><td>24.7</td>
+  <td>24.6</td><td>24.5</td><td>24.5</td><td>24.4</td>
+  <td><b>24.4</b></td></tr>
+
+<tr style="height:8px"></tr>
+
+<!-- FCF -->
+<tr><td><b>FCF (季度)</b></td>
+  <td>—</td><td>—</td><td>—</td><td>—</td>
+  <td>—</td><td>13.5</td><td>22.1</td><td>34.9</td>
+  <td style="background:rgba(63,185,80,0.1)"><b>48.6</b></td></tr>
+<tr><td>CapEx</td>
+  <td>—</td><td>—</td><td>—</td><td>—</td>
+  <td>—</td><td>1.9</td><td>1.6</td><td>1.3</td>
+  <td><b>1.8</b></td></tr>
+<tr><td>股票回購</td>
+  <td>—</td><td>—</td><td>—</td><td>—</td>
+  <td>—</td><td>9.7</td><td>12.5</td><td>3.8</td>
+  <td><b>19.3</b></td></tr>
 </tbody>
 </table>
+</div>
 
-<!-- Key metrics table -->
-<h2>🔑 資產負債表 & 現金流亮點</h2>
+<!-- Balance Sheet -->
+<h2>💾 資產負債表亮點</h2>
+<div class="scrolly">
 <table>
-<thead><tr><th>($B)</th><th>Q1 FY26<br>Apr 2025</th><th>Q2 FY26<br>Jul 2025</th><th>Q3 FY26<br>Oct 2025</th><th>Q4 FY26<br>Jan 2026</th><th>Q1 FY27<br>Apr 2026</th></tr></thead>
+<thead><tr>
+  <th>($B)</th><th>Q1FY25</th><th>Q2FY25</th><th>Q3FY25</th><th>Q4FY25</th>
+  <th>Q1FY26</th><th>Q2FY26</th><th>Q3FY26</th><th>Q4FY26</th><th>Q1FY27</th>
+</tr></thead>
 <tbody>
-<tr><td><b>現金+短期投資</b></td><td>—</td><td>54.0</td><td>60.6</td><td>62.6</td><td><b>80.6</b></td></tr>
-<tr><td><b>總資產</b></td><td>—</td><td>140.7</td><td>161.1</td><td>206.8</td><td><b>259.5</b></td></tr>
-<tr><td>存貨</td><td>—</td><td>15.0</td><td>19.8</td><td>21.4</td><td><b>25.8</b></td></tr>
-<tr><td>總負債</td><td>—</td><td>40.6</td><td>42.3</td><td>49.5</td><td><b>64.0</b></td></tr>
-<tr><td>長期債務</td><td>—</td><td>8.5</td><td>7.5</td><td>7.5</td><td><b>7.5</b></td></tr>
-<tr><td><b>股東權益</b></td><td>—</td><td>100.1</td><td>118.9</td><td>157.3</td><td><b>195.5</b></td></tr>
-<tr><td><b>FCF (季度)</b></td><td>—</td><td>13.5</td><td>22.1</td><td>34.9</td><td><b>48.6</b></td></tr>
-<tr><td>CapEx</td><td>—</td><td>1.9</td><td>1.6</td><td>1.3</td><td><b>1.8</b></td></tr>
-<tr><td>股票回購</td><td>—</td><td>9.7</td><td>12.5</td><td>3.8</td><td><b>19.3</b></td></tr>
+<tr><td>現金+短期投資</td>
+  <td>—</td><td>—</td><td>—</td><td>—</td>
+  <td>—</td><td>54.0</td><td>60.6</td><td>62.6</td><td><b>80.6</b></td></tr>
+<tr><td><b>總資產</b></td>
+  <td>—</td><td>—</td><td>—</td><td>—</td>
+  <td>—</td><td>140.7</td><td>161.1</td><td>206.8</td><td><b>259.5</b></td></tr>
+<tr><td>存貨</td>
+  <td>—</td><td>—</td><td>—</td><td>—</td>
+  <td>—</td><td>15.0</td><td>19.8</td><td>21.4</td><td><b>25.8</b></td></tr>
+<tr><td>長期債務</td>
+  <td>—</td><td>—</td><td>—</td><td>—</td>
+  <td>—</td><td>8.5</td><td>7.5</td><td>7.5</td><td><b>7.5</b></td></tr>
+<tr><td><b>股東權益</b></td>
+  <td>—</td><td>—</td><td>—</td><td>—</td>
+  <td>—</td><td>100.1</td><td>118.9</td><td>157.3</td><td><b>195.5</b></td></tr>
 </tbody>
 </table>
+</div>
 
-<!-- NVIDIA-specific metrics -->
-<h2>🏷️ NVIDIA 特殊指標</h2>
+<!-- Key observations -->
+<h2>🔍 重點觀察</h2>
+
+<div class="note yellow">
+  <b>⚠️ Q1 FY2026 毛利率暴跌至 60.5%</b> — 因計提 $4.5B H20 中國庫存損失。扣除後正常化毛利率應在 70-71%。這是<u>一次性</u>事件，不是結構性問題。Q2 FY2026 已恢復至 72.4%。
+</div>
+
+<div class="note green">
+  <b>✅ Q1 FY2027 淨利率 71.5% 創歷史新高</b> — 營收成長 85% 但 OpEx 僅成長 52%，規模效應顯著。同時淨利含約 $16B 的投資收益/其他收入（非營業項目），使淨利超過營業利潤。
+</div>
+
+<div class="note blue">
+  <b>📈 Blackwell 300 ramp 為主要動能</b> — Data Center Q1 FY2027 營收 $75.2B（佔總營收 92%），Blackwell 已取代 Hopper 成為主力架構。中國零 Hopper 出貨（vs Q1 FY2026 $4.6B）但缺口被其他地區完全吸收。
+</div>
 
 <div class="note">
-  <b>Blackwell 300 為主要營收動能</b> — Blackwell 架構已佔營收大宗，Blackwell 300 產品持續 ramp。管理層強調 Blackwell workstation 需求強勁（帶動 Edge Computing +29% YoY）。
+  <b>📉 毛利率長期趨勢下行</b> — FY2025 毛利率從 78.4% 逐步降至 73.0%（產品組合轉向系統級銷售）。Q1 FY2027 的 74.9% 扣除 H20 效應後與此趨勢一致。NVIDIA 正在從高毛利的純 GPU 轉向系統+軟體解決方案。
 </div>
-<br>
-<div class="note warn">
-  <b>中國 H20 禁令影響：</b> Q1 FY2027 對中國零 Hopper 出貨（vs Q1 FY2026 $4.6B）。這 $4.6B 的缺口被其他地區需求完全吸收，總營收仍成長 85%。
+
+<div class="note green">
+  <b>💰 現金炸裂</b> — 單季 FCF $48.6B，年化 ~$194B。FCF yield ~4.0%。股票回購 $19.3B 創歷史紀錄，稀釋股數連 5 季下滑（24.9B → 24.4B）。總資產 $259.5B，現金 $80.6B，幾乎零負債。
 </div>
-<br>
-<div class="note">
-  <b>Hyperscaler 集中度：</b> 超大規模客戶仍佔 Data Center 營收約 50%，其餘 50% 來自 AI Cloud、工業、企業、主權客戶——客戶基礎持續多元化。
-</div>
-<br>
-<div class="note warn">
-  <b>毛利率的「一次性」效應：</b> Q1 FY2026 毛利率僅 60.5% 是因計提 $4.5B H20 庫存損失。扣除後正常化毛利率約 70-71%。最新 74.9% 才是可持續水準。
-</div>
-<br>
-<div class="note">
-  <b>OpEx 成長可控：</b> OpEx $7.6B（R&D $6.3B + SG&A $1.3B），YoY +52%，反映員工人數成長、薪酬調升、算力基礎設施投資。但營收增速（+85%）遠超 OpEx 增速，規模效應顯著。
+
+<div class="note blue">
+  <b>🏷️ 估值 paradox</b> — PE(TTM) 30.3x 是 NVIDIA 近 5 年最低（平均 ~60x），Forward PE 15.5x，PEG 0.64。但市場定價可能是對成長減速的合理反映：Q1 FY2027 的 +85% YoY 成長是否能持續？QoQ 已從 FY2025 的 15-17% 降至最近兩季的 19-20%（仍驚人但需觀察 trend）。
 </div>
 
 <h2>📐 估值 Snapshot</h2>
 <table>
-<thead><tr><th>指標</th><th>數值</th><th>評價</th></tr></thead>
+<thead><tr><th>指標</th><th>數值</th><th>說明</th></tr></thead>
 <tbody>
-<tr><td>PE (TTM)</td><td><b>30.3x</b></td><td>以 NVIDIA 歷史標準極低（5 年平均 ~60x）</td></tr>
-<tr><td>PE (Forward)</td><td><b>15.5x</b></td><td>市場對未來成長偏保守定價</td></tr>
-<tr><td>PEG</td><td><b>0.64</b></td><td>PEG < 1 通常被視為低估</td></tr>
-<tr><td>PS (TTM)</td><td><b>18.9x</b></td><td>營收倍數因超高利潤率變得合理</td></tr>
-<tr><td>EV/EBITDA</td><td><b>29.0x</b></td><td>—</td></tr>
+<tr><td>PE (TTM)</td><td><b>30.3x</b></td><td>NVIDIA 5 年平均 ~60x</td></tr>
+<tr><td>PE (Forward)</td><td><b>15.5x</b></td><td>市場對成長偏保守</td></tr>
+<tr><td>PEG</td><td><b>0.64</b></td><td>PEG &lt; 1 = 傳統低估訊號</td></tr>
 <tr><td>FCF Yield</td><td><b>~4.0%</b></td><td>$48.6B × 4 / $4.79T</td></tr>
-<tr><td>股價 / 52w 高</td><td><b>83.6%</b></td><td>$197.80 vs $236.54</td></tr>
+<tr><td>股價 / 52w 高</td><td><b>83.6%</b></td><td>$197.94 vs $236.54</td></tr>
+<tr><td>ROE</td><td><b>114.3%</b></td><td>極高，由超高利潤率驅動</td></tr>
+<tr><td>D/E</td><td><b>6.6%</b></td><td>幾乎無槓桿</td></tr>
 </tbody>
 </table>
 
-<div class="note" style="margin-top:24px; border-left-color:#8b949e; font-size:12px;">
-  <b>資料來源：</b> Yahoo Finance (yfinance), SEC EDGAR 10-Q (2026-04-26), NVIDIA Q1 FY2027 Earnings Release.<br>
-  <b>注意：</b> 此為快速摘要，非完整 equity research。詳細分析需跑 11-step framework。
+<div class="note" style="margin-top:28px; border-left-color:var(--dim); font-size:12px;">
+  <b>資料來源：</b> Yahoo Finance (yfinance)、SEC EDGAR (10-Q/10-K filings)、NVIDIA 官方 Earnings Release。<br>
+  <b>Data Center 營收</b> FY2025 各季為估算值（來自 NVIDIA segment disclosure 比例推算）；FY2026-FY2027 來自 10-Q MD&A。<br>
+  <b>注意：</b> 此為快速財報摘要，非完整 equity research。需要 11-step 深入分析請告知。
 </div>
 
 </div>
 </body>
 </html>
-
