@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ASML EUV 專利盤點 — 技術護城河量化分析</title>
+<style>
+  :root { --bg:#0d1117; --card:#161b22; --border:#30363d; --text:#c9d1d9; --green:#3fb950; --blue:#58a6ff; --yellow:#d2991d; --purple:#bc8cff; --dim:#8b949e; }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:var(--bg); color:var(--text); font-family:-apple-system,BlinkMacSystemFont,sans-serif; padding:24px; line-height:1.6; }
+  .container { max-width:1100px; margin:0 auto; }
+  h1 { font-size:28px; margin-bottom:4px; }
+  h2 { font-size:20px; margin:36px 0 16px; padding-bottom:8px; border-bottom:1px solid var(--border); }
+  h3 { font-size:16px; margin:20px 0 10px; color:var(--blue); }
+  .sub { color:var(--dim); font-size:14px; margin-bottom:24px; }
+  .kpi-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:12px; margin:20px 0; }
+  .kpi { background:var(--card); border:1px solid var(--border); border-radius:8px; padding:16px; }
+  .kpi .label { font-size:12px; color:var(--dim); margin-bottom:4px; }
+  .kpi .value { font-size:24px; font-weight:700; }
+  .kpi .sub { font-size:13px; margin:4px 0 0; }
+  .note { font-size:14px; margin:12px 0; padding:14px 16px; background:var(--card); border-radius:8px; border-left:3px solid var(--border); }
+  .note.b { border-left-color:var(--blue); } .note.g { border-left-color:var(--green); } .note.y { border-left-color:var(--yellow); }
+  table { width:100%; border-collapse:collapse; margin:16px 0; font-size:14px; }
+  th, td { padding:10px 14px; text-align:left; border-bottom:1px solid var(--border); }
+  th { color:var(--dim); font-weight:600; font-size:12px; text-transform:uppercase; }
+  tr:hover { background:rgba(255,255,255,0.02); }
+  .tag { display:inline-block; padding:3px 10px; border-radius:12px; font-size:12px; font-weight:600; margin:2px 4px; }
+  .tag-g { background:rgba(63,185,80,0.15); color:var(--green); }
+  .tag-b { background:rgba(88,166,255,0.15); color:var(--blue); }
+  .tag-y { background:rgba(210,153,29,0.15); color:var(--yellow); }
+  .bar-container { margin:8px 0; display:flex; align-items:center; }
+  .bar-label { width:120px; font-size:13px; text-align:right; padding-right:12px; }
+  .bar-track { flex:1; height:22px; background:var(--card); border-radius:4px; overflow:hidden; }
+  .bar-fill { height:100%; border-radius:4px; transition:width 0.5s; }
+</style>
+</head>
+<body>
+<div class="container">
+
+<h1>🔬 ASML EUV 專利盤點</h1>
+<div class="sub">資料來源：EPO OPS API | 搜尋日期：2026-06-27 | 專利涵蓋範圍：全球 100+ 司法管轄區</div>
+
+<h2>📊 總覽</h2>
+<div class="kpi-grid">
+  <div class="kpi">
+    <div class="label">ASML 總專利數</div>
+    <div class="value">7,538</div>
+    <div class="sub">全球各技術領域合計</div>
+  </div>
+  <div class="kpi">
+    <div class="label">EUV 相關專利（標題）</div>
+    <div class="value">277</div>
+    <div class="sub">佔總數 3.7%</div>
+  </div>
+  <div class="kpi">
+    <div class="label">EUV 相關專利（摘要）</div>
+    <div class="value">512</div>
+    <div class="sub">含說明書提及 EUV</div>
+  </div>
+  <div class="kpi">
+    <div class="label">Lithography 相關</div>
+    <div class="value">1,028</div>
+    <div class="sub">較廣義光刻技術</div>
+  </div>
+  <div class="kpi">
+    <div class="label">"Extreme Ultraviolet"</div>
+    <div class="value">95</div>
+    <div class="sub">精確詞組匹配</div>
+  </div>
+  <div class="kpi">
+    <div class="label">最新 EUV 專利</div>
+    <div class="value">2026-06-25</div>
+    <div class="sub">WO2026130938（3天前發布）</div>
+  </div>
+</div>
+
+<h2>🗂️ EUV 關鍵技術領域</h2>
+
+<div class="note b">
+  從已抽取的 100 件 EUV 專利中，IPC 分類顯示 ASML 的 EUV 技術版圖集中在以下核心領域：
+</div>
+
+<table>
+<thead><tr><th>IPC 分類</th><th>技術領域</th><th style="text-align:right">覆蓋率</th><th>說明</th></tr></thead>
+<tbody>
+<tr><td><span class="tag tag-g">G03F</span></td><td><b>Photolithography</b></td><td style="text-align:right">~70%</td><td>光刻製程核心：曝光裝置、光罩、光阻</td></tr>
+<tr><td><span class="tag tag-b">H01L</span></td><td><b>Semiconductor Devices</b></td><td style="text-align:right">~15%</td><td>晶圓製程整合、圖案化方法</td></tr>
+<tr><td><span class="tag tag-y">G02B</span></td><td><b>Optical Elements</b></td><td style="text-align:right">~10%</td><td>EUV 反射鏡、光學系統設計</td></tr>
+<tr><td>G01N/J/B</td><td><b>Metrology & Inspection</b></td><td style="text-align:right">~8%</td><td>曝光精度量測、缺陷檢測</td></tr>
+<tr><td>H05G/G21K</td><td><b>EUV Source</b></td><td style="text-align:right">~5%</td><td>電漿光源、錫滴產生、輻射收集</td></tr>
+<tr><td>B82Y</td><td><b>Nanotechnology</b></td><td style="text-align:right">~3%</td><td>奈米結構、量子效應應用</td></tr>
+</tbody>
+</table>
+
+<h2>🔍 關鍵技術子領域（基於 IPC 子群）</h2>
+
+<table>
+<thead><tr><th>技術子領域</th><th>IPC 子群</th><th>戰略意義</th></tr></thead>
+<tbody>
+<tr><td><b>EUV 反射光學</b></td><td>G03F 7/702, G02B 17/06</td><td>多層膜反射鏡是 EUV 最核心壁壘，只有 Zeiss/ASML 掌握</td></tr>
+<tr><td><b>污染控制</b></td><td>G03F 7/709</td><td>EUV 真空腔內碳沉積是良率殺手，pellicle + 氣流設計為關鍵</td></tr>
+<tr><td><b>光源系統</b></td><td>H05G 2/00, G21K 5/00</td><td>錫電漿 EUV 光源（Cymer/ASML），功率從 250W 往 600W 推進</td></tr>
+<tr><td><b>光罩/光罩台</b></td><td>G03F 1/22-1/24</td><td>EUV 反射式光罩（reticle）不同於 DUV 穿透式，需要全新技術路線</td></tr>
+<tr><td><b>對準 & 疊對</b></td><td>G03F 9/00</td><td>多層曝光疊對精度（overlay），High-NA EUV 要求 < 1nm</td></tr>
+<tr><td><b>光阻材料</b></td><td>G03F 7/004, 7/039</td><td>EUV 專用光阻（金屬氧化物 resist），與 DUV 化學光阻完全不同</td></tr>
+</tbody>
+</table>
+
+<h2>🏭 競爭格局速覽</h2>
+
+<table>
+<thead><tr><th>公司</th><th style="text-align:right">EUV 相關專利</th><th style="text-align:right">總專利數</th><th style="text-align:right">EUV 佔比</th><th>定位</th></tr></thead>
+<tbody>
+<tr><td><b>ASML</b></td><td style="text-align:right;color:var(--green)"><b>277</b></td><td style="text-align:right">7,538</td><td style="text-align:right">3.7%</td><td>唯一 EUV 整機供應商</td></tr>
+<tr><td>Nikon</td><td style="text-align:right">~45*</td><td style="text-align:right">~12,000</td><td style="text-align:right">~0.4%</td><td>放棄 EUV，轉攻奈米壓印 (NIL)</td></tr>
+<tr><td>Canon</td><td style="text-align:right">~30*</td><td style="text-align:right">~40,000</td><td style="text-align:right">~0.1%</td><td>放棄 EUV，聚焦 NIL + i-line</td></tr>
+<tr><td>Zeiss</td><td style="text-align:right">~150*</td><td style="text-align:right">~8,000</td><td style="text-align:right">~1.9%</td><td>ASML 獨家光學供應商</td></tr>
+<tr><td>Cymer (ASML 子公司)</td><td style="text-align:right">~80*</td><td style="text-align:right">~2,500</td><td style="text-align:right">~3.2%</td><td>ASML 獨家 EUV 光源（2013 收購）</td></tr>
+</tbody>
+</table>
+<div style="font-size:12px;color:var(--dim);margin-top:4px">* Nikon/Canon/Zeiss/Cymer 為初步估算，待後續精確搜尋驗證</div>
+
+<h2>💡 核心發現</h2>
+
+<div class="note g">
+  <b>✅ EUV 是寡佔中的寡佔</b> — Nikon 和 Canon 已實質放棄 EUV 光刻（轉攻 Nanoimprint Lithography），ASML 是全球唯一 EUV 整機製造商。277 件 EUV 專利雖然只佔 ASML 總專利的 3.7%，但涵蓋了光學、光源、污染控制、光罩、對準等整條價值鏈，形成系統級壁壘。
+</div>
+
+<div class="note b">
+  <b>✅ ASML + Zeiss + Cymer = 垂直壟斷</b> — Zeiss（獨家 EUV 光學）和 Cymer（獨家 EUV 光源，2013 年被 ASML 收購）的專利分別約 150 件和 80 件。三者合計 EUV 專利 500+ 件，構成無法繞過的專利牆。
+</div>
+
+<div class="note y">
+  <b>📈 專利活動持續升溫</b> — 最新 EUV 專利 WO2026130938 發布於 2026-06-25（僅 3 天前），顯示 ASML 仍在積極布局 High-NA EUV 和下一代技術。隨著 2nm/1.4nm 節點推進，EUV 相關專利申請量預計持續成長。
+</div>
+
+<div class="note">
+  <b>🔬 關鍵技術可識別</b> — EPO 分類系統可精確定位到 IPC 子群層級（如 G03F 7/70916 = EUV 污染控制）。這代表我們可以定期追蹤 ASML 在特定技術子領域的專利動向，作為技術路線圖的量化輸入。
+</div>
+
+<h2>📋 下一步建議</h2>
+
+<ol style="margin:12px 0 12px 24px; line-height:2;">
+  <li><b>精確搜尋 Nikon/Canon/Zeiss</b> — 用同樣方法量化競爭者的 EUV 專利，建立可驗證的護城河數據</li>
+  <li><b>專利引用分析</b> — 追蹤 ASML EUV 專利被 IBM/Samsung/TSMC/Intel 引用的次數，量化專利影響力</li>
+  <li><b>年增率追蹤</b> — 建立 cron 定期拉取 ASML 新增 EUV 專利，檢測技術方向轉變</li>
+  <li><b>整合進 equity research</b> — 將護城河專利數據納入 ASML step6 (Moat Analysis) 更新</li>
+</ol>
+
+<div class="note" style="margin-top:28px; border-left-color:var(--dim); font-size:12px;">
+  <b>資料來源：</b> EPO Open Patent Services (OPS) v3.2 API — 搜尋範圍包含全球 100+ 國家的公開專利文件。<br>
+  <b>搜尋方法：</b> <code>pa=asml AND ti=euv</code>（公司名在申請人欄位、EUV 在標題欄位）<br>
+  <b>限制：</b> 非付費帳號有查詢次數上限，本次分析抽取 100 件代表性專利進行 IPC 分類。競爭者數據為初步估算。<br>
+  <b>注意：</b> 此為專利盤點摘要，不構成投資建議。完整 equity research 需搭配財務分析。
+</div>
+
+</div>
+</body>
+</html>
