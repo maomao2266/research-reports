@@ -40,6 +40,7 @@
   a:hover { text-decoration:underline; }
   .source { font-size:11px; color:var(--dim); margin-top:8px; }
   .col-break { border-left:2px solid var(--border); }
+  .scrolly { overflow-x:auto; }
 </style>
 </head>
 <body>
@@ -47,7 +48,7 @@
 
 <h1>📊 NVIDIA (NVDA) 完整逐季指引 vs 實際結果</h1>
 <p class="sub">
-  資料來源：NVIDIA 官方新聞稿（nvidianews.nvidia.com）· 最後更新 2026-07-05<br>
+  資料來源：NVIDIA 官方新聞稿（nvidianews.nvidia.com）· 最後更新 2026-07-15<br>
   ⚠️ FY2027 Q1 起 non-GAAP 不再排除 SBC（股票薪酬），歷史數字已追溯調整<br>
   ⚠️ FY2027 起不再提供季度 Other Income 指引，稅率改為全年範圍
 </p>
@@ -75,26 +76,29 @@
     <div class="sub">$3.4B → $8.3B (6季)</div>
   </div>
   <div class="kpi">
-    <div class="label">稅率 FY2027</div>
-    <div class="value">16–18%</div>
-    <div class="sub">全年範圍（非季度）</div>
+    <div class="label">FY2027 稅率</div>
+    <div class="value">16.0–18.0%</div>
+    <div class="sub">Q1 FY2027 下調後</div>
   </div>
 </div>
 
-<!-- Main Table: Revenue + GM -->
-<h2>📋 營收與毛利率 指引 vs 實際</h2>
-<div style="overflow-x:auto">
+<!-- Main Table: Revenue + GM + OpEx + Tax -->
+<h2>📋 營收、毛利率、OpEx 與稅率 指引 vs 實際</h2>
+<div class="scrolly">
 <table>
 <thead>
 <tr>
   <th>季度</th>
   <th>指引營收</th>
-  <th>實際營收</th>
-  <th>營收 Beat?</th>
   <th>指引 GAAP GM</th>
   <th>指引 Non-GAAP GM</th>
+  <th>指引 GAAP OpEx</th>
+  <th>指引 Non-GAAP OpEx</th>
+  <th>指引稅率</th>
+  <th class="col-break">實際營收</th>
   <th>實際 GAAP GM</th>
   <th>實際 Non-GAAP GM</th>
+  <th>營收 Beat?</th>
   <th>GM Beat?</th>
   <th>來源</th>
 </tr>
@@ -104,10 +108,11 @@
 <tr>
   <td><b>Q4 FY2025</b><br><span style="font-size:10px;color:var(--dim)">2024/11→2025/2</span></td>
   <td>$37.5B ±2%</td>
-  <td class="up"><b>$39.3B</b></td>
-  <td><span class="tag tag-beat">上限</span></td>
   <td>73.0%</td><td>73.5%</td>
+  <td>~$4.8B</td><td>~$3.4B</td><td>16.5% ±1%</td>
+  <td class="col-break up"><b>$39.3B</b></td>
   <td><b>73.0%</b></td><td><b>73.5%</b></td>
+  <td><span class="tag tag-beat">上限</span></td>
   <td><span class="tag tag-beat">命中</span></td>
   <td><a href="https://nvidianews.nvidia.com/news/nvidia-announces-financial-results-for-third-quarter-fiscal-2025" target="_blank">Q3 FY25 ↗</a></td>
 </tr>
@@ -115,10 +120,11 @@
 <tr>
   <td><b>Q1 FY2026</b><br><span style="font-size:10px;color:var(--dim)">2025/2→2025/5</span></td>
   <td>$43.0B ±2%</td>
-  <td class="up"><b>$44.1B</b></td>
-  <td><span class="tag tag-beat">上限</span></td>
   <td>70.6%</td><td>71.0%</td>
+  <td>~$5.2B</td><td>~$3.6B</td><td>17.0% ±1%</td>
+  <td class="col-break up"><b>$44.1B</b></td>
   <td class="down"><b>60.5%</b></td><td class="down"><b>61.0%</b></td>
+  <td><span class="tag tag-beat">上限</span></td>
   <td><span class="tag tag-miss">H20</span></td>
   <td><a href="https://nvidianews.nvidia.com/news/nvidia-announces-financial-results-for-fourth-quarter-and-fiscal-2025" target="_blank">Q4 FY25 ↗</a></td>
 </tr>
@@ -126,10 +132,11 @@
 <tr>
   <td><b>Q2 FY2026</b><br><span style="font-size:10px;color:var(--dim)">2025/5→2025/8</span></td>
   <td>$45.0B ±2%</td>
-  <td class="up"><b>$46.7B</b></td>
-  <td><span class="tag tag-beat">上限</span></td>
   <td>71.8%</td><td>72.0%</td>
+  <td>~$5.7B</td><td>~$4.0B</td><td>16.5% ±1%</td>
+  <td class="col-break up"><b>$46.7B</b></td>
   <td class="up"><b>72.4%</b></td><td class="up"><b>72.7%</b></td>
+  <td><span class="tag tag-beat">上限</span></td>
   <td><span class="tag tag-beat">超標</span></td>
   <td><a href="https://nvidianews.nvidia.com/news/nvidia-announces-financial-results-for-first-quarter-fiscal-2026" target="_blank">Q1 FY26 ↗</a></td>
 </tr>
@@ -137,10 +144,11 @@
 <tr>
   <td><b>Q3 FY2026</b><br><span style="font-size:10px;color:var(--dim)">2025/8→2025/11</span></td>
   <td>$54.0B ±2%</td>
-  <td class="up"><b>$57.0B</b></td>
-  <td><span class="tag tag-beat">上限</span></td>
   <td>73.3%</td><td>73.5%</td>
+  <td>~$5.9B</td><td>~$4.2B</td><td>16.5% ±1%</td>
+  <td class="col-break up"><b>$57.0B</b></td>
   <td class="up"><b>73.4%</b></td><td class="up"><b>73.6%</b></td>
+  <td><span class="tag tag-beat">上限</span></td>
   <td><span class="tag tag-beat">超標</span></td>
   <td><a href="https://nvidianews.nvidia.com/news/nvidia-announces-financial-results-for-second-quarter-fiscal-2026" target="_blank">Q2 FY26 ↗</a></td>
 </tr>
@@ -148,10 +156,11 @@
 <tr>
   <td><b>Q4 FY2026</b><br><span style="font-size:10px;color:var(--dim)">2025/11→2026/2</span></td>
   <td>$65.0B ±2%</td>
-  <td class="up"><b>$68.1B</b></td>
-  <td><span class="tag tag-beat">上限</span></td>
   <td>74.8%</td><td>75.0%</td>
+  <td>~$6.7B</td><td>~$5.0B</td><td>17.0% ±1%</td>
+  <td class="col-break up"><b>$68.1B</b></td>
   <td class="up"><b>75.0%</b></td><td class="up"><b>75.2%</b></td>
+  <td><span class="tag tag-beat">上限</span></td>
   <td><span class="tag tag-beat">超標</span></td>
   <td><a href="https://nvidianews.nvidia.com/news/nvidia-announces-financial-results-for-third-quarter-fiscal-2026" target="_blank">Q3 FY26 ↗</a></td>
 </tr>
@@ -159,10 +168,11 @@
 <tr>
   <td><b>Q1 FY2027</b><br><span style="font-size:10px;color:var(--dim)">2026/2→2026/5</span></td>
   <td>$78.0B ±2%</td>
-  <td class="up"><b>$81.6B</b></td>
-  <td><span class="tag tag-beat">上限</span></td>
   <td>74.9%</td><td>75.0%</td>
+  <td>~$7.7B</td><td>~$7.5B</td><td>FY27: 17–19%</td>
+  <td class="col-break up"><b>$81.6B</b></td>
   <td><b>74.9%</b></td><td><b>75.0%</b></td>
+  <td><span class="tag tag-beat">上限</span></td>
   <td><span class="tag tag-beat">命中</span></td>
   <td><a href="https://nvidianews.nvidia.com/news/nvidia-announces-financial-results-for-fourth-quarter-and-fiscal-2026" target="_blank">Q4 FY26 ↗</a></td>
 </tr>
@@ -170,90 +180,13 @@
 <tr class="future">
   <td><b>Q2 FY2027</b><br><span style="font-size:10px;color:var(--dim)">2026/5→2026/8</span></td>
   <td><b>$91.0B</b> ±2%</td>
-  <td style="color:var(--dim)"><i>待公佈</i></td>
-  <td>—</td>
   <td>74.9%</td><td>75.0%</td>
+  <td>~$8.5B</td><td>~$8.3B</td><td>FY27: 16–18%</td>
+  <td class="col-break" style="color:var(--dim)"><i>待公佈</i></td>
   <td style="color:var(--dim)"><i>待公佈</i></td><td style="color:var(--dim)"><i>待公佈</i></td>
   <td>—</td>
+  <td>—</td>
   <td><a href="https://nvidianews.nvidia.com/news/nvidia-announces-financial-results-for-first-quarter-fiscal-2027" target="_blank">Q1 FY27 ↗</a></td>
-</tr>
-
-</tbody>
-</table>
-</div>
-
-<!-- OpEx + Tax Rate Table -->
-<h2>💰 營業費用、其他收益與稅率 指引</h2>
-<div style="overflow-x:auto">
-<table>
-<thead>
-<tr>
-  <th>季度</th>
-  <th>指引 GAAP OpEx</th>
-  <th>指引 Non-GAAP OpEx</th>
-  <th>GAAP/Non-GAAP 差距</th>
-  <th>指引 Other Income</th>
-  <th>指引稅率</th>
-  <th>備註</th>
-</tr>
-</thead>
-<tbody>
-
-<tr>
-  <td><b>Q4 FY2025</b></td>
-  <td>~$4.8B</td><td>~$3.4B</td>
-  <td>$1.4B (SBC+收購)</td>
-  <td>~$400M</td>
-  <td>16.5% ±1%</td>
-  <td></td>
-</tr>
-<tr>
-  <td><b>Q1 FY2026</b></td>
-  <td>~$5.2B</td><td>~$3.6B</td>
-  <td>$1.6B</td>
-  <td>~$400M</td>
-  <td>17.0% ±1%</td>
-  <td></td>
-</tr>
-<tr>
-  <td><b>Q2 FY2026</b></td>
-  <td>~$5.7B</td><td>~$4.0B</td>
-  <td>$1.7B</td>
-  <td>~$450M</td>
-  <td>16.5% ±1%</td>
-  <td></td>
-</tr>
-<tr>
-  <td><b>Q3 FY2026</b></td>
-  <td>~$5.9B</td><td>~$4.2B</td>
-  <td>$1.7B</td>
-  <td>~$500M</td>
-  <td>16.5% ±1%</td>
-  <td></td>
-</tr>
-<tr>
-  <td><b>Q4 FY2026</b></td>
-  <td>~$6.7B</td><td>~$5.0B</td>
-  <td>$1.7B</td>
-  <td>~$500M</td>
-  <td>17.0% ±1%</td>
-  <td></td>
-</tr>
-<tr>
-  <td><b>Q1 FY2027</b></td>
-  <td>~$7.7B</td><td>~$7.5B</td>
-  <td style="background:rgba(188,140,255,0.1)"><b>$0.2B</b> ⚠️</td>
-  <td style="color:var(--dim)"><i>未提供</i></td>
-  <td>FY27: 17–19%</td>
-  <td style="font-size:10px;color:var(--yellow)">SBC 納入 Non-GAAP</td>
-</tr>
-<tr class="future">
-  <td><b>Q2 FY2027</b></td>
-  <td>~$8.5B</td><td>~$8.3B</td>
-  <td style="background:rgba(188,140,255,0.1)"><b>$0.2B</b></td>
-  <td style="color:var(--dim)"><i>未提供</i></td>
-  <td>FY27: 16–18%</td>
-  <td style="font-size:10px;color:var(--dim)">全年稅率範圍</td>
 </tr>
 
 </tbody>
@@ -368,9 +301,19 @@
   Non-GAAP OpEx 從 Q4 FY2025 的 $3.4B → Q4 FY2026 的 $5.0B（6 季 +47%），平均每季 +$320M。增幅與營收成長相比可控——OpEx/Rev 從 8.7% 降到 7.3%，<b>規模效應持續發揮</b>。
 </div>
 
+<div class="note purple">
+  <b>6. OpEx 快速攀升，GAAP/Non-GAAP 差距因 SBC 收窄</b><br>
+  FY2025 Q4 指引的 GAAP OpEx 為 $4.8B、Non-GAAP 為 $3.4B（差距 $1.4B，主要由 SBC 驅動）。至 FY2027 Q2 指引，GAAP OpEx 已升至 $8.5B、Non-GAAP 升至 $8.3B（差距僅 $0.2B），反映自 FY2027 Q1 起 non-GAAP 納入 SBC 後的變化。<b>Non-GAAP OpEx 從 $3.4B → $8.3B 的表面跳升幾乎完全來自方法論變更</b>，並非經營費用真正膨脹。
+</div>
+
+<div class="note blue">
+  <b>7. 稅率持續落於低雙位數，FY2027 全年範圍下調</b><br>
+  NVIDIA 六季以來的單季稅率指引均維持在 16.5%–17.0% ± 1% 的狹窄區間，反映穩定的稅務結構。<b>FY2027 全年稅率指引從 Q4 FY2026 的 17.0%–19.0% 下調至 Q1 FY2027 的 16.0%–18.0%</b>，暗示稅務優化或地區收入組合的有利變化。NVIDIA 的有效稅率長期低於美國法定 21%，受益於海外利潤結構。
+</div>
+
 <div class="note">
-  <b>6. 稅率長期穩定在 16-18% 區間</b><br>
-  FY2025-FY2026 季度稅率在 16.5-17.0% 之間窄幅波動。FY2027 全年指引 16-18%，無實質變化。NVIDIA 的有效稅率長期低於美國法定 21%，受益於海外利潤結構。
+  <b>8. FY2027 Q1 起不再提供單季稅率指引</b><br>
+  Q4 FY2026 與 Q1 FY2027 兩份新聞稿都只給出 FY2027 全年稅率範圍（先 17.0%–19.0%，後下調至 16.0%–18.0%），不再逐季提供稅率指引，與先前季度（FY2025–FY2026 每季給定點稅率 ±1%）的做法明顯不同。
 </div>
 
 <hr class="divider">
