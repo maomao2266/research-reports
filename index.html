@@ -5,374 +5,238 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Maobolin Research Reports</title>
 <style>
-  :root {
-    --bg: #0d1117; --card: #161b22; --border: #30363d;
-    --text: #c9d1d9; --muted: #8b949e; --accent: #58a6ff;
-    --green: #3fb950;
-  }
+  :root { --bg:#0d1117; --card:#161b22; --border:#30363d; --text:#c9d1d9; --muted:#8b949e; --accent:#58a6ff; --green:#3fb950; --purple:#a78bfa; --orange:#d2991d; --red:#f85149; }
   * { margin:0; padding:0; box-sizing:border-box; }
-  body { background:var(--bg); color:var(--text); font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif; padding:2rem; max-width:800px; margin:0 auto; min-height:100vh; }
-  h1 { color:var(--accent); font-size:1.8rem; margin-bottom:.5rem; }
-  .subtitle { color:var(--muted); margin-bottom:2rem; }
-  .report-card { background:var(--card); border:1px solid var(--border); border-radius:8px; padding:1.25rem; margin:1rem 0; transition:border-color .2s; }
-  .report-card:hover { border-color:var(--accent); }
-  .report-card a { color:var(--accent); text-decoration:none; font-size:1.1rem; font-weight:600; }
-  .report-card a:hover { text-decoration:underline; }
-  .report-date { color:var(--muted); font-size:.85rem; }
-  .report-desc { color:var(--text); margin-top:.5rem; font-size:.9rem; }
-  .badge { display:inline-block; padding:2px 8px; border-radius:12px; font-size:.75rem; font-weight:600; background:rgba(63,185,80,0.15); color:var(--green); }
-  footer { margin-top:3rem; padding-top:1rem; border-top:1px solid var(--border); color:var(--muted); font-size:.8rem; text-align:center; }
+  body { background:var(--bg); color:var(--text); font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif; padding:2rem; max-width:900px; margin:0 auto; min-height:100vh; }
+  h1 { font-size:1.8rem; margin-bottom:.25rem; }
+  h1 .icon { color:var(--accent); }
+  .subtitle { color:var(--muted); margin-bottom:2rem; font-size:.9rem; }
+  .section { margin-bottom:2.5rem; }
+  .section h2 { font-size:1.1rem; color:var(--accent); padding-bottom:.5rem; border-bottom:1px solid var(--border); margin-bottom:1rem; display:flex; align-items:center; gap:.5rem; }
+  .section h2 .count { font-size:.75rem; color:var(--muted); font-weight:400; }
+  .report-card { background:var(--card); border:1px solid var(--border); border-radius:8px; padding:1rem 1.25rem; margin:.75rem 0; transition:border-color .2s; border-left:3px solid var(--border); }
+  .report-card:hover { border-left-color:var(--accent); }
+  .report-card a { color:var(--text); text-decoration:none; font-size:1rem; font-weight:600; }
+  .report-card a:hover { color:var(--accent); }
+  .report-meta { color:var(--muted); font-size:.8rem; margin-top:.25rem; }
+  .badge { display:inline-block; padding:1px 8px; border-radius:10px; font-size:.7rem; font-weight:600; margin-left:.5rem; }
+  .badge-equity { background:rgba(88,166,255,0.15); color:var(--accent); }
+  .badge-quant { background:rgba(210,153,29,0.15); color:var(--orange); }
+  .badge-macro { background:rgba(63,185,80,0.15); color:var(--green); }
+  .badge-patent { background:rgba(167,139,250,0.15); color:var(--purple); }
+  .news-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(140px,1fr)); gap:.5rem; }
+  .news-link { font-size:.8rem; color:var(--muted); text-decoration:none; padding:.3rem .5rem; border-radius:4px; }
+  .news-link:hover { background:var(--card); color:var(--accent); }
+  details { margin-top:1rem; }
+  details summary { color:var(--muted); font-size:.85rem; cursor:pointer; }
+  footer { margin-top:3rem; padding-top:1rem; border-top:1px solid var(--border); color:var(--muted); font-size:.75rem; text-align:center; }
 </style>
 </head>
 <body>
+
 <h1>📊 Maobolin Research Reports</h1>
-<p class="subtitle">由 Hermes Agent 自動生成的研究報告 · 台股基本面 + 量化分析</p>
+<p class="subtitle">Hermes Agent 研究產出 · 台股／美股基本面 · 量化回測 · 總經監控 · 專利分析</p>
 
-<div class="report-card" style="border-color:var(--accent);">
-  <a href="ASML-equity-research.html">🔬 ASML (ASML) 基本面分析</a>
-  <div class="report-date">2026-06-18 · 完整研究報告</div>
-  <div class="report-desc">公司簡介 · 五年財務分析 · AI 成長動能 · EUV 壟斷護城河 · 風險矩陣 · DCF 估值（含互動計算機）· 投資結論</div>
-  <span class="badge">equity research</span>
-</div>
+<!-- ===== 美股研究 ===== -->
+<div class="section">
+<h2>🇺🇸 美股研究 <span class="count">ASML · NVIDIA</span></h2>
 
-<div class="report-card">
-  <a href="topdown-industry-overview.html">🏭 Top-Down 產業篩選 — 台股 30 產業全景</a>
-  <div class="report-date">2026-06-12 · Gerstein/Gray 框架</div>
-  <div class="report-desc">品質密度排名 · 化工生技/運動休閒/營建/紡織 推薦 · Value/Growth/G&I 策略分類 · 行動路徑建議</div>
-  <span class="badge" style="background:rgba(167,139,250,0.15);color:#a78bfa;">screening</span>
-</div>
-
-<div class="report-card">
-  <a href="delta-2308-step2-company-guidance.html">⚡ 台達電 (2308) Step 2 — 公司指引</a>
-  <div class="report-date">2026-06-07</div>
-  <div class="report-desc">管理層指引快照 · 逐季趨勢追蹤 · 指引可信度評估 · 前瞻路線圖 — 基於 3 份法說會逐字稿</div>
-  <span class="badge">equity research</span>
-</div>
-
-<div class="report-card">
-  <a href="delta-2308-step1-company-description.html">⚡ 台達電 (2308) Step 1 — 公司描述</a>
-  <div class="report-date">2026-06-07</div>
-  <div class="report-desc">公司總覽 · 產品與事業群 · 生態系定位圖 · 商業模式分析 · 經營層評估 · 近期新聞 — 11 步驟研究架構第一站</div>
-  <span class="badge">equity research</span>
-</div>
-
-<div class="report-card">
-  <a href="demo-report-2026-06-07.html">🔋 AES-KY (6781) 估值摘要</a>
-  <div class="report-date">2026-06-07</div>
-  <div class="report-desc">同業比較 · DCF 敏感性分析 · 情境分析 · 估值結論</div>
-  <span class="badge">equity research</span>
-</div>
-
-<div class="report-card">
-  <a href="aes-ky-valuation-2026-06-07.html">🔋 AES-KY (6781) 深度估值分析</a>
-  <div class="report-date">2026-06-07 · 新版互動式報告</div>
-  <div class="report-desc">同業比較 · DCF 敏感性分析 · 四情境機率加權 · 估值結論 — 側欄導航、互動式卡片、一頁式完整報告</div>
-  <span class="badge">equity research</span>
+<div class="report-card" style="border-left-color:var(--orange);">
+  <a href="ASML-equity-research.html">🔬 ASML 完整基本面分析（11-step）</a><span class="badge badge-equity">equity</span>
+  <div class="report-meta">2026-06-18 · Step 1–11 完整報告</div>
 </div>
 <div class="report-card">
-  <a href="expression-upgrade-demo.html">🎨 表達能力升級展示</a>
-  <div class="report-date">2026-06-07</div>
-  <div class="report-desc">Charts.css 純 CSS 圖表 · Sparkline 迷你走勢 · SVG 架構圖 · 量化儀表板預覽</div>
-  <span class="badge">展示</span>
+  <a href="ASML-step1-company-description.html">ASML Step 1 — 公司描述</a>
+  <div class="report-meta">2026-06-18</div>
 </div>
 <div class="report-card">
-  <a href="taiex-intraday-backtest-2026-06-12.html">📈 TAIEX 日內回測 — Bollinger Band 均值回歸</a>
-  <div class="report-date">2026-06-12</div>
-  <div class="report-desc">TEJ TWSE 日內交易資料 · 20 個交易日 · 64,821 ticks · Bollinger Band 均值回歸策略 · Chan's 五指標評估</div>
-  <span class="badge" style="background:rgba(245,158,11,0.15);color:#f59e0b;">quant backtest</span>
-</div>
-
-<div class="report-card">
-  <a href="2753-step8-macro-sector.html">🥟 八方雲集 (2753) Step 8 — 宏觀與產業</a>
-  <div class="report-date">2026-06-12</div>
-  <div class="report-desc">FRED 22 項指標 · PPI +13% 成本壓力 · 消費信心 49.8 · 降息利多 · 敏感度分析</div>
-  <span class="badge">equity research</span>
-</div>
-
-<div class="report-card">
-  <a href="2753-step7-catalyst-analysis.html">🥟 八方雲集 (2753) Step 7 — 催化劑分析</a>
-  <div class="report-date">2026-06-12</div>
-  <div class="report-desc">催化劑時間線 · 量化評分 · 共識差距 · 不對稱回報 2.8:1 · 機率加權目標價 ~232</div>
-  <span class="badge">equity research</span>
-</div>
-
-<div class="report-card">
-  <a href="2753-step6-moat-analysis.html">🥟 八方雲集 (2753) Step 6 — 護城河分析</a>
-  <div class="report-date">2026-06-12</div>
-  <div class="report-desc">FSA 定位 · VECTOR 制度化 · VRIN 耐久性 · ROIC 量化 · 動態能力 SST</div>
-  <span class="badge">equity research</span>
-</div>
-
-<div class="report-card">
-  <a href="2753-step5-competitive-analysis.html">🥟 八方雲集 (2753) Step 5 — 競爭定位</a>
-  <div class="report-date">2026-06-12</div>
-  <div class="report-desc">Porter 五力 · 策略群組地圖 · 利潤池分析 · CAGE 國際距離 · 競爭優勢分類</div>
-  <span class="badge">equity research</span>
-</div>
-
-<div class="report-card">
-  <a href="2753-step4-growth-drivers.html">🥟 八方雲集 (2753) Step 4 — 成長動能</a>
-  <div class="report-date">2026-06-12</div>
-  <div class="report-desc">營收拆解 · 單位經濟學 · 增量利潤率 46.7% · 營運槓桿 DOL 2.22x · 安全邊際 45% · 領先指標</div>
-  <span class="badge">equity research</span>
-</div>
-
-<div class="report-card">
-  <a href="2753-step3-company-strategy.html">🥟 八方雲集 (2753) Step 3 — 公司策略</a>
-  <div class="report-date">2026-06-12</div>
-  <div class="report-desc">CEO 願景 · Ansoff 成長矩陣 · 三層成長架構 · 核心能力 · 成本策略 · AI 評估</div>
-  <span class="badge">equity research</span>
-</div>
-
-<div class="report-card">
-  <a href="2753-step2-company-guidance.html">🥟 八方雲集 (2753) Step 2 — 公司指引</a>
-  <div class="report-date">2026-06-12</div>
-  <div class="report-desc">最新指引快照 · 關鍵指標分析 · 歷史達標紀錄 · 指引品質評估 · 前瞻展望時間線</div>
-  <span class="badge">equity research</span>
-</div>
-
-<div class="report-card">
-  <a href="2753-step1-company-description.html">🥟 八方雲集 (2753) Step 1 — 公司描述</a>
-  <div class="report-date">2026-06-12</div>
-  <div class="report-desc">公司總覽 · 品牌矩陣 · 營收結構 · 定位地圖 · 商業模式分析 · 管理層評估 · 綜合判斷</div>
-  <span class="badge">equity research</span>
+  <a href="ASML-step2-company-guidance.html">ASML Step 2 — 公司指引</a>
+  <div class="report-meta">2026-06-18</div>
 </div>
 <div class="report-card">
-    <h3><a href="news-signals-daily.html">📡 每日新聞訊號 · 2026-06-14 12:12:34</a></h3>
-    <p>CNBC + 金十即時新聞分析 · 主題影響 × 產業信號</p>
-    <span class="date">2026-06-14</span>
+  <a href="ASML-step3-company-strategy.html">ASML Step 3 — 公司策略</a>
+  <div class="report-meta">2026-06-18</div>
 </div>
 <div class="report-card">
-    <h3><a href="news-signals-daily.html">📡 每日新聞訊號 · 2026-06-14 12:42:20</a></h3>
-    <p>CNBC + 金十即時新聞分析 · 主題影響 × 產業信號</p>
-    <span class="date">2026-06-14</span>
+  <a href="ASML-step4-growth-drivers.html">ASML Step 4 — 成長動能</a>
+  <div class="report-meta">2026-06-18</div>
 </div>
 <div class="report-card">
-    <h3><a href="news-signals-daily.html">📡 每日新聞訊號 · 2026-06-14 12:45:05</a></h3>
-    <p>CNBC + 金十即時新聞分析 · 主題影響 × 產業信號</p>
-    <span class="date">2026-06-14</span>
+  <a href="ASML-step4-growth-drivers-supplement.html">ASML Step 4 — 成長動能補充</a>
+  <div class="report-meta">營收認列 · 單位經濟 · R&D 效率</div>
 </div>
 <div class="report-card">
-    <h3><a href="news-signals-daily.html">📡 每日新聞訊號 · 2026-06-14 12:45:05</a></h3>
-    <p>CNBC + 金十即時新聞分析 · 主題影響 × 產業信號</p>
-    <span class="date">2026-06-14</span>
+  <a href="ASML-step5-competitive-positioning.html">ASML Step 5 — 競爭定位</a>
+  <div class="report-meta">Porter 五力 · FSA · 策略群組 · 利潤池</div>
 </div>
 <div class="report-card">
-    <h3><a href="news-signals-daily.html">📡 每日新聞訊號 · 2026-06-14 13:56:02</a></h3>
-    <p>CNBC + 金十即時新聞分析 · 主題影響 × 產業信號</p>
-    <span class="date">2026-06-14</span>
+  <a href="ASML-step6-moat-analysis.html">ASML Step 6 — 護城河分析</a>
+  <div class="report-meta">ROIC 38.8% · VECTOR 28/30 · VRIN</div>
 </div>
 <div class="report-card">
-    <h3><a href="news-signals-daily.html">📡 每日新聞訊號 · 2026-06-14 14:03:23</a></h3>
-    <p>CNBC + 金十即時新聞分析 · 主題影響 × 產業信號</p>
-    <span class="date">2026-06-14</span>
+  <a href="ASML-step7-catalyst-analysis.html">ASML Step 7 — 催化劑分析</a>
+  <div class="report-meta">8 催化劑 · CMD 2026</div>
 </div>
 <div class="report-card">
-    <h3><a href="news-signals-daily.html">📡 每日新聞訊號 · 2026-06-15 07:04:14</a></h3>
-    <p>CNBC + 金十即時新聞分析 · 主題影響 × 產業信號</p>
-    <span class="date">2026-06-15</span>
+  <a href="ASML-step8-dcf-valuation.html">ASML Step 8 — DCF 估值</a>
+  <div class="report-meta">基本 €608 · 市價 €1,682 · 賣出</div>
 </div>
 <div class="report-card">
-    <h3><a href="news-signals-daily.html">📡 每日新聞訊號 · 2026-06-16 07:07:42</a></h3>
-    <p>CNBC + 金十即時新聞分析 · 主題影響 × 產業信號</p>
-    <span class="date">2026-06-16</span>
+  <a href="ASML-step8-industry-macro.html">ASML Step 8 — 產業與總經分析</a>
 </div>
 <div class="report-card">
-    <h3><a href="news-signals-daily.html">📡 每日新聞訊號 · 2026-06-17 07:04:30</a></h3>
-    <p>CNBC + 金十即時新聞分析 · 主題影響 × 產業信號</p>
-    <span class="date">2026-06-17</span>
+  <a href="ASML-step9-risk-analysis.html">ASML Step 9 — 風險分析</a>
+  <div class="report-meta">P×I=25 估值回歸</div>
 </div>
 <div class="report-card">
-    <h3><a href="news-signals-daily.html">📡 每日新聞訊號 · 2026-06-18 07:04:12</a></h3>
-    <p>CNBC + 金十即時新聞分析 · 主題影響 × 產業信號</p>
-    <span class="date">2026-06-18</span>
-</div>
-
-<div class="report-card">
-  <a href="ASML-step7-catalyst-analysis.html">ASML Step 7 – Catalyst Analysis</a>
-  <div class="report-date">2026-06-18</div>
+  <a href="ASML-step10-investment-conclusion.html">ASML Step 10 — 投資結論</a>
+  <div class="report-meta">賣出／避免進場 · 建議 €500–625</div>
 </div>
 <div class="report-card">
-  <a href="ASML-step8-dcf-valuation.html">ASML Step 8 – DCF Valuation</a>
-  <div class="report-date">2026-06-18</div>
-</div>
-<div class="report-card">
-  <a href="ASML-step9-risk-analysis.html">ASML Step 9 – 風險分析</a>
-  <div class="report-date">2026-06-18</div>
-</div>
-<div class="report-card">
-  <a href="ASML-step10-investment-conclusion.html">ASML Step 10 – 投資結論</a>
-  <div class="report-date">2026-06-19</div>
-</div>
-<div class="report-card">
-  <a href="ASML-step8-industry-macro.html">ASML 產業與總經分析</a>
-  <div class="report-date">2026-06-19</div>
+  <a href="ASML-step11-portfolio-fit.html">ASML Step 11 — 投資組合適配</a>
+  <div class="report-meta">0% 部位建議</div>
 </div>
 <div class="report-card">
   <a href="ASML-trading-comps.html">ASML Trading Comps 同業比較</a>
-  <div class="report-date">2026-06-19</div>
 </div>
 <div class="report-card">
   <a href="ASML-valuation-synthesis.html">ASML 估值綜合分析</a>
-  <div class="report-date">2026-06-19</div>
+</div>
+
+<div class="report-card" style="border-left-color:var(--green);">
+  <a href="NVDA-earnings-summary.html">🖥️ NVIDIA (NVDA) 近 8 季財報深度分析</a><span class="badge badge-equity">equity</span>
+  <div class="report-meta">FY2027 Q1 · 營收 $81.6B · 淨利率 71.5%</div>
 </div>
 <div class="report-card">
-  <a href="ASML-step4-growth-drivers-supplement.html">ASML 成長動能補充（營收認列、單位經濟、R&D效率）</a>
-  <div class="report-date">2026-06-19</div>
+  <a href="NVDA-guidance-vs-actual.html">📊 NVIDIA 逐季指引 vs 實際結果</a><span class="badge badge-macro">追蹤</span>
+  <div class="report-meta">6 季完整對照 · OpEx · GM · 稅率 16–18%</div>
+</div>
+</div>
+
+<!-- ===== 台股研究 ===== -->
+<div class="section">
+<h2>🇹🇼 台股研究</h2>
+
+<div class="report-card">
+  <a href="topdown-industry-overview.html">🏭 Top-Down 產業篩選 — 台股 30 產業全景</a><span class="badge badge-quant">篩選</span>
+  <div class="report-meta">2026-06-12 · Gerstein/Gray · 品質密度排名</div>
+</div>
+
+<div style="margin-left:1rem;">
+<p style="color:var(--muted);font-size:.8rem;margin:1rem 0 .5rem;">🥟 八方雲集 (2753)</p>
+<div class="report-card"><a href="bfyj-2753-step1-company-description.html">Step 1 — 公司描述</a></div>
+<div class="report-card"><a href="bfyj-2753-step2-company-guidance.html">Step 2 — 公司指引</a></div>
+<div class="report-card"><a href="bfyj-2753-step3-company-strategy.html">Step 3 — 公司策略</a></div>
+<div class="report-card"><a href="bfyj-2753-step4-growth-drivers.html">Step 4 — 成長動能</a></div>
+<div class="report-card"><a href="bfyj-2753-step5-competitive-positioning.html">Step 5 — 競爭定位</a></div>
+<div class="report-card"><a href="bfyj-2753-step6-moat-analysis.html">Step 6 — 護城河分析</a></div>
+<div class="report-card"><a href="bfyj-2753-step7-catalyst-analysis.html">Step 7 — 催化劑分析</a></div>
+<div class="report-card"><a href="bfyj-2753-step8-industry-macro.html">Step 8 — 宏觀與產業</a></div>
+</div>
+
+<div style="margin-left:1rem;">
+<p style="color:var(--muted);font-size:.8rem;margin:1rem 0 .5rem;">⚡ 台達電 (2308)</p>
+<div class="report-card"><a href="delta-2308-step1-company-description.html">Step 1 — 公司描述</a></div>
+<div class="report-card"><a href="delta-2308-step2-company-guidance.html">Step 2 — 公司指引</a></div>
+</div>
+
+<div style="margin-left:1rem;">
+<p style="color:var(--muted);font-size:.8rem;margin:1rem 0 .5rem;">🔋 AES-KY (6781)</p>
+<div class="report-card"><a href="aes-ky-valuation-2026-06-07.html">深度估值分析</a></div>
+<div class="report-card"><a href="demo-report-2026-06-07.html">估值摘要</a></div>
+</div>
+</div>
+
+<!-- ===== 量化回測 ===== -->
+<div class="section">
+<h2>📈 量化回測 <span class="count">TAIEX · Alpha</span></h2>
+
+<div class="report-card">
+  <a href="taiex-intraday-backtest-2026-06-12.html">TAIEX 日內回測 — Bollinger Band 均值回歸</a><span class="badge badge-quant">量化</span>
+  <div class="report-meta">5 秒級 · Train/OOS · 2026-06-12</div>
 </div>
 <div class="report-card">
-  <a href="ASML-step11-portfolio-fit.html">ASML Step 11 – 投資組合適配分析</a>
-  <div class="report-date">2026-06-19</div>
+  <a href="backtest-demo.html">4-Factor 回測報告</a><span class="badge badge-quant">量化</span>
+  <div class="report-meta">pyfolio contract · quantstats HTML tear sheet</div>
 </div>
 <div class="report-card">
-    <h3><a href="news-signals-daily.html">📡 每日新聞訊號 · 2026-06-19 07:06:40</a></h3>
-    <p>CNBC + 金十即時新聞分析 · 主題影響 × 產業信號</p>
-    <span class="date">2026-06-19</span>
+  <a href="expression-upgrade-demo.html">🎨 表達能力展示</a><span class="badge" style="background:rgba(255,255,255,0.1);color:var(--muted);">展示</span>
+</div>
+</div>
+
+<!-- ===== 總經監控 ===== -->
+<div class="section">
+<h2>🌐 總經監控 <span class="count">Dashboard · 信用</span></h2>
+
+<div class="report-card" style="border-left-color:var(--green);">
+  <a href="macro-dashboard.html">📊 Macro & Credit Dashboard</a><span class="badge badge-macro">即時</span>
+  <div class="report-meta">FRED 22 系列 · R/ggplot2 圖表 · 每日自動更新</div>
 </div>
 <div class="report-card">
-    <h3><a href="news-signals-daily.html">📡 每日新聞訊號 · 2026-06-20 07:04:11</a></h3>
-    <p>CNBC + 金十即時新聞分析 · 主題影響 × 產業信號</p>
-    <span class="date">2026-06-20</span>
+  <a href="pub-charts.html">📄 總經論文標準圖集</a><span class="badge badge-macro">圖表</span>
+  <div class="report-meta">白底 · Okabe-Ito 色盲友善 · 每日更新</div>
 </div>
-<div class="report-card">
-    <h3><a href="news-signals-daily.html">📡 每日新聞訊號 · 2026-06-21 07:04:57</a></h3>
-    <p>CNBC + 金十即時新聞分析 · 主題影響 × 產業信號</p>
-    <span class="date">2026-06-21</span>
 </div>
-<div class="report-card">
-    <h3><a href="news-signals-daily.html">📡 每日新聞訊號 · 2026-06-22 07:06:17</a></h3>
-    <p>CNBC + 金十即時新聞分析 · 主題影響 × 產業信號</p>
-    <span class="date">2026-06-22</span>
+
+<!-- ===== 專利分析 ===== -->
+<div class="section">
+<h2>🔬 專利分析</h2>
+
+<div class="report-card" style="border-left-color:var(--purple);">
+  <a href="ASML-EUV-patent-landscape.html">ASML EUV 專利盤查報告</a><span class="badge badge-patent">EPO OPS</span>
+  <div class="report-meta">7,538 件總專利 · EUV 277 件 · 六大子領域</div>
 </div>
-<div class="report-card">
-    <h3><a href="news-signals-daily.html">📡 每日新聞訊號 · 2026-06-23 07:04:09</a></h3>
-    <p>CNBC + 金十即時新聞分析 · 主題影響 × 產業信號</p>
-    <span class="date">2026-06-23</span>
 </div>
-<div class="report-card">
-    <h3><a href="news-signals-daily.html">📡 每日新聞訊號 · 2026-06-24 07:03:26</a></h3>
-    <p>CNBC + 金十即時新聞分析 · 主題影響 × 產業信號</p>
-    <span class="date">2026-06-24</span>
+
+<!-- ===== 每日新聞 ===== -->
+<div class="section">
+<h2>📡 每日新聞訊號 <span class="count">自動化 · CNBC + 金十</span></h2>
+
+<details>
+<summary>展開歷史存檔（6/14 – 7/17，共 34 天）</summary>
+<div class="news-grid" style="margin-top:.5rem;">
+<a class="news-link" href="news-signals-daily.html">🆕 最新</a>
+<a class="news-link" href="news-signals-2026-07-17.html">7/17</a>
+<a class="news-link" href="news-signals-2026-07-16.html">7/16</a>
+<a class="news-link" href="news-signals-2026-07-15.html">7/15</a>
+<a class="news-link" href="news-signals-2026-07-14.html">7/14</a>
+<a class="news-link" href="news-signals-2026-07-13.html">7/13</a>
+<a class="news-link" href="news-signals-2026-07-12.html">7/12</a>
+<a class="news-link" href="news-signals-2026-07-11.html">7/11</a>
+<a class="news-link" href="news-signals-2026-07-10.html">7/10</a>
+<a class="news-link" href="news-signals-2026-07-09.html">7/09</a>
+<a class="news-link" href="news-signals-2026-07-08.html">7/08</a>
+<a class="news-link" href="news-signals-2026-07-07.html">7/07</a>
+<a class="news-link" href="news-signals-2026-07-06.html">7/06</a>
+<a class="news-link" href="news-signals-2026-07-05.html">7/05</a>
+<a class="news-link" href="news-signals-2026-07-04.html">7/04</a>
+<a class="news-link" href="news-signals-2026-07-03.html">7/03</a>
+<a class="news-link" href="news-signals-2026-07-02.html">7/02</a>
+<a class="news-link" href="news-signals-2026-07-01.html">7/01</a>
+<a class="news-link" href="news-signals-2026-06-30.html">6/30</a>
+<a class="news-link" href="news-signals-2026-06-29.html">6/29</a>
+<a class="news-link" href="news-signals-2026-06-28.html">6/28</a>
+<a class="news-link" href="news-signals-2026-06-27.html">6/27</a>
+<a class="news-link" href="news-signals-2026-06-26.html">6/26</a>
+<a class="news-link" href="news-signals-2026-06-25.html">6/25</a>
+<a class="news-link" href="news-signals-2026-06-24.html">6/24</a>
+<a class="news-link" href="news-signals-2026-06-23.html">6/23</a>
+<a class="news-link" href="news-signals-2026-06-22.html">6/22</a>
+<a class="news-link" href="news-signals-2026-06-21.html">6/21</a>
+<a class="news-link" href="news-signals-2026-06-20.html">6/20</a>
+<a class="news-link" href="news-signals-2026-06-19.html">6/19</a>
+<a class="news-link" href="news-signals-2026-06-18.html">6/18</a>
+<a class="news-link" href="news-signals-2026-06-17.html">6/17</a>
+<a class="news-link" href="news-signals-2026-06-16.html">6/16</a>
+<a class="news-link" href="news-signals-2026-06-15.html">6/15</a>
+<a class="news-link" href="news-signals-2026-06-14.html">6/14</a>
 </div>
-<div class="report-card">
-    <h3><a href="news-signals-daily.html">📡 每日新聞訊號 · 2026-06-25 07:03:11</a></h3>
-    <p>CNBC + 金十即時新聞分析 · 主題影響 × 產業信號</p>
-    <span class="date">2026-06-25</span>
+</details>
 </div>
-<div class="report-card">
-    <h3><a href="news-signals-daily.html">📡 每日新聞訊號 · 2026-06-26 07:04:47</a></h3>
-    <p>CNBC + 金十即時新聞分析 · 主題影響 × 產業信號</p>
-    <span class="date">2026-06-26</span>
-</div>
-<div class="report-card">
-    <h3><a href="news-signals-daily.html">📡 每日新聞訊號 · 2026-06-27 07:04:11</a></h3>
-    <p>CNBC + 金十即時新聞分析 · 主題影響 × 產業信號</p>
-    <span class="date">2026-06-27</span>
-</div>
-<div class="report-card">
-    <h3><a href="news-signals-daily.html">📡 每日新聞訊號 · 2026-06-28 07:04:11</a></h3>
-    <p>CNBC + 金十即時新聞分析 · 主題影響 × 產業信號</p>
-    <span class="date">2026-06-28</span>
-</div>
-<div class="report-card">
-    <h3><a href="news-signals-daily.html">📡 每日新聞訊號 · 2026-06-29 07:04:06</a></h3>
-    <p>CNBC + 金十即時新聞分析 · 主題影響 × 產業信號</p>
-    <span class="date">2026-06-29</span>
-</div>
-<div class="report-card">
-    <h3><a href="news-signals-daily.html">📡 每日新聞訊號 · 2026-06-30 07:04:49</a></h3>
-    <p>CNBC + 金十即時新聞分析 · 主題影響 × 產業信號</p>
-    <span class="date">2026-06-30</span>
-</div>
-<div class="report-card">
-    <h3><a href="news-signals-daily.html">📡 每日新聞訊號 · 2026-07-01 07:07:09</a></h3>
-    <p>CNBC + 金十即時新聞分析 · 主題影響 × 產業信號</p>
-    <span class="date">2026-07-01</span>
-</div>
-<div class="report-card">
-    <h3><a href="news-signals-daily.html">📡 每日新聞訊號 · 2026-07-02 07:04:44</a></h3>
-    <p>CNBC + 金十即時新聞分析 · 主題影響 × 產業信號</p>
-    <span class="date">2026-07-02</span>
-</div>
-<div class="report-card">
-    <h3><a href="news-signals-daily.html">📡 每日新聞訊號 · 2026-07-03 07:03:57</a></h3>
-    <p>CNBC + 金十即時新聞分析 · 主題影響 × 產業信號</p>
-    <span class="date">2026-07-03</span>
-</div>
-<div class="report-card">
-    <h3><a href="news-signals-daily.html">📡 每日新聞訊號 · 2026-07-04 07:03:29</a></h3>
-    <p>CNBC + 金十即時新聞分析 · 主題影響 × 產業信號</p>
-    <span class="date">2026-07-04</span>
-</div>
-<div class="report-card">
-    <h3><a href="news-signals-daily.html">📡 每日新聞訊號 · 2026-07-05 07:03:38</a></h3>
-    <p>CNBC + 金十即時新聞分析 · 主題影響 × 產業信號</p>
-    <span class="date">2026-07-05</span>
-</div>
-<div class="report-card">
-    <h3><a href="news-signals-daily.html">📡 每日新聞訊號 · 2026-07-06 07:04:47</a></h3>
-    <p>CNBC + 金十即時新聞分析 · 主題影響 × 產業信號</p>
-    <span class="date">2026-07-06</span>
-</div>
-<div class="report-card">
-    <h3><a href="news-signals-daily.html">📡 每日新聞訊號 · 2026-07-07 07:04:38</a></h3>
-    <p>CNBC + 金十即時新聞分析 · 主題影響 × 產業信號</p>
-    <span class="date">2026-07-07</span>
-</div>
-<div class="report-card">
-    <h3><a href="news-signals-daily.html">📡 每日新聞訊號 · 2026-07-08 07:05:06</a></h3>
-    <p>CNBC + 金十即時新聞分析 · 主題影響 × 產業信號</p>
-    <span class="date">2026-07-08</span>
-</div>
-<div class="report-card">
-    <h3><a href="news-signals-daily.html">📡 每日新聞訊號 · 2026-07-09 07:04:40</a></h3>
-    <p>CNBC + 金十即時新聞分析 · 主題影響 × 產業信號</p>
-    <span class="date">2026-07-09</span>
-</div>
-<div class="report-card">
-    <h3><a href="news-signals-daily.html">📡 每日新聞訊號 · 2026-07-10 07:05:50</a></h3>
-    <p>CNBC + 金十即時新聞分析 · 主題影響 × 產業信號</p>
-    <span class="date">2026-07-10</span>
-</div>
-<div class="report-card">
-    <h3><a href="news-signals-daily.html">📡 每日新聞訊號 · 2026-07-11 07:04:37</a></h3>
-    <p>CNBC + 金十即時新聞分析 · 主題影響 × 產業信號</p>
-    <span class="date">2026-07-11</span>
-</div>
-<div class="report-card">
-    <h3><a href="news-signals-daily.html">📡 每日新聞訊號 · 2026-07-12 07:05:08</a></h3>
-    <p>CNBC + 金十即時新聞分析 · 主題影響 × 產業信號</p>
-    <span class="date">2026-07-12</span>
-</div>
-<div class="report-card">
-    <h3><a href="news-signals-daily.html">📡 每日新聞訊號 · 2026-07-13 07:04:13</a></h3>
-    <p>CNBC + 金十即時新聞分析 · 主題影響 × 產業信號</p>
-    <span class="date">2026-07-13</span>
-</div>
-<div class="report-card">
-    <h3><a href="news-signals-daily.html">📡 每日新聞訊號 · 2026-07-14 07:03:57</a></h3>
-    <p>CNBC + 金十即時新聞分析 · 主題影響 × 產業信號</p>
-    <span class="date">2026-07-14</span>
-</div>
-<div class="report-card">
-    <h3><a href="news-signals-daily.html">📡 每日新聞訊號 · 2026-07-15 07:04:00</a></h3>
-    <p>CNBC + 金十即時新聞分析 · 主題影響 × 產業信號</p>
-    <span class="date">2026-07-15</span>
-</div>
-<div class="report-card">
-    <h3><a href="news-signals-daily.html">📡 每日新聞訊號 · 2026-07-16 07:03:57</a></h3>
-    <p>CNBC + 金十即時新聞分析 · 主題影響 × 產業信號</p>
-    <span class="date">2026-07-16</span>
-</div>
-<div class="report-card">
-    <h3><a href="news-signals-daily.html">📡 每日新聞訊號 · 2026-07-17 07:03:56</a></h3>
-    <p>CNBC + 金十即時新聞分析 · 主題影響 × 產業信號</p>
-    <span class="date">2026-07-17</span>
-</div>
-<p style="color:var(--muted); margin-top:2rem;">更多報告即將上線⋯⋯</p>
 
 <footer>
-  Powered by <strong>Maobolin</strong> (Hermes Agent) · Nous Research · Hosted on GitHub Pages
+  Generated by Hermes Agent · DeepSeek V4 Pro + Gemini 2.5 Flash · maomao2266/research-reports
 </footer>
+
 </body>
 </html>
