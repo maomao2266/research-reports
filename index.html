@@ -3,240 +3,226 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Maobolin Research Reports</title>
+<title>Mao's Research — 研究入口</title>
 <style>
-  :root { --bg:#0d1117; --card:#161b22; --border:#30363d; --text:#c9d1d9; --muted:#8b949e; --accent:#58a6ff; --green:#3fb950; --purple:#a78bfa; --orange:#d2991d; --red:#f85149; }
+  :root { --bg:#0d1117; --card:#161b22; --border:#30363d; --text:#c9d1d9; --green:#3fb950; --blue:#58a6ff; --yellow:#d2991d; --purple:#bc8cff; --dim:#8b949e; --glass:rgba(13,17,23,0.85); }
   * { margin:0; padding:0; box-sizing:border-box; }
-  body { background:var(--bg); color:var(--text); font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif; padding:2rem; max-width:900px; margin:0 auto; min-height:100vh; }
-  h1 { font-size:1.8rem; margin-bottom:.25rem; }
-  h1 .icon { color:var(--accent); }
-  .subtitle { color:var(--muted); margin-bottom:2rem; font-size:.9rem; }
-  .section { margin-bottom:2.5rem; }
-  .section h2 { font-size:1.1rem; color:var(--accent); padding-bottom:.5rem; border-bottom:1px solid var(--border); margin-bottom:1rem; display:flex; align-items:center; gap:.5rem; }
-  .section h2 .count { font-size:.75rem; color:var(--muted); font-weight:400; }
-  .report-card { background:var(--card); border:1px solid var(--border); border-radius:8px; padding:1rem 1.25rem; margin:.75rem 0; transition:border-color .2s; border-left:3px solid var(--border); }
-  .report-card:hover { border-left-color:var(--accent); }
-  .report-card a { color:var(--text); text-decoration:none; font-size:1rem; font-weight:600; }
-  .report-card a:hover { color:var(--accent); }
-  .report-meta { color:var(--muted); font-size:.8rem; margin-top:.25rem; }
-  .badge { display:inline-block; padding:1px 8px; border-radius:10px; font-size:.7rem; font-weight:600; margin-left:.5rem; }
-  .badge-equity { background:rgba(88,166,255,0.15); color:var(--accent); }
-  .badge-quant { background:rgba(210,153,29,0.15); color:var(--orange); }
-  .badge-macro { background:rgba(63,185,80,0.15); color:var(--green); }
-  .badge-patent { background:rgba(167,139,250,0.15); color:var(--purple); }
-  .news-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(140px,1fr)); gap:.5rem; }
-  .news-link { font-size:.8rem; color:var(--muted); text-decoration:none; padding:.3rem .5rem; border-radius:4px; }
-  .news-link:hover { background:var(--card); color:var(--accent); }
-  details { margin-top:1rem; }
-  details summary { color:var(--muted); font-size:.85rem; cursor:pointer; }
-  footer { margin-top:3rem; padding-top:1rem; border-top:1px solid var(--border); color:var(--muted); font-size:.75rem; text-align:center; }
+  body { background:var(--bg); color:var(--text); font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans TC',sans-serif; line-height:1.6; overflow-x:hidden; }
+
+  /* ── Hero ── */
+  .hero {
+    position:relative; height:100vh; display:flex; align-items:center; justify-content:center;
+    background: linear-gradient(180deg, rgba(13,17,23,0.3) 0%, rgba(13,17,23,0.6) 60%, var(--bg) 100%),
+                url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1920&q=80') center/cover no-repeat;
+  }
+  .hero-content { text-align:center; z-index:1; }
+  .hero h1 { font-size:clamp(2rem,6vw,4rem); font-weight:200; letter-spacing:0.08em; margin-bottom:8px; }
+  .hero h1 span { font-weight:600; color:var(--green); }
+  .hero .sub { font-size:clamp(0.9rem,2vw,1.2rem); color:var(--dim); letter-spacing:0.05em; }
+  .scroll-hint { position:absolute; bottom:32px; left:50%; transform:translateX(-50%); animation:bounce 2s infinite; color:var(--dim); font-size:24px; }
+  @keyframes bounce { 0%,100%{transform:translateX(-50%) translateY(0)} 50%{transform:translateX(-50%) translateY(8px)} }
+
+  /* ── Sidebar ── */
+  .sidebar-toggle { position:fixed; top:20px; left:20px; z-index:100; width:44px; height:44px; background:var(--glass); border:1px solid var(--border); border-radius:8px; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all 0.3s; backdrop-filter:blur(12px); }
+  .sidebar-toggle:hover { border-color:var(--blue); }
+  .sidebar-toggle span { display:block; width:20px; height:2px; background:var(--text); position:relative; transition:all 0.3s; }
+  .sidebar-toggle span::before, .sidebar-toggle span::after { content:''; position:absolute; width:20px; height:2px; background:var(--text); transition:all 0.3s; }
+  .sidebar-toggle span::before { top:-6px; }
+  .sidebar-toggle span::after { top:6px; }
+  .sidebar-toggle.open span { background:transparent; }
+  .sidebar-toggle.open span::before { top:0; transform:rotate(45deg); }
+  .sidebar-toggle.open span::after { top:0; transform:rotate(-45deg); }
+
+  .sidebar {
+    position:fixed; top:0; left:-320px; width:300px; height:100vh; z-index:99;
+    background:rgba(13,17,23,0.92); backdrop-filter:blur(20px); border-right:1px solid var(--border);
+    transition:left 0.35s cubic-bezier(0.4,0,0.2,1); padding:80px 28px 28px; overflow-y:auto;
+  }
+  .sidebar.open { left:0; }
+  .sidebar h3 { font-size:12px; text-transform:uppercase; color:var(--dim); letter-spacing:0.1em; margin:24px 0 10px; }
+  .sidebar h3:first-child { margin-top:0; }
+  .sidebar a { display:block; padding:8px 12px; color:var(--text); text-decoration:none; border-radius:6px; font-size:14px; transition:all 0.2s; }
+  .sidebar a:hover { background:rgba(88,166,255,0.12); color:var(--blue); }
+  .sidebar .tag { display:inline-block; padding:2px 6px; border-radius:4px; font-size:10px; font-weight:600; margin-left:6px; }
+  .sidebar .tag.done { background:rgba(63,185,80,0.15); color:var(--green); }
+  .sidebar .tag.wip { background:rgba(210,153,29,0.15); color:var(--yellow); }
+
+  /* ── Main Content ── */
+  .container { max-width:1100px; margin:0 auto; padding:0 24px 64px; }
+  .section { margin-top:64px; }
+  .section h2 { font-size:22px; font-weight:600; margin-bottom:24px; padding-bottom:10px; border-bottom:1px solid var(--border); }
+  .section h2 .icon { margin-right:8px; }
+
+  .card-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(320px,1fr)); gap:16px; }
+  .card { background:var(--card); border:1px solid var(--border); border-radius:10px; padding:20px; transition:all 0.2s; text-decoration:none; color:var(--text); }
+  .card:hover { border-color:var(--blue); transform:translateY(-2px); box-shadow:0 4px 20px rgba(0,0,0,0.3); }
+  .card h3 { font-size:16px; margin-bottom:6px; }
+  .card p { font-size:13px; color:var(--dim); line-height:1.5; }
+  .card .meta { font-size:11px; color:var(--dim); margin-top:10px; display:flex; gap:12px; }
+  .card .meta .badge { background:rgba(88,166,255,0.12); color:var(--blue); padding:2px 8px; border-radius:4px; }
+  .card.hero-card { grid-column:1/-1; background:linear-gradient(135deg, rgba(22,27,34,0.9), rgba(13,17,23,0.95)); border-color:var(--green); }
+  .card.hero-card h3 { font-size:18px; }
+
+  /* ── Footer ── */
+  footer { text-align:center; padding:40px 0; color:var(--dim); font-size:12px; border-top:1px solid var(--border); }
+  footer a { color:var(--blue); text-decoration:none; }
+
+  /* ── Overlay ── */
+  .overlay { position:fixed; inset:0; z-index:98; background:rgba(0,0,0,0.5); opacity:0; pointer-events:none; transition:opacity 0.3s; }
+  .overlay.show { opacity:1; pointer-events:auto; }
+
+  @media (max-width:768px) {
+    .card-grid { grid-template-columns:1fr; }
+    .sidebar { width:280px; }
+  }
 </style>
 </head>
 <body>
 
-<h1>📊 Maobolin Research Reports</h1>
-<p class="subtitle">Hermes Agent 研究產出 · 台股／美股基本面 · 量化回測 · 總經監控 · 專利分析</p>
+<!-- Sidebar Toggle -->
+<div class="sidebar-toggle" id="sbToggle" onclick="toggleSidebar()"><span></span></div>
 
-<!-- ===== 美股研究 ===== -->
-<div class="section">
-<h2>🇺🇸 美股研究 <span class="count">ASML · NVIDIA</span></h2>
+<!-- Overlay -->
+<div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
 
-<div class="report-card" style="border-left-color:var(--orange);">
-  <a href="ASML-equity-research.html">🔬 ASML 完整基本面分析（11-step）</a><span class="badge badge-equity">equity</span>
-  <div class="report-meta">2026-06-18 · Step 1–11 完整報告</div>
-</div>
-<div class="report-card">
-  <a href="ASML-step1-company-description.html">ASML Step 1 — 公司描述</a>
-  <div class="report-meta">2026-06-18</div>
-</div>
-<div class="report-card">
-  <a href="ASML-step2-company-guidance.html">ASML Step 2 — 公司指引</a>
-  <div class="report-meta">2026-06-18</div>
-</div>
-<div class="report-card">
-  <a href="ASML-step3-company-strategy.html">ASML Step 3 — 公司策略</a>
-  <div class="report-meta">2026-06-18</div>
-</div>
-<div class="report-card">
-  <a href="ASML-step4-growth-drivers.html">ASML Step 4 — 成長動能</a>
-  <div class="report-meta">2026-06-18</div>
-</div>
-<div class="report-card">
-  <a href="ASML-step4-growth-drivers-supplement.html">ASML Step 4 — 成長動能補充</a>
-  <div class="report-meta">營收認列 · 單位經濟 · R&D 效率</div>
-</div>
-<div class="report-card">
-  <a href="ASML-step5-competitive-positioning.html">ASML Step 5 — 競爭定位</a>
-  <div class="report-meta">Porter 五力 · FSA · 策略群組 · 利潤池</div>
-</div>
-<div class="report-card">
-  <a href="ASML-step6-moat-analysis.html">ASML Step 6 — 護城河分析</a>
-  <div class="report-meta">ROIC 38.8% · VECTOR 28/30 · VRIN</div>
-</div>
-<div class="report-card">
-  <a href="ASML-step7-catalyst-analysis.html">ASML Step 7 — 催化劑分析</a>
-  <div class="report-meta">8 催化劑 · CMD 2026</div>
-</div>
-<div class="report-card">
-  <a href="ASML-step8-dcf-valuation.html">ASML Step 8 — DCF 估值</a>
-  <div class="report-meta">基本 €608 · 市價 €1,682 · 賣出</div>
-</div>
-<div class="report-card">
-  <a href="ASML-step8-industry-macro.html">ASML Step 8 — 產業與總經分析</a>
-</div>
-<div class="report-card">
-  <a href="ASML-step9-risk-analysis.html">ASML Step 9 — 風險分析</a>
-  <div class="report-meta">P×I=25 估值回歸</div>
-</div>
-<div class="report-card">
-  <a href="ASML-step10-investment-conclusion.html">ASML Step 10 — 投資結論</a>
-  <div class="report-meta">賣出／避免進場 · 建議 €500–625</div>
-</div>
-<div class="report-card">
-  <a href="ASML-step11-portfolio-fit.html">ASML Step 11 — 投資組合適配</a>
-  <div class="report-meta">0% 部位建議</div>
-</div>
-<div class="report-card">
-  <a href="ASML-trading-comps.html">ASML Trading Comps 同業比較</a>
-</div>
-<div class="report-card">
-  <a href="ASML-valuation-synthesis.html">ASML 估值綜合分析</a>
-</div>
+<!-- Sidebar -->
+<nav class="sidebar" id="sidebar">
+  <h3>📁 研究分類</h3>
 
-<div class="report-card" style="border-left-color:var(--green);">
-  <a href="NVDA-earnings-summary.html">🖥️ NVIDIA (NVDA) 近 8 季財報深度分析</a><span class="badge badge-equity">equity</span>
-  <div class="report-meta">FY2027 Q1 · 營收 $81.6B · 淨利率 71.5%</div>
-</div>
-<div class="report-card">
-  <a href="NVDA-guidance-vs-actual.html">📊 NVIDIA 逐季指引 vs 實際結果</a><span class="badge badge-macro">追蹤</span>
-  <div class="report-meta">6 季完整對照 · OpEx · GM · 稅率 16–18%</div>
-</div>
-</div>
+  <h3>美股研究</h3>
+  <a href="ASML-step1-company-description.html">ASML 完整分析 <span class="tag done">11 steps</span></a>
+  <a href="ASML-EUV-patent-landscape.html">ASML EUV 專利盤點</a>
+  <a href="NVDA-earnings-summary.html">NVIDIA 財報分析</a>
+  <a href="NVDA-guidance-vs-actual.html">NVIDIA 指引追蹤</a>
 
-<!-- ===== 台股研究 ===== -->
-<div class="section">
-<h2>🇹🇼 台股研究</h2>
+  <h3>台股研究</h3>
+  <a href="2753-step1-company-description.html">八方雲集 2753 <span class="tag done">10 steps</span></a>
+  <a href="aes-ky-valuation-2026-06-07.html">AES-KY 估值</a>
 
-<div class="report-card">
-  <a href="topdown-industry-overview.html">🏭 Top-Down 產業篩選 — 台股 30 產業全景</a><span class="badge badge-quant">篩選</span>
-  <div class="report-meta">2026-06-12 · Gerstein/Gray · 品質密度排名</div>
-</div>
+  <h3>總經與市場</h3>
+  <a href="macro-dashboard.html">總經信用儀表板 <span class="tag wip">每日更新</span></a>
+  <a href="pub-charts.html">論文標準圖集</a>
+  <a href="news-signals-daily.html">每日新聞訊號 <span class="tag wip">每日更新</span></a>
 
-<div style="margin-left:1rem;">
-<p style="color:var(--muted);font-size:.8rem;margin:1rem 0 .5rem;">🥟 八方雲集 (2753)</p>
-<div class="report-card"><a href="bfyj-2753-step1-company-description.html">Step 1 — 公司描述</a></div>
-<div class="report-card"><a href="bfyj-2753-step2-company-guidance.html">Step 2 — 公司指引</a></div>
-<div class="report-card"><a href="bfyj-2753-step3-company-strategy.html">Step 3 — 公司策略</a></div>
-<div class="report-card"><a href="bfyj-2753-step4-growth-drivers.html">Step 4 — 成長動能</a></div>
-<div class="report-card"><a href="bfyj-2753-step5-competitive-positioning.html">Step 5 — 競爭定位</a></div>
-<div class="report-card"><a href="bfyj-2753-step6-moat-analysis.html">Step 6 — 護城河分析</a></div>
-<div class="report-card"><a href="bfyj-2753-step7-catalyst-analysis.html">Step 7 — 催化劑分析</a></div>
-<div class="report-card"><a href="bfyj-2753-step8-industry-macro.html">Step 8 — 宏觀與產業</a></div>
-</div>
+  <h3>量化研究</h3>
+  <a href="backtest-demo.html">回測框架 Demo</a>
 
-<div style="margin-left:1rem;">
-<p style="color:var(--muted);font-size:.8rem;margin:1rem 0 .5rem;">⚡ 台達電 (2308)</p>
-<div class="report-card"><a href="delta-2308-step1-company-description.html">Step 1 — 公司描述</a></div>
-<div class="report-card"><a href="delta-2308-step2-company-guidance.html">Step 2 — 公司指引</a></div>
-</div>
+  <h3>框架與方法</h3>
+  <a href="https://github.com/maomao2266/research-reports" target="_blank">GitHub Repo ↗</a>
+</nav>
 
-<div style="margin-left:1rem;">
-<p style="color:var(--muted);font-size:.8rem;margin:1rem 0 .5rem;">🔋 AES-KY (6781)</p>
-<div class="report-card"><a href="aes-ky-valuation-2026-06-07.html">深度估值分析</a></div>
-<div class="report-card"><a href="demo-report-2026-06-07.html">估值摘要</a></div>
-</div>
-</div>
+<!-- Hero Section -->
+<section class="hero">
+  <div class="hero-content">
+    <h1>M<span>ao's</span> Research</h1>
+    <p class="sub">Fundamental · Quantitative · Macro · Technology</p>
+  </div>
+  <div class="scroll-hint">⌄</div>
+</section>
 
-<!-- ===== 量化回測 ===== -->
-<div class="section">
-<h2>📈 量化回測 <span class="count">TAIEX · Alpha</span></h2>
+<!-- Main Content -->
+<div class="container">
 
-<div class="report-card">
-  <a href="taiex-intraday-backtest-2026-06-12.html">TAIEX 日內回測 — Bollinger Band 均值回歸</a><span class="badge badge-quant">量化</span>
-  <div class="report-meta">5 秒級 · Train/OOS · 2026-06-12</div>
-</div>
-<div class="report-card">
-  <a href="backtest-demo.html">4-Factor 回測報告</a><span class="badge badge-quant">量化</span>
-  <div class="report-meta">pyfolio contract · quantstats HTML tear sheet</div>
-</div>
-<div class="report-card">
-  <a href="expression-upgrade-demo.html">🎨 表達能力展示</a><span class="badge" style="background:rgba(255,255,255,0.1);color:var(--muted);">展示</span>
-</div>
-</div>
+  <!-- 焦點 -->
+  <div class="section">
+    <h2>📌 最新發布</h2>
+    <div class="card-grid">
+      <a class="card hero-card" href="NVDA-guidance-vs-actual.html">
+        <h3>NVIDIA 指引 vs 實際 — 6 季完整追蹤</h3>
+        <p>連續 6 季營收超出指引上限。OpEx、毛利率、稅率逐季明細，含 Q2 FY2027 最新展望 $91B</p>
+        <div class="meta"><span class="badge">2026-07-05</span><span class="badge">美股</span></div>
+      </a>
+      <a class="card" href="ASML-step10-investment-conclusion.html">
+        <h3>ASML 投資結論 — SELL</h3>
+        <p>市價 €1,682 vs DCF €608，建議進場價 €500-625</p>
+        <div class="meta"><span class="badge">2026-06-19</span><span class="badge">美股</span></div>
+      </a>
+      <a class="card" href="NVDA-earnings-summary.html">
+        <h3>NVIDIA FY2027 Q1 財報深度分析</h3>
+        <p>營收 $81.6B、淨利 $58.3B、Blackwell 300 已成主力</p>
+        <div class="meta"><span class="badge">2026-06-25</span><span class="badge">美股</span></div>
+      </a>
+    </div>
+  </div>
 
-<!-- ===== 總經監控 ===== -->
-<div class="section">
-<h2>🌐 總經監控 <span class="count">Dashboard · 信用</span></h2>
+  <!-- 美股 -->
+  <div class="section">
+    <h2>🇺🇸 美股研究</h2>
+    <div class="card-grid">
+      <a class="card" href="ASML-step1-company-description.html">
+        <h3>ASML Step 1 — 公司描述</h3>
+        <p>EUV 壟斷者，從飛利浦實驗室到 $280B 巨人</p>
+        <div class="meta"><span class="badge">Step 1/11</span></div>
+      </a>
+      <a class="card" href="ASML-step4-growth-drivers.html">
+        <h3>ASML Step 4 — 成長動能</h3>
+        <p>High-NA EUV、中國拉貨、AI 晶片需求三引擎</p>
+        <div class="meta"><span class="badge">Step 4/11</span></div>
+      </a>
+      <a class="card" href="ASML-step5-competitive-positioning.html">
+        <h3>ASML Step 5 — 競爭定位</h3>
+        <p>Porter 五力、FSA、策略群組、技術演進分析</p>
+        <div class="meta"><span class="badge">Step 5/11</span></div>
+      </a>
+      <a class="card" href="ASML-step6-moat-analysis.html">
+        <h3>ASML Step 6 — 護城河</h3>
+        <p>ROIC 38.8%、VECTOR 28/30、VRIN pass</p>
+        <div class="meta"><span class="badge">Step 6/11</span></div>
+      </a>
+    </div>
+  </div>
 
-<div class="report-card" style="border-left-color:var(--green);">
-  <a href="macro-dashboard.html">📊 Macro & Credit Dashboard</a><span class="badge badge-macro">即時</span>
-  <div class="report-meta">FRED 22 系列 · R/ggplot2 圖表 · 每日自動更新</div>
-</div>
-<div class="report-card">
-  <a href="pub-charts.html">📄 總經論文標準圖集</a><span class="badge badge-macro">圖表</span>
-  <div class="report-meta">白底 · Okabe-Ito 色盲友善 · 每日更新</div>
-</div>
-</div>
+  <!-- 台股 -->
+  <div class="section">
+    <h2>🇹🇼 台股研究</h2>
+    <div class="card-grid">
+      <a class="card" href="2753-step1-company-description.html">
+        <h3>八方雲集 2753 — 完整分析</h3>
+        <p>10 步驟基本面分析，DCF 估值 188 TWD（IFRS 16 修正後）</p>
+        <div class="meta"><span class="badge">10 steps</span></div>
+      </a>
+    </div>
+  </div>
 
-<!-- ===== 專利分析 ===== -->
-<div class="section">
-<h2>🔬 專利分析</h2>
+  <!-- 總經與市場 -->
+  <div class="section">
+    <h2>📊 總經與市場監控</h2>
+    <div class="card-grid">
+      <a class="card" href="macro-dashboard.html">
+        <h3>Macro & Credit Dashboard</h3>
+        <p>12 指標卡 + R/ggplot2 圖表，每日自動更新</p>
+        <div class="meta"><span class="badge">自動化</span><span class="badge">每日更新</span></div>
+      </a>
+      <a class="card" href="news-signals-daily.html">
+        <h3>每日新聞訊號</h3>
+        <p>CNBC + 金十 → AI 分類 → 產業影響分析</p>
+        <div class="meta"><span class="badge">自動化</span><span class="badge">每日更新</span></div>
+      </a>
+      <a class="card" href="pub-charts.html">
+        <h3>論文標準圖集</h3>
+        <p>白底、Okabe-Ito 配色、Liberation Sans 字體</p>
+        <div class="meta"><span class="badge">R/ggplot2</span></div>
+      </a>
+      <a class="card" href="backtest-demo.html">
+        <h3>量化回測 Demo</h3>
+        <p>4-factor 台股回測報告，pyfolio contract</p>
+        <div class="meta"><span class="badge">量化</span></div>
+      </a>
+    </div>
+  </div>
 
-<div class="report-card" style="border-left-color:var(--purple);">
-  <a href="ASML-EUV-patent-landscape.html">ASML EUV 專利盤查報告</a><span class="badge badge-patent">EPO OPS</span>
-  <div class="report-meta">7,538 件總專利 · EUV 277 件 · 六大子領域</div>
-</div>
-</div>
-
-<!-- ===== 每日新聞 ===== -->
-<div class="section">
-<h2>📡 每日新聞訊號 <span class="count">自動化 · CNBC + 金十</span></h2>
-
-<details>
-<summary>展開歷史存檔（6/14 – 7/17，共 34 天）</summary>
-<div class="news-grid" style="margin-top:.5rem;">
-<a class="news-link" href="news-signals-daily.html">🆕 最新</a>
-<a class="news-link" href="news-signals-2026-07-17.html">7/17</a>
-<a class="news-link" href="news-signals-2026-07-16.html">7/16</a>
-<a class="news-link" href="news-signals-2026-07-15.html">7/15</a>
-<a class="news-link" href="news-signals-2026-07-14.html">7/14</a>
-<a class="news-link" href="news-signals-2026-07-13.html">7/13</a>
-<a class="news-link" href="news-signals-2026-07-12.html">7/12</a>
-<a class="news-link" href="news-signals-2026-07-11.html">7/11</a>
-<a class="news-link" href="news-signals-2026-07-10.html">7/10</a>
-<a class="news-link" href="news-signals-2026-07-09.html">7/09</a>
-<a class="news-link" href="news-signals-2026-07-08.html">7/08</a>
-<a class="news-link" href="news-signals-2026-07-07.html">7/07</a>
-<a class="news-link" href="news-signals-2026-07-06.html">7/06</a>
-<a class="news-link" href="news-signals-2026-07-05.html">7/05</a>
-<a class="news-link" href="news-signals-2026-07-04.html">7/04</a>
-<a class="news-link" href="news-signals-2026-07-03.html">7/03</a>
-<a class="news-link" href="news-signals-2026-07-02.html">7/02</a>
-<a class="news-link" href="news-signals-2026-07-01.html">7/01</a>
-<a class="news-link" href="news-signals-2026-06-30.html">6/30</a>
-<a class="news-link" href="news-signals-2026-06-29.html">6/29</a>
-<a class="news-link" href="news-signals-2026-06-28.html">6/28</a>
-<a class="news-link" href="news-signals-2026-06-27.html">6/27</a>
-<a class="news-link" href="news-signals-2026-06-26.html">6/26</a>
-<a class="news-link" href="news-signals-2026-06-25.html">6/25</a>
-<a class="news-link" href="news-signals-2026-06-24.html">6/24</a>
-<a class="news-link" href="news-signals-2026-06-23.html">6/23</a>
-<a class="news-link" href="news-signals-2026-06-22.html">6/22</a>
-<a class="news-link" href="news-signals-2026-06-21.html">6/21</a>
-<a class="news-link" href="news-signals-2026-06-20.html">6/20</a>
-<a class="news-link" href="news-signals-2026-06-19.html">6/19</a>
-<a class="news-link" href="news-signals-2026-06-18.html">6/18</a>
-<a class="news-link" href="news-signals-2026-06-17.html">6/17</a>
-<a class="news-link" href="news-signals-2026-06-16.html">6/16</a>
-<a class="news-link" href="news-signals-2026-06-15.html">6/15</a>
-<a class="news-link" href="news-signals-2026-06-14.html">6/14</a>
-</div>
-</details>
 </div>
 
 <footer>
-  Generated by Hermes Agent · DeepSeek V4 Pro + Gemini 2.5 Flash · maomao2266/research-reports
+  <p>Powered by <a href="https://github.com/maomao2266/research-reports" target="_blank">Hermes Research System</a> · maobolin.kevin@gmail.com</p>
 </footer>
 
+<script>
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('sbToggle').classList.toggle('open');
+  document.getElementById('overlay').classList.toggle('show');
+}
+</script>
 </body>
 </html>
