@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>市場流動性觀測與情境推演｜2026-10-09</title>
+<style>
+:root{
+  --ink:#1a1a1a; --muted:#5c6b7a; --dim:#8a97a6; --line:#e3e8ee;
+  --bg:#ffffff; --surface:#f7f9fb; --card:#ffffff;
+  --red:#c0392b; --orange:#d97706; --green:#059669; --blue:#1d4ed8; --purple:#7c3aed;
+  --sans:"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,-apple-system,sans-serif;
+  --mono:"SF Mono","Menlo","Consolas",monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);
+  line-height:1.75;font-size:16px;-webkit-font-smoothing:antialiased}
+.wrap{max-width:860px;margin:0 auto;padding:56px 28px 100px}
+.kicker{font-size:12px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--dim);font-weight:600;margin-bottom:14px}
+h1{font-size:34px;line-height:1.28;font-weight:800;letter-spacing:-.015em;margin-bottom:16px}
+.meta{font-size:14px;color:var(--muted);padding-bottom:28px;border-bottom:2px solid var(--ink);
+  margin-bottom:36px}
+.meta b{color:var(--ink);font-weight:600}
+h2{font-size:23px;font-weight:750;margin:52px 0 18px;padding-top:22px;
+  border-top:1px solid var(--line);letter-spacing:-.01em}
+h2:first-of-type{border-top:none;padding-top:0}
+h3{font-size:17px;font-weight:700;margin:30px 0 12px;color:var(--ink)}
+p{margin-bottom:16px;color:#2d3748}
+strong{font-weight:700;color:var(--ink)}
+.concl{background:linear-gradient(135deg,#fff5f5,#fff);border:1px solid #f3c9c4;
+  border-left:4px solid var(--red);border-radius:10px;padding:22px 26px;margin:0 0 40px}
+.concl .tag{display:inline-block;background:var(--red);color:#fff;font-size:11px;
+  font-weight:700;letter-spacing:.08em;padding:3px 10px;border-radius:4px;margin-bottom:12px}
+.concl p{margin-bottom:10px;font-size:15.5px}
+.concl p:last-child{margin-bottom:0}
+.verdict{background:var(--surface);border-radius:12px;padding:22px 26px;margin:28px 0;
+  border:1px solid var(--line)}
+.verdict .vt{font-weight:700;font-size:15px;margin-bottom:10px;color:var(--blue)}
+.metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin:22px 0}
+.metric{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px 18px}
+.metric .v{font-size:24px;font-weight:800;letter-spacing:-.02em;margin-bottom:3px}
+.metric .l{font-size:12px;color:var(--muted);font-weight:500}
+.metric .d{font-size:11px;color:var(--dim);margin-top:5px}
+.metric.r{border-top:3px solid var(--red)} .metric.r .v{color:var(--red)}
+.metric.o{border-top:3px solid var(--orange)} .metric.o .v{color:var(--orange)}
+.metric.g{border-top:3px solid var(--green)} .metric.g .v{color:var(--green)}
+.metric.b{border-top:3px solid var(--blue)} .metric.b .v{color:var(--blue)}
+table{width:100%;border-collapse:collapse;margin:20px 0;font-size:14.5px}
+th{text-align:left;font-weight:700;font-size:12px;letter-spacing:.05em;text-transform:uppercase;
+  color:var(--muted);padding:10px 12px;border-bottom:2px solid var(--ink)}
+td{padding:11px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+tr:last-child td{border-bottom:none}
+td.num{font-family:var(--mono);font-size:13.5px}
+.r{color:var(--red);font-weight:600} .o{color:var(--orange);font-weight:600}
+.g{color:var(--green);font-weight:600} .b{color:var(--blue);font-weight:600}
+.callout{border-radius:10px;padding:16px 20px;margin:22px 0;font-size:15px;
+  border-left:4px solid var(--blue);background:#f0f5ff}
+.callout.warn{border-left-color:var(--orange);background:#fffaf0}
+.callout.danger{border-left-color:var(--red);background:#fff5f5}
+.callout.ok{border-left-color:var(--green);background:#f0fdf7}
+.chart{margin:28px 0;padding:18px;background:var(--card);border:1px solid var(--line);border-radius:10px}
+.chart svg{display:block;width:100%;height:auto}
+.chart .cap{font-size:13px;color:var(--muted);margin-top:8px;padding-top:10px;
+  border-top:1px solid var(--line)}
+.scen{display:grid;gap:16px;margin:26px 0}
+.scen .sc{border:1px solid var(--line);border-radius:12px;padding:20px 22px;background:var(--card)}
+.scen .sc.a{border-left:5px solid var(--green)}
+.scen .sc.b{border-left:5px solid var(--orange);background:#fffdf7}
+.scen .sc.c{border-left:5px solid var(--red);background:#fffafa}
+.scen .sh{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px;flex-wrap:wrap;gap:8px}
+.scen .sn{font-size:17px;font-weight:750}
+.scen .sp{font-size:13px;font-weight:700;padding:2px 10px;border-radius:20px;
+  background:var(--surface);border:1px solid var(--line)}
+.scen .sc.b .sp{background:#fef3c7;border-color:#fcd34d;color:#92400e}
+.scen .sc.c .sp{background:#fee2e2;border-color:#fca5a5;color:#991b1b}
+.scen .sc.a .sp{background:#d1fae5;border-color:#6ee7b7;color:#065f46}
+.scen ul{margin:10px 0 0 20px;font-size:14.5px}
+.scen li{margin-bottom:6px;color:#2d3748}
+.chain{background:#1e293b;color:#cbd5e1;border-radius:10px;padding:22px 24px;
+  font-family:var(--mono);font-size:13px;line-height:1.95;overflow-x:auto;margin:24px 0;
+  white-space:pre}
+.chain .hl{color:#fbbf24;font-weight:600}
+.chain .rd{color:#f87171;font-weight:600}
+.chain .gr{color:#4ade80}
+.board{background:#0f172a;color:#e2e8f0;border-radius:12px;padding:24px 26px;
+  font-family:var(--mono);font-size:13.5px;line-height:2.05;margin:26px 0;white-space:pre}
+.board .t{color:#94a3b8}
+.foot{margin-top:60px;padding-top:24px;border-top:1px solid var(--line);
+  font-size:13px;color:var(--dim);font-style:italic}
+@media(max-width:640px){
+  .wrap{padding:36px 18px 70px}
+  h1{font-size:26px} h2{font-size:20px}
+  .metrics{grid-template-columns:1fr 1fr}
+  table{font-size:13px} td,th{padding:8px 8px}
+  .board,.chain{font-size:11px;padding:16px}
+}
+@media print{
+  body{font-size:11pt} .wrap{max-width:none;padding:0}
+  h2{page-break-after:avoid} .chart,.scen .sc{page-break-inside:avoid}
+  .board,.chain{background:#f1f5f9;color:#0f172a}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="kicker">Macro Liquidity · Scenario Analysis</div>
+<h1>市場流動性觀測與情境推演</h1>
+<div class="meta">
+  <b>觀測日期</b> 2026-10-09　·　<b>框架</b> NY Fed 中介資產負債表因果鏈<br>
+  <b>資料來源</b> FRED · NY Fed PD/RP API · Treasury Fiscal Data · Yahoo Finance
+</div>
+
+<div class="concl">
+  <div class="tag">結論先行</div>
+  <p><strong>底層水管已出現三處同時受壓，但隔夜利率仍貼在零軸 —— 這是「假象」，不是「安全」。</strong></p>
+  <p>壓抑利率的是財政部帳戶（TGA）的短期支出。這個支撐正在耗盡（距近一年下緣僅 132 億美元）。</p>
+  <p><strong>現在的平衡是「開關型」的，不是「斜坡型」的 —— 一旦 TGA 停止放水，壓力會立刻顯現。</strong></p>
+</div>
+
+<div class="metrics">
+  <div class="metric r"><div class="v">CRITICAL</div><div class="l">風險等級</div><div class="d">紅燈 3 / 黃燈 4</div></div>
+  <div class="metric o"><div class="v">101.1</div><div class="l">MOVE 公債波動率</div><div class="d">1年 94.4th 百分位</div></div>
+  <div class="metric r"><div class="v">$8.3B</div><div class="l">交割失敗</div><div class="d">4年 94th 百分位</div></div>
+  <div class="metric b"><div class="v">−3.0</div><div class="l">SOFR−IORB (bps)</div><div class="d">仍貼零軸（假象）</div></div>
+</div>
+
+<h2>一、六個訊號拆成四層：矛盾是假的</h2>
+<p>觀察者覺得「矛盾」，是因為把四個不同層級的訊號混在一起看。拆開就通了。</p>
+
+<h3>第一層｜抵押品層 —— 堵塞已經發生（不是預兆）</h3>
+<table>
+  <tr><th>指標</th><th>實測</th><th>百分位</th><th>狀態</th></tr>
+  <tr><td>交割失敗（Fails-to-Deliver）</td><td class="num">$8,315M</td><td>94th（4年）</td><td class="r">🔴</td></tr>
+  <tr><td>交易商公債部位</td><td class="num">$1,156.5B</td><td>100th</td><td class="r">🔴</td></tr>
+</table>
+<p>特定 CUSIP（尤其最便宜交割券 CTD）出現<strong>物理性短缺</strong>。做市商在回購或基差交易中<strong>借不到具體的國債現貨</strong>來完成交割，結算管道嚴重擁堵。</p>
+<div class="callout danger"><strong>這是整條因果鏈最上游的病竈，且已經紅燈 —— 不是預告，是正在發生。</strong></div>
+
+<h3>第二層｜現金層 —— 有人在補水（「矛盾」的來源）</h3>
+<table>
+  <tr><th>指標</th><th>實測</th><th>狀態</th></tr>
+  <tr><td>ON RRP</td><td class="num">$0.3B</td><td class="o">技術性歸零</td></tr>
+  <tr><td>TGA</td><td class="num">$880B（週變 −68B）</td><td class="g">財政部在放水</td></tr>
+  <tr><td>TGA 距近一年下緣</td><td class="num">僅 $132B</td><td class="o">⚠️ 緩衝接近用盡</td></tr>
+</table>
+<div class="callout warn">
+  <strong>為什麼 SOFR−IORB 沒衝過零軸？</strong><br>
+  因為 TGA 下跌（財政部把錢花出去）＝ 現金回流市場 ＝ 暫時填補了那股龐大的融資需求。<br>
+  實測 SOFR−IORB = <strong>−3.0 bps</strong>（仍是負的），SOFR 交易量百分位僅 <strong>15th</strong>（不高）。
+</div>
+<div class="callout danger"><strong>這是本文最重要的判讀：利率貼零軸不是「壓力不存在」，而是「壓力被暫時抵銷」。</strong></div>
+
+<h3>第三層｜準備金層 —— 真正的危機種子</h3>
+<table>
+  <tr><th>指標</th><th>實測</th><th>狀態</th></tr>
+  <tr><td>銀行準備金</td><td class="num">$3.03T</td><td>距 LCLOR（~2.85T）剩 $1,800 億</td></tr>
+  <tr><td>RDE（準備金需求彈性）</td><td class="num">−0.224</td><td>近 3 年 13th（需求偏陡）</td></tr>
+</table>
+<p><strong>本週準備金其實回升了</strong>（9/23 的 2.93T → 3.03T）——<strong>同樣是 TGA 放水的效果</strong>。準備金距離估算的「舒適最低水準」（LCLOR, 2.8–2.9T）尚有 <strong>$1,800 億</strong>緩衝，比一般想像寬鬆。</p>
+
+<div class="chart"><svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='576.00pt' height='252.00pt' viewBox='0 0 576.00 252.00'>
+<g class='svglite'>
+<defs>
+  <style type='text/css'><![CDATA[
+    .svglite line, .svglite polyline, .svglite polygon, .svglite path, .svglite rect, .svglite circle {
+      fill: none;
+      stroke: #000000;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      stroke-miterlimit: 10.00;
+    }
+    .svglite text {
+      white-space: pre;
+    }
+    .svglite g.glyphgroup path {
+      fill: inherit;
+      stroke: none;
+    }
+  ]]></style>
+</defs>
+<rect width='100%' height='100%' style='stroke: none; fill: #FFFFFF;'/>
+<defs>
+  <clipPath id='cpMC4wMHw1NzYuMDB8MC4wMHwyNTIuMDA='>
+    <rect x='0.00' y='0.00' width='576.00' height='252.00' />
+  </clipPath>
+</defs>
+<g clip-path='url(#cpMC4wMHw1NzYuMDB8MC4wMHwyNTIuMDA=)'>
+<rect x='0.00' y='-0.000000000000057' width='576.00' height='252.00' style='stroke-width: 1.07; stroke: none; fill: #FFFFFF;' />
+</g>
+<defs>
+  <clipPath id='cpNDIuODV8NTcwLjUyfDM0LjM1fDIzMC43OQ=='>
+    <rect x='42.85' y='34.35' width='527.67' height='196.44' />
+  </clipPath>
+</defs>
+<g clip-path='url(#cpNDIuODV8NTcwLjUyfDM0LjM1fDIzMC43OQ==)'>
+<rect x='42.85' y='34.35' width='527.67' height='196.44' style='stroke-width: 1.07; stroke: none; fill: #FFFFFF;' />
+<polyline points='42.85,221.86 570.52,221.86 ' style='stroke-width: 0.53; stroke: #E0E0E0; stroke-linecap: butt;' />
+<polyline points='42.85,177.22 570.52,177.22 ' style='stroke-width: 0.53; stroke: #E0E0E0; stroke-linecap: butt;' />
+<polyline points='42.85,132.57 570.52,132.57 ' style='stroke-width: 0.53; stroke: #E0E0E0; stroke-linecap: butt;' />
+<polyline points='42.85,87.93 570.52,87.93 ' style='stroke-width: 0.53; stroke: #E0E0E0; stroke-linecap: butt;' />
+<polyline points='42.85,43.28 570.52,43.28 ' style='stroke-width: 0.53; stroke: #E0E0E0; stroke-linecap: butt;' />
+<polyline points='264.60,230.79 264.60,34.35 ' style='stroke-width: 0.53; stroke: #E0E0E0; stroke-linecap: butt;' />
+<polyline points='521.29,230.79 521.29,34.35 ' style='stroke-width: 0.53; stroke: #E0E0E0; stroke-linecap: butt;' />
+<line x1='42.85' y1='199.54' x2='570.52' y2='199.54' style='stroke-width: 1.07; stroke: #D55E00; stroke-dasharray: 5.69,5.69; stroke-linecap: butt;' />
+<text x='79.46' y='193.15' style='font-size: 7.40px;fill: #D55E00; font-family: "Liberation Sans";' textLength='62.42px' lengthAdjust='spacingAndGlyphs'>LCLOR 估算 2.85T</text>
+<polygon points='66.83,70.07 134.16,92.39 193.07,123.64 264.60,141.50 323.52,154.90 395.05,168.29 453.96,128.11 487.62,163.82 517.08,154.90 546.54,119.18 546.54,199.54 517.08,199.54 487.62,199.54 453.96,199.54 395.05,199.54 323.52,199.54 264.60,199.54 193.07,199.54 134.16,199.54 66.83,199.54 ' style='stroke-width: 0.00; stroke: none; stroke-linecap: butt; fill: #0072B2; fill-opacity: 0.10;' />
+<polyline points='66.83,70.07 134.16,92.39 193.07,123.64 264.60,141.50 323.52,154.90 395.05,168.29 453.96,128.11 487.62,163.82 517.08,154.90 546.54,119.18 ' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt;' />
+<polyline points='546.54,199.54 517.08,199.54 487.62,199.54 453.96,199.54 395.05,199.54 323.52,199.54 264.60,199.54 193.07,199.54 134.16,199.54 66.83,199.54 ' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt;' />
+<polyline points='66.83,70.07 134.16,92.39 193.07,123.64 264.60,141.50 323.52,154.90 395.05,168.29 453.96,128.11 487.62,163.82 517.08,154.90 546.54,119.18 ' style='stroke-width: 1.49; stroke: #0072B2; stroke-linecap: butt;' />
+<circle cx='66.83' cy='70.07' r='2.59' style='stroke-width: 1.56; stroke: #0072B2; fill: #FFFFFF;' />
+<circle cx='134.16' cy='92.39' r='2.59' style='stroke-width: 1.56; stroke: #0072B2; fill: #FFFFFF;' />
+<circle cx='193.07' cy='123.64' r='2.59' style='stroke-width: 1.56; stroke: #0072B2; fill: #FFFFFF;' />
+<circle cx='264.60' cy='141.50' r='2.59' style='stroke-width: 1.56; stroke: #0072B2; fill: #FFFFFF;' />
+<circle cx='323.52' cy='154.90' r='2.59' style='stroke-width: 1.56; stroke: #0072B2; fill: #FFFFFF;' />
+<circle cx='395.05' cy='168.29' r='2.59' style='stroke-width: 1.56; stroke: #0072B2; fill: #FFFFFF;' />
+<circle cx='453.96' cy='128.11' r='2.59' style='stroke-width: 1.56; stroke: #0072B2; fill: #FFFFFF;' />
+<circle cx='487.62' cy='163.82' r='2.59' style='stroke-width: 1.56; stroke: #0072B2; fill: #FFFFFF;' />
+<circle cx='517.08' cy='154.90' r='2.59' style='stroke-width: 1.56; stroke: #0072B2; fill: #FFFFFF;' />
+<circle cx='546.54' cy='119.18' r='2.59' style='stroke-width: 1.56; stroke: #0072B2; fill: #FFFFFF;' />
+</g>
+<g clip-path='url(#cpMC4wMHw1NzYuMDB8MC4wMHwyNTIuMDA=)'>
+<polyline points='42.85,230.79 42.85,34.35 ' style='stroke-width: 0.85; stroke-linecap: butt;' />
+<text x='35.18' y='224.96' text-anchor='end' style='font-size: 9.00px; font-family: "Liberation Sans";' textLength='18.00px' lengthAdjust='spacingAndGlyphs'>2.8T</text>
+<text x='35.18' y='180.31' text-anchor='end' style='font-size: 9.00px; font-family: "Liberation Sans";' textLength='18.00px' lengthAdjust='spacingAndGlyphs'>2.9T</text>
+<text x='35.18' y='135.67' text-anchor='end' style='font-size: 9.00px; font-family: "Liberation Sans";' textLength='10.50px' lengthAdjust='spacingAndGlyphs'>3T</text>
+<text x='35.18' y='91.02' text-anchor='end' style='font-size: 9.00px; font-family: "Liberation Sans";' textLength='18.00px' lengthAdjust='spacingAndGlyphs'>3.1T</text>
+<text x='35.18' y='46.38' text-anchor='end' style='font-size: 9.00px; font-family: "Liberation Sans";' textLength='18.00px' lengthAdjust='spacingAndGlyphs'>3.2T</text>
+<polyline points='40.11,221.86 42.85,221.86 ' style='stroke-width: 0.85; stroke-linecap: butt;' />
+<polyline points='40.11,177.22 42.85,177.22 ' style='stroke-width: 0.85; stroke-linecap: butt;' />
+<polyline points='40.11,132.57 42.85,132.57 ' style='stroke-width: 0.85; stroke-linecap: butt;' />
+<polyline points='40.11,87.93 42.85,87.93 ' style='stroke-width: 0.85; stroke-linecap: butt;' />
+<polyline points='40.11,43.28 42.85,43.28 ' style='stroke-width: 0.85; stroke-linecap: butt;' />
+<polyline points='42.85,230.79 570.52,230.79 ' style='stroke-width: 0.85; stroke-linecap: butt;' />
+<polyline points='264.60,233.53 264.60,230.79 ' style='stroke-width: 0.85; stroke-linecap: butt;' />
+<polyline points='521.29,233.53 521.29,230.79 ' style='stroke-width: 0.85; stroke-linecap: butt;' />
+<text x='264.60' y='244.66' text-anchor='middle' style='font-size: 9.00px; font-family: "Liberation Sans";' textLength='38.50px' lengthAdjust='spacingAndGlyphs'>Aug 2026</text>
+<text x='521.29' y='244.66' text-anchor='middle' style='font-size: 9.00px; font-family: "Liberation Sans";' textLength='36.50px' lengthAdjust='spacingAndGlyphs'>Oct 2026</text>
+<text transform='translate(12.36,132.57) rotate(-90)' text-anchor='middle' style='font-size: 10.00px; font-family: "Liberation Sans";' textLength='30.00px' lengthAdjust='spacingAndGlyphs'>準備金</text>
+<text x='42.85' y='27.21' style='font-size: 8.00px;fill: #666666; font-family: "Liberation Sans";' textLength='207.52px' lengthAdjust='spacingAndGlyphs'>Source: FRED WRESBAL | 注意：本週因 TGA 放水而回升</text>
+<text x='42.85' y='13.74' style='font-size: 12.00px; font-weight: bold; font-family: "Liberation Sans";' textLength='230.00px' lengthAdjust='spacingAndGlyphs'>銀行準備金 vs LCLOR（距下緣 1,800 億）</text>
+</g>
+</g>
+</svg>
+
+  <div class="cap">銀行準備金走勢。注意 9/23→10/7 的回升完全來自 TGA 放水，非結構改善。</div>
+</div>
+
+<h3>第四層｜波動率層 —— 被忽略的真正先行指標</h3>
+<table>
+  <tr><th>指標</th><th>實測</th><th>百分位</th><th>狀態</th></tr>
+  <tr><td><strong>MOVE（公債波動率）</strong></td><td class="num">101.09</td><td>1年 <strong>94.4th</strong></td><td class="r">🔴</td></tr>
+  <tr><td>10Y 殖利率</td><td class="num">5.31%</td><td>長端破 5%</td><td class="r">🔴</td></tr>
+  <tr><td>ACM 期限溢價（10Y）</td><td class="num">1.0847</td><td>近5年 <strong>100th</strong></td><td class="r">🔴</td></tr>
+  <tr><td>油價（WTI / Brent）</td><td class="num">$96.16 / $113.96</td><td>87th</td><td class="o">🟡</td></tr>
+</table>
+<div class="callout">
+  <strong>用 sr651 的公式換算（θ_max = 1/(α·σ), α=2.5）：</strong><br>
+  MOVE 基準 81.76 → 現在 101~107<br>
+  ⇒ 交易商可承載容量降為基準的 <strong>76.6%</strong>（削減 23.4%）<br>
+  <strong>這把「MOVE 上升」從模糊的情緒指標，變成可量化的物理約束。</strong>
+</div>
+
+<div class="chart"><svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='576.00pt' height='252.00pt' viewBox='0 0 576.00 252.00'>
+<g class='svglite'>
+<defs>
+  <style type='text/css'><![CDATA[
+    .svglite line, .svglite polyline, .svglite polygon, .svglite path, .svglite rect, .svglite circle {
+      fill: none;
+      stroke: #000000;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      stroke-miterlimit: 10.00;
+    }
+    .svglite text {
+      white-space: pre;
+    }
+    .svglite g.glyphgroup path {
+      fill: inherit;
+      stroke: none;
+    }
+  ]]></style>
+</defs>
+<rect width='100%' height='100%' style='stroke: none; fill: #FFFFFF;'/>
+<defs>
+  <clipPath id='cpMC4wMHw1NzYuMDB8MC4wMHwyNTIuMDA='>
+    <rect x='0.00' y='0.00' width='576.00' height='252.00' />
+  </clipPath>
+</defs>
+<g clip-path='url(#cpMC4wMHw1NzYuMDB8MC4wMHwyNTIuMDA=)'>
+<rect x='0.00' y='-0.000000000000057' width='576.00' height='252.00' style='stroke-width: 1.07; stroke: none; fill: #FFFFFF;' />
+</g>
+<defs>
+  <clipPath id='cpMzkuODV8NTcwLjUyfDM0LjM1fDIzMC43OQ=='>
+    <rect x='39.85' y='34.35' width='530.67' height='196.44' />
+  </clipPath>
+</defs>
+<g clip-path='url(#cpMzkuODV8NTcwLjUyfDM0LjM1fDIzMC43OQ==)'>
+<rect x='39.85' y='34.35' width='530.67' height='196.44' style='stroke-width: 1.07; stroke: none; fill: #FFFFFF;' />
+<polyline points='39.85,194.81 570.52,194.81 ' style='stroke-width: 0.53; stroke: #E0E0E0; stroke-linecap: butt;' />
+<polyline points='39.85,149.71 570.52,149.71 ' style='stroke-width: 0.53; stroke: #E0E0E0; stroke-linecap: butt;' />
+<polyline points='39.85,104.61 570.52,104.61 ' style='stroke-width: 0.53; stroke: #E0E0E0; stroke-linecap: butt;' />
+<polyline points='39.85,59.52 570.52,59.52 ' style='stroke-width: 0.53; stroke: #E0E0E0; stroke-linecap: butt;' />
+<polyline points='127.48,230.79 127.48,34.35 ' style='stroke-width: 0.53; stroke: #E0E0E0; stroke-linecap: butt;' />
+<polyline points='249.10,230.79 249.10,34.35 ' style='stroke-width: 0.53; stroke: #E0E0E0; stroke-linecap: butt;' />
+<polyline points='373.43,230.79 373.43,34.35 ' style='stroke-width: 0.53; stroke: #E0E0E0; stroke-linecap: butt;' />
+<polyline points='497.75,230.79 497.75,34.35 ' style='stroke-width: 0.53; stroke: #E0E0E0; stroke-linecap: butt;' />
+<line x1='39.85' y1='104.61' x2='570.52' y2='104.61' style='stroke-width: 0.85; stroke: #D55E00; stroke-dasharray: 4.55,4.55; stroke-linecap: butt;' />
+<text x='70.73' y='98.13' style='font-size: 7.40px;fill: #D55E00; font-family: "Liberation Sans";' textLength='43.94px' lengthAdjust='spacingAndGlyphs'>100 關鍵水位</text>
+<polyline points='63.97,203.82 105.86,221.86 146.40,190.30 188.29,158.73 230.18,140.69 268.02,118.14 309.91,86.57 350.45,109.12 392.35,145.20 432.89,167.75 474.78,158.73 516.67,127.16 528.83,83.87 543.70,43.28 546.40,99.65 ' style='stroke-width: 1.49; stroke: #0072B2; stroke-linecap: butt;' />
+<circle cx='63.97' cy='203.82' r='2.70' style='stroke-width: 1.56; stroke: #0072B2; fill: #FFFFFF;' />
+<circle cx='105.86' cy='221.86' r='2.70' style='stroke-width: 1.56; stroke: #0072B2; fill: #FFFFFF;' />
+<circle cx='146.40' cy='190.30' r='2.70' style='stroke-width: 1.56; stroke: #0072B2; fill: #FFFFFF;' />
+<circle cx='188.29' cy='158.73' r='2.70' style='stroke-width: 1.56; stroke: #0072B2; fill: #FFFFFF;' />
+<circle cx='230.18' cy='140.69' r='2.70' style='stroke-width: 1.56; stroke: #0072B2; fill: #FFFFFF;' />
+<circle cx='268.02' cy='118.14' r='2.70' style='stroke-width: 1.56; stroke: #0072B2; fill: #FFFFFF;' />
+<circle cx='309.91' cy='86.57' r='2.70' style='stroke-width: 1.56; stroke: #0072B2; fill: #FFFFFF;' />
+<circle cx='350.45' cy='109.12' r='2.70' style='stroke-width: 1.56; stroke: #0072B2; fill: #FFFFFF;' />
+<circle cx='392.35' cy='145.20' r='2.70' style='stroke-width: 1.56; stroke: #0072B2; fill: #FFFFFF;' />
+<circle cx='432.89' cy='167.75' r='2.70' style='stroke-width: 1.56; stroke: #0072B2; fill: #FFFFFF;' />
+<circle cx='474.78' cy='158.73' r='2.70' style='stroke-width: 1.56; stroke: #0072B2; fill: #FFFFFF;' />
+<circle cx='516.67' cy='127.16' r='2.70' style='stroke-width: 1.56; stroke: #0072B2; fill: #FFFFFF;' />
+<circle cx='528.83' cy='83.87' r='2.70' style='stroke-width: 1.56; stroke: #0072B2; fill: #FFFFFF;' />
+<circle cx='543.70' cy='43.28' r='2.70' style='stroke-width: 1.56; stroke: #0072B2; fill: #FFFFFF;' />
+<circle cx='546.40' cy='99.65' r='2.70' style='stroke-width: 1.56; stroke: #0072B2; fill: #FFFFFF;' />
+<text x='534.24' y='53.23' text-anchor='middle' style='font-size: 7.97px; font-weight: bold;fill: #0072B2; font-family: "Liberation Sans";' textLength='19.89px' lengthAdjust='spacingAndGlyphs'>106.8</text>
+</g>
+<g clip-path='url(#cpMC4wMHw1NzYuMDB8MC4wMHwyNTIuMDA=)'>
+<polyline points='39.85,230.79 39.85,34.35 ' style='stroke-width: 0.85; stroke-linecap: butt;' />
+<text x='32.18' y='197.90' text-anchor='end' style='font-size: 9.00px; font-family: "Liberation Sans";' textLength='10.00px' lengthAdjust='spacingAndGlyphs'>80</text>
+<text x='32.18' y='152.80' text-anchor='end' style='font-size: 9.00px; font-family: "Liberation Sans";' textLength='10.00px' lengthAdjust='spacingAndGlyphs'>90</text>
+<text x='32.18' y='107.71' text-anchor='end' style='font-size: 9.00px; font-family: "Liberation Sans";' textLength='15.00px' lengthAdjust='spacingAndGlyphs'>100</text>
+<text x='32.18' y='62.61' text-anchor='end' style='font-size: 9.00px; font-family: "Liberation Sans";' textLength='14.33px' lengthAdjust='spacingAndGlyphs'>110</text>
+<polyline points='37.11,194.81 39.85,194.81 ' style='stroke-width: 0.85; stroke-linecap: butt;' />
+<polyline points='37.11,149.71 39.85,149.71 ' style='stroke-width: 0.85; stroke-linecap: butt;' />
+<polyline points='37.11,104.61 39.85,104.61 ' style='stroke-width: 0.85; stroke-linecap: butt;' />
+<polyline points='37.11,59.52 39.85,59.52 ' style='stroke-width: 0.85; stroke-linecap: butt;' />
+<polyline points='39.85,230.79 570.52,230.79 ' style='stroke-width: 0.85; stroke-linecap: butt;' />
+<polyline points='127.48,233.53 127.48,230.79 ' style='stroke-width: 0.85; stroke-linecap: butt;' />
+<polyline points='249.10,233.53 249.10,230.79 ' style='stroke-width: 0.85; stroke-linecap: butt;' />
+<polyline points='373.43,233.53 373.43,230.79 ' style='stroke-width: 0.85; stroke-linecap: butt;' />
+<polyline points='497.75,233.53 497.75,230.79 ' style='stroke-width: 0.85; stroke-linecap: butt;' />
+<text x='127.48' y='244.66' text-anchor='middle' style='font-size: 9.00px; font-family: "Liberation Sans";' textLength='38.50px' lengthAdjust='spacingAndGlyphs'>Dec 2025</text>
+<text x='249.10' y='244.66' text-anchor='middle' style='font-size: 9.00px; font-family: "Liberation Sans";' textLength='38.00px' lengthAdjust='spacingAndGlyphs'>Mar 2026</text>
+<text x='373.43' y='244.66' text-anchor='middle' style='font-size: 9.00px; font-family: "Liberation Sans";' textLength='37.00px' lengthAdjust='spacingAndGlyphs'>Jun 2026</text>
+<text x='497.75' y='244.66' text-anchor='middle' style='font-size: 9.00px; font-family: "Liberation Sans";' textLength='38.50px' lengthAdjust='spacingAndGlyphs'>Sep 2026</text>
+<text transform='translate(12.36,132.57) rotate(-90)' text-anchor='middle' style='font-size: 10.00px; font-family: "Liberation Sans";' textLength='56.70px' lengthAdjust='spacingAndGlyphs'>MOVE Index</text>
+<text x='39.85' y='27.21' style='font-size: 8.00px;fill: #666666; font-family: "Liberation Sans";' textLength='179.92px' lengthAdjust='spacingAndGlyphs'>Source: Yahoo Finance ^MOVE | 1年百分位 94.4th</text>
+<text x='39.85' y='13.74' style='font-size: 12.00px; font-weight: bold; font-family: "Liberation Sans";' textLength='170.19px' lengthAdjust='spacingAndGlyphs'>MOVE 公債波動率（σ 的分母）</text>
+</g>
+</g>
+</svg>
+
+  <div class="cap">MOVE 已站上 100 關鍵水位。用 1 年百分位（94.4th）判讀，非 5 年（57.4th，會被 2022-23 的 180+ 壓低）。</div>
+</div>
+
+<div class="chart"><svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='576.00pt' height='252.00pt' viewBox='0 0 576.00 252.00'>
+<g class='svglite'>
+<defs>
+  <style type='text/css'><![CDATA[
+    .svglite line, .svglite polyline, .svglite polygon, .svglite path, .svglite rect, .svglite circle {
+      fill: none;
+      stroke: #000000;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      stroke-miterlimit: 10.00;
+    }
+    .svglite text {
+      white-space: pre;
+    }
+    .svglite g.glyphgroup path {
+      fill: inherit;
+      stroke: none;
+    }
+  ]]></style>
+</defs>
+<rect width='100%' height='100%' style='stroke: none; fill: #FFFFFF;'/>
+<defs>
+  <clipPath id='cpMC4wMHw1NzYuMDB8MC4wMHwyNTIuMDA='>
+    <rect x='0.00' y='0.00' width='576.00' height='252.00' />
+  </clipPath>
+</defs>
+<g clip-path='url(#cpMC4wMHw1NzYuMDB8MC4wMHwyNTIuMDA=)'>
+<rect x='0.00' y='-0.000000000000057' width='576.00' height='252.00' style='stroke-width: 1.07; stroke: none; fill: #FFFFFF;' />
+</g>
+<defs>
+  <clipPath id='cpNDUuMzV8NTcwLjUyfDM0LjM1fDIzMC43OQ=='>
+    <rect x='45.35' y='34.35' width='525.17' height='196.44' />
+  </clipPath>
+</defs>
+<g clip-path='url(#cpNDUuMzV8NTcwLjUyfDM0LjM1fDIzMC43OQ==)'>
+<rect x='45.35' y='34.35' width='525.17' height='196.44' style='stroke-width: 1.07; stroke: none; fill: #FFFFFF;' />
+<polyline points='45.35,183.60 570.52,183.60 ' style='stroke-width: 0.53; stroke: #E0E0E0; stroke-linecap: butt;' />
+<polyline points='45.35,132.57 570.52,132.57 ' style='stroke-width: 0.53; stroke: #E0E0E0; stroke-linecap: butt;' />
+<polyline points='45.35,81.55 570.52,81.55 ' style='stroke-width: 0.53; stroke: #E0E0E0; stroke-linecap: butt;' />
+<polyline points='120.37,230.79 120.37,34.35 ' style='stroke-width: 0.53; stroke: #E0E0E0; stroke-linecap: butt;' />
+<polyline points='245.41,230.79 245.41,34.35 ' style='stroke-width: 0.53; stroke: #E0E0E0; stroke-linecap: butt;' />
+<polyline points='370.45,230.79 370.45,34.35 ' style='stroke-width: 0.53; stroke: #E0E0E0; stroke-linecap: butt;' />
+<polyline points='495.50,230.79 495.50,34.35 ' style='stroke-width: 0.53; stroke: #E0E0E0; stroke-linecap: butt;' />
+<line x1='45.35' y1='158.08' x2='570.52' y2='158.08' style='stroke-width: 0.85; stroke: #D55E00; stroke-dasharray: 4.55,4.55; stroke-linecap: butt;' />
+<text x='120.37' y='156.80' style='font-size: 7.40px;fill: #D55E00; font-family: "Liberation Sans";' textLength='48.45px' lengthAdjust='spacingAndGlyphs'>5.0% 心理關卡</text>
+<polyline points='120.37,178.49 245.41,150.43 370.45,118.54 495.50,73.90 ' style='stroke-width: 1.49; stroke: #009E73; stroke-linecap: butt;' />
+<circle cx='120.37' cy='178.49' r='3.41' style='stroke-width: 1.70; stroke: #009E73; fill: #FFFFFF;' />
+<circle cx='245.41' cy='150.43' r='3.41' style='stroke-width: 1.70; stroke: #009E73; fill: #FFFFFF;' />
+<circle cx='370.45' cy='118.54' r='3.41' style='stroke-width: 1.70; stroke: #009E73; fill: #FFFFFF;' />
+<circle cx='495.50' cy='73.90' r='3.41' style='stroke-width: 1.70; stroke: #009E73; fill: #FFFFFF;' />
+<text x='120.37' y='173.57' text-anchor='middle' style='font-size: 7.97px; font-family: "Liberation Sans";' textLength='22.55px' lengthAdjust='spacingAndGlyphs'>4.84%</text>
+<text x='245.41' y='145.51' text-anchor='middle' style='font-size: 7.97px; font-family: "Liberation Sans";' textLength='22.55px' lengthAdjust='spacingAndGlyphs'>5.06%</text>
+<text x='370.45' y='113.62' text-anchor='middle' style='font-size: 7.97px; font-family: "Liberation Sans";' textLength='22.55px' lengthAdjust='spacingAndGlyphs'>5.31%</text>
+<text x='495.50' y='68.97' text-anchor='middle' style='font-size: 7.97px; font-family: "Liberation Sans";' textLength='22.55px' lengthAdjust='spacingAndGlyphs'>5.66%</text>
+</g>
+<g clip-path='url(#cpMC4wMHw1NzYuMDB8MC4wMHwyNTIuMDA=)'>
+<polyline points='45.35,230.79 45.35,34.35 ' style='stroke-width: 0.85; stroke-linecap: butt;' />
+<text x='37.68' y='186.69' text-anchor='end' style='font-size: 9.00px; font-family: "Liberation Sans";' textLength='20.50px' lengthAdjust='spacingAndGlyphs'>4.8%</text>
+<text x='37.68' y='135.67' text-anchor='end' style='font-size: 9.00px; font-family: "Liberation Sans";' textLength='20.50px' lengthAdjust='spacingAndGlyphs'>5.2%</text>
+<text x='37.68' y='84.64' text-anchor='end' style='font-size: 9.00px; font-family: "Liberation Sans";' textLength='20.50px' lengthAdjust='spacingAndGlyphs'>5.6%</text>
+<polyline points='42.61,183.60 45.35,183.60 ' style='stroke-width: 0.85; stroke-linecap: butt;' />
+<polyline points='42.61,132.57 45.35,132.57 ' style='stroke-width: 0.85; stroke-linecap: butt;' />
+<polyline points='42.61,81.55 45.35,81.55 ' style='stroke-width: 0.85; stroke-linecap: butt;' />
+<polyline points='45.35,230.79 570.52,230.79 ' style='stroke-width: 0.85; stroke-linecap: butt;' />
+<polyline points='120.37,233.53 120.37,230.79 ' style='stroke-width: 0.85; stroke-linecap: butt;' />
+<polyline points='245.41,233.53 245.41,230.79 ' style='stroke-width: 0.85; stroke-linecap: butt;' />
+<polyline points='370.45,233.53 370.45,230.79 ' style='stroke-width: 0.85; stroke-linecap: butt;' />
+<polyline points='495.50,233.53 495.50,230.79 ' style='stroke-width: 0.85; stroke-linecap: butt;' />
+<text x='120.37' y='244.66' text-anchor='middle' style='font-size: 9.00px; font-family: "Liberation Sans";' textLength='11.00px' lengthAdjust='spacingAndGlyphs'>2Y</text>
+<text x='245.41' y='244.66' text-anchor='middle' style='font-size: 9.00px; font-family: "Liberation Sans";' textLength='11.00px' lengthAdjust='spacingAndGlyphs'>5Y</text>
+<text x='370.45' y='244.66' text-anchor='middle' style='font-size: 9.00px; font-family: "Liberation Sans";' textLength='16.00px' lengthAdjust='spacingAndGlyphs'>10Y</text>
+<text x='495.50' y='244.66' text-anchor='middle' style='font-size: 9.00px; font-family: "Liberation Sans";' textLength='16.00px' lengthAdjust='spacingAndGlyphs'>30Y</text>
+<text transform='translate(12.36,132.57) rotate(-90)' text-anchor='middle' style='font-size: 10.00px; font-family: "Liberation Sans";' textLength='30.00px' lengthAdjust='spacingAndGlyphs'>殖利率</text>
+<text x='45.35' y='27.21' style='font-size: 8.00px;fill: #666666; font-family: "Liberation Sans";' textLength='204.06px' lengthAdjust='spacingAndGlyphs'>Source: FRED DGS2/DGS5/DGS10/DGS30 | 2026-10-05</text>
+<text x='45.35' y='13.74' style='font-size: 12.00px; font-weight: bold; font-family: "Liberation Sans";' textLength='206.45px' lengthAdjust='spacingAndGlyphs'>美債殖利率曲線（5Y 以上全站上 5%）</text>
+</g>
+</g>
+</svg>
+
+  <div class="cap">5Y 以上全數站上 5%，且曲線呈 BEAR_STEEPEN（長端主導）—— 對應財政/油價敘事，非單純升息預期。</div>
+</div>
+
+<div class="chart"><svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='576.00pt' height='252.00pt' viewBox='0 0 576.00 252.00'>
+<g class='svglite'>
+<defs>
+  <style type='text/css'><![CDATA[
+    .svglite line, .svglite polyline, .svglite polygon, .svglite path, .svglite rect, .svglite circle {
+      fill: none;
+      stroke: #000000;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      stroke-miterlimit: 10.00;
+    }
+    .svglite text {
+      white-space: pre;
+    }
+    .svglite g.glyphgroup path {
+      fill: inherit;
+      stroke: none;
+    }
+  ]]></style>
+</defs>
+<rect width='100%' height='100%' style='stroke: none; fill: #FFFFFF;'/>
+<defs>
+  <clipPath id='cpMC4wMHw1NzYuMDB8MC4wMHwyNTIuMDA='>
+    <rect x='0.00' y='0.00' width='576.00' height='252.00' />
+  </clipPath>
+</defs>
+<g clip-path='url(#cpMC4wMHw1NzYuMDB8MC4wMHwyNTIuMDA=)'>
+<rect x='0.00' y='-0.000000000000057' width='576.00' height='252.00' style='stroke-width: 1.07; stroke: none; fill: #FFFFFF;' />
+</g>
+<defs>
+  <clipPath id='cpMzcuMzV8NTcwLjUyfDM0LjM1fDIzMC43OQ=='>
+    <rect x='37.35' y='34.35' width='533.17' height='196.44' />
+  </clipPath>
+</defs>
+<g clip-path='url(#cpMzcuMzV8NTcwLjUyfDM0LjM1fDIzMC43OQ==)'>
+<rect x='37.35' y='34.35' width='533.17' height='196.44' style='stroke-width: 1.07; stroke: none; fill: #FFFFFF;' />
+<polyline points='37.35,221.86 570.52,221.86 ' style='stroke-width: 0.53; stroke: #E0E0E0; stroke-linecap: butt;' />
+<polyline points='37.35,177.22 570.52,177.22 ' style='stroke-width: 0.53; stroke: #E0E0E0; stroke-linecap: butt;' />
+<polyline points='37.35,132.57 570.52,132.57 ' style='stroke-width: 0.53; stroke: #E0E0E0; stroke-linecap: butt;' />
+<polyline points='37.35,87.93 570.52,87.93 ' style='stroke-width: 0.53; stroke: #E0E0E0; stroke-linecap: butt;' />
+<polyline points='37.35,43.28 570.52,43.28 ' style='stroke-width: 0.53; stroke: #E0E0E0; stroke-linecap: butt;' />
+<polyline points='126.30,230.79 126.30,34.35 ' style='stroke-width: 0.53; stroke: #E0E0E0; stroke-linecap: butt;' />
+<polyline points='250.23,230.79 250.23,34.35 ' style='stroke-width: 0.53; stroke: #E0E0E0; stroke-linecap: butt;' />
+<polyline points='376.91,230.79 376.91,34.35 ' style='stroke-width: 0.53; stroke: #E0E0E0; stroke-linecap: butt;' />
+<polyline points='503.60,230.79 503.60,34.35 ' style='stroke-width: 0.53; stroke: #E0E0E0; stroke-linecap: butt;' />
+<polyline points='61.58,188.38 145.58,172.75 230.95,181.68 312.20,152.66 396.19,125.88 480.19,105.78 522.88,83.46 546.29,69.02 ' style='stroke-width: 1.49; stroke: #E69F00; stroke-linecap: butt;' />
+<circle cx='61.58' cy='188.38' r='2.98' style='stroke-width: 1.70; stroke: #E69F00; fill: #FFFFFF;' />
+<circle cx='145.58' cy='172.75' r='2.98' style='stroke-width: 1.70; stroke: #E69F00; fill: #FFFFFF;' />
+<circle cx='230.95' cy='181.68' r='2.98' style='stroke-width: 1.70; stroke: #E69F00; fill: #FFFFFF;' />
+<circle cx='312.20' cy='152.66' r='2.98' style='stroke-width: 1.70; stroke: #E69F00; fill: #FFFFFF;' />
+<circle cx='396.19' cy='125.88' r='2.98' style='stroke-width: 1.70; stroke: #E69F00; fill: #FFFFFF;' />
+<circle cx='480.19' cy='105.78' r='2.98' style='stroke-width: 1.70; stroke: #E69F00; fill: #FFFFFF;' />
+<circle cx='522.88' cy='83.46' r='2.98' style='stroke-width: 1.70; stroke: #E69F00; fill: #FFFFFF;' />
+<circle cx='546.29' cy='69.02' r='2.98' style='stroke-width: 1.70; stroke: #E69F00; fill: #FFFFFF;' />
+<text x='546.29' y='75.10' text-anchor='end' style='font-size: 7.40px; font-weight: bold;fill: #E69F00; font-family: "Liberation Sans";' textLength='22.59px' lengthAdjust='spacingAndGlyphs'>1.0847</text>
+<text x='546.29' y='85.75' text-anchor='end' style='font-size: 7.40px; font-weight: bold;fill: #E69F00; font-family: "Liberation Sans";' textLength='33.67px' lengthAdjust='spacingAndGlyphs'>近5年最高</text>
+</g>
+<g clip-path='url(#cpMC4wMHw1NzYuMDB8MC4wMHwyNTIuMDA=)'>
+<polyline points='37.35,230.79 37.35,34.35 ' style='stroke-width: 0.85; stroke-linecap: butt;' />
+<text x='29.68' y='224.96' text-anchor='end' style='font-size: 9.00px; font-family: "Liberation Sans";' textLength='12.50px' lengthAdjust='spacingAndGlyphs'>0.4</text>
+<text x='29.68' y='180.31' text-anchor='end' style='font-size: 9.00px; font-family: "Liberation Sans";' textLength='12.50px' lengthAdjust='spacingAndGlyphs'>0.6</text>
+<text x='29.68' y='135.67' text-anchor='end' style='font-size: 9.00px; font-family: "Liberation Sans";' textLength='12.50px' lengthAdjust='spacingAndGlyphs'>0.8</text>
+<text x='29.68' y='91.02' text-anchor='end' style='font-size: 9.00px; font-family: "Liberation Sans";' textLength='12.50px' lengthAdjust='spacingAndGlyphs'>1.0</text>
+<text x='29.68' y='46.38' text-anchor='end' style='font-size: 9.00px; font-family: "Liberation Sans";' textLength='12.50px' lengthAdjust='spacingAndGlyphs'>1.2</text>
+<polyline points='34.61,221.86 37.35,221.86 ' style='stroke-width: 0.85; stroke-linecap: butt;' />
+<polyline points='34.61,177.22 37.35,177.22 ' style='stroke-width: 0.85; stroke-linecap: butt;' />
+<polyline points='34.61,132.57 37.35,132.57 ' style='stroke-width: 0.85; stroke-linecap: butt;' />
+<polyline points='34.61,87.93 37.35,87.93 ' style='stroke-width: 0.85; stroke-linecap: butt;' />
+<polyline points='34.61,43.28 37.35,43.28 ' style='stroke-width: 0.85; stroke-linecap: butt;' />
+<polyline points='37.35,230.79 570.52,230.79 ' style='stroke-width: 0.85; stroke-linecap: butt;' />
+<polyline points='126.30,233.53 126.30,230.79 ' style='stroke-width: 0.85; stroke-linecap: butt;' />
+<polyline points='250.23,233.53 250.23,230.79 ' style='stroke-width: 0.85; stroke-linecap: butt;' />
+<polyline points='376.91,233.53 376.91,230.79 ' style='stroke-width: 0.85; stroke-linecap: butt;' />
+<polyline points='503.60,233.53 503.60,230.79 ' style='stroke-width: 0.85; stroke-linecap: butt;' />
+<text x='126.30' y='244.66' text-anchor='middle' style='font-size: 9.00px; font-family: "Liberation Sans";' textLength='38.50px' lengthAdjust='spacingAndGlyphs'>Dec 2025</text>
+<text x='250.23' y='244.66' text-anchor='middle' style='font-size: 9.00px; font-family: "Liberation Sans";' textLength='38.00px' lengthAdjust='spacingAndGlyphs'>Mar 2026</text>
+<text x='376.91' y='244.66' text-anchor='middle' style='font-size: 9.00px; font-family: "Liberation Sans";' textLength='37.00px' lengthAdjust='spacingAndGlyphs'>Jun 2026</text>
+<text x='503.60' y='244.66' text-anchor='middle' style='font-size: 9.00px; font-family: "Liberation Sans";' textLength='38.50px' lengthAdjust='spacingAndGlyphs'>Sep 2026</text>
+<text transform='translate(12.36,132.57) rotate(-90)' text-anchor='middle' style='font-size: 10.00px; font-family: "Liberation Sans";' textLength='58.33px' lengthAdjust='spacingAndGlyphs'>期限溢價 (%)</text>
+<text x='37.35' y='27.21' style='font-size: 8.00px;fill: #666666; font-family: "Liberation Sans";' textLength='277.70px' lengthAdjust='spacingAndGlyphs'>Source: FRED THREEFYTP10 | 近5年 100th / 全史僅 66th（1992 曾達 2.52）</text>
+<text x='37.35' y='13.74' style='font-size: 12.00px; font-weight: bold; font-family: "Liberation Sans";' textLength='199.12px' lengthAdjust='spacingAndGlyphs'>ACM 10Y 期限溢價（財政風險定價）</text>
+</g>
+</g>
+</svg>
+
+  <div class="cap">期限溢價創近 5 年新高（1.0847），但全史僅 66th（1992 曾達 2.52）。用近 5 年百分位判讀較合理。</div>
+</div>
+
+
+<h2>二、核心機制：六個訊號如何「合乎邏輯」</h2>
+<div class="chain">美伊戰爭常態化（胡塞炸輸油管、荷莫茲控制權爭奪）
+    ↓
+油價 &gt;$100（Brent $113.96）
+    ↓
+通膨預期 ↑
+    ↓
+長端殖利率破 5%（10Y 5.31%、30Y 5.66%）
+    ↓
+<span class="hl">MOVE 波動率 ↑ 101（1年 94th）</span>
+    ↓
+sr651：θ = 1/(ασ)，σ 在分母 → <span class="hl">交易商容量砍 23%</span>
+    ↓
+做市商不敢接長債、不敢承接庫存（BEAR_STEEPEN = 長端主導）
+    ↓
+<span class="rd">交割失敗飆升 $8.3B（94th）</span>          ← 第一層紅燈
+    ↓
+融資需求爆炸
+    ↓
+════ 此刻 TGA 下跌，暫時補水 ════
+    ↓
+<span class="gr">SOFR−IORB 貼零軸（假象！）</span></div>
+
+<p><strong>所以「矛盾」不是訊號彼此矛盾，而是第四層（波動率）的壓力，被第二層（TGA 支出）暫時壓住了利率的表達。</strong></p>
+
+<div class="chart"><svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='576.00pt' height='252.00pt' viewBox='0 0 576.00 252.00'>
+<g class='svglite'>
+<defs>
+  <style type='text/css'><![CDATA[
+    .svglite line, .svglite polyline, .svglite polygon, .svglite path, .svglite rect, .svglite circle {
+      fill: none;
+      stroke: #000000;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      stroke-miterlimit: 10.00;
+    }
+    .svglite text {
+      white-space: pre;
+    }
+    .svglite g.glyphgroup path {
+      fill: inherit;
+      stroke: none;
+    }
+  ]]></style>
+</defs>
+<rect width='100%' height='100%' style='stroke: none; fill: #FFFFFF;'/>
+<defs>
+  <clipPath id='cpMC4wMHw1NzYuMDB8MC4wMHwyNTIuMDA='>
+    <rect x='0.00' y='0.00' width='576.00' height='252.00' />
+  </clipPath>
+</defs>
+<g clip-path='url(#cpMC4wMHw1NzYuMDB8MC4wMHwyNTIuMDA=)'>
+<rect x='0.00' y='-0.000000000000057' width='576.00' height='252.00' style='stroke-width: 1.07; stroke: none; fill: #FFFFFF;' />
+</g>
+<defs>
+  <clipPath id='cpNTAuODV8NTcwLjUyfDM0LjM1fDIzMC43OQ=='>
+    <rect x='50.85' y='34.35' width='519.67' height='196.44' />
+  </clipPath>
+</defs>
+<g clip-path='url(#cpNTAuODV8NTcwLjUyfDM0LjM1fDIzMC43OQ==)'>
+<rect x='50.85' y='34.35' width='519.67' height='196.44' style='stroke-width: 1.07; stroke: none; fill: #FFFFFF;' />
+<polyline points='50.85,174.24 570.52,174.24 ' style='stroke-width: 0.53; stroke: #E0E0E0; stroke-linecap: butt;' />
+<polyline points='50.85,114.71 570.52,114.71 ' style='stroke-width: 0.53; stroke: #E0E0E0; stroke-linecap: butt;' />
+<polyline points='50.85,55.19 570.52,55.19 ' style='stroke-width: 0.53; stroke: #E0E0E0; stroke-linecap: butt;' />
+<polyline points='326.02,230.79 326.02,34.35 ' style='stroke-width: 0.53; stroke: #E0E0E0; stroke-linecap: butt;' />
+<line x1='50.85' y1='204.96' x2='570.52' y2='204.96' style='stroke-width: 1.07; stroke: #D55E00; stroke-dasharray: 5.69,5.69; stroke-linecap: butt;' />
+<text x='92.88' y='203.57' style='font-size: 7.40px;fill: #D55E00; font-family: "Liberation Sans";' textLength='52.97px' lengthAdjust='spacingAndGlyphs'>近1年下緣 748B</text>
+<polyline points='74.47,156.62 117.42,108.29 160.37,110.37 203.31,76.62 246.26,82.81 289.21,84.53 332.16,74.29 375.11,124.66 418.05,128.41 461.00,68.82 503.95,85.72 546.90,126.44 ' style='stroke-width: 1.49; stroke: #CC79A7; stroke-linecap: butt;' />
+<circle cx='74.47' cy='156.62' r='2.70' style='stroke-width: 1.56; stroke: #CC79A7; fill: #FFFFFF;' />
+<circle cx='117.42' cy='108.29' r='2.70' style='stroke-width: 1.56; stroke: #CC79A7; fill: #FFFFFF;' />
+<circle cx='160.37' cy='110.37' r='2.70' style='stroke-width: 1.56; stroke: #CC79A7; fill: #FFFFFF;' />
+<circle cx='203.31' cy='76.62' r='2.70' style='stroke-width: 1.56; stroke: #CC79A7; fill: #FFFFFF;' />
+<circle cx='246.26' cy='82.81' r='2.70' style='stroke-width: 1.56; stroke: #CC79A7; fill: #FFFFFF;' />
+<circle cx='289.21' cy='84.53' r='2.70' style='stroke-width: 1.56; stroke: #CC79A7; fill: #FFFFFF;' />
+<circle cx='332.16' cy='74.29' r='2.70' style='stroke-width: 1.56; stroke: #CC79A7; fill: #FFFFFF;' />
+<circle cx='375.11' cy='124.66' r='2.70' style='stroke-width: 1.56; stroke: #CC79A7; fill: #FFFFFF;' />
+<circle cx='418.05' cy='128.41' r='2.70' style='stroke-width: 1.56; stroke: #CC79A7; fill: #FFFFFF;' />
+<circle cx='461.00' cy='68.82' r='2.70' style='stroke-width: 1.56; stroke: #CC79A7; fill: #FFFFFF;' />
+<circle cx='503.95' cy='85.72' r='2.70' style='stroke-width: 1.56; stroke: #CC79A7; fill: #FFFFFF;' />
+<circle cx='546.90' cy='126.44' r='2.70' style='stroke-width: 1.56; stroke: #CC79A7; fill: #FFFFFF;' />
+<text x='546.90' y='132.76' text-anchor='end' style='font-size: 7.40px; font-weight: bold;fill: #CC79A7; font-family: "Liberation Sans";' textLength='17.67px' lengthAdjust='spacingAndGlyphs'>880B</text>
+<text x='546.90' y='143.42' text-anchor='end' style='font-size: 7.40px; font-weight: bold;fill: #CC79A7; font-family: "Liberation Sans";' textLength='46.83px' lengthAdjust='spacingAndGlyphs'>(距下緣 132B)</text>
+</g>
+<g clip-path='url(#cpMC4wMHw1NzYuMDB8MC4wMHwyNTIuMDA=)'>
+<polyline points='50.85,230.79 50.85,34.35 ' style='stroke-width: 0.85; stroke-linecap: butt;' />
+<text x='43.18' y='177.34' text-anchor='end' style='font-size: 9.00px; font-family: "Liberation Sans";' textLength='21.00px' lengthAdjust='spacingAndGlyphs'>800B</text>
+<text x='43.18' y='117.81' text-anchor='end' style='font-size: 9.00px; font-family: "Liberation Sans";' textLength='21.00px' lengthAdjust='spacingAndGlyphs'>900B</text>
+<text x='43.18' y='58.28' text-anchor='end' style='font-size: 9.00px; font-family: "Liberation Sans";' textLength='26.00px' lengthAdjust='spacingAndGlyphs'>1000B</text>
+<polyline points='48.11,174.24 50.85,174.24 ' style='stroke-width: 0.85; stroke-linecap: butt;' />
+<polyline points='48.11,114.71 50.85,114.71 ' style='stroke-width: 0.85; stroke-linecap: butt;' />
+<polyline points='48.11,55.19 50.85,55.19 ' style='stroke-width: 0.85; stroke-linecap: butt;' />
+<polyline points='50.85,230.79 570.52,230.79 ' style='stroke-width: 0.85; stroke-linecap: butt;' />
+<polyline points='326.02,233.53 326.02,230.79 ' style='stroke-width: 0.85; stroke-linecap: butt;' />
+<text x='326.02' y='244.66' text-anchor='middle' style='font-size: 9.00px; font-family: "Liberation Sans";' textLength='38.50px' lengthAdjust='spacingAndGlyphs'>Sep 2026</text>
+<text transform='translate(12.36,132.57) rotate(-90)' text-anchor='middle' style='font-size: 10.00px; font-family: "Liberation Sans";' textLength='42.80px' lengthAdjust='spacingAndGlyphs'>TGA 餘額</text>
+<text x='50.85' y='27.21' style='font-size: 8.00px;fill: #666666; font-family: "Liberation Sans";' textLength='298.61px' lengthAdjust='spacingAndGlyphs'>Source: FRED WTREGEN | 週變 -68B = 仍在放水（利多）；一旦轉正 = 計時器啟動</text>
+<text x='50.85' y='13.74' style='font-size: 12.00px; font-weight: bold; font-family: "Liberation Sans";' textLength='172.22px' lengthAdjust='spacingAndGlyphs'>TGA 財政部帳戶（補水的來源）</text>
+</g>
+</g>
+</svg>
+
+  <div class="cap">TGA 是「補水開關」。週變 −68B = 仍在放水（利多）；一旦轉為正值 = 計時器啟動。</div>
+</div>
+
+<h2>三、關鍵洞察：該看的不是 SOFR，是 MOVE</h2>
+<table>
+  <tr><th></th><th>SOFR−IORB</th><th>MOVE</th></tr>
+  <tr><td>性質</td><td><strong>結果</strong></td><td><strong>原因</strong></td></tr>
+  <tr><td>現在</td><td>貼零軸（−3 bps）</td><td>94th 百分位（極端）</td></tr>
+  <tr><td>是否被操縱</td><td class="o">✅ 被 TGA 補水壓抑</td><td class="g">❌ 無法壓抑</td></tr>
+</table>
+<div class="callout"><strong>SOFR−IORB 是「壓力表達出來之後」的結果。MOVE 是「壓力本身」。</strong><br>
+現在的狀態是：<strong>壓力已到，但價格還沒動。</strong> 一旦 TGA 停止放水，SOFR−IORB 會<strong>非線性</strong>衝過零軸。</div>
+
+<h2>四、後續情境推演</h2>
+<p>分水嶺：<strong>TGA 何時停止放水</strong></p>
+
+<div class="scen">
+  <div class="sc a">
+    <div class="sh"><span class="sn">🟢 情境 A｜軟著陸</span><span class="sp">機率 ~25%</span></div>
+    <p style="font-size:14.5px;color:var(--muted);margin-bottom:0"><strong>觸發條件</strong>：油價回落 &lt;$85 <strong>且</strong>財政部宣布可信的財政整頓計畫</p>
+    <ul>
+      <li>地緣政治降溫 → 油價回落 → 通膨預期降 → 長端殖利率回落</li>
+      <li>MOVE 回到 85 以下 → 交易商容量恢復</li>
+      <li>期限溢價從 100th 回落</li>
+    </ul>
+    <p style="margin-top:12px;margin-bottom:0;font-size:14.5px"><strong>評估</strong>：目前<strong>看不到任何跡象</strong>。沙烏地輸油管遭襲、荷莫茲控制權流失，油價下行空間有限。除非地緣政治出現突破性轉折。</p>
+  </div>
+
+  <div class="sc b">
+    <div class="sh"><span class="sn">🟡 情境 B｜緩慢惡化、拉長戰線</span><span class="sp">機率 ~50% 最可能</span></div>
+    <ul>
+      <li>TGA 支出放緩 → 補水效果減弱 → SOFR−IORB <strong>間歇性</strong>衝過零軸</li>
+      <li>觸發點：<strong>繳稅日、季末、大型國債結算日</strong></li>
+      <li>準備金緩慢下磨（3.03T → 2.95T → 2.90T）</li>
+      <li>MOVE 在 100–120 震盪，偶爾 spike 到 130+</li>
+      <li>股市：高位震盪 + 市寬持續惡化（S&amp;P 50 日線上佔比約 20%）</li>
+    </ul>
+    <p style="margin-top:12px;margin-bottom:0;font-size:14.5px"><strong>為什麼最可能</strong>：這是「什麼都沒解決，但也沒爆掉」的路徑。財政部不能不發債（赤字）、Fed 不能不明緊縮（通膨）、油價短期沒法降 —— <strong>所有約束都卡著</strong>。</p>
+    <p style="margin-top:8px;margin-bottom:0;font-size:14.5px"><strong>觀測點</strong>：下一次季末（12 月底）+ 每月繳稅日。若那些日子的 SOFR 尖峰開始變大 → 情境 B 正往 C 滑。</p>
+  </div>
+
+  <div class="sc c">
+    <div class="sh"><span class="sn">🔴 情境 C｜流動性斷裂</span><span class="sp">機率 ~25%</span></div>
+    <div class="chain" style="margin:14px 0;font-size:12px">TGA 停止放水（現金餘額見底，距下緣僅 132B）
+    ↓
+ON RRP 已歸零（$0.3B，沒有非銀緩衝）
+    ↓
+QT 直接抽銀行準備金
+    ↓
+準備金跌破 LCLOR（2.85T）
+    ↓
+回購利率非線性飆升 → SOFR−IORB 衝過零軸
+    ↓
+回購融資成本 &gt; 基差交易利差
+    ↓
+<span class="rd">對沖基金被迫平倉 → 拋售美債現貨</span>
+    ↓
+交割失敗進一步惡化 + 長端殖利率二次暴衝
+    ↓
+MOVE 再往上 → 交易商容量再砍
+    ↓
+<span class="rd">════ 自我強化螺旋 ════</span></div>
+    <p style="font-size:14.5px;margin-bottom:8px"><strong>兩個關鍵放大器</strong>：</p>
+    <ul>
+      <li><strong>非銀槓桿 acyclical</strong> —— 對沖基金<strong>不會補位</strong>。2019/9 時銀行有餘裕可進場，<strong>現在沒有這個安全閥</strong>（sr651：非銀槓桿與價格無關，斜率 −0.41, R²≈0）。</li>
+      <li><strong>基差交易規模 $2.777T（全歷史 99th 百分位）</strong> —— 一旦融資成本超過利差，潛在平倉賣壓是<strong>史上最大</strong>。</li>
+    </ul>
+    <p style="margin-top:12px;margin-bottom:0;font-size:14.5px"><strong>觸發時序</strong>：可能只需一個「<strong>普通的資金抽離事件</strong>」（繳稅日／大型國債結算）就能點燃。</p>
+  </div>
+</div>
+
+<h2>五、壓力日曆（未來 75 天）</h2>
+<table>
+  <tr><th>日期</th><th>距今</th><th>事件</th><th>等級</th></tr>
+  <tr><td class="num">2026-10-15</td><td>6 天</td><td>繳稅日</td><td class="o">🟡</td></tr>
+  <tr><td class="num"><strong>2026-10-27/28</strong></td><td><strong>18–19 天</strong></td><td><strong>FOMC 會議</strong></td><td class="r">🔴</td></tr>
+  <tr><td class="num">2026-10-30</td><td>21 天</td><td>月末結算</td><td class="o">🟡</td></tr>
+  <tr><td class="num">2026-11-16</td><td>38 天</td><td>繳稅日</td><td class="o">🟡</td></tr>
+  <tr><td class="num">2026-11-30</td><td>52 天</td><td>月末結算</td><td class="o">🟡</td></tr>
+  <tr><td class="num"><strong>2026-12-08/09</strong></td><td><strong>60–61 天</strong></td><td><strong>FOMC 會議</strong></td><td class="r">🔴</td></tr>
+  <tr><td class="num"><strong>2026-12-15</strong></td><td><strong>67 天</strong></td><td><strong>繳稅日（大稅期）</strong></td><td class="r">🔴</td></tr>
+  <tr><td class="num"><strong>2026-12-31</strong></td><td><strong>83 天</strong></td><td><strong>季末</strong></td><td class="r">🔴</td></tr>
+</table>
+<div class="callout danger"><strong>最需警戒：2026-12-31（季末）</strong> —— 監管報表日，銀行會保留準備金、不做隔夜放款。若屆時準備金已磨至 LCLOR 附近，這是最高機率的斷裂點。</div>
+
+<h2>六、情境排序（與參考文章的差異）</h2>
+<table>
+  <tr><th>#</th><th>情境</th><th>機率</th><th>預估時序</th></tr>
+  <tr><td>1</td><td><strong>B 緩慢惡化</strong></td><td class="b">~50%</td><td>未來 4–8 週</td></tr>
+  <tr><td>2</td><td><strong>C 斷裂</strong></td><td class="o">~25%</td><td>觸發點在<strong>季末（12/31）或大型結算日</strong></td></tr>
+  <tr><td>3</td><td><strong>A 軟著陸</strong></td><td class="g">~25%</td><td>需地緣政治突破</td></tr>
+</table>
+<div class="verdict">
+  <div class="vt">與參考文章的分歧</div>
+  <p>本文認為<strong>不是「馬上崩」，而是「先磨 1–2 個月，在下一個季末／大稅期爆」</strong>。原因是 TGA 仍在放水，準備金本週甚至回升。</p>
+</div>
+
+<h2>七、最該盯的三個數字（比 SOFR 更重要）</h2>
+<table>
+  <tr><th>優先</th><th>指標</th><th>現在</th><th>觸發意義</th></tr>
+  <tr><td class="r">1</td><td><strong>TGA 週變化</strong></td><td class="num">−68B（放水中）</td><td><strong>一旦轉正 = 補水停止 = 計時器啟動</strong></td></tr>
+  <tr><td class="o">2</td><td><strong>MOVE</strong></td><td class="num">101.09</td><td>已 94th；再上 = 交易商容量再砍</td></tr>
+  <tr><td class="o">3</td><td><strong>SRF 使用量</strong></td><td class="num">峰值 $1.2B</td><td>Fed 被迫介入 = 唯一的「已在漏」確證</td></tr>
+</table>
+<p><strong>這三個都比 SOFR−IORB 領先。</strong></p>
+
+<h2>八、監控系統狀態</h2>
+<p>5 條關鍵路徑 + 4 條延伸因果鏈 + 壓力日曆（每日自動運行）</p>
+<div class="board"><span class="t">路徑1</span> 底層緩衝  <span class="rd">🔴</span>  準備金 3.03T（距 LCLOR 1,797億）+ ON RRP 0.3B
+<span class="t">路徑2</span> SRF       <span class="rd">🔴</span>  峰值 1.200B（顯著出手 3 次）
+<span class="t">路徑3</span> 交割失敗  <span class="rd">🔴</span>  8,315M（94th 百分位）
+<span class="t">路徑4</span> 基差融資  <span class="hl">🟡</span>  2.777T（全史 99th）
+<span class="t">路徑5</span> 補水停止  <span class="hl">🟡</span>  TGA 週變 -68B，距下緣 132B ★開關型
+<span class="t">──────────────────────────────────────────</span>
+<span class="t">②</span>日圓套利 <span class="gr">🟢</span>（已平倉，風險釋放）
+<span class="t">③</span>發債結構 <span class="hl">🟡</span>（ON RRP 歸零）
+<span class="t">④</span>信用外溢 <span class="hl">🟡</span>（CCC +182bps vs HY +45bps，distress 擴散中）
+<span class="t">⑤</span>油價→殖利率→波動率 <span class="rd">🔴</span>（MOVE 101，1年 94th）</div>
+
+<div class="foot">
+本報告為量化觀測與機制推演，非投資建議。因果鏈框架源自 NY Fed Liberty Street Economics 與 Staff Report 651。<br>
+市場敘事層參考：Threads「亞洲教父 @godfather_of_asian」（FICC / money market），2026-09/10 觀察。
+</div>
+
+</div>
+</body>
+</html>
