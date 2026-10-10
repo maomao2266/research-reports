@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Apple iOS 底層投資與更新 — 時間序列</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@3.0.0/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+<style>
+  :root{
+    --ink:#1a1a1a; --muted:#5c6b7a; --dim:#8a97a6; --line:#e3e8ee;
+    --bg:#ffffff; --surface:#f7f9fb;
+    --blue:#1d4ed8; --red:#c0392b; --green:#059669; --orange:#d97706; --purple:#7c3aed; --teal:#0d9488;
+    --sans:"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,-apple-system,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.75;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:960px;margin:0 auto;padding:48px 24px 90px}
+  .kicker{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);font-weight:600;margin-bottom:12px}
+  h1{font-size:30px;font-weight:800;letter-spacing:-.02em;margin-bottom:12px;line-height:1.3}
+  .meta{font-size:14px;color:var(--muted);padding-bottom:22px;border-bottom:2px solid var(--ink);margin-bottom:34px}
+  .meta b{color:var(--ink);font-weight:600}
+  h2{font-size:20px;font-weight:750;margin:44px 0 6px;letter-spacing:-.01em}
+  h2 .n{color:var(--dim);font-weight:600;margin-right:8px;font-size:16px}
+  .sub{font-size:13.5px;color:var(--muted);margin-bottom:16px}
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:20px;margin:16px 0}
+  .chartbox{position:relative;height:340px;width:100%}
+  .chartbox.tall{height:400px}
+  .concl{background:linear-gradient(135deg,#fff5f5,#fff);border:1px solid #f3c9c4;border-left:4px solid var(--red);border-radius:10px;padding:20px 24px;margin:0 0 32px}
+  .concl .tag{display:inline-block;background:var(--red);color:#fff;font-size:11px;font-weight:700;letter-spacing:.08em;padding:3px 10px;border-radius:4px;margin-bottom:10px}
+  .concl p{font-size:15px;margin-bottom:8px}
+  .concl p:last-child{margin-bottom:0}
+  .metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin:20px 0}
+  .metric{background:#fff;border:1px solid var(--line);border-radius:10px;padding:14px 16px}
+  .metric .v{font-size:22px;font-weight:800;letter-spacing:-.02em;margin-bottom:2px}
+  .metric .l{font-size:12px;color:var(--muted);font-weight:500}
+  .metric.r{border-top:3px solid var(--red)} .metric.r .v{color:var(--red)}
+  .metric.b{border-top:3px solid var(--blue)} .metric.b .v{color:var(--blue)}
+  .metric.g{border-top:3px solid var(--green)} .metric.g .v{color:var(--green)}
+  .metric.o{border-top:3px solid var(--orange)} .metric.o .v{color:var(--orange)}
+  table{width:100%;border-collapse:collapse;margin:14px 0;font-size:14px}
+  th{text-align:left;font-weight:700;font-size:12px;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);padding:9px 12px;border-bottom:2px solid var(--ink)}
+  td{padding:9px 12px;border-bottom:1px solid var(--line)}
+  tr:last-child td{border-bottom:none}
+  td.num{font-variant-numeric:tabular-nums}
+  .foot{margin-top:50px;padding-top:20px;border-top:1px solid var(--line);font-size:12.5px;color:var(--dim)}
+  .legend-note{font-size:12.5px;color:var(--muted);margin-top:8px}
+  @media(max-width:640px){.wrap{padding:30px 16px 60px}h1{font-size:23px}.chartbox{height:280px}.chartbox.tall{height:320px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="kicker">Apple · iOS 底層系統 · 時間序列</div>
+  <h1>Apple 對 iOS 底層系統的投資與更新</h1>
+  <div class="meta">
+    <b>資料範圍</b> FY2007–2026　·　<b>層級</b> 財務投資 / 工具鏈 / OS / 創新 / 硬體<br>
+    <b>來源</b> SEC EDGAR XBRL · xcodereleases.com · endoflife.date · Apple Developer Docs
+  </div>
+
+  <div class="concl">
+    <div class="tag">核心結論</div>
+    <p><strong>① 「2024-03 暫緩」不成立</strong> —— 四個月一期統計下,2024 年是逐期上升(8→9→11),真正加速在 2025 下半。</p>
+    <p><strong>② 更新絕大多數是「修補」</strong> —— 修補 45% / 創新 14% / 合規 4%。</p>
+    <p><strong>③ 但創新的絕對量沒放緩</strong> —— iOS 18 新增 3,902 API;旗艦創新條數 iOS 18→26→27 上升(16→28→32)。</p>
+    <p><strong>④ R&D 投資持續單調上升</strong> —— FY2025 達 $345.5 億(+10% YoY),零放緩。</p>
+  </div>
+
+  <div class="metrics">
+    <div class="metric b"><div class="v">$34.55B</div><div class="l">FY2025 R&D 支出</div></div>
+    <div class="metric g"><div class="v">4,803</div><div class="l">iOS 13 新增 API（歷史峰）</div></div>
+    <div class="metric o"><div class="v">456</div><div class="l">Xcode 發布（2003–2026）</div></div>
+    <div class="metric r"><div class="v">45%</div><div class="l">更新屬「修補」佔比</div></div>
+  </div>
+
+  <h2><span class="n">01</span>投資：R&D 支出 vs 資本支出</h2>
+  <div class="sub">Apple 官方 10-K 年報數字。R&D 呈單調上升,近三年加速。</div>
+  <div class="card"><div class="chartbox"><canvas id="c_rd"></canvas></div></div>
+
+  <h2><span class="n">02</span>更新節奏：每年 Xcode 發布次數</h2>
+  <div class="sub">開發工具鏈的更新頻率。2025 起明顯加速（45、46 次/年）。</div>
+  <div class="card"><div class="chartbox"><canvas id="c_xcode"></canvas></div></div>
+
+  <h2><span class="n">03</span>創新：每個 iOS 主版本新增 API 數</h2>
+  <div class="sub">從 Apple 官方 docs 的 <code>introducedAt</code> 欄位反推（37 framework、45,043 API）。iOS 13 為歷史高峰。⚠️ 7 個大型 framework 受節點上限截斷,現代版本略被低估。</div>
+  <div class="card"><div class="chartbox tall"><canvas id="c_api"></canvas></div></div>
+
+  <h2><span class="n">04</span>更新性質：創新 / 修補 / 合規</h2>
+  <div class="sub">release notes 逐條文本分類。壓倒性多數是對既有技術的修補。</div>
+  <div class="card"><div class="chartbox"><canvas id="c_class"></canvas></div></div>
+
+  <h2><span class="n">05</span>iOS SDK 版本發布時間軸</h2>
+  <div class="sub">每個 iOS SDK 版本首次隨 Xcode 發布的時間（51 個版本,2007–2026）。</div>
+  <div class="card"><div class="chartbox tall"><canvas id="c_sdk"></canvas></div></div>
+
+  <h2><span class="n">06</span>硬體世代：iPhone 機型發布時間軸</h2>
+  <div class="sub">54 款 iPhone 的發布時序(2007–2026)。</div>
+  <div class="card"><div class="chartbox tall"><canvas id="c_iphone"></canvas></div></div>
+
+  <div class="foot">
+    資料包：<code>/opt/data/quant/scripts/apple_ios_timeseries/</code>（L1–L6 共七層）<br>
+    產生時間 <span id="gen"></span> · 圖表以 Chart.js 繪製 · 資料源皆為公開免 key 端點
+  </div>
+</div>
+
+<script>
+const DATA = {"rd": [{"date": "2007", "val": 0.78}, {"date": "2008", "val": 1.11}, {"date": "2009", "val": 1.33}, {"date": "2010", "val": 1.78}, {"date": "2011", "val": 2.43}, {"date": "2012", "val": 3.38}, {"date": "2013", "val": 4.47}, {"date": "2014", "val": 6.04}, {"date": "2015", "val": 8.07}, {"date": "2016", "val": 10.04}, {"date": "2017", "val": 11.58}, {"date": "2018", "val": 14.24}, {"date": "2019", "val": 16.22}, {"date": "2020", "val": 18.75}, {"date": "2021", "val": 21.91}, {"date": "2022", "val": 26.25}, {"date": "2023", "val": 29.91}, {"date": "2024", "val": 31.37}, {"date": "2025", "val": 34.55}], "capex": [{"date": "2013", "val": 8.16}, {"date": "2014", "val": 9.57}, {"date": "2015", "val": 11.25}, {"date": "2016", "val": 12.73}, {"date": "2017", "val": 12.45}, {"date": "2018", "val": 13.31}, {"date": "2019", "val": 10.49}, {"date": "2020", "val": 7.31}, {"date": "2021", "val": 11.09}, {"date": "2022", "val": 10.71}, {"date": "2023", "val": 10.96}, {"date": "2024", "val": 9.45}, {"date": "2025", "val": 12.71}], "rev": [{"date": "2017", "val": 229.23}, {"date": "2017", "val": 88.29}, {"date": "2018", "val": 61.14}, {"date": "2018", "val": 53.27}, {"date": "2018", "val": 62.9}, {"date": "2018", "val": 84.31}, {"date": "2019", "val": 58.02}, {"date": "2019", "val": 53.81}, {"date": "2019", "val": 64.04}, {"date": "2019", "val": 91.82}, {"date": "2020", "val": 58.31}, {"date": "2020", "val": 59.69}, {"date": "2020", "val": 64.7}, {"date": "2021", "val": 365.82}, {"date": "2022", "val": 394.33}, {"date": "2023", "val": 383.29}, {"date": "2024", "val": 391.04}, {"date": "2025", "val": 416.16}], "per_year": {"2003": 2, "2004": 2, "2005": 3, "2006": 4, "2007": 2, "2008": 3, "2009": 4, "2010": 5, "2011": 10, "2012": 19, "2013": 17, "2014": 23, "2015": 34, "2016": 26, "2017": 23, "2018": 22, "2019": 26, "2020": 36, "2021": 23, "2022": 27, "2023": 26, "2024": 28, "2025": 45, "2026": 46}, "sdk_tl": [{"ios_sdk": "2.0", "first_shipped": "2007-10", "via_xcode": "3.0"}, {"ios_sdk": "3.1.3", "first_shipped": "2009-06", "via_xcode": "3.1.3"}, {"ios_sdk": "3.2", "first_shipped": "2010-03", "via_xcode": "3.2.2"}, {"ios_sdk": "4.2", "first_shipped": "2010-11", "via_xcode": "3.2.5"}, {"ios_sdk": "4.3", "first_shipped": "2011-03", "via_xcode": "3.2.6"}, {"ios_sdk": "11.3", "first_shipped": "2018-03", "via_xcode": "9.3"}, {"ios_sdk": "11.4", "first_shipped": "2018-04", "via_xcode": "9.4"}, {"ios_sdk": "12.0", "first_shipped": "2018-06", "via_xcode": "10.0"}, {"ios_sdk": "12.1", "first_shipped": "2018-09", "via_xcode": "10.1"}, {"ios_sdk": "12.2", "first_shipped": "2019-01", "via_xcode": "10.2"}, {"ios_sdk": "13.0", "first_shipped": "2019-06", "via_xcode": "11.0"}, {"ios_sdk": "12.4", "first_shipped": "2019-07", "via_xcode": "10.3"}, {"ios_sdk": "13.1", "first_shipped": "2019-09", "via_xcode": "11.1"}, {"ios_sdk": "13.2", "first_shipped": "2019-10", "via_xcode": "11.2"}, {"ios_sdk": "13.2.2", "first_shipped": "2019-11", "via_xcode": "11.2.1"}, {"ios_sdk": "13.4", "first_shipped": "2020-02", "via_xcode": "11.4"}, {"ios_sdk": "13.4.1", "first_shipped": "2020-04", "via_xcode": "11.4.1"}, {"ios_sdk": "13.5", "first_shipped": "2020-04", "via_xcode": "11.5"}, {"ios_sdk": "13.6", "first_shipped": "2020-06", "via_xcode": "11.6"}, {"ios_sdk": "14.0", "first_shipped": "2020-06", "via_xcode": "12.0"}, {"ios_sdk": "13.7", "first_shipped": "2020-08", "via_xcode": "11.7"}, {"ios_sdk": "14.2", "first_shipped": "2020-09", "via_xcode": "12.2"}, {"ios_sdk": "14.1", "first_shipped": "2020-10", "via_xcode": "12.1"}, {"ios_sdk": "14.3", "first_shipped": "2020-11", "via_xcode": "12.3"}, {"ios_sdk": "14.4", "first_shipped": "2021-01", "via_xcode": "12.4"}, {"ios_sdk": "14.5", "first_shipped": "2021-02", "via_xcode": "12.5"}, {"ios_sdk": "15.0", "first_shipped": "2021-06", "via_xcode": "13.0"}, {"ios_sdk": "15.2", "first_shipped": "2021-10", "via_xcode": "13.2"}, {"ios_sdk": "15.4", "first_shipped": "2022-01", "via_xcode": "13.3"}, {"ios_sdk": "15.5", "first_shipped": "2022-05", "via_xcode": "13.4"}, {"ios_sdk": "16.0", "first_shipped": "2022-06", "via_xcode": "14.0"}, {"ios_sdk": "16.1", "first_shipped": "2022-09", "via_xcode": "14.1"}, {"ios_sdk": "16.2", "first_shipped": "2022-12", "via_xcode": "14.2"}, {"ios_sdk": "16.4", "first_shipped": "2023-02", "via_xcode": "14.3"}, {"ios_sdk": "17.0", "first_shipped": "2023-06", "via_xcode": "15.0"}, {"ios_sdk": "17.2", "first_shipped": "2023-10", "via_xcode": "15.1"}, {"ios_sdk": "17.4", "first_shipped": "2024-01", "via_xcode": "15.3"}, {"ios_sdk": "17.5", "first_shipped": "2024-04", "via_xcode": "15.4"}, {"ios_sdk": "18.0", "first_shipped": "2024-06", "via_xcode": "16.0"}, {"ios_sdk": "18.1", "first_shipped": "2024-08", "via_xcode": "16.1"}, {"ios_sdk": "18.2", "first_shipped": "2024-10", "via_xcode": "16.2"}, {"ios_sdk": "18.4", "first_shipped": "2025-02", "via_xcode": "16.3"}, {"ios_sdk": "18.5", "first_shipped": "2025-04", "via_xcode": "16.4"}, {"ios_sdk": "26.0", "first_shipped": "2025-06", "via_xcode": "26.0"}, {"ios_sdk": "26.1", "first_shipped": "2025-09", "via_xcode": "26.1"}, {"ios_sdk": "26.2", "first_shipped": "2025-11", "via_xcode": "26.2"}, {"ios_sdk": "26.4", "first_shipped": "2026-02", "via_xcode": "26.4"}, {"ios_sdk": "26.5", "first_shipped": "2026-03", "via_xcode": "26.5"}, {"ios_sdk": "26.4.1", "first_shipped": "2026-04", "via_xcode": "26.4.1"}, {"ios_sdk": "27.0", "first_shipped": "2026-06", "via_xcode": "27.0"}, {"ios_sdk": "27.2", "first_shipped": "2026-09", "via_xcode": "27.2"}], "majors": {"27": 2177, "26": 2808, "11": 2437, "13": 4803, "17": 2661, "15": 2444, "18": 3902, "14": 2461, "16": 1707, "8": 4655, "9": 1738, "12": 702, "10": 2644}, "text_innov": {"14": {"innov": 22, "fix": 8, "comp": 4}, "15": {"innov": 21, "fix": 14, "comp": 9}, "17": {"innov": 20, "fix": 203, "comp": 4}, "18": {"innov": 16, "fix": 186, "comp": 2}, "26": {"innov": 28, "fix": 150, "comp": 5}, "27": {"innov": 32, "fix": 201, "comp": 10}}, "iphone": [{"name": "18-pro", "date": "2026-09-18"}, {"name": "18-pro-max", "date": "2026-09-18"}, {"name": "17e", "date": "2026-03-11"}, {"name": "17", "date": "2025-09-19"}, {"name": "air", "date": "2025-09-19"}, {"name": "17-pro", "date": "2025-09-19"}, {"name": "17-pro-max", "date": "2025-09-19"}, {"name": "16e", "date": "2025-02-28"}, {"name": "16", "date": "2024-09-20"}, {"name": "16-plus", "date": "2024-09-20"}, {"name": "16-pro", "date": "2024-09-20"}, {"name": "16-pro-max", "date": "2024-09-20"}, {"name": "15", "date": "2023-09-22"}, {"name": "15-plus", "date": "2023-09-22"}, {"name": "15-pro", "date": "2023-09-22"}, {"name": "15-pro-max", "date": "2023-09-22"}, {"name": "14-plus", "date": "2022-10-07"}, {"name": "14", "date": "2022-09-16"}, {"name": "14-pro", "date": "2022-09-16"}, {"name": "14-pro-max", "date": "2022-09-16"}, {"name": "se-3", "date": "2022-03-18"}, {"name": "13", "date": "2021-09-24"}, {"name": "13-mini", "date": "2021-09-24"}, {"name": "13-pro", "date": "2021-09-24"}, {"name": "13-pro-max", "date": "2021-09-24"}, {"name": "12-mini", "date": "2020-11-13"}, {"name": "12-pro-max", "date": "2020-11-13"}, {"name": "12", "date": "2020-10-23"}, {"name": "12-pro", "date": "2020-10-23"}, {"name": "se-2", "date": "2020-04-24"}, {"name": "11", "date": "2019-09-20"}, {"name": "11-pro", "date": "2019-09-20"}, {"name": "11-pro-max", "date": "2019-09-20"}, {"name": "xr", "date": "2018-10-26"}, {"name": "xs", "date": "2018-09-21"}, {"name": "xs-max", "date": "2018-09-21"}, {"name": "8", "date": "2017-09-22"}, {"name": "8-plus", "date": "2017-09-22"}, {"name": "x", "date": "2017-09-12"}, {"name": "7", "date": "2016-09-16"}, {"name": "7-plus", "date": "2016-09-16"}, {"name": "se-1", "date": "2016-03-31"}, {"name": "6s", "date": "2015-09-25"}, {"name": "6s-plus", "date": "2015-09-25"}, {"name": "6", "date": "2014-09-25"}, {"name": "6-plus", "date": "2014-09-25"}, {"name": "5c", "date": "2013-09-20"}, {"name": "5s", "date": "2013-09-20"}, {"name": "5", "date": "2012-09-21"}, {"name": "4s", "date": "2011-10-14"}, {"name": "4", "date": "2010-06-24"}, {"name": "3gs", "date": "2009-06-19"}, {"name": "3g", "date": "2008-07-11"}, {"name": "1", "date": "2007-06-29"}], "ios_eol": [{"cycle": "27", "releaseDate": "2026-09-14", "eol": false, "latest": "27.0.1", "latestReleaseDate": "2026-09-28", "lts": false, "support": true}, {"cycle": "26", "releaseDate": "2025-09-15", "eol": false, "latest": "26.7.1", "latestReleaseDate": "2026-09-28", "lts": false, "support": "2026-09-14"}, {"cycle": "18", "releaseDate": "2024-09-16", "eol": false, "latest": "18.7.10", "latestReleaseDate": "2026-08-17", "lts": false, "support": "2025-09-15"}, {"cycle": "17", "releaseDate": "2023-09-18", "eol": "2025-05-13", "latest": "17.7.7", "latestReleaseDate": "2025-05-13", "lts": false, "support": "2024-09-16"}, {"cycle": "16", "releaseDate": "2022-09-12", "eol": false, "latest": "16.7.16", "latestReleaseDate": "2026-05-11", "link": "https://developer.apple.com/documentation/ios-ipados-release-notes/ios-16-release-notes", "lts": false, "support": "2023-09-18"}, {"cycle": "15", "releaseDate": "2021-09-20", "eol": false, "latest": "15.8.8", "latestReleaseDate": "2026-05-11", "lts": false, "support": "2022-09-12"}, {"cycle": "14", "releaseDate": "2020-09-16", "eol": "2021-10-26", "latest": "14.8.1", "latestReleaseDate": "2021-10-26", "lts": false, "support": "2021-09-20"}, {"cycle": "13", "releaseDate": "2019-09-19", "eol": "2020-09-16", "latest": "13.7", "latestReleaseDate": "2020-09-01", "link": "https://developer.apple.com/documentation/ios-ipados-release-notes/ios-13-release-notes", "lts": false, "support": "2020-09-16"}, {"cycle": "12", "releaseDate": "2018-09-17", "eol": "2026-01-26", "latest": "12.5.8", "latestReleaseDate": "2026-01-26", "link": "https://developer.apple.com/documentation/ios-ipados-release-notes/ios-12-release-notes", "lts": false, "support": "2019-09-19"}, {"cycle": "11", "releaseDate": "2017-09-19", "eol": "2018-10-08", "latest": "11.4.1", "latestReleaseDate": "2018-07-09", "link": "https://support.apple.com/102991", "lts": false, "support": "2018-09-17"}, {"cycle": "10", "releaseDate": "2016-09-13", "eol": "2019-07-22", "latest": "10.3.4", "latestReleaseDate": "2019-07-22", "link": "https://support.apple.com/102990", "lts": false, "support": "2017-09-19"}, {"cycle": "9", "releaseDate": "2015-09-16", "eol": "2019-07-22", "latest": "9.3.6", "latestReleaseDate": "2019-07-22", "link": "https://support.apple.com/103834", "lts": false, "support": "2016-09-13"}, {"cycle": "8", "releaseDate": "2014-09-17", "eol": "2015-09-30", "latest": "8.4.1", "latestReleaseDate": "2015-08-13", "link": "https://support.apple.com/102782", "lts": false, "support": "2015-09-16"}, {"cycle": "7", "releaseDate": "2013-09-18", "eol": "2014-10-20", "latest": "7.1.2", "latestReleaseDate": "2014-06-30", "link": "https://support.apple.com/102996", "lts": false, "support": "2014-09-17"}, {"cycle": "6", "releaseDate": "2012-09-19", "eol": "2013-09-26", "latest": "6.1.6", "latestReleaseDate": "2014-02-21", "link": "https://support.apple.com/102995", "lts": false, "support": "2013-09-18"}, {"cycle": "5", "releaseDate": "2011-10-12", "eol": "2012-11-01", "latest": "5.1.1", "latestReleaseDate": "2012-05-07", "link": "https://support.apple.com/102998", "lts": false, "support": "2012-09-19"}]};
+Chart.defaults.font.family = '"Noto Sans TC","PingFang TC",system-ui,sans-serif';
+Chart.defaults.color = '#5c6b7a';
+Chart.defaults.font.size = 12;
+document.getElementById('gen').textContent = new Date().toLocaleString('zh-TW');
+
+const C = {blue:'#1d4ed8',red:'#c0392b',green:'#059669',orange:'#d97706',purple:'#7c3aed',teal:'#0d9488',dim:'#8a97a6'};
+
+// 01 R&D vs CapEx
+const rd = DATA.rd, capex = DATA.capex;
+const rdYears = rd.map(x=>x.date);
+const capexMap = Object.fromEntries(capex.map(x=>[x.date,x.val]));
+new Chart(document.getElementById('c_rd'), {
+  type:'line',
+  data:{ labels:rdYears, datasets:[
+    {label:'R&D 支出 (十億美元)', data:rd.map(x=>x.val), borderColor:C.blue, backgroundColor:'rgba(29,78,216,.08)', fill:true, tension:.3, pointRadius:2, borderWidth:2.5},
+    {label:'資本支出 (十億美元)', data:rdYears.map(y=>capexMap[y]??null), borderColor:C.orange, backgroundColor:'transparent', tension:.3, pointRadius:2, borderWidth:2, borderDash:[5,4]},
+  ]},
+  options:{ responsive:true, maintainAspectRatio:false, interaction:{mode:'index',intersect:false},
+    plugins:{legend:{position:'bottom'}, tooltip:{callbacks:{label:c=>c.dataset.label+': $'+c.parsed.y+'B'}}},
+    scales:{ y:{beginAtZero:true, title:{display:true,text:'十億美元'}, grid:{color:'#eef1f5'}}, x:{grid:{display:false}}}
+  }
+});
+
+// 02 Xcode per year
+const py = DATA.per_year;
+const pyYears = Object.keys(py).sort((a,b)=>a-b);
+new Chart(document.getElementById('c_xcode'), {
+  type:'bar',
+  data:{ labels:pyYears, datasets:[{label:'Xcode 發布次數', data:pyYears.map(y=>py[y]),
+    backgroundColor:pyYears.map(y=> (+y>=2025?C.red:(+y>=2020?C.blue:C.dim))), borderRadius:3}]},
+  options:{ responsive:true, maintainAspectRatio:false,
+    plugins:{legend:{display:false}, tooltip:{callbacks:{label:c=>c.parsed.y+' 次'}}},
+    scales:{ y:{beginAtZero:true, title:{display:true,text:'次/年'}, grid:{color:'#eef1f5'}}, x:{grid:{display:false}, ticks:{maxRotation:0, autoSkip:true}}}
+  }
+});
+
+// 03 API innovation by major iOS
+const majors = DATA.majors;
+const mKeys = Object.keys(majors).map(Number).sort((a,b)=>a-b);
+new Chart(document.getElementById('c_api'), {
+  type:'bar',
+  data:{ labels:mKeys.map(m=>'iOS '+m), datasets:[{label:'新增 API 數', data:mKeys.map(m=>majors[m]),
+    backgroundColor:mKeys.map(m=> m===13?C.red:(m===18?C.orange:C.blue)), borderRadius:3}]},
+  options:{ responsive:true, maintainAspectRatio:false,
+    plugins:{legend:{display:false}, tooltip:{callbacks:{label:c=>c.parsed.y.toLocaleString()+' 個 API'}}},
+    scales:{ y:{beginAtZero:true, title:{display:true,text:'新增 API 數'}, grid:{color:'#eef1f5'}}, x:{grid:{display:false}}}
+  }
+});
+
+// 04 classification (stacked bar per version)
+const ti = DATA.text_innov;
+const tKeys = Object.keys(ti).map(Number).sort((a,b)=>a-b);
+new Chart(document.getElementById('c_class'), {
+  type:'bar',
+  data:{ labels:tKeys.map(v=>'iOS '+v), datasets:[
+    {label:'創新', data:tKeys.map(v=>ti[v].innov), backgroundColor:C.green, borderRadius:2},
+    {label:'修補', data:tKeys.map(v=>ti[v].fix), backgroundColor:C.orange, borderRadius:2},
+    {label:'合規', data:tKeys.map(v=>ti[v].comp), backgroundColor:C.purple, borderRadius:2},
+  ]},
+  options:{ responsive:true, maintainAspectRatio:false,
+    plugins:{legend:{position:'bottom'}, tooltip:{mode:'index'}},
+    scales:{ x:{stacked:true, grid:{display:false}}, y:{stacked:true, title:{display:true,text:'條數'}, grid:{color:'#eef1f5'}}}
+  }
+});
+
+// 05 SDK timeline (line, x=release date as ms, y=sdk version)
+const tl = DATA.sdk_tl;
+const pts = tl.map(x=>{ const [y,m]=x.first_shipped.split('-'); return {x:Date.UTC(+y,+m-1,1), y:parseFloat(x.ios_sdk), label:x.ios_sdk, xcode:x.via_xcode}; });
+new Chart(document.getElementById('c_sdk'), {
+  type:'scatter',
+  data:{ datasets:[{label:'iOS SDK 版本首發', data:pts, backgroundColor:C.teal, pointRadius:4, pointHoverRadius:6, parsing:false}]},
+  options:{ responsive:true, maintainAspectRatio:false,
+    plugins:{legend:{display:false}, tooltip:{callbacks:{title:cs=>new Date(cs[0].raw.x).toISOString().slice(0,7), label:c=>'iOS SDK '+c.raw.label+' (Xcode '+c.raw.xcode+')'}}},
+    scales:{ x:{type:'time', time:{unit:'year'}, title:{display:true,text:'發布時間'}, grid:{color:'#eef1f5'},
+              ticks:{callback:v=>new Date(v).getUTCFullYear()}},
+             y:{title:{display:true,text:'iOS SDK 版本'}, grid:{color:'#eef1f5'},
+                ticks:{callback:v=>v}}
+    }
+  }
+});
+
+// 06 iPhone timeline (line, x=release date as ms, y=sequential generation index so dots spread)
+const ip = DATA.iphone.slice().sort((a,b)=> new Date(a.date)-new Date(b.date));
+const ipts = ip.map((x,i)=>({x:new Date(x.date).getTime(), y:i+1, name:x.name, date:x.date}));
+new Chart(document.getElementById('c_iphone'), {
+  type:'line',
+  data:{ datasets:[{label:'iPhone 機型發布', data:ipts, borderColor:C.purple, backgroundColor:'rgba(124,58,237,.06)',
+    pointBackgroundColor:C.purple, pointRadius:3, pointHoverRadius:6, borderWidth:1.5, tension:.15, parsing:false, fill:true}]},
+  options:{ responsive:true, maintainAspectRatio:false,
+    plugins:{legend:{display:false}, tooltip:{callbacks:{title:cs=>new Date(cs[0].raw.x).toISOString().slice(0,10), label:c=>c.raw.name+'（第 '+c.raw.y+' 代）'}}},
+    scales:{ x:{type:'time', time:{unit:'year'}, title:{display:true,text:'發布時間'}, grid:{color:'#eef1f5'},
+              ticks:{callback:v=>new Date(v).getUTCFullYear()}},
+             y:{title:{display:true,text:'機型世代（累計）'}, grid:{color:'#eef1f5'}}
+    }
+  }
+});
+</script>
+</body>
+</html>
