@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>美國短天期公債 ETF 比較 — 台灣投信</title>
+<style>
+  :root{--ink:#1a1a1a;--muted:#5c6b7a;--dim:#8a97a6;--line:#e3e8ee;--bg:#fff;--surface:#f7f9fb;
+        --blue:#1d4ed8;--red:#c0392b;--green:#059669;--orange:#d97706;--purple:#7c3aed;
+        --sans:"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif;}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.7;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1280px;margin:0 auto;padding:48px 24px 90px}
+  .kicker{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);font-weight:600;margin-bottom:12px}
+  h1{font-size:30px;font-weight:800;letter-spacing:-.02em;margin-bottom:12px;line-height:1.3}
+  .meta{font-size:14px;color:var(--muted);padding-bottom:22px;border-bottom:2px solid var(--ink);margin-bottom:30px}
+  .meta b{color:var(--ink);font-weight:600}
+  h2{font-size:19px;font-weight:750;margin:42px 0 12px}
+  .note{background:#fffaf0;border:1px solid #fcd9a1;border-left:4px solid var(--orange);border-radius:10px;padding:16px 20px;margin:0 0 26px;font-size:14.5px}
+  .note b{color:#92400e}
+  .tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:#fff}
+  table{width:100%;border-collapse:collapse;font-size:13.5px;min-width:1100px}
+  th{background:var(--surface);text-align:left;font-size:11.5px;letter-spacing:.04em;text-transform:uppercase;
+     color:var(--muted);font-weight:700;padding:12px 10px;border-bottom:2px solid var(--ink);white-space:nowrap}
+  td{padding:12px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+  tr:last-child td{border-bottom:none}
+  tr:hover td{background:#fbfcfe}
+  td.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+  .hl{background:#e8f5ee;font-weight:800;color:var(--green);border-radius:4px}
+  .code{white-space:nowrap}
+  .sub{font-size:11.5px;color:var(--dim);font-weight:400;line-height:1.4}
+  .pill{display:inline-block;font-size:10.5px;font-weight:700;padding:2px 8px;border-radius:20px;margin-bottom:4px}
+  .pill.short{background:#dbeafe;color:#1e40af}
+  .pill.mid{background:#fef3c7;color:#92400e}
+  .take{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;margin:20px 0}
+  .card{border:1px solid var(--line);border-radius:12px;padding:18px 20px;background:#fff}
+  .card h3{font-size:15px;font-weight:750;margin-bottom:8px}
+  .card p{font-size:14px;color:#2d3748}
+  .card.win{border-left:4px solid var(--green)}
+  .card.warn{border-left:4px solid var(--orange)}
+  .card.info{border-left:4px solid var(--blue)}
+  .foot{margin-top:46px;padding-top:20px;border-top:1px solid var(--line);font-size:12.5px;color:var(--dim)}
+  @media(max-width:700px){.wrap{padding:28px 14px 60px}h1{font-size:22px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="kicker">Taiwan ETFs · US Short-Duration Treasury</div>
+  <h1>美國短天期公債 ETF 比較</h1>
+  <div class="meta">
+    <b>範圍</b> 台灣投信發行、追蹤美國短天期公債指數之 ETF（現存 5 檔）　·　<b>資料日期</b> 2026-10-16<br>
+    <b>來源</b> MoneyDJ ETF 資料庫 · FinMind 歷史價格與除息 · 各投信公開說明書
+  </div>
+
+  <div class="note">
+    <b>⚠️ 先講一個重要前提：台灣沒有「ICE 0-3 年美國公債」指數的 ETF。</b><br>
+    台灣投信發行的短天期美債 ETF 分成兩類：<b>0-1 年</b>（約當現金）與 <b>1-3 年</b>。
+    最接近你說的「0-3 年」的是 <b>1-3 年</b> 這一組（存續期約 1.9 年）。
+    若你要的是真正的 0-3 年指數，得買美國掛牌的 <b>SHY</b>（iShares 1-3 Year Treasury）或 <b>VGSH</b>（Vanguard）。
+  </div>
+
+  <h2>完整比較表</h2>
+  <div class="tablewrap">
+    <table>
+      <thead><tr>
+        <th>代號 / 名稱</th><th>投信</th><th>追蹤指數 / 天期</th><th>經理費</th><th>總管理費</th>
+        <th>配息頻率</th><th>殖利率</th><th>近1年</th><th>近2年</th><th>近3年</th><th>YTD</th>
+        <th>規模<br>(百萬台幣)</th><th>成分<br>債券</th><th>成立日</th>
+      </tr></thead>
+      <tbody>
+    <tr>
+      <td class="code"><b>00719B</b><br><span class="sub">元大美債1-3</span></td>
+      <td>元大投信</td>
+      <td><span class="pill mid">1-3年</span><div class="sub">ICE 美國政府 1-3 年期債券指數</div></td>
+      <td class="num">0.07%</td>
+      <td class="num hl">0.17%<div class="sub">內含非管理 0.10%</div></td>
+      <td>季配</td>
+      <td class="num">3.41%</td>
+      <td class="num">+7.49%</td>
+      <td class="num">+6.66%</td>
+      <td class="num">+11.77%</td>
+      <td class="num">+4.11%</td>
+      <td class="num">10,293</td>
+      <td class="num">72</td>
+      <td class="num sub">2018/01/19</td>
+    </tr>
+    <tr>
+      <td class="code"><b>00694B</b><br><span class="sub">富邦美債1-3年</span></td>
+      <td>富邦投信</td>
+      <td><span class="pill mid">1-3年</span><div class="sub">富時美國政府債券 1-3 年期指數</div></td>
+      <td class="num">0.12%</td>
+      <td class="num hl">0.17%<div class="sub">內含非管理 0.05%</div></td>
+      <td>季配</td>
+      <td class="num">2.89%</td>
+      <td class="num">+7.33%</td>
+      <td class="num">+6.78%</td>
+      <td class="num">+12.23%</td>
+      <td class="num">+4.05%</td>
+      <td class="num">1,321</td>
+      <td class="num">94</td>
+      <td class="num sub">2017/05/31</td>
+    </tr>
+    <tr>
+      <td class="code"><b>00864B</b><br><span class="sub">中信美國公債0-1</span></td>
+      <td>中信投信</td>
+      <td><span class="pill short">0-1年</span><div class="sub">ICE 美國政府 0-1 年期債券指數</div></td>
+      <td class="num">0.10%</td>
+      <td class="num">0.18%<div class="sub">內含非管理 0.08%</div></td>
+      <td>季配</td>
+      <td class="num">4.75%</td>
+      <td class="num hl">+9.35%</td>
+      <td class="num">+8.19%</td>
+      <td class="num">+13.19%</td>
+      <td class="num">+5.70%</td>
+      <td class="num">5,334</td>
+      <td class="num">47</td>
+      <td class="num sub">2019/10/08</td>
+    </tr>
+    <tr>
+      <td class="code"><b>00859B</b><br><span class="sub">群益0-1年美債</span></td>
+      <td>群益投信</td>
+      <td><span class="pill short">0-1年</span><div class="sub">ICE BofA 0-1 年期美國政府公債指數</div></td>
+      <td class="num">0.10%</td>
+      <td class="num">0.25%<div class="sub">內含非管理 0.15%</div></td>
+      <td>季配</td>
+      <td class="num hl">5.81%</td>
+      <td class="num">+9.10%</td>
+      <td class="num">+7.76%</td>
+      <td class="num">+12.59%</td>
+      <td class="num">+5.62%</td>
+      <td class="num">1,535</td>
+      <td class="num">40</td>
+      <td class="num sub">2019/10/08</td>
+    </tr>
+    <tr>
+      <td class="code"><b>00856B</b><br><span class="sub">永豐1-3年美公債</span></td>
+      <td>永豐投信</td>
+      <td><span class="pill mid">1-3年</span><div class="sub">ICE 1-3 年期美國公債指數</div></td>
+      <td class="num">0.11%</td>
+      <td class="num">0.26%<div class="sub">內含非管理 0.15%</div></td>
+      <td>季配</td>
+      <td class="num">3.62%</td>
+      <td class="num">+7.57%</td>
+      <td class="num">+6.28%</td>
+      <td class="num">+11.20%</td>
+      <td class="num">+3.97%</td>
+      <td class="num">259</td>
+      <td class="num">38</td>
+      <td class="num sub">2019/09/19</td>
+    </tr></tbody>
+    </table>
+  </div>
+  <div class="sub" style="margin-top:10px">
+    報酬率為<b>含息總報酬</b>（價格變動 + 期間配息，自行以 FinMind 收盤價與除息還原計算，非網站公告值）。
+    綠色標記＝該欄最佳。
+  </div>
+
+  <h2>四個關鍵結論</h2>
+  <div class="take">
+    <div class="card win">
+      <h3>① 費用最低：00719B 元大 &amp; 00694B 富邦（0.17%）</h3>
+      <p>兩檔總管理費並列最低。但結構不同：元大經理費僅 0.07%（最低）卻有 0.10% 非管理費用；富邦經理費 0.12% 較高但非管理費只有 0.05%。<b>合計相同。</b></p>
+    </div>
+    <div class="card warn">
+      <h3>② 費用最高：00856B 永豐（0.26%）</h3>
+      <p>比最低的兩檔貴 <b>0.09pp</b>。而它規模只有 2.6 億（最小的），流動性也最差（月均成交 27 張），**費用高效率差**。</p>
+    </div>
+    <div class="card win">
+      <h3>③ 報酬最好：00864B 中信（近1年 +9.35%）</h3>
+      <p>0-1 年組明顯勝 1-3 年組（+9.35% / +9.10% vs +7.3~7.6%）。原因是<b>短天期對利率敏感度低</b>，2025-26 長端波動大時，短端反而穩。<b>但這不是「選股能力」，是天期差異。</b></p>
+    </div>
+    <div class="card info">
+      <h3>④ 殖利率最高：00859B 群益（5.81%）</h3>
+      <p>但它總費用也偏高（0.25%）。殖利率高是因為<b>配息率抓得高</b>（近1年配 2.40 元），不代表總報酬最好——它的近1年總報酬 +9.10% 反而略輸中信。</p>
+    </div>
+  </div>
+
+  <h2>怎麼選（依需求）</h2>
+  <div class="tablewrap" style="padding:6px">
+  <table style="min-width:auto">
+    <thead><tr><th>你的需求</th><th>建議</th><th>理由</th></tr></thead>
+    <tbody>
+      <tr><td><b>純粹省費用、長期持有</b></td><td>00719B 元大 或 00694B 富邦</td><td>總管理費 0.17% 最低，且規模夠大（元大 103 億）</td></tr>
+      <tr><td><b>要最高流動性</b></td><td>00719B 元大</td><td>規模 103 億、月均成交 265 萬股，是 1-3 年組唯一好進出的</td></tr>
+      <tr><td><b>當現金替代、要穩</b></td><td>00864B 中信（0-1年）</td><td>存續期最短、波動最小，近 1 年報酬也最好</td></tr>
+      <tr><td><b>要最高配息現金流</b></td><td>00859B 群益</td><td>殖利率 5.81% 最高，但費用貴 0.08pp，總報酬略輸</td></tr>
+      <tr><td><b>避開</b></td><td>00856B 永豐</td><td>規模僅 2.6 億、月均成交 27 張、費用最高 — 流動性風險大</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h2>⚠️ 三個必須知道的坑</h2>
+  <div class="card warn" style="margin-bottom:14px">
+    <h3>1. 「殖利率」≠「報酬率」</h3>
+    <p>00859B 殖利率 5.81% 最高，但近 1 年總報酬 9.10% 輸給 00864B 的 9.35%。<b>高配息可能來自本金（收益平準金）</b>，看總報酬才準。</p>
+  </div>
+  <div class="card warn" style="margin-bottom:14px">
+    <h3>2. 這 5 檔都是「含息」但不能只看報酬排名</h3>
+    <p>0-1 年 vs 1-3 年<b>是兩種不同商品</b>，報酬差異主要來自存續期，不是經理人能力。要同類比較才有意義。</p>
+  </div>
+  <div class="card warn">
+    <h3>3. 都是台幣計價，藏著匯率風險</h3>
+    <p>這些 ETF 投資美元資產但以台幣計價（多數<b>未做匯率避險</b>）。台幣升值時，美元債券的台幣報酬會被吃掉。要純美元曝險請看「美元計價級別」或美國掛牌 ETF。</p>
+  </div>
+
+  <div class="foot">
+    資料抓取時間 2026-10-16 · 報酬率為自行計算之含息總報酬（FinMind 收盤價 + 除息還原）<br>
+    基金費用與配息資料來自 MoneyDJ ETF 資料庫；實際費用率以各投信公開說明書為準。<br>
+    本表僅為資料整理，不構成投資建議。
+  </div>
+</div>
+</body>
+</html>
