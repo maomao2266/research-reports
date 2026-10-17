@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>如何避開匯率風險 — 美債 ETF 台幣投資人實作指南</title>
+<style>
+  :root{--ink:#1a1a1a;--muted:#5c6b7a;--dim:#8a97a6;--line:#e3e8ee;--bg:#fff;--surface:#f7f9fb;
+        --blue:#1d4ed8;--red:#c0392b;--green:#059669;--orange:#d97706;--purple:#7c3aed;
+        --sans:"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif;}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.7;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1180px;margin:0 auto;padding:48px 24px 90px}
+  .kicker{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);font-weight:600;margin-bottom:12px}
+  h1{font-size:30px;font-weight:800;letter-spacing:-.02em;margin-bottom:12px;line-height:1.3}
+  .meta{font-size:14px;color:var(--muted);padding-bottom:22px;border-bottom:2px solid var(--ink);margin-bottom:30px}
+  .meta b{color:var(--ink);font-weight:600}
+  h2{font-size:20px;font-weight:750;margin:46px 0 14px}
+  h3.sub2{font-size:15px;font-weight:700;margin:24px 0 10px;color:var(--muted)}
+  .note{background:#fffaf0;border:1px solid #fcd9a1;border-left:4px solid var(--orange);border-radius:10px;padding:16px 20px;margin:0 0 16px;font-size:14.5px}
+  .note b{color:#92400e}
+  .note.red{background:#fef2f2;border-color:#fecaca;border-left-color:var(--red)}
+  .note.red b{color:#991b1b}
+  .note.blue{background:#eff6ff;border-color:#bfdbfe;border-left-color:var(--blue)}
+  .note.blue b{color:#1e40af}
+  .note.green{background:#ecfdf5;border-color:#a7f3d0;border-left-color:var(--green)}
+  .note.green b{color:#065f46}
+  .tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:#fff}
+  table{width:100%;border-collapse:collapse;font-size:13.5px;min-width:820px}
+  th{background:var(--surface);text-align:left;font-size:11.5px;letter-spacing:.04em;color:var(--muted);
+     font-weight:700;padding:12px 10px;border-bottom:2px solid var(--ink);white-space:nowrap}
+  td{padding:12px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+  tr:last-child td{border-bottom:none}
+  tr:hover td{background:#fbfcfe}
+  td.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+  .good{background:#e8f5ee;font-weight:800;color:var(--green);border-radius:4px;padding:1px 5px}
+  .bad{background:#fdecea;font-weight:800;color:var(--red);border-radius:4px;padding:1px 5px}
+  .mid{background:#fef3c7;font-weight:700;color:#92400e;border-radius:4px;padding:1px 5px}
+  .sub{font-size:11.5px;color:var(--dim);font-weight:400;line-height:1.4}
+  .opts{display:grid;gap:16px;margin:20px 0}
+  .opt{border:1px solid var(--line);border-radius:12px;padding:20px 22px;background:#fff;position:relative}
+  .opt.best{border:2px solid var(--green);background:#f8fffb}
+  .opt .rank{position:absolute;top:-11px;left:20px;background:var(--ink);color:#fff;font-size:11px;font-weight:700;
+    padding:2px 10px;border-radius:20px;letter-spacing:.04em}
+  .opt.best .rank{background:var(--green)}
+  .opt h3{font-size:17px;font-weight:780;margin-bottom:6px}
+  .opt .desc{font-size:14px;color:#2d3748;margin-bottom:12px}
+  .opt .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin:12px 0}
+  .opt .cell{background:var(--surface);border-radius:8px;padding:10px 12px}
+  .opt .cell .l{font-size:11px;color:var(--muted);font-weight:600}
+  .opt .cell .v{font-size:15px;font-weight:750;margin-top:2px}
+  .pros{font-size:13.5px;color:#065f46;margin-top:10px}
+  .cons{font-size:13.5px;color:#991b1b;margin-top:4px}
+  .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin:24px 0}
+  .kpi{border:1px solid var(--line);border-radius:12px;padding:16px 18px;background:var(--surface)}
+  .kpi .lb{font-size:11.5px;color:var(--muted);font-weight:600}
+  .kpi .vl{font-size:24px;font-weight:800;margin:6px 0 2px;font-variant-numeric:tabular-nums}
+  .kpi .ds{font-size:12px;color:var(--dim)}
+  .kpi.g .vl{color:var(--green)} .kpi.r .vl{color:var(--red)}
+  .foot{margin-top:48px;padding-top:20px;border-top:1px solid var(--line);font-size:12.5px;color:var(--dim)}
+  @media(max-width:700px){.wrap{padding:28px 14px 60px}h1{font-size:22px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="kicker">Taiwan ETFs · Currency Risk · Practical Guide</div>
+  <h1>怎麼避開匯率風險</h1>
+  <div class="meta">
+    <b>問題</b> 台幣投資人買美元債券 ETF，匯率吃掉的報酬比利率還多<br>
+    <b>方法</b> 全市場 424 檔 ETF 掃描 + 同基金雙級別實測對照（00687B vs 00687C）　·　<b>資料</b> FinMind、央行匯率
+  </div>
+
+  <div class="note blue">
+    <b>📌 先講結論：有 4 種辦法，但只有 1 種能真正做到「零匯率風險」，而且它有一個致命缺點。</b><br>
+    大部分人以為「買台幣計價就沒匯率風險」——錯。台幣計價只是報價方式，淨值仍隨匯率每天重估。
+    真正有用的做法是<b>持有美元級別</b>，我實測同一檔基金兩個級別，報酬差 <b>10.69 個百分點</b>。
+  </div>
+
+  <h2>① 實證：同一檔基金，兩個級別差 10.69%</h2>
+  <p style="font-size:14.5px;margin-bottom:14px">
+    我拿國泰 20 年美債的兩個級別對照 —— 同一檔基金、同一段時間、只差計價幣別：
+  </p>
+  <div class="tablewrap">
+    <table>
+      <thead><tr>
+        <th>級別</th><th>計價</th><th>2025/04-01 價格</th><th>2025/07-31 價格</th>
+        <th>報酬（台幣升值 9.88% 期間）</th>
+      </tr></thead>
+      <tbody>
+        <tr>
+          <td><b>00687B</b> 國泰20年美債</td><td>台幣</td>
+          <td class="num">31.02</td><td class="num">26.75</td>
+          <td class="num bad">-13.77%</td>
+        </tr>
+        <tr>
+          <td><b>00687C</b> 國泰20年美債+櫃U</td><td class="good">美元</td>
+          <td class="num">9.44</td><td class="num">9.15</td>
+          <td class="num good">-3.07%</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="kpis">
+    <div class="kpi g"><div class="lb">兩者報酬差</div><div class="vl">10.69pp</div><div class="ds">幾乎等於台幣升值 9.88%</div></div>
+    <div class="kpi r"><div class="lb">台幣級別額外虧損</div><div class="vl">-10.7%</div><div class="ds">純粹來自匯率</div></div>
+    <div class="kpi"><div class="lb">台灣有此機制的債券ETF</div><div class="vl">僅 2 檔</div><div class="ds">00687C、00774C</div></div>
+  </div>
+  <p class="sub">
+    這就是「美元加掛級別」的威力 —— 同一檔基金、同樣的債券部位，只因為計價幣別不同，
+    台幣急升期間報酬差了 10.69 個百分點。<b>這是全台灣最直接的匯率避險實證。</b>
+  </p>
+
+  <h2>② 四種辦法，按「真的有效程度」排序</h2>
+
+  <div class="opts">
+
+    <div class="opt best">
+      <div class="rank">最有效</div>
+      <h3>① 買「美元加掛級別」的 ETF</h3>
+      <p class="desc">
+        同一檔基金，除了台幣級別外，另外發行一個<b>以美元計價、用美元交易</b>的級別。
+        你持有的是美元單位的受益憑證，價格直接反映美元資產價值，<b>不經過台幣換算</b>。
+      </p>
+      <div class="grid">
+        <div class="cell"><div class="l">機制</div><div class="v">美元計價・美元交割</div></div>
+        <div class="cell"><div class="l">匯率風險</div><div class="v good">≈ 0</div></div>
+        <div class="cell"><div class="l">台灣現況</div><div class="v">僅 2 檔</div></div>
+      </div>
+      <p class="pros">✅ 真正消除匯率風險，實測差 10.69pp</p>
+      <p class="cons">⚠️ 但你要有<b>美元帳戶</b>才能買；且目前<b>沒有任何短期美債</b>提供美元級別（只有長債 00687C）、中國政策債 00774C）</p>
+    </div>
+
+    <div class="opt">
+      <div class="rank">次有效</div>
+      <h3>② 直接買美國掛牌的 ETF（複委託 / 海外券商）</h3>
+      <p class="desc">
+        直接持有美國上市的 ETF，用美元交易。這是<b>最乾淨</b>的做法 —— 沒有中間層、費用最低、選擇最多。
+      </p>
+      <div class="grid">
+        <div class="cell"><div class="l">0-3月（你要的）</div><div class="v">SHV / BIL</div></div>
+        <div class="cell"><div class="l">0-1年</div><div class="v">SHV</div></div>
+        <div class="cell"><div class="l">1-3年</div><div class="v">SHY</div></div>
+      </div>
+      <table style="min-width:0;font-size:13px;margin-top:10px">
+        <tbody>
+          <tr><td><b>SHV</b> iShares 0-1 Year Treasury</td><td class="num">0.15%</td><td class="sub">最接近 0-3 月需求</td></tr>
+          <tr><td><b>BIL</b> SPDR 1-3 Month T-Bill</td><td class="num">0.14%</td><td class="sub">真正的 0-3 月 T-bill</td></tr>
+          <tr><td><b>SHY</b> iShares 1-3 Year Treasury</td><td class="num">0.15%</td><td class="sub">台灣最接近「0-3 年」</td></tr>
+        </tbody>
+      </table>
+      <p class="pros">✅ 費用最低、選擇最多、真正的美元資產</p>
+      <p class="cons">⚠️ 需開複委託或海外券商；有最低手續費；股息預扣 30% 稅；匯回台幣時仍有匯率，但你<b>可以選擇不換</b></p>
+    </div>
+
+    <div class="opt">
+      <div class="rank">有限效果</div>
+      <h3>③ 買「匯率避險級別」的基金</h3>
+      <p class="desc">
+        境外基金常有「美元避險（USD Hedged）」到台幣的級別，會用<b>遠期外匯</b>把美元部位對沖回台幣。
+        這跟「美元計價」不同：它仍然是台幣計價，但內建了避險操作。
+      </p>
+      <div class="grid">
+        <div class="cell"><div class="l">機制</div><div class="v">台幣計價 + 遠期避險</div></div>
+        <div class="cell"><div class="l">匯率風險</div><div class="v mid">大幅降低</div></div>
+        <div class="cell"><div class="l">台灣短期美債</div><div class="v bad">沒有</div></div>
+      </div>
+      <p class="pros">✅ 不用開美元帳戶</p>
+      <p class="cons">⚠️ <b>避險有成本</b>（台美利差 2-3%，一年吃掉 2-3%）；台灣 6 檔短期美債 ETF <b>全部沒有</b>避險級別；貝萊德 0-3 月基金也非避險級別</p>
+    </div>
+
+    <div class="opt">
+      <div class="rank">無效</div>
+      <h3>④ 買「台幣計價」—— 這是誤解，不能避險</h3>
+      <p class="desc">
+        很多人以為台幣計價就沒匯率風險。<b>台幣計價只是報價方式</b>，基金底層仍是美元債券，
+        淨值每天按匯率重估。
+      </p>
+      <div class="grid">
+        <div class="cell"><div class="l">機制</div><div class="v">台幣報價</div></div>
+        <div class="cell"><div class="l">匯率風險</div><div class="v bad">完整暴露</div></div>
+        <div class="cell"><div class="l">實測</div><div class="v bad">-8.9~-11.0%</div></div>
+      </div>
+      <p class="cons">❌ 2025/04-07 台幣升值 9.88%，台幣計價的 6 檔全部跌 8.9-11.0%，一點都沒躲掉</p>
+    </div>
+
+  </div>
+
+  <h2>③ 台灣市場現況：短期美債的美元級別是空白</h2>
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>天期</th><th>台幣級別</th><th>美元加掛級別</th><th>結論</th></tr></thead>
+      <tbody>
+        <tr><td><b>0-3 月</b></td><td class="bad">無</td><td class="bad">無</td><td class="sub">只能買美國 BIL</td></tr>
+        <tr><td><b>0-1 年</b></td><td>00864B、00859B、00865B</td><td class="bad">無</td><td class="sub">只能買美國 SHV</td></tr>
+        <tr><td><b>1-3 年</b></td><td>00719B、00694B、00856B</td><td class="bad">無</td><td class="sub">只能買美國 SHY</td></tr>
+        <tr><td><b>20 年+</b></td><td>00687B 等</td><td class="good">00687C ✅</td><td class="sub">唯一有美元級別的債券 ETF</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="note red">
+    <b>⚠️ 這是台灣市場的結構性缺口</b><br>
+    我掃了全市場 424 檔 ETF（上市 272 + 上櫃 125，去重），<b>債券 ETF 只有 2 檔有美元加掛級別</b>
+    （00687C 長天期美債、00774C 中國政策債），<b>短期美債完全沒有</b>。
+    這代表：<b>想買短期美債又要避匯率，在台灣市場做不到</b>，只能去美國買。
+  </div>
+
+  <h2>④ 實務建議：三種人、三種做法</h2>
+  <div class="note green">
+    <b>情況 A：你有美元支出（留學、旅遊、美元保單）</b><br>
+    → <b>直接買美元資產，不用避險</b>。你的負債是美元，持有美元資產是天然對沖。
+    台灣的台幣計價 ETF 反而讓你多一層換匯成本。買美國 <b>BIL / SHV</b> 最單純。
+  </div>
+  <div class="note green">
+    <b>情況 B：你的錢最後要換回台幣（純台幣投資人）</b><br>
+    → <b>匯率風險避不掉，只能控制部位。</b><br>
+    ・如果想買，把美元資產控制在總資產的 <b>10-20%</b>，當成「外幣配置」而非「現金替代」<br>
+    ・或者接受它、但<b>明確知道自己在賭台幣不升值</b><br>
+    ・最好的做法：<b>分批換匯</b>（定期定額），用時間攤平匯率，而不是單筆押注一個價位
+  </div>
+  <div class="note green">
+    <b>情況 C：你就是要「類現金」的停泊工具</b><br>
+    → <b>台幣定存 / 台幣貨幣基金可能是更好的選擇。</b><br>
+    理由：短期美債殖利率 4-5%，但匯率波動 ±10%。<b>用 10% 的波動風險去賺 4% 的利息，風險報酬比很差。</b>
+    除非你確定資金未來要用美元，否則短天期美債對純台幣投資人<b>不是好的現金替代品</b>。
+  </div>
+
+  <h2>⑤ 一張表看完</h2>
+  <div class="tablewrap">
+    <table>
+      <thead><tr>
+        <th>做法</th><th>匯率風險</th><th>成本</th><th>可行性</th><th>適合誰</th>
+      </tr></thead>
+      <tbody>
+        <tr>
+          <td><b>美元加掛級別</b></td><td class="num good">≈ 0</td><td>低</td>
+          <td class="mid">短期美債無此級別</td><td class="sub">只有長債投資人</td>
+        </tr>
+        <tr>
+          <td><b>美國掛牌 ETF</b></td><td class="num good">≈ 0</td><td>低（0.14-0.15%）</td>
+          <td class="good">可行（複委託）</td><td class="sub">有美元帳戶、能接受 30% 股息稅</td>
+        </tr>
+        <tr>
+          <td><b>匯率避險級別</b></td><td class="num mid">大幅降低</td><td class="mid">避險成本 2-3%/年</td>
+          <td class="bad">短期美債無此級別</td><td class="sub">—</td>
+        </tr>
+        <tr>
+          <td><b>台幣計價</b></td><td class="num bad">完整暴露</td><td>低</td>
+          <td class="good">最容易</td><td class="sub">能接受匯率波動的人</td>
+        </tr>
+        <tr>
+          <td><b>台幣定存</b></td><td class="num good">無</td><td>—</td>
+          <td class="good">最容易</td><td class="sub">純台幣、要零風險的人</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="note">
+    <b>最後一句話</b><br>
+    「避開匯率風險」的正確問法不是「買哪一檔」，而是<b>「我的錢未來要用什麼幣別花？」</b><br>
+    ・要用美元 → 買美元資產，匯率風險是<b>你要的</b>（天然對沖）<br>
+    ・要用台幣 → 匯率風險<b>避不掉</b>，只能控制部位或分批換匯<br>
+    <b>匯率風險不是商品的屬性，是你的資產與負債幣別錯配的結果。</b>
+  </div>
+
+  <div class="foot">
+    <b>方法與資料</b><br>
+    · 00687B / 00687C 對照為實測：FinMind 日收盤價，2025-04-01 → 2025-07-31。<br>
+    · 匯率採央行 USD/TWD 公告：2025-04-01 = 33.196、2025-07-31 = 29.916（台幣升值 9.88%）。<br>
+    · ETF 全集掃描：FinMind TaiwanStockInfo，industry_category ∈ {ETF, 上櫃ETF, 上櫃指數股票型基金(ETF)}，去重後 424 檔。<br>
+    · 美元加掛級別僅 2 檔（00687C、00774C），係以代號尾碼 B/C 配對 + 名稱「+櫃U」交叉比對得出。<br>
+    · 美國 ETF 費用為 2026 年已知公開費率，實際以發行商公告為準。<br>
+    · 未計入複委託手續費、匯費、股息預扣稅（30%）—— 實際成本會再高 0.3-1%。
+  </div>
+</div>
+</body>
+</html>
