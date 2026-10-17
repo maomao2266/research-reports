@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>美國短天期公債 ETF 風險分析 — 6 檔實測</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@3.0.0/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+<style>
+  :root{--ink:#1a1a1a;--muted:#5c6b7a;--dim:#8a97a6;--line:#e3e8ee;--bg:#fff;--surface:#f7f9fb;
+        --blue:#1d4ed8;--red:#c0392b;--green:#059669;--orange:#d97706;--purple:#7c3aed;
+        --sans:"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif;}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.7;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1240px;margin:0 auto;padding:48px 24px 90px}
+  .kicker{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);font-weight:600;margin-bottom:12px}
+  h1{font-size:30px;font-weight:800;letter-spacing:-.02em;margin-bottom:12px;line-height:1.3}
+  .meta{font-size:14px;color:var(--muted);padding-bottom:22px;border-bottom:2px solid var(--ink);margin-bottom:30px}
+  .meta b{color:var(--ink);font-weight:600}
+  h2{font-size:20px;font-weight:750;margin:46px 0 14px;padding-top:8px}
+  h3.sub2{font-size:15px;font-weight:700;margin:26px 0 10px;color:var(--muted)}
+  .note{background:#fffaf0;border:1px solid #fcd9a1;border-left:4px solid var(--orange);border-radius:10px;padding:16px 20px;margin:0 0 16px;font-size:14.5px}
+  .note b{color:#92400e}
+  .note.red{background:#fef2f2;border-color:#fecaca;border-left-color:var(--red)}
+  .note.red b{color:#991b1b}
+  .note.blue{background:#eff6ff;border-color:#bfdbfe;border-left-color:var(--blue)}
+  .note.blue b{color:#1e40af}
+  .note.green{background:#ecfdf5;border-color:#a7f3d0;border-left-color:var(--green)}
+  .note.green b{color:#065f46}
+  .tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:#fff}
+  table{width:100%;border-collapse:collapse;font-size:13.5px;min-width:900px}
+  th{background:var(--surface);text-align:left;font-size:11.5px;letter-spacing:.04em;color:var(--muted);
+     font-weight:700;padding:12px 10px;border-bottom:2px solid var(--ink);white-space:nowrap}
+  td{padding:12px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+  tr:last-child td{border-bottom:none}
+  tr:hover td{background:#fbfcfe}
+  td.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+  .bad{background:#fdecea;font-weight:800;color:var(--red);border-radius:4px;padding:1px 5px}
+  .good{background:#e8f5ee;font-weight:800;color:var(--green);border-radius:4px;padding:1px 5px}
+  .sub{font-size:11.5px;color:var(--dim);font-weight:400;line-height:1.4}
+  .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin:24px 0 8px}
+  .kpi{border:1px solid var(--line);border-radius:12px;padding:16px 18px;background:var(--surface)}
+  .kpi .lb{font-size:11.5px;color:var(--muted);font-weight:600;letter-spacing:.03em}
+  .kpi .vl{font-size:26px;font-weight:800;margin:6px 0 2px;font-variant-numeric:tabular-nums}
+  .kpi .ds{font-size:12px;color:var(--dim)}
+  .kpi.r .vl{color:var(--red)} .kpi.g .vl{color:var(--green)} .kpi.o .vl{color:var(--orange)}
+  .charts{display:grid;gap:22px;margin:22px 0 8px}
+  .chartbox{border:1px solid var(--line);border-radius:12px;padding:18px 20px 12px;background:#fff}
+  .chartbox h4{font-size:15px;font-weight:750;margin-bottom:4px}
+  .chartbox p.cap{font-size:12.5px;color:var(--dim);margin-bottom:12px}
+  .chartbox canvas{max-height:320px}
+  .take{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px;margin:20px 0}
+  .card{border:1px solid var(--line);border-radius:12px;padding:18px 20px;background:#fff}
+  .card h3{font-size:15px;font-weight:750;margin-bottom:8px}
+  .card p{font-size:14px;color:#2d3748}
+  .card.r{border-left:4px solid var(--red)} .card.o{border-left:4px solid var(--orange)}
+  .card.b{border-left:4px solid var(--blue)} .card.g{border-left:4px solid var(--green)}
+  .rank{list-style:none;counter-reset:r}
+  .rank li{counter-increment:r;padding:12px 0 12px 42px;position:relative;border-bottom:1px solid var(--line);font-size:14.5px}
+  .rank li:last-child{border-bottom:none}
+  .rank li:before{content:counter(r);position:absolute;left:0;top:12px;width:28px;height:28px;border-radius:50%;
+    background:var(--ink);color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center}
+  .foot{margin-top:48px;padding-top:20px;border-top:1px solid var(--line);font-size:12.5px;color:var(--dim)}
+  @media(max-width:700px){.wrap{padding:28px 14px 60px}h1{font-size:22px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="kicker">Taiwan ETFs · US Short-Duration Treasury · Risk Analysis</div>
+  <h1>美國短天期公債 ETF 的風險</h1>
+  <div class="meta">
+    <b>範圍</b> 台灣現存 6 檔短天期美債 ETF　·　<b>資料</b> FinMind 日收盤（2021-10 起）+ 央行 USD/TWD 匯率<br>
+    <b>方法</b> 自行計算年化波動、最大回撤、以及<b>匯率拆解</b>（台幣報酬 = 原幣報酬 × 匯率變動）　·　<b>基準日</b> 2026-10-16
+  </div>
+
+  <div class="note blue">
+    <b>📌 先講結論：這組商品最大、最被低估的風險不是利率，是匯率。</b><br>
+    「短期公債」聽起來很安全，但它們都是<b>台幣計價、投資美元債券</b>，等於你同時押了兩件事：
+    美債價格（利率）<b>＋</b> 台幣/美元匯率。<b>後者波動更大，而且常被「低波動」的印象掩蓋。</b>
+  </div>
+
+  <div class="kpis">
+    <div class="kpi r"><div class="lb">2025 年 4-7 月最大跌幅</div><div class="vl">-11.0%</div><div class="ds">00719B 元大美債1-3</div></div>
+    <div class="kpi r"><div class="lb">同期台幣升值</div><div class="vl">-9.88%</div><div class="ds">USD/TWD 33.196 → 29.916</div></div>
+    <div class="kpi o"><div class="lb">同期美元原幣報酬</div><div class="vl">+0.2~1.2%</div><div class="ds">債券本身幾乎沒跌</div></div>
+    <div class="kpi g"><div class="lb">2022 升息年台幣報酬</div><div class="vl">+4.3~11.6%</div><div class="ds">但美元原幣 -6.1%~+0.5%</div></div>
+  </div>
+
+  <h2>① 波動與回撤（2021-10 ~ 2026-10 實測）</h2>
+  <div class="tablewrap">
+    <table>
+      <thead><tr>
+        <th>代號 / 名稱</th><th>天期</th><th>年化波動<br>(台幣)</th><th>最大回撤<br>(台幣)</th>
+        <th>回撤期間</th><th>2022 升息年<br>(台幣)</th><th>2022 同期<br>(美元原幣)</th>
+      </tr></thead>
+      <tbody>
+        <tr><td><b>00865B</b> 國泰US短期公債</td><td>短期</td><td class="num">5.39%</td><td class="num">-12.13%</td><td class="sub">2025/04→2025/07</td><td class="num good">+10.85%</td><td class="num">-0.19%</td></tr>
+        <tr><td><b>00864B</b> 中信美國公債0-1</td><td>0-1</td><td class="num">5.49%</td><td class="num">-12.51%</td><td class="sub">2025/02→2025/07</td><td class="num good">+11.62%</td><td class="num">+0.50%</td></tr>
+        <tr><td><b>00859B</b> 群益0-1年美債</td><td>0-1</td><td class="num">5.61%</td><td class="num">-13.21%</td><td class="sub">2025/03→2025/07</td><td class="num good">+10.09%</td><td class="num">-0.87%</td></tr>
+        <tr><td><b>00719B</b> 元大美債1-3</td><td>1-3</td><td class="num">5.48%</td><td class="num bad">-13.35%</td><td class="sub">2025/04→2025/07</td><td class="num">+4.33%</td><td class="num bad">-6.06%</td></tr>
+        <tr><td><b>00694B</b> 富邦美債1-3</td><td>1-3</td><td class="num">5.66%</td><td class="num">-13.14%</td><td class="sub">2025/04→2025/07</td><td class="num">+5.21%</td><td class="num">-5.27%</td></tr>
+        <tr><td><b>00856B</b> 永豐1-3年美公債</td><td>1-3</td><td class="num bad">5.76%</td><td class="num bad">-14.26%</td><td class="sub">2025/04→2025/07</td><td class="num">+4.66%</td><td class="num bad">-5.76%</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="sub" style="margin-top:10px">「美元原幣」= 剔除匯率後的報酬，反映<b>純利率風險</b>。<b>注意兩者差距：2022 年台幣計價看起來賺 10%，美元計價其實是 -0.2%~-6.1%</b>——賺的全是台幣貶值。</p>
+
+  <h2>② 匯率才是主導變數</h2>
+  <div class="charts">
+    <div class="chartbox">
+      <h4>2025 年 4-7 月：台幣急升，吃掉全部報酬</h4>
+      <p class="cap">同期 USD/TWD 由 33.196 貶到 29.916（台幣升值 9.88%）。債券本身美元報酬 +1.2%~-1.2%，但換回台幣變成 -8.9%~-11.0%。</p>
+      <canvas id="c1"></canvas>
+    </div>
+    <div class="chartbox">
+      <h4>2022 年升息：台幣計價 vs 美元計價</h4>
+      <p class="cap">Fed 2022 年將利率從 0 升到 4.25%，短債應聲下跌。但同期台幣貶值 11.06%，把虧損全部抵銷——台幣投資人「感覺賺錢」，美元投資人實際虧 5-6%。</p>
+      <canvas id="c2"></canvas>
+    </div>
+  </div>
+
+  <h2>③ 兩種風險的方向完全不同</h2>
+  <div class="take">
+    <div class="card r">
+      <h3>利率風險 —— 短債其實很小</h3>
+      <p>短天期債存續期短（0-1 年約 0.4 年、1-3 年約 1.9 年），利率每升 1%，價格只跌 0.4%~1.9%。<b>2022 年史上最猛升息（0→4.25%），美元原幣最差也只跌 6.06%（1-3 年組）。</b>這是短債的核心優勢：利率風險可控、到期就回本金。</p>
+    </div>
+    <div class="card o">
+      <h3>匯率風險 —— 可能比利率大 10 倍</h3>
+      <p>2025 年 4-7 月台幣升值 9.88%，單一事件就吃掉 9-11% 的台幣報酬。<b>匯率波動幅度是短債利率敏感度的 5 倍以上</b>，而且它不會到期、不會還原。你買的是美元資產，卻用台幣結算生活，這個錯配才是真正的風險。</p>
+    </div>
+    <div class="card b">
+      <h3>配息不是報酬 —— 別把它當收入</h3>
+      <p>00859B 殖利率 5.81% 最高，但 2025 年台幣報酬 -5.01%，配最多、賠最多。<b>配息只是把淨值的一部分還給你，除息後淨值同步下跌。</b>高配息率往往代表「本金在流出」。</p>
+    </div>
+    <div class="card g">
+      <h3>信用風險 ≈ 0 —— 這部分真的安全</h3>
+      <p>全部持有美國政府公債，是美元資產的無風險基準。<b>唯一風險是美國違約（實務上不考慮）與美國政府關門造成的短期流動性。</b>這組商品不需要擔心倒債。</p>
+    </div>
+  </div>
+
+  <h2>④ 完整風險清單（依重要性排序）</h2>
+  <ul class="rank">
+    <li><b>匯率風險（★★★★★）</b> —— 台幣升值 1% 就吃掉你 1% 報酬。<b>實測：2025 年 4-7 月台幣升值 9.88%，造成 -8.9%~-11.0% 的台幣虧損，同期美元原幣報酬是 +1.14%~-1.20%（幾乎持平）。</b>這是這組商品最大的單一風險，且無法用「持有到期」化解。</li>
+    <li><b>利率風險（★★☆☆☆）</b> —— 短債存續期短，影響有限。<b>實測：2022 年升息 4.25%，1-3 年組美元原幣 -5.3%~-6.1%，0-1 年組 -0.9%~+0.5%。</b>持有到期可拿回本金，屬可控風險。</li>
+    <li><b>流動性風險（★★★☆☆，僅個別）</b> —— <b>00856B 永豐規模僅 26 億</b>，市場大跌時想賣可能賣不掉，且買賣價差會擴大。其他 5 檔規模都在 130 億以上，不是問題。</li>
+    <li><b>配息來源風險（★★★☆☆）</b> —— 高配息率可能來自收益平準金（本金）。<b>00859B 殖利率 5.81% 但 2025 年報酬 -5.01%</b>，就是配息吃掉本金的典型。要注意「配息率」與「報酬率」是兩件事。</li>
+    <li><b>費用侵蝕（★★☆☆☆）</b> —— 總管理費 0.16%~0.26%。短債一年報酬才 4-9%，<b>0.10% 的費用差等於吃掉 1.1%~2.5% 的報酬</b>。長期複利下差距可觀。</li>
+    <li><b>追蹤誤差（★★☆☆☆）</b> —— 各檔用「最佳化」複製而非完全複製，實際報酬與指數有落差。00865B 追蹤誤差約 -1.29%。</li>
+    <li><b>集中度風險（★☆☆☆☆）</b> —— 全部是美國公債，無信用分散。但美國公債本身就是最分散的無風險資產，這個風險實務上不重要。</li>
+    <li><b>提前贖回／清算風險（★☆☆☆☆）</b> —— 規模過小的 ETF 可能被清算。<b>00856B（26 億）最需要留意</b>，其餘規模安全。</li>
+  </ul>
+
+  <h2>⑤ 三種情境下的實際損失</h2>
+  <div class="tablewrap">
+    <table style="min-width:840px">
+      <thead><tr><th>情境</th><th>利率變動</th><th>台幣變動</th><th>1-3 年組<br>台幣報酬</th><th>0-1 年組<br>台幣報酬</th><th>說明</th></tr></thead>
+      <tbody>
+        <tr><td><b>2022 升息重演</b></td><td class="num">+4.25%</td><td class="num">台幣貶 11%</td><td class="num good">+4~5%</td><td class="num good">+10~12%</td><td class="sub">匯率貶值蓋過利率虧損</td></tr>
+        <tr><td><b>2025 台幣急升重演</b></td><td class="num">持平</td><td class="num bad">台幣升 9.9%</td><td class="num bad">-10~-11%</td><td class="num bad">-9~-10%</td><td class="sub">匯率主導，無處可躲</td></tr>
+        <tr><td><b>雙殺（升息＋台幣升值）</b></td><td class="num">+2%</td><td class="num bad">台幣升 5%</td><td class="num bad">-8~-9%</td><td class="num bad">-5~-6%</td><td class="sub">最壞組合，但歷史上少見</td></tr>
+        <tr><td><b>降息＋台幣貶值</b></td><td class="num">-2%</td><td class="num good">台幣貶 5%</td><td class="num good">+9~10%</td><td class="num good">+6~7%</td><td class="sub">最順風，1-3 年組受惠更大</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2>⑥ 怎麼對沖匯率風險</h2>
+  <div class="note green">
+    <b>✅ 三個做法，按可行性排序：</b><br><br>
+    <b>1. 買有美元避險級別的 ETF</b> —— 部分投信有「+U」或避險級別（如國泰 20 年美債 00687C 是櫃買美元級別）。<b>但短期美債這 6 檔目前都沒有台幣避險級別</b>，這是最直接的缺口。<br><br>
+    <b>2. 直接買美國掛牌 ETF</b> —— <b>SHY</b>（iShares 1-3 Year Treasury, 0.15%）、<b>SHV</b>（0-1 Year, 0.15%）。用美元帳戶持有，沒有台幣匯率問題（但你的資產還是美元，若要換回台幣仍有匯率）。<br><br>
+    <b>3. 接受它，但控制部位</b> —— 把這類 ETF 當「美元現金停泊」，<b>只在你有美元支出需求（旅遊、留學、美元保單）時才不會有匯率錯配</b>。若你的負債與生活費都是台幣，那匯率就是你必須主動管理的風險，不是可以忽略的雜訊。
+  </div>
+
+  <div class="note red">
+    <b>⚠️ 最重要的一句話</b><br>
+    <b>「短期公債」的低波動，是美元投資人的低波動；台幣投資人繼承了美元的利率風險 + 台幣的匯率風險。</b><br>
+    2025 年 4-7 月那 4 個月，這 6 檔全部下跌 8.9%~11.0%，債券本身卻幾乎沒跌——<b>這 10% 的虧損，100% 來自匯率</b>。
+  </div>
+
+  <div class="foot">
+    <b>方法與資料限制</b><br>
+    · 報酬以 FinMind 日收盤價計算（未還原配息，故為<b>價格報酬</b>；含息報酬略高 2-4%）。<br>
+    · 匯率拆解公式：<b>台幣報酬 = (1+原幣報酬) × (1+匯率變動) − 1</b>，其中匯率變動 = USD/TWD 期末 ÷ 期初 − 1。<br>
+    · 匯率來源：央行 NTD/USD 公告匯率（2025-04-01 = 33.196、2025-07-31 = 29.916、2022-01-03 = 27.65、2022-12-30 = 30.708）。<br>
+    · 波動率為日報酬標準差 × √252；最大回撤為期間內峰值到谷底的最大跌幅。<br>
+    · 2022 年匯率（27.65）取自央行歷史資料；若採不同錨點，美元原幣報酬會有些微差異。<br>
+    · 未計入買賣價差、交易稅、匯兌手續費——實際成本會再高 0.1-0.3%。
+  </div>
+</div>
+
+<script>
+const c1 = document.getElementById('c1');
+new Chart(c1, {
+  type: 'bar',
+  data: {
+    labels: ['00865B 國泰','00864B 中信','00859B 群益','00719B 元大','00694B 富邦','00856B 永豐'],
+    datasets: [
+      {label:'美元原幣報酬（債券本身）', data:[1.14,1.17,0.23,-1.20,-0.24,-0.49],
+       backgroundColor:'#059669', borderRadius:4},
+      {label:'匯率貢獻（台幣升值 9.88%）', data:[-9.88,-9.88,-9.88,-9.88,-9.88,-9.88],
+       backgroundColor:'#f59e0b', borderRadius:4},
+      {label:'合計＝台幣報酬', data:[-8.85,-8.82,-9.68,-10.96,-10.10,-10.32],
+       backgroundColor:'#c0392b', borderRadius:4}
+    ]
+  },
+  options: {
+    responsive:true, maintainAspectRatio:false,
+    plugins:{legend:{position:'bottom',labels:{boxWidth:12,font:{size:11}}},
+      tooltip:{callbacks:{label:c=>`${c.dataset.label}: ${c.parsed.y.toFixed(2)}%`}}},
+    scales:{y:{title:{display:true,text:'2025/04-07 報酬 (%)'},grid:{color:'#eef2f6'},
+      ticks:{callback:v=>v+'%'}}}
+  }
+});
+
+const c2 = document.getElementById('c2');
+new Chart(c2, {
+  type: 'bar',
+  data: {
+    labels: ['00865B 國泰','00864B 中信','00859B 群益','00719B 元大','00694B 富邦','00856B 永豐'],
+    datasets: [
+      {label:'台幣計價報酬（投資人看到的）', data:[10.85,11.62,10.09,4.33,5.21,4.66],
+       backgroundColor:'#1d4ed8', borderRadius:4},
+      {label:'美元原幣報酬（債券實際表現）', data:[-0.19,0.50,-0.87,-6.06,-5.27,-5.76],
+       backgroundColor:'#c0392b', borderRadius:4}
+    ]
+  },
+  options: {
+    responsive:true, maintainAspectRatio:false,
+    plugins:{legend:{position:'bottom',labels:{boxWidth:12,font:{size:11}}},
+      tooltip:{callbacks:{label:c=>`${c.dataset.label}: ${c.parsed.y.toFixed(2)}%`}}},
+    scales:{y:{title:{display:true,text:'2022 全年報酬 (%)'},grid:{color:'#eef2f6'},
+      ticks:{callback:v=>v+'%'}}}
+  }
+});
+</script>
+</body>
+</html>
